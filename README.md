@@ -37,6 +37,17 @@ An elementary arithmetic learning application developed with SwiftUI to help stu
 - 针对iPad的横屏模式进行了特别优化
 - 响应式布局设计
 
+## 安装说明 (Installation)
+
+1. 确保你已安装最新版本的Xcode (13.0+)
+2. 克隆此仓库到本地:
+   ```bash
+   git clone https://github.com/tobecrazy/Arithmetic.git
+   ```
+3. 打开Arithmetic.xcodeproj文件
+4. 选择目标设备（iPhone或iPad模拟器或实机）
+5. 点击运行按钮或按下Cmd+R开始构建和运行应用
+
 ## 技术实现 (Technical Implementation)
 
 - **架构模式**: MVVM (Model-View-ViewModel)
@@ -89,3 +100,31 @@ Arithmetic/
 4. 点击"开始游戏"按钮开始答题
 5. 在答题页面输入答案并点击"提交"
 6. 完成所有题目或时间结束后，查看结果页面的得分和评价
+
+## 贡献指南 (Contribution Guidelines)
+
+我们欢迎所有形式的贡献，包括但不限于：
+
+1. 报告问题和错误
+2. 提交功能请求
+3. 提交代码改进
+4. 改进文档
+
+请遵循以下步骤进行贡献：
+
+1. Fork此仓库
+2. 创建你的特性分支 (`git checkout -b feature/amazing-feature`)
+3. 提交你的更改 (`git commit -m 'Add some amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 打开一个Pull Request
+
+## 许可证 (License)
+
+此项目采用MIT许可证 - 详情请查看 [LICENSE](LICENSE) 文件
+
+## 联系与支持 (Contact & Support)
+
+如有任何问题或建议，请通过以下方式联系我们：
+
+- 提交GitHub Issue
+- 发送电子邮件至: [tobecrazy@qq.com](mailto:tobecrazy@qq.com)
