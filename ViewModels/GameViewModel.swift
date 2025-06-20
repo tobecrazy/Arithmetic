@@ -55,7 +55,11 @@ func moveToNextQuestion() {
     
     func decrementTimer() {
         if gameState.timeRemaining > 0 {
+            // Explicitly notify observers before changing the value
+            self.objectWillChange.send()
             gameState.timeRemaining -= 1
+            // Also notify gameState observers to ensure UI updates
+            gameState.objectWillChange.send()
         } else {
             endGame()
         }

@@ -63,6 +63,7 @@ class GameState: ObservableObject {
     
     // 获取剩余时间格式化字符串
     var timeRemainingText: String {
+        // Access timeRemaining to ensure this property is recalculated when timeRemaining changes
         let minutes = timeRemaining / 60
         let seconds = timeRemaining % 60
         return String(format: "%02d:%02d", minutes, seconds)

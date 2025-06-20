@@ -6,6 +6,7 @@ struct GameView: View {
     @State private var userInput: String = ""
     @State private var showingAlert = false
     @State private var navigateToResults = false
+    @State private var currentTime: Int = 0 // Local state to track time for UI updates
     @Environment(\.presentationMode) var presentationMode
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -36,7 +37,7 @@ struct GameView: View {
                         Text(viewModel.gameState.timeRemainingText)
                             .font(.adaptiveHeadline())
                             .foregroundColor(.blue)
-                            .id(viewModel.gameState.timeRemaining) // Force refresh when timeRemaining changes
+                            .id(currentTime) // Use local state to force refresh
                     }
                     
                     Spacer()
@@ -188,7 +189,13 @@ struct GameView: View {
         .onReceive(timer) { _ in
             if viewModel.timerActive {
                 viewModel.decrementTimer()
+                // Update local state to force UI refresh
+                currentTime = viewModel.gameState.timeRemaining
             }
+        }
+        .onAppear {
+            // Initialize the local time state
+            currentTime = viewModel.gameState.timeRemaining
         }
     }
     
@@ -207,7 +214,7 @@ struct GameView: View {
                             Text(viewModel.gameState.timeRemainingText)
                                 .font(.adaptiveHeadline())
                                 .foregroundColor(.blue)
-                                .id(viewModel.gameState.timeRemaining) // Force refresh when timeRemaining changes
+                                .id(currentTime) // Use local state to force refresh
                         }
                         
                         Spacer()
@@ -383,7 +390,13 @@ struct GameView: View {
         .onReceive(timer) { _ in
             if viewModel.timerActive {
                 viewModel.decrementTimer()
+                // Update local state to force UI refresh
+                currentTime = viewModel.gameState.timeRemaining
             }
+        }
+        .onAppear {
+            // Initialize the local time state
+            currentTime = viewModel.gameState.timeRemaining
         }
     }
     
