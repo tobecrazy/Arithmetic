@@ -1,9 +1,10 @@
 import SwiftUI
+import UIKit
 
 struct ResultView: View {
     let gameState: GameState
-    @State private var navigateToHome = false
     @Environment(\.presentationMode) var presentationMode
+    @State private var shouldPopToRoot = false
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
@@ -94,8 +95,21 @@ struct ResultView: View {
                 
                 // 返回主页按钮
                 Button(action: {
-                    // 返回到根视图（ContentView）
-                    navigateToHome = true
+                    // 使用UIKit方法直接返回到根视图
+                    let scenes = UIApplication.shared.connectedScenes
+                    let windowScene = scenes.first as? UIWindowScene
+                    let window = windowScene?.windows.first
+                    
+                    if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
+                        navigationController.popToRootViewController(animated: true)
+                    } else {
+                        // 如果找不到导航控制器，尝试关闭所有模态视图
+                        var currentVC = window?.rootViewController
+                        while let presentedVC = currentVC?.presentedViewController {
+                            currentVC = presentedVC
+                        }
+                        currentVC?.dismiss(animated: true)
+                    }
                 }) {
                     Text("button.home".localized)
                         .font(.adaptiveHeadline())
@@ -110,20 +124,6 @@ struct ResultView: View {
             .padding(.bottom, 50)
         }
         .navigationBarHidden(true)
-        .background(
-            NavigationLink(destination: EmptyView(), isActive: $navigateToHome) {
-                EmptyView()
-            }
-            .hidden()
-            .onAppear {
-                if navigateToHome {
-                    // 使用环境值获取根导航控制器并弹出到根视图
-                    DispatchQueue.main.async {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-        )
     }
     
     // iPad横屏专用布局
@@ -216,8 +216,21 @@ struct ResultView: View {
                     
                     // 返回主页按钮
                     Button(action: {
-                        // 返回到根视图（ContentView）
-                        navigateToHome = true
+                        // 使用UIKit方法直接返回到根视图
+                        let scenes = UIApplication.shared.connectedScenes
+                        let windowScene = scenes.first as? UIWindowScene
+                        let window = windowScene?.windows.first
+                        
+                        if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
+                            navigationController.popToRootViewController(animated: true)
+                        } else {
+                            // 如果找不到导航控制器，尝试关闭所有模态视图
+                            var currentVC = window?.rootViewController
+                            while let presentedVC = currentVC?.presentedViewController {
+                                currentVC = presentedVC
+                            }
+                            currentVC?.dismiss(animated: true)
+                        }
                     }) {
                         Text("button.home".localized)
                             .font(.adaptiveHeadline())
@@ -233,20 +246,6 @@ struct ResultView: View {
             .frame(width: UIScreen.main.bounds.width * 0.5)
         }
         .navigationBarHidden(true)
-        .background(
-            NavigationLink(destination: EmptyView(), isActive: $navigateToHome) {
-                EmptyView()
-            }
-            .hidden()
-            .onAppear {
-                if navigateToHome {
-                    // 使用环境值获取根导航控制器并弹出到根视图
-                    DispatchQueue.main.async {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-        )
     }
 }
 
