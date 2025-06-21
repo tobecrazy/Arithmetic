@@ -92,8 +92,14 @@ func submitAnswer(_ answer: Int) {
     if isCorrect {
         // If answer is correct, move to next question immediately
         gameState.moveToNextQuestion()
+    } else {
+        // If answer is incorrect, we'll wait for the user to click the "Next Question" button
+        // Make sure the wrong question is properly added to the wrong questions collection
+        let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
+        let wrongQuestionManager = WrongQuestionManager()
+        wrongQuestionManager.addWrongQuestion(currentQuestion, for: gameState.difficultyLevel)
+        print("Added wrong question to collection: \(currentQuestion.questionText)")
     }
-    // If answer is incorrect, we'll wait for the user to click the "Next Question" button
 }
     
 // 暂停游戏

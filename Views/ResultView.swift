@@ -1,10 +1,12 @@
 import SwiftUI
 import UIKit
+import CoreData
 
 struct ResultView: View {
     let gameState: GameState
     @Environment(\.presentationMode) var presentationMode
     @State private var shouldPopToRoot = false
+    @State private var navigateToWrongQuestions = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -79,49 +81,73 @@ struct ResultView: View {
             Spacer()
             
             // 按钮
-            HStack(spacing: 20) {
-                // 重新开始按钮
+            VStack(spacing: 15) {
+                // 查看错题集按钮
                 Button(action: {
-                    // 返回到上一个视图（GameView）
-                    presentationMode.wrappedValue.dismiss()
+                    navigateToWrongQuestions = true
                 }) {
-                    Text("button.restart".localized)
+                    Text("button.wrong_questions".localized)
                         .font(.adaptiveHeadline())
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.blue)
+                        .background(Color.orange)
                         .foregroundColor(.white)
                         .cornerRadius(.adaptiveCornerRadius)
+                }
+                .padding(.horizontal)
+                
+                NavigationLink(
+                    destination: WrongQuestionsView()
+                        .environmentObject(localizationManager),
+                    isActive: $navigateToWrongQuestions
+                ) {
+                    EmptyView()
                 }
                 
-                // 返回主页按钮
-                Button(action: {
-                    // 使用UIKit方法直接返回到根视图
-                    let scenes = UIApplication.shared.connectedScenes
-                    let windowScene = scenes.first as? UIWindowScene
-                    let window = windowScene?.windows.first
-                    
-                    if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
-                        navigationController.popToRootViewController(animated: true)
-                    } else {
-                        // 如果找不到导航控制器，尝试关闭所有模态视图
-                        var currentVC = window?.rootViewController
-                        while let presentedVC = currentVC?.presentedViewController {
-                            currentVC = presentedVC
-                        }
-                        currentVC?.dismiss(animated: true)
+                HStack(spacing: 20) {
+                    // 重新开始按钮
+                    Button(action: {
+                        // 返回到上一个视图（GameView）
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("button.restart".localized)
+                            .font(.adaptiveHeadline())
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(.adaptiveCornerRadius)
                     }
-                }) {
-                    Text("button.home".localized)
-                        .font(.adaptiveHeadline())
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(.adaptiveCornerRadius)
+                    
+                    // 返回主页按钮
+                    Button(action: {
+                        // 使用UIKit方法直接返回到根视图
+                        let scenes = UIApplication.shared.connectedScenes
+                        let windowScene = scenes.first as? UIWindowScene
+                        let window = windowScene?.windows.first
+                        
+                        if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
+                            navigationController.popToRootViewController(animated: true)
+                        } else {
+                            // 如果找不到导航控制器，尝试关闭所有模态视图
+                            var currentVC = window?.rootViewController
+                            while let presentedVC = currentVC?.presentedViewController {
+                                currentVC = presentedVC
+                            }
+                            currentVC?.dismiss(animated: true)
+                        }
+                    }) {
+                        Text("button.home".localized)
+                            .font(.adaptiveHeadline())
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(.adaptiveCornerRadius)
+                    }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
             .padding(.bottom, 50)
         }
         .navigationBarHidden(true)
@@ -201,6 +227,27 @@ struct ResultView: View {
                 
                 // 按钮
                 VStack(spacing: 20) {
+                    // 查看错题集按钮
+                    Button(action: {
+                        navigateToWrongQuestions = true
+                    }) {
+                        Text("button.wrong_questions".localized)
+                            .font(.adaptiveHeadline())
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color.orange)
+                            .foregroundColor(.white)
+                            .cornerRadius(.adaptiveCornerRadius)
+                    }
+                    
+                    NavigationLink(
+                        destination: WrongQuestionsView()
+                            .environmentObject(localizationManager),
+                        isActive: $navigateToWrongQuestions
+                    ) {
+                        EmptyView()
+                    }
+                    
                     // 重新开始按钮
                     Button(action: {
                         // 返回到上一个视图（GameView）

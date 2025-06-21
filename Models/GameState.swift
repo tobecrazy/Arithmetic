@@ -74,10 +74,18 @@ class GameState: ObservableObject {
         
         if isCorrect {
             score += pointsPerQuestion
+            
+            // 如果是错题集中的题目，更新统计信息
+            let wrongQuestionManager = WrongQuestionManager()
+            if wrongQuestionManager.isWrongQuestion(currentQuestion) {
+                wrongQuestionManager.updateWrongQuestion(currentQuestion, answeredCorrectly: true)
+                print("Updated wrong question statistics (correct answer): \(currentQuestion.questionText)")
+            }
         } else {
             // 如果回答错误，添加到错题集
             let wrongQuestionManager = WrongQuestionManager()
             wrongQuestionManager.addWrongQuestion(currentQuestion, for: difficultyLevel)
+            print("Added to wrong questions collection: \(currentQuestion.questionText)")
         }
         
         self.isCorrect = isCorrect

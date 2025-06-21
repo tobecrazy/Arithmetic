@@ -1,9 +1,11 @@
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
     @State private var selectedDifficulty: DifficultyLevel = .level1
     @State private var timeInMinutes: Int = 5
     @State private var navigateToGame = false
+    @State private var navigateToWrongQuestions = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -107,12 +109,34 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .cornerRadius(.adaptiveCornerRadius)
                     }
+                    .padding(.bottom, 20)
+                    
+                    // 错题集按钮
+                    Button(action: {
+                        navigateToWrongQuestions = true
+                    }) {
+                        Text("button.wrong_questions".localized)
+                            .font(.adaptiveBody())
+                            .padding()
+                            .frame(width: 200)
+                            .background(Color.orange)
+                            .foregroundColor(.white)
+                            .cornerRadius(.adaptiveCornerRadius)
+                    }
                     .padding(.bottom, 50)
                     
                     NavigationLink(
                         destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
                             .environmentObject(localizationManager),
                         isActive: $navigateToGame
+                    ) {
+                        EmptyView()
+                    }
+                    
+                    NavigationLink(
+                        destination: WrongQuestionsView()
+                            .environmentObject(localizationManager),
+                        isActive: $navigateToWrongQuestions
                     ) {
                         EmptyView()
                     }
@@ -195,10 +219,33 @@ struct ContentView: View {
                 .padding(.horizontal)
                 .padding(.top, 20)
                 
+                // 错题集按钮
+                Button(action: {
+                    navigateToWrongQuestions = true
+                }) {
+                    Text("button.wrong_questions".localized)
+                        .font(.adaptiveBody())
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(.adaptiveCornerRadius)
+                }
+                .padding(.horizontal)
+                .padding(.top, 10)
+                
                 NavigationLink(
                     destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
                         .environmentObject(localizationManager),
                     isActive: $navigateToGame
+                ) {
+                    EmptyView()
+                }
+                
+                NavigationLink(
+                    destination: WrongQuestionsView()
+                        .environmentObject(localizationManager),
+                    isActive: $navigateToWrongQuestions
                 ) {
                     EmptyView()
                 }

@@ -19,7 +19,8 @@ public class WrongQuestionEntity: NSManagedObject {
 extension WrongQuestionEntity {
     // Fetch request
     @nonobjc public class func fetchRequest() -> NSFetchRequest<WrongQuestionEntity> {
-        return NSFetchRequest<WrongQuestionEntity>(entityName: "WrongQuestion")
+        // Use the constant from ArithmeticModel.swift to ensure consistency
+        return NSFetchRequest<WrongQuestionEntity>(entityName: ArithmeticModelEntities.wrongQuestion)
     }
     
     // Convert to Question model

@@ -33,7 +33,9 @@ class WrongQuestionManager {
                 newWrongQuestion.createdAt = Date()
                 newWrongQuestion.timesShown = 1
                 newWrongQuestion.timesWrong = 1
+                newWrongQuestion.lastShownAt = Date()  // Set lastShownAt to current date
                 
+                print("Adding new wrong question: \(question.questionText), key: \(combinationKey)")
                 saveContext()
             } else {
                 // Question exists, update statistics
@@ -42,6 +44,7 @@ class WrongQuestionManager {
                 existingQuestion.timesWrong += 1
                 existingQuestion.lastShownAt = Date()
                 
+                print("Updating existing wrong question: \(question.questionText), key: \(combinationKey)")
                 saveContext()
             }
         } catch {

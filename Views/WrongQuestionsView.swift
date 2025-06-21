@@ -128,7 +128,8 @@ struct WrongQuestionsView: View {
         }
         
         do {
-            let entities = try CoreDataManager.shared.context.fetch(fetchRequest)
+            // Use the viewContext directly to ensure we're using the correct context
+            let entities = try viewContext.fetch(fetchRequest)
             wrongQuestions = entities.map { entity in
                 WrongQuestionViewModel(
                     id: entity.id,
@@ -138,6 +139,15 @@ struct WrongQuestionsView: View {
                     timesShown: Int(entity.timesShown),
                     timesWrong: Int(entity.timesWrong)
                 )
+            }
+            
+            // Print debug information
+            print("Loaded \(wrongQuestions.count) wrong questions")
+            if wrongQuestions.isEmpty {
+                // Check if there are any wrong questions in the database at all
+                let checkRequest: NSFetchRequest<WrongQuestionEntity> = WrongQuestionEntity.fetchRequest()
+                let totalCount = try viewContext.count(for: checkRequest)
+                print("Total wrong questions in database: \(totalCount)")
             }
         } catch {
             print("Error loading wrong questions: \(error)")

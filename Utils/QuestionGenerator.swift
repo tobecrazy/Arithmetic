@@ -344,10 +344,10 @@ class QuestionGenerator {
                     operation2 = .addition
                 } else {
                     // 确保number3小于intermediateResult
-                    if intermediateResult > 1 {
+                    if intermediateResult > minNumber {
                         number3 = Int.random(in: minNumber..<intermediateResult)
                     } else {
-                        // 如果intermediateResult <= 1，改为加法
+                        // 如果intermediateResult <= minNumber，改为加法
                         operation2 = .addition
                     }
                 }
@@ -369,7 +369,13 @@ class QuestionGenerator {
                             // 如果intermediateResult <= minNumber，调整number1和number2
                             number1 += 2
                             intermediateResult = operation1 == .addition ? number1 + number2 : number1 - number2
-                            number3 = minNumber
+                            // 确保中间结果大于minNumber
+                            if intermediateResult > minNumber {
+                                number3 = Int.random(in: minNumber..<intermediateResult)
+                            } else {
+                                number3 = minNumber
+                                operation2 = .addition
+                            }
                         }
                     }
                     finalResult = intermediateResult - number3
@@ -411,7 +417,12 @@ class QuestionGenerator {
                 } else {
                     // 如果是减法，确保intermediateResult != number3
                     if intermediateResult == number3 {
-                        number3 = Int.random(in: minNumber..<intermediateResult)
+                        if intermediateResult > minNumber {
+                            number3 = Int.random(in: minNumber..<intermediateResult)
+                        } else {
+                            // 如果intermediateResult <= minNumber，无法创建有效范围
+                            number3 = max(1, minNumber - 1)
+                        }
                     }
                 }
                 finalResult = operation2 == .addition ? intermediateResult + number3 : intermediateResult - number3
