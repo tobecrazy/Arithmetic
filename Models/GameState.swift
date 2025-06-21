@@ -13,14 +13,43 @@ class GameState: ObservableObject {
     
     // 游戏设置
     let difficultyLevel: DifficultyLevel
-    let totalQuestions: Int = 20
     let totalTime: Int
+    
+    // 根据难度等级获取总题目数
+    var totalQuestions: Int {
+        switch difficultyLevel {
+        case .level1: return 20
+        case .level2: return 25
+        case .level3: return 50
+        case .level4: return 100
+        }
+    }
+    
+    // 根据难度等级获取每题分数
+    var pointsPerQuestion: Int {
+        switch difficultyLevel {
+        case .level1: return 5
+        case .level2: return 4
+        case .level3: return 2
+        case .level4: return 1
+        }
+    }
     
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
         self.difficultyLevel = difficultyLevel
         self.timeRemaining = timeInMinutes * 60
         self.totalTime = timeInMinutes * 60
-        self.userAnswers = Array(repeating: nil, count: totalQuestions)
+        
+        // 计算题目数量
+        let questionCount: Int
+        switch difficultyLevel {
+        case .level1: questionCount = 20
+        case .level2: questionCount = 25
+        case .level3: questionCount = 50
+        case .level4: questionCount = 100
+        }
+        
+        self.userAnswers = Array(repeating: nil, count: questionCount)
         generateQuestions()
     }
     
@@ -37,7 +66,7 @@ class GameState: ObservableObject {
         userAnswers[currentQuestionIndex] = answer
         
         if isCorrect {
-            score += 5
+            score += pointsPerQuestion
         }
         
         self.isCorrect = isCorrect
@@ -94,7 +123,11 @@ class GameState: ObservableObject {
     
     // 获取评价等级
     func getPerformanceRating() -> (String, String) {
-        switch score {
+        // 计算总分的百分比
+        let maxPossibleScore = totalQuestions * pointsPerQuestion
+        let scorePercentage = (score * 100) / maxPossibleScore
+        
+        switch scorePercentage {
         case 90...100:
             return ("result.excellent".localized, "⭐⭐⭐")
         case 80..<90:

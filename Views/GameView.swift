@@ -7,6 +7,7 @@ struct GameView: View {
     @State private var showingAlert = false
     @State private var navigateToResults = false
     @State private var currentTime: Int = 0 // Local state to track time for UI updates
+    @State private var hasAppeared = false // Track if view has appeared before
     @Environment(\.presentationMode) var presentationMode
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -117,6 +118,12 @@ struct GameView: View {
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(.adaptiveCornerRadius)
                             .disabled(viewModel.gameState.showingCorrectAnswer)
+                            .onReceive(Just(userInput)) { newValue in
+                                let filtered = newValue.filter { "0123456789".contains($0) }
+                                if filtered != newValue {
+                                    self.userInput = filtered
+                                }
+                            }
                     }
                     .padding()
                     
@@ -179,7 +186,17 @@ struct GameView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-            viewModel.startGame()
+            if hasAppeared {
+                // 如果视图已经出现过（从ResultView返回），则重置游戏
+                viewModel.resetGame()
+            } else {
+                // 首次出现，启动游戏
+                viewModel.startGame()
+                hasAppeared = true
+            }
+            
+            // Initialize the local time state
+            currentTime = viewModel.gameState.timeRemaining
         }
         .onReceive(viewModel.gameState.$gameCompleted) { completed in
             if completed {
@@ -192,10 +209,6 @@ struct GameView: View {
                 // Update local state to force UI refresh
                 currentTime = viewModel.gameState.timeRemaining
             }
-        }
-        .onAppear {
-            // Initialize the local time state
-            currentTime = viewModel.gameState.timeRemaining
         }
     }
     
@@ -308,6 +321,12 @@ struct GameView: View {
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(.adaptiveCornerRadius)
                                 .disabled(viewModel.gameState.showingCorrectAnswer)
+                                .onReceive(Just(userInput)) { newValue in
+                                    let filtered = newValue.filter { "0123456789".contains($0) }
+                                    if filtered != newValue {
+                                        self.userInput = filtered
+                                    }
+                                }
                         }
                         .padding()
                         
@@ -380,7 +399,17 @@ struct GameView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-            viewModel.startGame()
+            if hasAppeared {
+                // 如果视图已经出现过（从ResultView返回），则重置游戏
+                viewModel.resetGame()
+            } else {
+                // 首次出现，启动游戏
+                viewModel.startGame()
+                hasAppeared = true
+            }
+            
+            // Initialize the local time state
+            currentTime = viewModel.gameState.timeRemaining
         }
         .onReceive(viewModel.gameState.$gameCompleted) { completed in
             if completed {
@@ -393,10 +422,6 @@ struct GameView: View {
                 // Update local state to force UI refresh
                 currentTime = viewModel.gameState.timeRemaining
             }
-        }
-        .onAppear {
-            // Initialize the local time state
-            currentTime = viewModel.gameState.timeRemaining
         }
     }
     

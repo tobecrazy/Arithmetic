@@ -25,6 +25,28 @@ class GameViewModel: ObservableObject {
         timerActive = true
     }
     
+    func resetGame() {
+        // 重置游戏状态
+        let difficultyLevel = gameState.difficultyLevel
+        let timeInMinutes = gameState.totalTime / 60
+        
+        // 创建新的游戏状态
+        self.gameState = GameState(difficultyLevel: difficultyLevel, timeInMinutes: timeInMinutes)
+        
+        // 重新监听游戏完成状态
+        cancellables.removeAll()
+        gameState.$gameCompleted
+            .sink { [weak self] completed in
+                if completed {
+                    self?.timerActive = false
+                }
+            }
+            .store(in: &cancellables)
+        
+        // 激活计时器
+        timerActive = true
+    }
+    
 func submitAnswer(_ answer: Int) {
     let isCorrect = gameState.checkAnswer(answer)
     
