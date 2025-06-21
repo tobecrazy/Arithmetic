@@ -1,10 +1,20 @@
 import Foundation
 
 class QuestionGenerator {
-    static func generateQuestions(difficultyLevel: DifficultyLevel, count: Int) -> [Question] {
+    static func generateQuestions(difficultyLevel: DifficultyLevel, count: Int, wrongQuestions: [Question] = []) -> [Question] {
         var questions: [Question] = []
         var generatedCombinations: Set<String> = []
         
+        // 首先添加错题集中的题目
+        for wrongQuestion in wrongQuestions {
+            let combination = getCombinationKey(for: wrongQuestion)
+            if !generatedCombinations.contains(combination) {
+                questions.append(wrongQuestion)
+                generatedCombinations.insert(combination)
+            }
+        }
+        
+        // 如果错题不足，生成新题目补充
         while questions.count < count {
             let newQuestion: Question
             let combination: String
@@ -12,10 +22,10 @@ class QuestionGenerator {
             // 等级2及以上有概率生成三数运算题目
             if difficultyLevel != .level1 && Double.random(in: 0...1) < getThreeNumberProbability(difficultyLevel) {
                 newQuestion = generateThreeNumberQuestion(in: difficultyLevel.range)
-                combination = "\(newQuestion.numbers[0])\(newQuestion.operations[0].rawValue)\(newQuestion.numbers[1])\(newQuestion.operations[1].rawValue)\(newQuestion.numbers[2])"
+                combination = getCombinationKey(for: newQuestion)
             } else {
                 newQuestion = generateTwoNumberQuestion(in: difficultyLevel.range)
-                combination = "\(newQuestion.numbers[0])\(newQuestion.operations[0].rawValue)\(newQuestion.numbers[1])"
+                combination = getCombinationKey(for: newQuestion)
             }
             
             if !generatedCombinations.contains(combination) {
@@ -24,7 +34,22 @@ class QuestionGenerator {
             }
         }
         
-        return questions
+        // 如果错题数量超过需要的题目数量，随机选择一部分
+        if questions.count > count {
+            questions = Array(questions.shuffled().prefix(count))
+        }
+        
+        // 打乱题目顺序
+        return questions.shuffled()
+    }
+    
+    // 生成题目的唯一标识键
+    static func getCombinationKey(for question: Question) -> String {
+        if question.numbers.count == 2 {
+            return "\(question.numbers[0])\(question.operations[0].rawValue)\(question.numbers[1])"
+        } else {
+            return "\(question.numbers[0])\(question.operations[0].rawValue)\(question.numbers[1])\(question.operations[1].rawValue)\(question.numbers[2])"
+        }
     }
     
     // 根据难度等级获取生成三数运算题目的概率

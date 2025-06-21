@@ -6,6 +6,19 @@ An elementary arithmetic learning application developed with SwiftUI to help stu
 
 ## 功能特点 (Features)
 
+### 错题收集系统 (Wrong Questions Collection System)
+- 自动收集用户答错的题目
+- 按难度等级分类错题
+- 显示错题统计信息（展示次数、错误次数）
+- 支持删除单个错题、所有错题或已掌握的错题
+- 智能识别已掌握的错题（正确率达到70%以上）
+
+### 游戏进度保存 (Game Progress Saving)
+- 自动保存游戏进度
+- 支持暂停游戏并在稍后继续
+- 保存当前难度等级、分数、剩余时间和答题进度
+- 显示上次保存的时间和进度信息
+
 ### 难度等级系统 (Difficulty Level System)
 - **等级1**: 10以内数字 (Numbers 1-10)，20道题 (20 questions)
 - **等级2**: 20以内数字 (Numbers 1-20)，25道题 (25 questions)
@@ -73,8 +86,10 @@ An elementary arithmetic learning application developed with SwiftUI to help stu
 
 - **架构模式**: MVVM (Model-View-ViewModel)
 - **UI框架**: SwiftUI
+- **数据持久化**: CoreData
 - **本地化**: 使用标准的iOS本地化机制
 - **响应式设计**: 使用GeometryReader和环境值适配不同设备和方向
+- **导航管理**: 使用自定义导航工具实现视图间的无缝导航
 
 ## 项目结构 (Project Structure)
 
@@ -86,6 +101,7 @@ Arithmetic/
 │   ├── ContentView.swift
 │   ├── GameView.swift
 │   ├── ResultView.swift
+│   ├── WrongQuestionsView.swift
 │   └── LanguageSelectorView.swift
 ├── Models/
 │   ├── Question.swift
@@ -93,13 +109,22 @@ Arithmetic/
 │   └── GameState.swift
 ├── ViewModels/
 │   └── GameViewModel.swift
+├── CoreData/
+│   ├── ArithmeticModel.swift
+│   ├── CoreDataManager.swift
+│   ├── WrongQuestionEntity.swift
+│   ├── WrongQuestionManager.swift
+│   ├── GameProgressEntity.swift
+│   └── GameProgressManager.swift
 ├── Utils/
 │   ├── LocalizationManager.swift
 │   ├── QuestionGenerator.swift
+│   ├── NavigationUtil.swift
 │   └── DeviceUtils.swift
 ├── Extensions/
 │   ├── String+Localized.swift
 │   ├── Font+Adaptive.swift
+│   ├── View+Navigation.swift
 │   └── CGFloat+Adaptive.swift
 └── Resources/
     ├── zh-Hans.lproj/Localizable.strings
@@ -123,6 +148,8 @@ Arithmetic/
 6. 完成所有题目或时间结束后，查看结果页面的得分和评价
 7. 可以点击"重新开始"按钮重新开始游戏，所有数据将被重置
 8. 或点击"返回主页"按钮返回到主页面
+9. 在主页面可以查看"错题本"，浏览和管理之前答错的题目
+10. 如果有未完成的游戏，可以选择继续上次的游戏进度
 
 ## 贡献指南 (Contribution Guidelines)
 

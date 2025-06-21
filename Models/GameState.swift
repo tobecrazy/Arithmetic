@@ -10,6 +10,8 @@ class GameState: ObservableObject {
     @Published var gameCompleted: Bool = false
     @Published var showingCorrectAnswer: Bool = false
     @Published var isCorrect: Bool = false
+    @Published var isPaused: Bool = false
+    @Published var pauseUsed: Bool = false
     
     // 游戏设置
     let difficultyLevel: DifficultyLevel
@@ -55,7 +57,12 @@ class GameState: ObservableObject {
     
     // 生成题目
     private func generateQuestions() {
-        questions = QuestionGenerator.generateQuestions(difficultyLevel: difficultyLevel, count: totalQuestions)
+        // 获取错题集中的题目
+        let wrongQuestionManager = WrongQuestionManager()
+        let wrongQuestions = wrongQuestionManager.getWrongQuestionsForLevel(difficultyLevel, limit: Int(Double(totalQuestions) * 0.3))
+        
+        // 生成题目，确保包含错题
+        questions = QuestionGenerator.generateQuestions(difficultyLevel: difficultyLevel, count: totalQuestions, wrongQuestions: wrongQuestions)
     }
     
     // 检查答案
@@ -67,6 +74,10 @@ class GameState: ObservableObject {
         
         if isCorrect {
             score += pointsPerQuestion
+        } else {
+            // 如果回答错误，添加到错题集
+            let wrongQuestionManager = WrongQuestionManager()
+            wrongQuestionManager.addWrongQuestion(currentQuestion, for: difficultyLevel)
         }
         
         self.isCorrect = isCorrect
@@ -137,5 +148,55 @@ class GameState: ObservableObject {
         default:
             return ("result.needimprove".localized, "💪")
         }
+    }
+    
+    // 暂停游戏
+    func pauseGame() -> Bool {
+        // 如果已经使用过暂停，则不能再次暂停
+        if pauseUsed {
+            return false
+        }
+        
+        // 标记暂停状态
+        isPaused = true
+        pauseUsed = true
+        
+        // 扣除分数
+        if score >= 5 {
+            score -= 5
+        } else {
+            score = 0
+        }
+        
+        return true
+    }
+    
+    // 恢复游戏
+    func resumeGame() {
+        isPaused = false
+    }
+    
+    // 保存游戏进度
+    func saveProgress() -> Bool {
+        let gameProgressManager = GameProgressManager()
+        return gameProgressManager.saveGameProgress(self)
+    }
+    
+    // 加载游戏进度
+    static func loadProgress() -> GameState? {
+        let gameProgressManager = GameProgressManager()
+        return gameProgressManager.loadGameProgress()
+    }
+    
+    // 检查是否有保存的游戏进度
+    static func hasSavedProgress() -> Bool {
+        let gameProgressManager = GameProgressManager()
+        return gameProgressManager.hasGameProgress()
+    }
+    
+    // 获取保存的游戏信息
+    static func getSavedGameInfo() -> (difficultyLevel: DifficultyLevel, progress: String, savedAt: Date)? {
+        let gameProgressManager = GameProgressManager()
+        return gameProgressManager.getSavedGameInfo()
     }
 }

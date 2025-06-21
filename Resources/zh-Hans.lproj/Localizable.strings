@@ -5,6 +5,7 @@
 "difficulty.level4" = "等级4 (100以内)";
 "difficulty.level" = "难度等级";
 "button.start" = "开始游戏";
+"button.start_new" = "开始新游戏";
 "settings.time" = "时间设置";
 "settings.language" = "语言设置";
 "game.score" = "得分";
@@ -31,3 +32,35 @@
 "alert.cancel" = "取消";
 "button.next_question" = "下一题";
 "settings.minutes" = "分钟";
+
+/* Wrong Questions Collection */
+"button.wrong_questions" = "错题集";
+"wrong_questions.title" = "错题集";
+"wrong_questions.filter_by_level" = "按难度筛选";
+"wrong_questions.all_levels" = "所有难度";
+"wrong_questions.empty" = "暂无错题。继续练习吧！";
+"wrong_questions.answer" = "答案：%@";
+"wrong_questions.level" = "难度：%@";
+"wrong_questions.stats" = "尝试 %@ 次，错误 %@ 次";
+"wrong_questions.delete_all" = "删除全部";
+"wrong_questions.delete_mastered" = "删除已掌握";
+"alert.delete_all_title" = "删除所有错题";
+"alert.delete_all_message" = "确定要删除所有错题吗？此操作无法撤销。";
+"alert.delete_mastered_title" = "删除已掌握的题目";
+"alert.delete_mastered_message" = "确定要删除已掌握的题目吗？此操作无法撤销。";
+"alert.delete_confirm" = "删除";
+
+/* Game Progress */
+"game.saved_game" = "已保存的游戏";
+"game.saved_at" = "保存时间：%@";
+"game.save_success" = "游戏进度保存成功";
+"game.save_error" = "游戏进度保存失败";
+
+/* Game Pause */
+"game.paused" = "游戏已暂停";
+"game.resume" = "继续游戏";
+"button.pause" = "暂停";
+"button.save" = "保存进度";
+"alert.pause_title" = "暂停游戏";
+"alert.pause_message" = "暂停游戏将扣除5分。每局游戏只能暂停一次。";
+"alert.pause_confirm" = "确认暂停";

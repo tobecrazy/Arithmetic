@@ -5,6 +5,7 @@
 "difficulty.level4" = "Level 4 (Numbers 1-100)";
 "difficulty.level" = "Difficulty Level";
 "button.start" = "Start Game";
+"button.start_new" = "Start New Game";
 "settings.time" = "Time Setting";
 "settings.language" = "Language Setting";
 "game.score" = "Score";
@@ -31,3 +32,35 @@
 "alert.cancel" = "Cancel";
 "button.next_question" = "Next Question";
 "settings.minutes" = "Minutes";
+
+/* Wrong Questions Collection */
+"button.wrong_questions" = "Wrong Questions Collection";
+"wrong_questions.title" = "Wrong Questions Collection";
+"wrong_questions.filter_by_level" = "Filter by Level";
+"wrong_questions.all_levels" = "All Levels";
+"wrong_questions.empty" = "No wrong questions yet. Keep practicing!";
+"wrong_questions.answer" = "Answer: %@";
+"wrong_questions.level" = "Level: %@";
+"wrong_questions.stats" = "Attempted %@ times, Wrong %@ times";
+"wrong_questions.delete_all" = "Delete All";
+"wrong_questions.delete_mastered" = "Delete Mastered";
+"alert.delete_all_title" = "Delete All Wrong Questions";
+"alert.delete_all_message" = "Are you sure you want to delete all wrong questions? This action cannot be undone.";
+"alert.delete_mastered_title" = "Delete Mastered Questions";
+"alert.delete_mastered_message" = "Are you sure you want to delete questions you've mastered? This action cannot be undone.";
+"alert.delete_confirm" = "Delete";
+
+/* Game Progress */
+"game.saved_game" = "Saved Game";
+"game.saved_at" = "Saved at: %@";
+"game.save_success" = "Game progress saved successfully";
+"game.save_error" = "Failed to save game progress";
+
+/* Game Pause */
+"game.paused" = "Game Paused";
+"game.resume" = "Resume";
+"button.pause" = "Pause";
+"button.save" = "Save Progress";
+"alert.pause_title" = "Pause Game";
+"alert.pause_message" = "Pausing will deduct 5 points from your score. You can only pause once per game.";
+"alert.pause_confirm" = "Pause";

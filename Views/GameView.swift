@@ -5,6 +5,7 @@ struct GameView: View {
     @ObservedObject var viewModel: GameViewModel
     @State private var userInput: String = ""
     @State private var showingAlert = false
+    @State private var showingPauseAlert = false
     @State private var navigateToResults = false
     @State private var currentTime: Int = 0 // Local state to track time for UI updates
     @State private var hasAppeared = false // Track if view has appeared before
@@ -31,38 +32,90 @@ struct GameView: View {
         ZStack {
             VStack {
                 // 顶部信息栏
-                HStack {
-                    // 剩余时间
-                    VStack(alignment: .leading) {
-                        Text("game.time".localized)
-                            .font(.footnote)
-                        Text(viewModel.gameState.timeRemainingText)
-                            .font(.adaptiveHeadline())
-                            .foregroundColor(.blue)
-                            .id(currentTime) // Use local state to force refresh
+                VStack(spacing: 0) {
+                    HStack {
+                        // 剩余时间
+                        VStack(alignment: .leading) {
+                            Text("game.time".localized)
+                                .font(.footnote)
+                            Text(viewModel.gameState.timeRemainingText)
+                                .font(.adaptiveHeadline())
+                                .foregroundColor(.blue)
+                                .id(currentTime) // Use local state to force refresh
+                        }
+                        
+                        Spacer()
+                        
+                        // 当前进度
+                        VStack {
+                            Text(viewModel.gameState.progressText)
+                                .font(.adaptiveBody())
+                        }
+                        
+                        Spacer()
+                        
+                        // 当前得分
+                        VStack(alignment: .trailing) {
+                            Text("game.score".localized)
+                                .font(.footnote)
+                            Text("\(viewModel.gameState.score)")
+                                .font(.adaptiveHeadline())
+                                .foregroundColor(.green)
+                        }
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    
+                    // 暂停状态提示
+                    if viewModel.gameState.isPaused {
+                        HStack {
+                            Text("game.paused".localized)
+                                .font(.adaptiveHeadline())
+                                .foregroundColor(.orange)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                viewModel.resumeGame()
+                            }) {
+                                Text("game.resume".localized)
+                                    .font(.adaptiveBody())
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(.adaptiveCornerRadius)
+                            }
+                        }
+                        .padding()
+                        .background(Color.yellow.opacity(0.1))
                     }
                     
-                    Spacer()
-                    
-                    // 当前进度
-                    VStack {
-                        Text(viewModel.gameState.progressText)
-                            .font(.adaptiveBody())
-                    }
-                    
-                    Spacer()
-                    
-                    // 当前得分
-                    VStack(alignment: .trailing) {
-                        Text("game.score".localized)
-                            .font(.footnote)
-                        Text("\(viewModel.gameState.score)")
-                            .font(.adaptiveHeadline())
-                            .foregroundColor(.green)
+                    // 保存进度成功/失败提示
+                    if viewModel.showSaveProgressSuccess {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            Text("game.save_success".localized)
+                                .font(.adaptiveBody())
+                                .foregroundColor(.green)
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color.green.opacity(0.1))
+                    } else if viewModel.showSaveProgressError {
+                        HStack {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.red)
+                            Text("game.save_error".localized)
+                                .font(.adaptiveBody())
+                                .foregroundColor(.red)
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color.red.opacity(0.1))
                     }
                 }
-                .padding()
-                .background(Color.gray.opacity(0.1))
                 
                 Spacer()
                 
@@ -145,36 +198,83 @@ struct GameView: View {
                 Spacer()
                 
                 // 底部按钮
-                HStack {
-                    Button(action: {
-                        showingAlert = true
-                    }) {
-                        Text("button.exit".localized)
-                            .foregroundColor(.red)
-                    }
-                    .padding()
-                    .alert(isPresented: $showingAlert) {
-                        Alert(
-                            title: Text("alert.exit_title".localized),
-                            message: Text("alert.exit_message".localized),
-                            primaryButton: .destructive(Text("alert.exit_confirm".localized)) {
-                                presentationMode.wrappedValue.dismiss()
-                            },
-                            secondaryButton: .cancel(Text("alert.cancel".localized))
-                        )
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        viewModel.endGame()
-                    }) {
-                        Text("button.finish".localized)
+                VStack(spacing: 0) {
+                    // 暂停和保存按钮
+                    HStack {
+                        // 暂停按钮
+                        Button(action: {
+                            if !viewModel.gameState.pauseUsed {
+                                showingPauseAlert = true
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "pause.circle")
+                                Text("button.pause".localized)
+                            }
+                            .foregroundColor(viewModel.gameState.pauseUsed ? .gray : .orange)
+                        }
+                        .disabled(viewModel.gameState.pauseUsed || viewModel.gameState.isPaused)
+                        .padding(.horizontal)
+                        .alert(isPresented: $showingPauseAlert) {
+                            Alert(
+                                title: Text("alert.pause_title".localized),
+                                message: Text("alert.pause_message".localized),
+                                primaryButton: .destructive(Text("alert.pause_confirm".localized)) {
+                                    viewModel.pauseGame()
+                                },
+                                secondaryButton: .cancel(Text("alert.cancel".localized))
+                            )
+                        }
+                        
+                        Spacer()
+                        
+                        // 保存进度按钮
+                        Button(action: {
+                            viewModel.saveProgress()
+                        }) {
+                            HStack {
+                                Image(systemName: "square.and.arrow.down")
+                                Text("button.save".localized)
+                            }
                             .foregroundColor(.blue)
+                        }
+                        .padding(.horizontal)
                     }
-                    .padding()
+                    .padding(.vertical, 8)
+                    .background(Color.gray.opacity(0.05))
+                    
+                    // 退出和完成按钮
+                    HStack {
+                        Button(action: {
+                            showingAlert = true
+                        }) {
+                            Text("button.exit".localized)
+                                .foregroundColor(.red)
+                        }
+                        .padding()
+                        .alert(isPresented: $showingAlert) {
+                            Alert(
+                                title: Text("alert.exit_title".localized),
+                                message: Text("alert.exit_message".localized),
+                                primaryButton: .destructive(Text("alert.exit_confirm".localized)) {
+                                    presentationMode.wrappedValue.dismiss()
+                                },
+                                secondaryButton: .cancel(Text("alert.cancel".localized))
+                            )
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            viewModel.endGame()
+                        }) {
+                            Text("button.finish".localized)
+                                .foregroundColor(.blue)
+                        }
+                        .padding()
+                    }
+                    .background(Color.gray.opacity(0.1))
                 }
-                .background(Color.gray.opacity(0.1))
             }
             
             // 导航到结果页面
@@ -221,27 +321,79 @@ struct GameView: View {
                 // 左侧：题目显示区域（占2/3空间）
                 VStack {
                     // 顶部信息栏
-                    HStack {
-                        // 剩余时间
-                        VStack(alignment: .leading) {
-                            Text("game.time".localized)
-                                .font(.footnote)
-                            Text(viewModel.gameState.timeRemainingText)
-                                .font(.adaptiveHeadline())
-                                .foregroundColor(.blue)
-                                .id(currentTime) // Use local state to force refresh
+                    VStack(spacing: 0) {
+                        HStack {
+                            // 剩余时间
+                            VStack(alignment: .leading) {
+                                Text("game.time".localized)
+                                    .font(.footnote)
+                                Text(viewModel.gameState.timeRemainingText)
+                                    .font(.adaptiveHeadline())
+                                    .foregroundColor(.blue)
+                                    .id(currentTime) // Use local state to force refresh
+                            }
+                            
+                            Spacer()
+                            
+                            // 当前进度
+                            VStack {
+                                Text(viewModel.gameState.progressText)
+                                    .font(.adaptiveBody())
+                            }
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        
+                        // 暂停状态提示
+                        if viewModel.gameState.isPaused {
+                            HStack {
+                                Text("game.paused".localized)
+                                    .font(.adaptiveHeadline())
+                                    .foregroundColor(.orange)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    viewModel.resumeGame()
+                                }) {
+                                    Text("game.resume".localized)
+                                        .font(.adaptiveBody())
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 5)
+                                        .background(Color.blue)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(.adaptiveCornerRadius)
+                                }
+                            }
+                            .padding()
+                            .background(Color.yellow.opacity(0.1))
                         }
                         
-                        Spacer()
-                        
-                        // 当前进度
-                        VStack {
-                            Text(viewModel.gameState.progressText)
-                                .font(.adaptiveBody())
+                        // 保存进度成功/失败提示
+                        if viewModel.showSaveProgressSuccess {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                Text("game.save_success".localized)
+                                    .font(.adaptiveBody())
+                                    .foregroundColor(.green)
+                                Spacer()
+                            }
+                            .padding()
+                            .background(Color.green.opacity(0.1))
+                        } else if viewModel.showSaveProgressError {
+                            HStack {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.red)
+                                Text("game.save_error".localized)
+                                    .font(.adaptiveBody())
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }
+                            .padding()
+                            .background(Color.red.opacity(0.1))
                         }
                     }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
                     
                     Spacer()
                     
@@ -349,43 +501,96 @@ struct GameView: View {
                     Spacer()
                     
                     // 底部按钮
-                    HStack {
-                        Button(action: {
-                            showingAlert = true
-                        }) {
-                            Text("button.exit".localized)
-                                .foregroundColor(.red)
+                    VStack(spacing: 0) {
+                        // 暂停和保存按钮
+                        HStack {
+                            // 暂停按钮
+                            Button(action: {
+                                if !viewModel.gameState.pauseUsed {
+                                    showingPauseAlert = true
+                                }
+                            }) {
+                                HStack {
+                                    Image(systemName: "pause.circle")
+                                    Text("button.pause".localized)
+                                }
+                                .foregroundColor(viewModel.gameState.pauseUsed ? .gray : .orange)
                                 .padding()
-                                .frame(width: 100)
+                                .frame(width: 120)
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(.adaptiveCornerRadius)
-                        }
-                        .alert(isPresented: $showingAlert) {
-                            Alert(
-                                title: Text("alert.exit_title".localized),
-                                message: Text("alert.exit_message".localized),
-                                primaryButton: .destructive(Text("alert.exit_confirm".localized)) {
-                                    presentationMode.wrappedValue.dismiss()
-                                },
-                                secondaryButton: .cancel(Text("alert.cancel".localized))
-                            )
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            viewModel.endGame()
-                        }) {
-                            Text("button.finish".localized)
+                            }
+                            .disabled(viewModel.gameState.pauseUsed || viewModel.gameState.isPaused)
+                            .alert(isPresented: $showingPauseAlert) {
+                                Alert(
+                                    title: Text("alert.pause_title".localized),
+                                    message: Text("alert.pause_message".localized),
+                                    primaryButton: .destructive(Text("alert.pause_confirm".localized)) {
+                                        viewModel.pauseGame()
+                                    },
+                                    secondaryButton: .cancel(Text("alert.cancel".localized))
+                                )
+                            }
+                            
+                            Spacer()
+                            
+                            // 保存进度按钮
+                            Button(action: {
+                                viewModel.saveProgress()
+                            }) {
+                                HStack {
+                                    Image(systemName: "square.and.arrow.down")
+                                    Text("button.save".localized)
+                                }
                                 .foregroundColor(.blue)
                                 .padding()
-                                .frame(width: 100)
+                                .frame(width: 120)
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(.adaptiveCornerRadius)
+                            }
                         }
+                        .padding()
+                        .background(Color.gray.opacity(0.05))
+                        
+                        // 退出和完成按钮
+                        HStack {
+                            Button(action: {
+                                showingAlert = true
+                            }) {
+                                Text("button.exit".localized)
+                                    .foregroundColor(.red)
+                                    .padding()
+                                    .frame(width: 100)
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(.adaptiveCornerRadius)
+                            }
+                            .alert(isPresented: $showingAlert) {
+                                Alert(
+                                    title: Text("alert.exit_title".localized),
+                                    message: Text("alert.exit_message".localized),
+                                    primaryButton: .destructive(Text("alert.exit_confirm".localized)) {
+                                        presentationMode.wrappedValue.dismiss()
+                                    },
+                                    secondaryButton: .cancel(Text("alert.cancel".localized))
+                                )
+                            }
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                viewModel.endGame()
+                            }) {
+                                Text("button.finish".localized)
+                                    .foregroundColor(.blue)
+                                    .padding()
+                                    .frame(width: 100)
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(.adaptiveCornerRadius)
+                            }
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.05))
                     }
-                    .padding()
-                    .background(Color.gray.opacity(0.05))
                 }
                 .frame(width: UIScreen.main.bounds.width * 0.35)
                 .background(Color.gray.opacity(0.05))
