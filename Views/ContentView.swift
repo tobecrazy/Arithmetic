@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedDifficulty: DifficultyLevel = .level1
-    @State private var timeInMinutes: Int = 10
+    @State private var timeInMinutes: Int = 5
     @State private var navigateToGame = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
@@ -58,11 +58,11 @@ struct ContentView: View {
                         .font(.adaptiveHeadline())
                     
                     HStack {
-                        Text("10")
+                        Text("3")
                         Slider(value: Binding(
                             get: { Double(timeInMinutes) },
                             set: { timeInMinutes = Int($0) }
-                        ), in: 10...30, step: 1)
+                        ), in: 3...30, step: 1)
                         Text("30")
                     }
                     Text("\(timeInMinutes) 分钟")
@@ -159,11 +159,11 @@ struct ContentView: View {
                             .font(.adaptiveHeadline())
                         
                         HStack {
-                            Text("10")
+                            Text("3")
                             Slider(value: Binding(
                                 get: { Double(timeInMinutes) },
                                 set: { timeInMinutes = Int($0) }
-                            ), in: 10...30, step: 1)
+                            ), in: 3...30, step: 1)
                             Text("30")
                         }
                         Text("\(timeInMinutes) 分钟")

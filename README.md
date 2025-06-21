@@ -39,7 +39,7 @@ An elementary arithmetic learning application developed with SwiftUI to help stu
 - 实时显示当前得分
 
 ### 时间管理系统 (Time Management System)
-- 可配置限制时间：10-30分钟
+- 可配置限制时间：3-30分钟
 - 显示倒计时器
 - 时间到自动结束答题并计算成绩
 - 重新开始游戏时自动重置计时器
@@ -116,7 +116,7 @@ Arithmetic/
 ## 使用说明 (Usage Instructions)
 
 1. 在主页面选择难度等级
-2. 设置答题时间（10-30分钟）
+2. 设置答题时间（3-30分钟）
 3. 选择界面语言（中文或英文）
 4. 点击"开始游戏"按钮开始答题
 5. 在答题页面输入答案并点击"提交"
