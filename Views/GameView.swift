@@ -9,6 +9,7 @@ struct GameView: View {
     @State private var currentTime: Int = 0 // Local state to track time for UI updates
     @State private var hasAppeared = false // Track if view has appeared before
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
@@ -178,7 +179,8 @@ struct GameView: View {
             
             // 导航到结果页面
             NavigationLink(
-                destination: ResultView(gameState: viewModel.gameState),
+                destination: ResultView(gameState: viewModel.gameState)
+                    .environmentObject(localizationManager),
                 isActive: $navigateToResults
             ) {
                 EmptyView()
@@ -391,7 +393,8 @@ struct GameView: View {
             
             // 导航到结果页面
             NavigationLink(
-                destination: ResultView(gameState: viewModel.gameState),
+                destination: ResultView(gameState: viewModel.gameState)
+                    .environmentObject(localizationManager),
                 isActive: $navigateToResults
             ) {
                 EmptyView()
@@ -436,5 +439,6 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(viewModel: GameViewModel(difficultyLevel: .level1, timeInMinutes: 10))
+            .environmentObject(LocalizationManager())
     }
 }

@@ -5,6 +5,7 @@ struct ResultView: View {
     let gameState: GameState
     @Environment(\.presentationMode) var presentationMode
     @State private var shouldPopToRoot = false
+    @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
@@ -252,5 +253,6 @@ struct ResultView: View {
 struct ResultView_Previews: PreviewProvider {
     static var previews: some View {
         ResultView(gameState: GameState(difficultyLevel: .level1, timeInMinutes: 10))
+            .environmentObject(LocalizationManager())
     }
 }

@@ -30,3 +30,4 @@
 "alert.exit_confirm" = "确认退出";
 "alert.cancel" = "取消";
 "button.next_question" = "下一题";
+"settings.minutes" = "分钟";

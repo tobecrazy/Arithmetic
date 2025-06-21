@@ -65,7 +65,7 @@ struct ContentView: View {
                         ), in: 3...30, step: 1)
                         Text("30")
                     }
-                    Text("\(timeInMinutes) 分钟")
+                    Text("\(timeInMinutes) \("settings.minutes".localized)")
                         .font(.adaptiveBody())
                 }
                 .padding()
@@ -90,7 +90,8 @@ struct ContentView: View {
                 .padding(.top, 20)
                 
                 NavigationLink(
-                    destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes)),
+                    destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
+                        .environmentObject(localizationManager),
                     isActive: $navigateToGame
                 ) {
                     EmptyView()
@@ -166,7 +167,7 @@ struct ContentView: View {
                             ), in: 3...30, step: 1)
                             Text("30")
                         }
-                        Text("\(timeInMinutes) 分钟")
+                        Text("\(timeInMinutes) \("settings.minutes".localized)")
                             .font(.adaptiveBody())
                     }
                     .padding()
@@ -202,7 +203,8 @@ struct ContentView: View {
                     .padding(.bottom, 50)
                     
                     NavigationLink(
-                        destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes)),
+                        destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
+                            .environmentObject(localizationManager),
                         isActive: $navigateToGame
                     ) {
                         EmptyView()

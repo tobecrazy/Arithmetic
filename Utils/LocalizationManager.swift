@@ -8,6 +8,11 @@ class LocalizationManager: ObservableObject {
         didSet {
             UserDefaults.standard.set(currentLanguage.rawValue, forKey: "app_language")
             NotificationCenter.default.post(name: Notification.Name("LanguageChanged"), object: nil)
+            
+            // Ensure the shared instance is also updated
+            if self != LocalizationManager.shared {
+                LocalizationManager.shared.currentLanguage = self.currentLanguage
+            }
         }
     }
     
@@ -33,5 +38,12 @@ class LocalizationManager: ObservableObject {
     
     func switchLanguage(to language: Language) {
         self.currentLanguage = language
+    }
+}
+
+// Add Equatable conformance for LocalizationManager
+extension LocalizationManager: Equatable {
+    static func == (lhs: LocalizationManager, rhs: LocalizationManager) -> Bool {
+        return lhs === rhs // Compare object references
     }
 }
