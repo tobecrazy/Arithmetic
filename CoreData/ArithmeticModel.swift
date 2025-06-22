@@ -26,6 +26,8 @@ struct WrongQuestionAttributes {
     static let lastShownAt = "lastShownAt"
     static let timesShown = "timesShown"
     static let timesWrong = "timesWrong"
+    static let solutionMethod = "solutionMethod"
+    static let solutionSteps = "solutionSteps"
 }
 
 // GameProgress entity attributes

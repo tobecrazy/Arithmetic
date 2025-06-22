@@ -35,12 +35,17 @@ class WrongQuestionManager {
                 newWrongQuestion.timesWrong = 1
                 newWrongQuestion.lastShownAt = Date()  // Set lastShownAt to current date
                 
+                // 保存解析方法和步骤
+                newWrongQuestion.solutionMethod = question.getSolutionMethod().rawValue
+                newWrongQuestion.solutionSteps = question.getSolutionSteps()
+                
                 print("Adding new wrong question: \(question.questionText), key: \(combinationKey)")
                 saveContext()
             } else {
                 // Question exists, update statistics
                 let existingQuestion = existingQuestions.first!
-                existingQuestion.timesShown += 1
+                // Only increment timesWrong, not timesShown
+                // timesShown will be incremented when the question is actually shown to the user
                 existingQuestion.timesWrong += 1
                 existingQuestion.lastShownAt = Date()
                 
@@ -68,7 +73,7 @@ class WrongQuestionManager {
     }
     
     // Update statistics for a wrong question
-    func updateWrongQuestion(_ question: Question, answeredCorrectly: Bool) {
+    func updateWrongQuestion(_ question: Question, answeredCorrectly: Bool?) {
         let combinationKey = getCombinationKey(for: question)
         let fetchRequest: NSFetchRequest<WrongQuestionEntity> = WrongQuestionEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "combinationKey == %@", combinationKey)
@@ -79,15 +84,18 @@ class WrongQuestionManager {
                 existingQuestion.timesShown += 1
                 existingQuestion.lastShownAt = Date()
                 
-                if !answeredCorrectly {
-                    existingQuestion.timesWrong += 1
-                }
-                
-                // If answered correctly multiple times, consider removing from wrong questions
-                if answeredCorrectly && existingQuestion.timesShown > 3 {
-                    let correctRate = Double(existingQuestion.timesShown - existingQuestion.timesWrong) / Double(existingQuestion.timesShown)
-                    if correctRate >= 0.7 { // 70% correct rate
-                        context.delete(existingQuestion)
+                // Only update timesWrong if answeredCorrectly is not nil
+                if let answeredCorrectly = answeredCorrectly {
+                    if !answeredCorrectly {
+                        existingQuestion.timesWrong += 1
+                    }
+                    
+                    // If answered correctly multiple times, consider removing from wrong questions
+                    if answeredCorrectly && existingQuestion.timesShown > 3 {
+                        let correctRate = Double(existingQuestion.timesShown - existingQuestion.timesWrong) / Double(existingQuestion.timesShown)
+                        if correctRate >= 0.7 { // 70% correct rate
+                            context.delete(existingQuestion)
+                        }
                     }
                 }
                 

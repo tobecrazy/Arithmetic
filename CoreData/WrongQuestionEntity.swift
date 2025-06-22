@@ -14,6 +14,8 @@ public class WrongQuestionEntity: NSManagedObject {
     @NSManaged public var lastShownAt: Date?
     @NSManaged public var timesShown: Int16
     @NSManaged public var timesWrong: Int16
+    @NSManaged public var solutionMethod: String
+    @NSManaged public var solutionSteps: String
 }
 
 extension WrongQuestionEntity {

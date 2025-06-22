@@ -15,6 +15,18 @@ An elementary arithmetic learning application developed with SwiftUI to help stu
 - 智能识别已掌握的错题（正确率达到70%以上）
 - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点
 
+### 错题解析系统 (Wrong Question Analysis System)
+- 基于四种经典算术方法提供详细解析：
+  - **破十法 (Breaking Ten Method)**: 适用于从10几中减去个位数的情况
+  - **借十法 (Borrowing Ten Method)**: 适用于个位数不够减的情况
+  - **凑十法 (Making Ten Method)**: 适用于个位数相加且和大于10的情况
+  - **平十法 (Leveling Ten Method)**: 适用于从特定数字中减去接近它的数的情况
+- 系统自动选择最适合的解题方法进行解析
+- 在答错题目后可立即查看解析
+- 在错题集中可随时查看历史错题的解析
+- 完全支持中英文双语解析内容
+- 通过直观的步骤说明帮助学生理解解题思路
+
 ### 游戏进度保存 (Game Progress Saving)
 - 自动保存游戏进度
 - 支持暂停游戏并在稍后继续
@@ -106,7 +118,7 @@ Arithmetic/
 │   ├── WrongQuestionsView.swift
 │   └── LanguageSelectorView.swift
 ├── Models/
-│   ├── Question.swift
+│   ├── Question.swift  # 包含题目模型和解析方法
 │   ├── DifficultyLevel.swift
 │   └── GameState.swift
 ├── ViewModels/
@@ -114,7 +126,7 @@ Arithmetic/
 ├── CoreData/
 │   ├── ArithmeticModel.swift
 │   ├── CoreDataManager.swift
-│   ├── WrongQuestionEntity.swift
+│   ├── WrongQuestionEntity.swift  # 包含错题实体和解析数据
 │   ├── WrongQuestionManager.swift
 │   ├── GameProgressEntity.swift
 │   └── GameProgressManager.swift
@@ -147,8 +159,9 @@ Arithmetic/
 3. 选择界面语言（中文或英文）
 4. 点击"开始游戏"按钮开始答题，或点击"错题集"按钮查看错题
 5. 在答题页面输入答案并点击"提交"
-6. 答错的题目会自动添加到错题集中
-7. 完成所有题目或时间结束后，查看结果页面的得分和评价
+6. 答错的题目会自动添加到错题集中，并提供解析
+7. 点击"查看解析"按钮可以查看基于四种算术方法的详细解题步骤
+8. 完成所有题目或时间结束后，查看结果页面的得分和评价
 8. 在结果页面可以点击"错题集"按钮查看本次练习中答错的题目
 9. 可以点击"重新开始"按钮重新开始游戏，所有数据将被重置
 10. 或点击"返回主页"按钮返回到主页面

@@ -64,3 +64,29 @@
 "alert.pause_title" = "暂停游戏";
 "alert.pause_message" = "暂停游戏将扣除5分。每局游戏只能暂停一次。";
 "alert.pause_confirm" = "确认暂停";
+
+/* Solution Analysis */
+"button.show_solution" = "查看解析";
+"button.hide_solution" = "隐藏解析";
+"solution.title" = "解题思路";
+"solution.breaking_ten" = "破十法";
+"solution.borrowing_ten" = "借十法";
+"solution.making_ten" = "凑十法";
+"solution.leveling_ten" = "平十法";
+"solution.standard" = "标准计算";
+"solution.not_applicable" = "此题不适用%@";
+
+/* Solution Steps Templates */
+"solution.breaking_ten.steps" = "破十法解析：\n%d - %d = ?\n\n步骤1：将%d分解为%d和10\n步骤2：计算10 - %d = %d\n步骤3：%d + %d = %d\n\n所以，%d - %d = %d";
+
+"solution.borrowing_ten.steps" = "借十法解析：\n%d - %d = ?\n\n步骤1：将%d分解为%d和%d\n步骤2：因为%d小于%d，所以用10减去%d得到%d\n步骤3：%d + %d = %d\n\n所以，%d - %d = %d";
+
+"solution.making_ten.steps" = "凑十法解析：\n%d + %d = ?\n\n步骤1：找出%d与10的差值：10 - %d = %d\n步骤2：将%d分解为%d和%d\n步骤3：%d + %d = 10\n步骤4：10 + %d = %d\n\n所以，%d + %d = %d";
+
+"solution.leveling_ten.steps" = "平十法解析：\n%d - %d = ?\n\n步骤1：将%d分解为%d和%d\n步骤2：%d - %d = 10\n步骤3：10 - %d = %d\n\n所以，%d - %d = %d";
+
+"solution.standard.addition" = "标准加法解析：\n%d + %d = %d\n\n直接计算%d加%d等于%d";
+
+"solution.standard.subtraction" = "标准减法解析：\n%d - %d = %d\n\n直接计算%d减%d等于%d";
+
+"solution.standard.three_numbers" = "标准计算解析：\n%d %@ %d %@ %d = ?\n\n步骤1：计算%d %@ %d = %d\n步骤2：计算%d %@ %d = %d\n\n所以，%d %@ %d %@ %d = %d";

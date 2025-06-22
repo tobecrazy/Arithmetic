@@ -61,6 +61,13 @@ class GameState: ObservableObject {
         let wrongQuestionManager = WrongQuestionManager()
         let wrongQuestions = wrongQuestionManager.getWrongQuestionsForLevel(difficultyLevel, limit: Int(Double(totalQuestions) * 0.3))
         
+        // 更新错题的显示次数
+        for wrongQuestion in wrongQuestions {
+            // 当错题被选中显示时，增加其显示次数
+            wrongQuestionManager.updateWrongQuestion(wrongQuestion, answeredCorrectly: nil)
+            print("Updated wrong question timesShown: \(wrongQuestion.questionText)")
+        }
+        
         // 生成题目，确保包含错题
         questions = QuestionGenerator.generateQuestions(difficultyLevel: difficultyLevel, count: totalQuestions, wrongQuestions: wrongQuestions)
     }

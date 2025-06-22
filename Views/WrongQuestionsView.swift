@@ -7,6 +7,7 @@ struct WrongQuestionsView: View {
     @State private var wrongQuestions: [WrongQuestionViewModel] = []
     @State private var showingDeleteAlert = false
     @State private var showingDeleteMasteredAlert = false
+    @State private var expandedQuestionIds: [UUID] = []
     @EnvironmentObject var localizationManager: LocalizationManager
     
     private let wrongQuestionManager = WrongQuestionManager()
@@ -50,6 +51,29 @@ struct WrongQuestionsView: View {
                             Text("wrong_questions.answer".localizedFormat(String(question.correctAnswer)))
                                 .font(.adaptiveBody())
                                 .foregroundColor(.blue)
+                            
+                            // 添加解析按钮
+                            Button(action: {
+                                if let index = self.expandedQuestionIds.firstIndex(of: question.id) {
+                                    self.expandedQuestionIds.remove(at: index)
+                                } else {
+                                    self.expandedQuestionIds.append(question.id)
+                                }
+                            }) {
+                                Text(self.expandedQuestionIds.contains(question.id) ? "button.hide_solution".localized : "button.show_solution".localized)
+                                    .font(.footnote)
+                                    .foregroundColor(.green)
+                            }
+                            
+                            // 显示解析内容
+                            if self.expandedQuestionIds.contains(question.id) {
+                                Text(question.solutionSteps)
+                                    .font(.footnote)
+                                    .padding(8)
+                                    .background(Color.yellow.opacity(0.1))
+                                    .cornerRadius(8)
+                                    .multilineTextAlignment(.leading)
+                            }
                             
                             HStack {
                                 Text("wrong_questions.level".localizedFormat(question.level.localizedName))
@@ -131,13 +155,36 @@ struct WrongQuestionsView: View {
             // Use the viewContext directly to ensure we're using the correct context
             let entities = try viewContext.fetch(fetchRequest)
             wrongQuestions = entities.map { entity in
-                WrongQuestionViewModel(
+                // 获取解析方法和步骤，如果不存在则使用默认值
+                var solutionMethod = "standard"
+                var solutionSteps = ""
+                
+                do {
+                    if let method = entity.value(forKey: "solutionMethod") as? String {
+                        solutionMethod = method
+                    }
+                    if let steps = entity.value(forKey: "solutionSteps") as? String {
+                        solutionSteps = steps
+                    }
+                } catch {
+                    print("Error accessing solution fields: \(error)")
+                    
+                    // 如果无法访问字段，则尝试生成解析
+                    if let question = entity.toQuestion() {
+                        solutionMethod = question.getSolutionMethod().rawValue
+                        solutionSteps = question.getSolutionSteps()
+                    }
+                }
+                
+                return WrongQuestionViewModel(
                     id: entity.id,
                     questionText: entity.questionText,
                     correctAnswer: Int(entity.correctAnswer),
                     level: DifficultyLevel(rawValue: entity.level) ?? .level1,
                     timesShown: Int(entity.timesShown),
-                    timesWrong: Int(entity.timesWrong)
+                    timesWrong: Int(entity.timesWrong),
+                    solutionMethod: solutionMethod,
+                    solutionSteps: solutionSteps
                 )
             }
             
@@ -186,6 +233,8 @@ struct WrongQuestionViewModel: Identifiable {
     let level: DifficultyLevel
     let timesShown: Int
     let timesWrong: Int
+    let solutionMethod: String
+    let solutionSteps: String
 }
 
 struct WrongQuestionsView_Previews: PreviewProvider {

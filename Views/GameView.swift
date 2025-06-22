@@ -138,6 +138,30 @@ struct GameView: View {
                                 .foregroundColor(.blue)
                                 .font(.adaptiveBody())
                             
+                            // 添加解析按钮
+                            Button(action: {
+                                viewModel.showSolutionSteps.toggle()
+                            }) {
+                                Text(viewModel.showSolutionSteps ? "button.hide_solution".localized : "button.show_solution".localized)
+                                    .font(.adaptiveBody())
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .background(Color.green)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(.adaptiveCornerRadius)
+                            }
+                            .padding(.top, 5)
+                            
+                            // 显示解析内容
+                            if viewModel.showSolutionSteps {
+                                Text(currentQuestion.getSolutionSteps())
+                                    .font(.adaptiveBody())
+                                    .padding()
+                                    .background(Color.yellow.opacity(0.1))
+                                    .cornerRadius(.adaptiveCornerRadius)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            
                             // Next Question button
                             Button(action: {
                                 viewModel.moveToNextQuestion()
@@ -440,6 +464,30 @@ struct GameView: View {
                                 Text("game.correct_answer".localizedFormat(String(currentQuestion.correctAnswer)))
                                     .foregroundColor(.blue)
                                     .font(.adaptiveBody())
+                                
+                                // 添加解析按钮
+                                Button(action: {
+                                    viewModel.showSolutionSteps.toggle()
+                                }) {
+                                    Text(viewModel.showSolutionSteps ? "button.hide_solution".localized : "button.show_solution".localized)
+                                        .font(.adaptiveBody())
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 5)
+                                        .background(Color.green)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(.adaptiveCornerRadius)
+                                }
+                                .padding(.top, 5)
+                                
+                                // 显示解析内容
+                                if viewModel.showSolutionSteps {
+                                    Text(currentQuestion.getSolutionSteps())
+                                        .font(.adaptiveBody())
+                                        .padding()
+                                        .background(Color.yellow.opacity(0.1))
+                                        .cornerRadius(.adaptiveCornerRadius)
+                                        .multilineTextAlignment(.leading)
+                                }
                                 
                                 // Next Question button
                                 Button(action: {

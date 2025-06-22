@@ -7,11 +7,86 @@ class CoreDataManager {
     private init() {
         // 确保CoreData模型在初始化时创建
         setupCoreDataStack()
+        
+        // 迁移现有数据
+        migrateExistingData()
     }
     
     private func setupCoreDataStack() {
         // 初始化CoreData堆栈
         _ = persistentContainer
+    }
+    
+    // 迁移现有数据以适应模型更改
+    private func migrateExistingData() {
+        // 检查是否有需要迁移的错题
+        let fetchRequest: NSFetchRequest<WrongQuestionEntity> = WrongQuestionEntity.fetchRequest()
+        
+        do {
+            let existingQuestions = try context.fetch(fetchRequest)
+            
+            // 为现有错题添加解析方法和步骤
+            for question in existingQuestions {
+                // 尝试访问新属性，如果失败则添加默认值
+                do {
+                    // 尝试访问solutionMethod属性
+                    _ = question.solutionMethod
+                } catch {
+                    // 如果属性不存在，则添加默认值
+                    if let questionObj = question.toQuestion() {
+                        question.setValue(questionObj.getSolutionMethod().rawValue, forKey: "solutionMethod")
+                        question.setValue(questionObj.getSolutionSteps(), forKey: "solutionSteps")
+                    } else {
+                        question.setValue("standard", forKey: "solutionMethod")
+                        question.setValue("", forKey: "solutionSteps")
+                    }
+                }
+            }
+            
+            // 保存更改
+            if context.hasChanges {
+                try context.save()
+                print("成功迁移 \(existingQuestions.count) 个错题")
+            }
+        } catch {
+            print("迁移数据时出错: \(error)")
+            
+            // 如果迁移失败，尝试重置数据库
+            resetCoreDataStore()
+        }
+    }
+    
+    // 重置Core Data存储（如果迁移失败）
+    private func resetCoreDataStore() {
+        print("尝试重置Core Data存储...")
+        
+        // 获取持久化存储的URL
+        guard let storeURL = persistentContainer.persistentStoreCoordinator.persistentStores.first?.url else {
+            print("无法获取持久化存储URL")
+            return
+        }
+        
+        do {
+            // 删除所有持久化存储
+            for store in persistentContainer.persistentStoreCoordinator.persistentStores {
+                try persistentContainer.persistentStoreCoordinator.remove(store)
+            }
+            
+            // 删除存储文件
+            try FileManager.default.removeItem(at: storeURL)
+            
+            // 重新加载持久化存储
+            try persistentContainer.persistentStoreCoordinator.addPersistentStore(
+                ofType: NSSQLiteStoreType,
+                configurationName: nil,
+                at: storeURL,
+                options: nil
+            )
+            
+            print("Core Data存储已重置")
+        } catch {
+            print("重置Core Data存储失败: \(error)")
+        }
     }
     
     // 创建CoreData模型
@@ -93,6 +168,22 @@ class CoreDataManager {
         timesWrongAttribute.isOptional = false
         timesWrongAttribute.defaultValue = 0
         wrongQuestionProperties.append(timesWrongAttribute)
+        
+        // 添加解析方法属性
+        let solutionMethodAttribute = NSAttributeDescription()
+        solutionMethodAttribute.name = "solutionMethod"
+        solutionMethodAttribute.attributeType = .stringAttributeType
+        solutionMethodAttribute.isOptional = true
+        solutionMethodAttribute.defaultValue = "standard"
+        wrongQuestionProperties.append(solutionMethodAttribute)
+        
+        // 添加解析步骤属性
+        let solutionStepsAttribute = NSAttributeDescription()
+        solutionStepsAttribute.name = "solutionSteps"
+        solutionStepsAttribute.attributeType = .stringAttributeType
+        solutionStepsAttribute.isOptional = true
+        solutionStepsAttribute.defaultValue = ""
+        wrongQuestionProperties.append(solutionStepsAttribute)
         
         wrongQuestionEntity.properties = wrongQuestionProperties
         

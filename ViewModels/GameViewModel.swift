@@ -7,6 +7,7 @@ class GameViewModel: ObservableObject {
     @Published var timerActive: Bool = false
     @Published var showSaveProgressSuccess: Bool = false
     @Published var showSaveProgressError: Bool = false
+    @Published var showSolutionSteps: Bool = false
     private var cancellables = Set<AnyCancellable>()
     
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
@@ -94,11 +95,9 @@ func submitAnswer(_ answer: Int) {
         gameState.moveToNextQuestion()
     } else {
         // If answer is incorrect, we'll wait for the user to click the "Next Question" button
-        // Make sure the wrong question is properly added to the wrong questions collection
-        let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
-        let wrongQuestionManager = WrongQuestionManager()
-        wrongQuestionManager.addWrongQuestion(currentQuestion, for: gameState.difficultyLevel)
-        print("Added wrong question to collection: \(currentQuestion.questionText)")
+        // Note: The wrong question is already added to the collection in gameState.checkAnswer()
+        // No need to add it again here
+        print("Question answered incorrectly: \(gameState.questions[gameState.currentQuestionIndex].questionText)")
     }
 }
     
@@ -155,6 +154,9 @@ static func getSavedGameInfo() -> (difficultyLevel: DifficultyLevel, progress: S
 }
 
 func moveToNextQuestion() {
+    // 重置解析显示状态
+    showSolutionSteps = false
+    
     // Implement the logic directly in the view model instead of calling the game state
     if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
         gameState.currentQuestionIndex += 1
