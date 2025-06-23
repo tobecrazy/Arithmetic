@@ -34,8 +34,9 @@ class CoreDataManager {
                 } catch {
                     // 如果属性不存在，则添加默认值
                     if let questionObj = question.toQuestion() {
-                        question.setValue(questionObj.getSolutionMethod().rawValue, forKey: "solutionMethod")
-                        question.setValue(questionObj.getSolutionSteps(), forKey: "solutionSteps")
+                        let level = DifficultyLevel(rawValue: question.level) ?? .level1
+                        question.setValue(questionObj.getSolutionMethod(for: level).rawValue, forKey: "solutionMethod")
+                        question.setValue(questionObj.getSolutionSteps(for: level), forKey: "solutionSteps")
                     } else {
                         question.setValue("standard", forKey: "solutionMethod")
                         question.setValue("", forKey: "solutionSteps")

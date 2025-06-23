@@ -102,8 +102,18 @@ class Question: NSObject, NSCoding, Identifiable {
         coder.encode(operations.map { $0.rawValue }, forKey: "operations")
     }
     
-    // 获取解题方法
-    func getSolutionMethod() -> SolutionMethod {
+    // 获取解题方法 - 只在Level 2 (20以内) 中应用特殊方法
+    func getSolutionMethod(for difficultyLevel: DifficultyLevel? = nil) -> SolutionMethod {
+        // 只在Level 2中应用特殊的中国算术方法
+        guard let level = difficultyLevel, level == .level2 else {
+            return .standard
+        }
+        
+        // 确保所有数字都在20以内
+        guard numbers.allSatisfy({ $0 <= 20 }) else {
+            return .standard
+        }
+        
         // 根据题目类型和数值特点选择合适的解题方法
         if operations.count == 1 {
             switch operations[0] {
@@ -131,8 +141,13 @@ class Question: NSObject, NSCoding, Identifiable {
     }
     
     // 获取解题步骤（支持多语言）
-    func getSolutionSteps() -> String {
-        let method = getSolutionMethod()
+    func getSolutionSteps(for difficultyLevel: DifficultyLevel? = nil) -> String {
+        // 对于三数运算且是Level 2，使用特殊的分步解析
+        if operations.count == 2 && difficultyLevel == .level2 {
+            return generateThreeNumberSolutionForLevel2()
+        }
+        
+        let method = getSolutionMethod(for: difficultyLevel)
         
         switch method {
         case .breakingTen:
@@ -156,15 +171,15 @@ class Question: NSObject, NSCoding, Identifiable {
             let result = num1 - num2
             
             // 正确的破十法逻辑：
-            // 1. 将第一个数分解为10和余数（例如，12分解为10和2）
-            // 2. 用10减去第二个数（例如，10-9=1）
-            // 3. 将结果与余数相加（例如，1+2=3）
-            let remainder = num1 - 10
-            let subtractResult = 10 - num2
+            // 1. 将被减数分解为10和余数（例如，13分解为10和3）
+            // 2. 用10减去减数（例如，10-9=1）
+            // 3. 将结果与余数相加（例如，1+3=4）
+            let remainder = num1 - 10  // 余数部分（如13的3）
+            let subtractResult = 10 - num2  // 10减去减数的结果（如10-9=1）
             
             return "solution.breaking_ten.steps".localizedFormat(
                 num1, num2,
-                remainder, 10,
+                num1, 10, remainder,
                 10, num2, subtractResult,
                 subtractResult, remainder, result,
                 num1, num2, result
@@ -186,12 +201,15 @@ class Question: NSObject, NSCoding, Identifiable {
             // 3. 用个位数加10减去减数的个位数，再加上整十数减10
             let tens = num1 / 10 * 10  // 整十数部分（如35的30）
             let remainder = num1 % 10   // 个位数部分（如35的5）
+            let remainderPlus10 = remainder + 10  // 个位数加10
+            let tensMinusTen = tens - 10  // 整十数减10
             
             return "solution.borrowing_ten.steps".localizedFormat(
                 num1, num2,
                 tens, remainder,
-                remainder, num2, 10 - num2,
-                tens - 10, 10 - num2 + remainder, result,
+                remainder, num2, remainderPlus10,
+                remainderPlus10, num2, remainderPlus10 - num2,
+                tensMinusTen, remainderPlus10 - num2, result,
                 num1, num2, result
             )
         }
@@ -238,9 +256,9 @@ class Question: NSObject, NSCoding, Identifiable {
             // 平十法逻辑：
             // 1. 将减数分解为两部分，使得被减数减去第一部分等于10
             // 2. 用10减去减数的第二部分得到结果
-            // 例如：17-9，将9分解为7和2，17-7=10，10-2=8
+            // 例如：19-16，将16分解为9和7，19-9=10，10-7=3
             let toTen = num1 - 10  // 被减数与10的差值
-            let firstPart = toTen  // 减数的第一部分
+            let firstPart = num1 - 10  // 减数的第一部分
             let secondPart = num2 - firstPart  // 减数的第二部分
             
             return "solution.leveling_ten.steps".localizedFormat(
@@ -302,5 +320,87 @@ class Question: NSObject, NSCoding, Identifiable {
         }
         
         return "solution.standard".localized
+    }
+    
+    // 生成Level 2三数运算的分步解析
+    private func generateThreeNumberSolutionForLevel2() -> String {
+        guard operations.count == 2 else {
+            return generateStandardSolution()
+        }
+        
+        let num1 = numbers[0]
+        let num2 = numbers[1]
+        let num3 = numbers[2]
+        let op1 = operations[0]
+        let op2 = operations[1]
+        
+        // 第一步：计算前两个数
+        let intermediateResult = op1 == .addition ? num1 + num2 : num1 - num2
+        
+        // 创建临时的两数运算题目来获取第一步的解题方法
+        let firstStepQuestion = Question(number1: num1, number2: num2, operation: op1)
+        let firstStepMethod = firstStepQuestion.getSolutionMethod(for: .level2)
+        
+        // 创建临时的两数运算题目来获取第二步的解题方法
+        let secondStepQuestion = Question(number1: intermediateResult, number2: num3, operation: op2)
+        let secondStepMethod = secondStepQuestion.getSolutionMethod(for: .level2)
+        
+        // 生成第一步解析
+        var firstStepSolution = ""
+        switch firstStepMethod {
+        case .makingTen:
+            firstStepSolution = firstStepQuestion.generateMakingTenSolution()
+        case .breakingTen:
+            firstStepSolution = firstStepQuestion.generateBreakingTenSolution()
+        case .borrowingTen:
+            firstStepSolution = firstStepQuestion.generateBorrowingTenSolution()
+        case .levelingTen:
+            firstStepSolution = firstStepQuestion.generateLevelingTenSolution()
+        case .standard:
+            if op1 == .addition {
+                firstStepSolution = "solution.standard.addition".localizedFormat(
+                    num1, num2, intermediateResult,
+                    num1, num2, intermediateResult
+                )
+            } else {
+                firstStepSolution = "solution.standard.subtraction".localizedFormat(
+                    num1, num2, intermediateResult,
+                    num1, num2, intermediateResult
+                )
+            }
+        }
+        
+        // 生成第二步解析
+        var secondStepSolution = ""
+        switch secondStepMethod {
+        case .makingTen:
+            secondStepSolution = secondStepQuestion.generateMakingTenSolution()
+        case .breakingTen:
+            secondStepSolution = secondStepQuestion.generateBreakingTenSolution()
+        case .borrowingTen:
+            secondStepSolution = secondStepQuestion.generateBorrowingTenSolution()
+        case .levelingTen:
+            secondStepSolution = secondStepQuestion.generateLevelingTenSolution()
+        case .standard:
+            if op2 == .addition {
+                secondStepSolution = "solution.standard.addition".localizedFormat(
+                    intermediateResult, num3, correctAnswer,
+                    intermediateResult, num3, correctAnswer
+                )
+            } else {
+                secondStepSolution = "solution.standard.subtraction".localizedFormat(
+                    intermediateResult, num3, correctAnswer,
+                    intermediateResult, num3, correctAnswer
+                )
+            }
+        }
+        
+        // 合并两步解析
+        return "solution.three_numbers_level2".localizedFormat(
+            num1, op1.symbol, num2, op2.symbol, num3,
+            firstStepSolution,
+            secondStepSolution,
+            num1, op1.symbol, num2, op2.symbol, num3, correctAnswer
+        )
     }
 }

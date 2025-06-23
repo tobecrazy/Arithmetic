@@ -154,7 +154,7 @@ struct GameView: View {
                             
                             // 显示解析内容
                             if viewModel.showSolutionSteps {
-                                Text(currentQuestion.getSolutionSteps())
+                                Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
                                     .font(.adaptiveBody())
                                     .padding()
                                     .background(Color.yellow.opacity(0.1))
@@ -481,7 +481,7 @@ struct GameView: View {
                                 
                                 // 显示解析内容
                                 if viewModel.showSolutionSteps {
-                                    Text(currentQuestion.getSolutionSteps())
+                                    Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
                                         .font(.adaptiveBody())
                                         .padding()
                                         .background(Color.yellow.opacity(0.1))

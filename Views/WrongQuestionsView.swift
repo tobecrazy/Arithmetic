@@ -171,8 +171,9 @@ struct WrongQuestionsView: View {
                     
                     // 如果无法访问字段，则尝试生成解析
                     if let question = entity.toQuestion() {
-                        solutionMethod = question.getSolutionMethod().rawValue
-                        solutionSteps = question.getSolutionSteps()
+                        let level = DifficultyLevel(rawValue: entity.level) ?? .level1
+                        solutionMethod = question.getSolutionMethod(for: level).rawValue
+                        solutionSteps = question.getSolutionSteps(for: level)
                     }
                 }
                 

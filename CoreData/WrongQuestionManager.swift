@@ -36,8 +36,8 @@ class WrongQuestionManager {
                 newWrongQuestion.lastShownAt = Date()  // Set lastShownAt to current date
                 
                 // 保存解析方法和步骤
-                newWrongQuestion.solutionMethod = question.getSolutionMethod().rawValue
-                newWrongQuestion.solutionSteps = question.getSolutionSteps()
+                newWrongQuestion.solutionMethod = question.getSolutionMethod(for: level).rawValue
+                newWrongQuestion.solutionSteps = question.getSolutionSteps(for: level)
                 
                 print("Adding new wrong question: \(question.questionText), key: \(combinationKey)")
                 saveContext()

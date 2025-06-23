@@ -77,9 +77,9 @@
 "solution.not_applicable" = "This question is not suitable for %@";
 
 /* Solution Steps Templates */
-"solution.breaking_ten.steps" = "Breaking Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and 10\nStep 2: Calculate 10 - %d = %d\nStep 3: %d + %d = %d\n\nTherefore, %d - %d = %d";
+"solution.breaking_ten.steps" = "Breaking Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into 10 and %d\nStep 2: Calculate 10 - %d = %d\nStep 3: %d + %d = %d\n\nTherefore, %d - %d = %d";
 
-"solution.borrowing_ten.steps" = "Borrowing Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and %d\nStep 2: Since %d is less than %d, subtract %d from 10 to get %d\nStep 3: %d + %d = %d\n\nTherefore, %d - %d = %d";
+"solution.borrowing_ten.steps" = "Borrowing Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and %d\nStep 2: Since %d is less than %d, borrow 1 from tens place to get %d\nStep 3: %d - %d = %d\nStep 4: %d + %d = %d\n\nTherefore, %d - %d = %d";
 
 "solution.making_ten.steps" = "Making Ten Method:\n%d + %d = ?\n\nStep 1: Find the difference between %d and 10: 10 - %d = %d\nStep 2: Split %d into %d and %d\nStep 3: %d + %d = 10\nStep 4: 10 + %d = %d\n\nTherefore, %d + %d = %d";
 
@@ -90,3 +90,5 @@
 "solution.standard.subtraction" = "Standard Subtraction:\n%d - %d = %d\n\nDirectly calculate %d minus %d equals %d";
 
 "solution.standard.three_numbers" = "Standard Calculation:\n%d %@ %d %@ %d = ?\n\nStep 1: Calculate %d %@ %d = %d\nStep 2: Calculate %d %@ %d = %d\n\nTherefore, %d %@ %d %@ %d = %d";
+
+"solution.three_numbers_level2" = "Level 2 Three-Number Calculation:\n%d %@ %d %@ %d = ?\n\nStep 1 Analysis:\n%@\n\nStep 2 Analysis:\n%@\n\nTherefore, %d %@ %d %@ %d = %d";
