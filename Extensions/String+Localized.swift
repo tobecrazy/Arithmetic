@@ -9,6 +9,6 @@ extension String {
     }
     
     func localizedFormat(_ arguments: CVarArg...) -> String {
-        return String(format: self.localized, arguments)
+        return String(format: self.localized, arguments: arguments)
     }
 }
