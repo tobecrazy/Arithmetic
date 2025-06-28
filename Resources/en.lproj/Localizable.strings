@@ -68,27 +68,27 @@
 /* Solution Analysis */
 "button.show_solution" = "Show Solution";
 "button.hide_solution" = "Hide Solution";
-"solution.title" = "Solution Method";
-"solution.breaking_ten" = "Breaking Ten Method";
-"solution.borrowing_ten" = "Borrowing Ten Method";
-"solution.making_ten" = "Making Ten Method";
-"solution.leveling_ten" = "Leveling Ten Method";
-"solution.standard" = "Standard Calculation";
-"solution.not_applicable" = "This question is not suitable for %@";
+"solution.title" = "Solution Strategy";
+"solution.breaking_ten" = "Break Apart Ten";
+"solution.borrowing_ten" = "Regrouping Method";
+"solution.making_ten" = "Make Ten Strategy";
+"solution.leveling_ten" = "Compensation Method";
+"solution.standard" = "Standard Algorithm";
+"solution.not_applicable" = "The %@ strategy is not applicable to this problem";
 
 /* Solution Steps Templates */
-"solution.breaking_ten.steps" = "Breaking Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into 10 and %d\nStep 2: Calculate 10 - %d = %d\nStep 3: %d + %d = %d\n\nTherefore, %d - %d = %d";
+"solution.breaking_ten.steps" = "Break Apart Ten Strategy:\nSolve: %d - %d = ?\n\nStep 1: Break apart %d into 10 + %d\nStep 2: First subtract from 10: 10 - %d = %d\nStep 3: Add the remaining part: %d + %d = %d\n\nAnswer: %d - %d = %d";
 
-"solution.borrowing_ten.steps" = "Borrowing Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and %d\nStep 2: Since %d is less than %d, borrow 1 from tens place to get %d\nStep 3: %d - %d = %d\nStep 4: %d + %d = %d\n\nTherefore, %d - %d = %d";
+"solution.borrowing_ten.steps" = "Regrouping Method:\nSolve: %d - %d = ?\n\nStep 1: Break down %d into %d + %d\nStep 2: Since %d < %d, we need to regroup by borrowing from the tens place\nStep 3: Calculate: %d - %d = %d\nStep 4: Add back: %d + %d = %d\n\nAnswer: %d - %d = %d";
 
-"solution.making_ten.steps" = "Making Ten Method:\n%d + %d = ?\n\nStep 1: Look at the larger number %d, it needs %d to make 10\nStep 2: Split the smaller number %d into %d and %d\nStep 3: %d + %d = 10\nStep 4: 10 + %d = %d\n\nTherefore, %d + %d = %d";
+"solution.making_ten.steps" = "Make Ten Strategy:\nSolve: %d + %d = ?\n\nStep 1: Look at the larger number %d. To make 10, we need %d more\nStep 2: Break apart the smaller number %d into %d + %d\nStep 3: Add to make ten: %d + %d = 10\nStep 4: Add the remaining: 10 + %d = %d\n\nAnswer: %d + %d = %d";
 
-"solution.leveling_ten.steps" = "Leveling Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and %d\nStep 2: %d - %d = 10\nStep 3: 10 - %d = %d\n\nTherefore, %d - %d = %d";
+"solution.leveling_ten.steps" = "Compensation Method:\nSolve: %d - %d = ?\n\nStep 1: Break apart %d into %d + %d\nStep 2: Subtract to get ten: %d - %d = 10\nStep 3: Subtract the remainder: 10 - %d = %d\n\nAnswer: %d - %d = %d";
 
-"solution.standard.addition" = "Standard Addition:\n%d + %d = %d\n\nDirectly calculate %d plus %d equals %d";
+"solution.standard.addition" = "Standard Addition:\nSolve: %d + %d = %d\n\nUsing the standard algorithm:\nAdd %d + %d = %d";
 
-"solution.standard.subtraction" = "Standard Subtraction:\n%d - %d = %d\n\nDirectly calculate %d minus %d equals %d";
+"solution.standard.subtraction" = "Standard Subtraction:\nSolve: %d - %d = %d\n\nUsing the standard algorithm:\nSubtract %d - %d = %d";
 
-"solution.standard.three_numbers" = "Standard Calculation:\n%d %@ %d %@ %d = ?\n\nStep 1: Calculate %d %@ %d = %d\nStep 2: Calculate %d %@ %d = %d\n\nTherefore, %d %@ %d %@ %d = %d";
+"solution.standard.three_numbers" = "Multi-Step Calculation:\nSolve: %d %@ %d %@ %d = ?\n\nStep 1: First calculate %d %@ %d = %d\nStep 2: Then calculate %d %@ %d = %d\n\nFinal Answer: %d %@ %d %@ %d = %d";
 
-"solution.three_numbers_level2" = "Level 2 Three-Number Calculation:\n%d %@ %d %@ %d = ?\n\nStep 1 Analysis:\n%@\n\nStep 2 Analysis:\n%@\n\nTherefore, %d %@ %d %@ %d = %d";
+"solution.three_numbers_level2" = "Level 2 Multi-Step Problem:\nSolve: %d %@ %d %@ %d = ?\n\nFirst Step Explanation:\n%@\n\nSecond Step Explanation:\n%@\n\nFinal Answer: %d %@ %d %@ %d = %d";

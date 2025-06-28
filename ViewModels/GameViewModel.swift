@@ -8,6 +8,7 @@ class GameViewModel: ObservableObject {
     @Published var showSaveProgressSuccess: Bool = false
     @Published var showSaveProgressError: Bool = false
     @Published var showSolutionSteps: Bool = false
+    @Published var solutionContent: String = ""
     private var cancellables = Set<AnyCancellable>()
     
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
@@ -30,6 +31,9 @@ class GameViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
+        // 监听语言变化
+        setupLanguageChangeListener()
     }
     
     // 从保存的进度初始化
@@ -53,6 +57,9 @@ class GameViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
+        // 监听语言变化
+        setupLanguageChangeListener()
     }
     
     func startGame() {
@@ -82,6 +89,9 @@ class GameViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
+        // 重新设置语言变化监听器
+        setupLanguageChangeListener()
         
         // 激活计时器
         timerActive = true
@@ -189,6 +199,40 @@ func moveToNextQuestion() {
         } else {
             endGame()
         }
+    }
+    
+    // 设置语言变化监听器
+    private func setupLanguageChangeListener() {
+        NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))
+            .sink { [weak self] _ in
+                self?.refreshSolutionContent()
+            }
+            .store(in: &cancellables)
+    }
+    
+    // 刷新解析内容
+    private func refreshSolutionContent() {
+        if showSolutionSteps {
+            updateSolutionContent()
+        }
+    }
+    
+    // 更新解析内容
+    func updateSolutionContent() {
+        let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
+        solutionContent = currentQuestion.getSolutionSteps(for: gameState.difficultyLevel)
+    }
+    
+    // 显示解析
+    func showSolution() {
+        updateSolutionContent()
+        showSolutionSteps = true
+    }
+    
+    // 隐藏解析
+    func hideSolution() {
+        showSolutionSteps = false
+        solutionContent = ""
     }
     
     deinit {

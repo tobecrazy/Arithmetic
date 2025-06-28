@@ -186,42 +186,22 @@ class Question: NSObject, NSCoding, Identifiable {
             let num2 = numbers[1]
             let result = num1 - num2
             
-            // 破十法逻辑：当被减数的个位小于减数时，需要"破十"
-            // 例如：13 - 9 = ?
-            // 1. 将13分解为10和3
-            // 2. 用10减去9：10 - 9 = 1
-            // 3. 将得到的差(1)与被减数剩下的个位数字(3)相加：1 + 3 = 4
-            
             // 检查是否适合使用破十法（被减数的个位小于减数）
             if num1 > 10 && num2 < 10 && (num1 % 10) < num2 {
-                let ones = num1 % 10  // 个位部分（如13的3）
-                let tenMinusSubtrahend = 10 - num2  // 10减去减数的结果（如10-9=1）
-                let finalResult = tenMinusSubtrahend + ones  // 最终结果（如1+3=4）
+                let ones = num1 % 10  // 个位部分
+                let tenMinusSubtrahend = 10 - num2  // 10减去减数的结果
+                let finalResult = tenMinusSubtrahend + ones  // 最终结果
                 
                 // 确保计算正确
                 if finalResult == result {
-                    // 根据当前语言选择正确的格式
-                    let currentLanguage = LocalizationManager.shared.currentLanguage
-                    
-                    if currentLanguage == .chinese {
-                        // 中文解析
-                        return String(format: "破十法解析：\n%d - %d = ?\n\n步骤1：将%d分解为10和%d\n步骤2：用10减去%d：10 - %d = %d\n步骤3：将得到的差(%d)与个位数字(%d)相加：%d + %d = %d\n\n所以，%d - %d = %d",
-                            num1, num2,
-                            num1, ones,
-                            num2, num2, tenMinusSubtrahend,
-                            tenMinusSubtrahend, ones, tenMinusSubtrahend, ones, finalResult,
-                            num1, num2, result
-                        )
-                    } else {
-                        // 英文解析
-                        return String(format: "Breaking Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into 10 and %d\nStep 2: Subtract %d from 10: 10 - %d = %d\nStep 3: Add the difference (%d) to the ones digit (%d): %d + %d = %d\n\nTherefore, %d - %d = %d",
-                            num1, num2,
-                            num1, ones,
-                            num2, num2, tenMinusSubtrahend,
-                            tenMinusSubtrahend, ones, tenMinusSubtrahend, ones, finalResult,
-                            num1, num2, result
-                        )
-                    }
+                    // 破十法解析：%d - %d = ? 步骤1：将%d分解为10和%d 步骤2：计算10 - %d = %d 步骤3：%d + %d = %d 所以，%d - %d = %d
+                    return "solution.breaking_ten.steps".localizedFormat(
+                        num1, num2,                    // %d - %d = ?
+                        num1, ones,                    // 将%d分解为10和%d
+                        num2, tenMinusSubtrahend,      // 计算10 - %d = %d
+                        tenMinusSubtrahend, ones, finalResult,  // %d + %d = %d
+                        num1, num2, result             // 所以，%d - %d = %d
+                    )
                 }
             }
             
@@ -241,22 +221,20 @@ class Question: NSObject, NSCoding, Identifiable {
             let num2 = numbers[1]
             let result = num1 - num2
             
-            // 借十法逻辑：
-            // 1. 将被减数分解为整十数和个位数（例如，35分解为30和5）
-            // 2. 因为个位数不够减，从整十数借1个10，变成整十数减10和个位数加10
-            // 3. 用个位数加10减去减数的个位数，再加上整十数减10
-            let tens = num1 / 10 * 10  // 整十数部分（如35的30）
-            let remainder = num1 % 10   // 个位数部分（如35的5）
+            // 借十法逻辑：将被减数分解为整十数和个位数，从整十数借1个10
+            let tens = num1 / 10 * 10  // 整十数部分
+            let remainder = num1 % 10   // 个位数部分
             let remainderPlus10 = remainder + 10  // 个位数加10
             let tensMinusTen = tens - 10  // 整十数减10
             
+            // 借十法解析：%d - %d = ? 步骤1：将%d分解为%d和%d 步骤2：因为%d小于%d，所以从十位借1得到%d 步骤3：%d - %d = %d 步骤4：%d + %d = %d 所以，%d - %d = %d
             return "solution.borrowing_ten.steps".localizedFormat(
-                num1, num2,
-                tens, remainder,
-                remainder, num2, remainderPlus10,
-                remainderPlus10, num2, remainderPlus10 - num2,
-                tensMinusTen, remainderPlus10 - num2, result,
-                num1, num2, result
+                num1, num2,                           // %d - %d = ?
+                num1, tens, remainder,                // 将%d分解为%d和%d
+                remainder, num2, remainderPlus10,     // 因为%d小于%d，所以从十位借1得到%d
+                remainderPlus10, num2, remainderPlus10 - num2,  // %d - %d = %d
+                tensMinusTen, remainderPlus10 - num2, result,   // %d + %d = %d
+                num1, num2, result                    // 所以，%d - %d = %d
             )
         }
         return "solution.not_applicable".localizedFormat("solution.borrowing_ten".localized)
@@ -270,11 +248,6 @@ class Question: NSObject, NSCoding, Identifiable {
             let result = num1 + num2
             
             // 凑十法逻辑：看大数拆小数，凑成十再加余
-            // 1. 确定较大数和较小数
-            // 2. 计算较大数需要多少才能凑成10
-            // 3. 从较小数中拆出这个数量来补大数
-            // 4. 较大数+拆出的部分=10
-            // 5. 10+较小数的剩余部分=最终结果
             let larger = max(num1, num2)
             let smaller = min(num1, num2)
             let neededToMakeTen = 10 - larger  // 较大数需要多少才能凑成10
@@ -282,30 +255,14 @@ class Question: NSObject, NSCoding, Identifiable {
             
             // 验证凑十法是否适用（较小数必须大于等于所需的补充数）
             if neededToMakeTen > 0 && neededToMakeTen <= smaller && remainderFromSmaller >= 0 {
-                // 根据当前语言选择正确的格式
-                let currentLanguage = LocalizationManager.shared.currentLanguage
-                
-                if currentLanguage == .chinese {
-                    // 中文解析 - 正确的凑十法逻辑：看大数拆小数
-                    return String(format: "凑十法解析：\n%d + %d = ?\n\n步骤1：看大数%d，需要%d凑成10\n步骤2：拆小数%d，分解为%d和%d\n步骤3：%d + %d = 10\n步骤4：10 + %d = %d\n\n所以，%d + %d = %d",
-                        num1, num2,                           // %d + %d = ?
-                        larger, neededToMakeTen,              // 看大数%d，需要%d凑成10
-                        smaller, neededToMakeTen, remainderFromSmaller,  // 拆小数%d，分解为%d和%d
-                        larger, neededToMakeTen,              // %d + %d = 10
-                        remainderFromSmaller, result,         // 10 + %d = %d
-                        num1, num2, result                    // 所以，%d + %d = %d
-                    )
-                } else {
-                    // 英文解析
-                    return String(format: "Making Ten Method:\n%d + %d = ?\n\nStep 1: Look at the larger number %d, it needs %d to make 10\nStep 2: Split the smaller number %d into %d and %d\nStep 3: %d + %d = 10\nStep 4: 10 + %d = %d\n\nTherefore, %d + %d = %d",
-                        num1, num2,                           // %d + %d = ?
-                        larger, neededToMakeTen,              // Look at the larger number %d, it needs %d to make 10
-                        smaller, neededToMakeTen, remainderFromSmaller,  // Split the smaller number %d into %d and %d
-                        larger, neededToMakeTen,              // %d + %d = 10
-                        remainderFromSmaller, result,         // 10 + %d = %d
-                        num1, num2, result                    // Therefore, %d + %d = %d
-                    )
-                }
+                return "solution.making_ten.steps".localizedFormat(
+                    num1, num2,                           // %d + %d = ?
+                    larger, neededToMakeTen,              // 看大数%d，需要%d凑成10
+                    smaller, neededToMakeTen, remainderFromSmaller,  // 拆小数%d，分解为%d和%d
+                    larger, neededToMakeTen,              // %d + %d = 10
+                    remainderFromSmaller, result,         // 10 + %d = %d
+                    num1, num2, result                    // 所以，%d + %d = %d
+                )
             }
         }
         return "solution.not_applicable".localizedFormat("solution.making_ten".localized)
@@ -319,10 +276,6 @@ class Question: NSObject, NSCoding, Identifiable {
             let result = num1 - num2
             
             // 平十法逻辑：将减数分解为两部分，先减去一部分使被减数变成整十数，再减去剩余部分
-            // 例如：19 - 16 = ?
-            // 1. 将减数16分解为10和6
-            // 2. 先减10：19 - 10 = 9
-            // 3. 再减6：9 - 6 = 3
             // 验证分解是否合理（减数应该能分解为10和另一个数）
             if num2 >= 10 {
                 let firstPart = 10  // 先减去10
@@ -332,28 +285,14 @@ class Question: NSObject, NSCoding, Identifiable {
                 
                 // 确保计算正确
                 if finalResult == result {
-                    // 根据当前语言选择正确的格式
-                    let currentLanguage = LocalizationManager.shared.currentLanguage
-                    
-                    if currentLanguage == .chinese {
-                        // 中文解析
-                        return String(format: "平十法解析：\n%d - %d = ?\n\n步骤1：将减数%d分解为%d和%d\n步骤2：先减%d：%d - %d = %d\n步骤3：再减%d：%d - %d = %d\n\n所以，%d - %d = %d",
-                            num1, num2,
-                            num2, firstPart, secondPart,
-                            firstPart, num1, firstPart, intermediateResult,
-                            secondPart, intermediateResult, secondPart, finalResult,
-                            num1, num2, result
-                        )
-                    } else {
-                        // 英文解析
-                        return String(format: "Leveling Ten Method:\n%d - %d = ?\n\nStep 1: Split subtrahend %d into %d and %d\nStep 2: First subtract %d: %d - %d = %d\nStep 3: Then subtract %d: %d - %d = %d\n\nTherefore, %d - %d = %d",
-                            num1, num2,
-                            num2, firstPart, secondPart,
-                            firstPart, num1, firstPart, intermediateResult,
-                            secondPart, intermediateResult, secondPart, finalResult,
-                            num1, num2, result
-                        )
-                    }
+                    // 平十法解析：%d - %d = ? 步骤1：将%d分解为%d和%d 步骤2：%d - %d = 10 步骤3：10 - %d = %d 所以，%d - %d = %d
+                    return "solution.leveling_ten.steps".localizedFormat(
+                        num1, num2,                       // %d - %d = ?
+                        num2, firstPart, secondPart,      // 将%d分解为%d和%d
+                        num1, firstPart, intermediateResult,  // %d - %d = 10 (这里应该是中间结果)
+                        secondPart, finalResult,          // 10 - %d = %d
+                        num1, num2, result                // 所以，%d - %d = %d
+                    )
                 }
             }
             
