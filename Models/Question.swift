@@ -11,6 +11,10 @@ class Question: NSObject, NSCoding, Identifiable {
         case borrowingTen = "borrowing_ten"  // 借十法
         case makingTen = "making_ten"  // 凑十法
         case levelingTen = "leveling_ten"  // 平十法
+        case multiplicationTable = "multiplication_table"  // 乘法口诀法
+        case decompositionMultiplication = "decomposition_multiplication"  // 分解乘法
+        case divisionVerification = "division_verification"  // 除法验算法
+        case groupingDivision = "grouping_division"  // 分组除法
         case standard = "standard"  // 标准计算
         
         var localizedName: String {
@@ -25,6 +29,8 @@ class Question: NSObject, NSCoding, Identifiable {
             switch operations[0] {
             case .addition: return numbers[0] + numbers[1]
             case .subtraction: return numbers[0] - numbers[1]
+            case .multiplication: return numbers[0] * numbers[1]
+            case .division: return numbers[1] != 0 ? numbers[0] / numbers[1] : 0
             }
         } else if numbers.count == 3 && operations.count == 2 {
             // 三数运算，从左到右计算
@@ -33,6 +39,8 @@ class Question: NSObject, NSCoding, Identifiable {
                 switch operations[i] {
                 case .addition: result += numbers[i + 1]
                 case .subtraction: result -= numbers[i + 1]
+                case .multiplication: result *= numbers[i + 1]
+                case .division: result = numbers[i + 1] != 0 ? result / numbers[i + 1] : 0
                 }
             }
             return result
@@ -43,6 +51,8 @@ class Question: NSObject, NSCoding, Identifiable {
     enum Operation: String, CaseIterable, Codable {
         case addition = "+"
         case subtraction = "-"
+        case multiplication = "×"
+        case division = "÷"
         
         var symbol: String {
             return self.rawValue
@@ -102,15 +112,9 @@ class Question: NSObject, NSCoding, Identifiable {
         coder.encode(operations.map { $0.rawValue }, forKey: "operations")
     }
     
-    // 获取解题方法 - 只在Level 2 (20以内) 中应用特殊方法
+    // 获取解题方法 - 根据难度等级应用不同的特殊方法
     func getSolutionMethod(for difficultyLevel: DifficultyLevel? = nil) -> SolutionMethod {
-        // 只在Level 2中应用特殊的中国算术方法
-        guard let level = difficultyLevel, level == .level2 else {
-            return .standard
-        }
-        
-        // 确保所有数字都在20以内
-        guard numbers.allSatisfy({ $0 <= 20 }) else {
+        guard let level = difficultyLevel else {
             return .standard
         }
         
@@ -118,38 +122,78 @@ class Question: NSObject, NSCoding, Identifiable {
         if operations.count == 1 {
             switch operations[0] {
             case .addition:
-                // 凑十法：适用于两个个位数相加且和大于10的情况
-                // 或者一个数小于10，另一个数也相对较小，且和超过10
-                let num1 = numbers[0]
-                let num2 = numbers[1]
-                let sum = num1 + num2
-                
-                if sum > 10 && sum <= 20 {
-                    let larger = max(num1, num2)
-                    let smaller = min(num1, num2)
-                    let neededToMakeTen = 10 - larger
+                // 只在Level 2中应用凑十法
+                if level == .level2 {
+                    // 确保所有数字都在20以内
+                    guard numbers.allSatisfy({ $0 <= 20 }) else {
+                        return .standard
+                    }
                     
-                    // 检查是否可以应用凑十法：较大数小于10，且较小数足够分解
-                    if larger < 10 && neededToMakeTen > 0 && neededToMakeTen <= smaller {
-                        return .makingTen
+                    let num1 = numbers[0]
+                    let num2 = numbers[1]
+                    let sum = num1 + num2
+                    
+                    if sum > 10 && sum <= 20 {
+                        let larger = max(num1, num2)
+                        let smaller = min(num1, num2)
+                        let neededToMakeTen = 10 - larger
+                        
+                        // 检查是否可以应用凑十法：较大数小于10，且较小数足够分解
+                        if larger < 10 && neededToMakeTen > 0 && neededToMakeTen <= smaller {
+                            return .makingTen
+                        }
                     }
                 }
                 
             case .subtraction:
+                // 只在Level 2中应用特殊减法方法
+                if level == .level2 {
+                    // 确保所有数字都在20以内
+                    guard numbers.allSatisfy({ $0 <= 20 }) else {
+                        return .standard
+                    }
+                    
+                    let num1 = numbers[0]
+                    let num2 = numbers[1]
+                    
+                    // 破十法：适用于被减数的个位小于减数的情况
+                    if num1 > 10 && num2 < 10 && (num1 % 10) < num2 {
+                        return .breakingTen
+                    }
+                    // 借十法：适用于个位数不够减的情况
+                    else if num1 > 10 && num2 <= 10 && (num1 % 10) < num2 {
+                        return .borrowingTen
+                    }
+                    // 平十法：适用于从特定数字中减去接近它的数
+                    else if num1 > 10 && num2 >= 10 && num1 - num2 < 10 {
+                        return .levelingTen
+                    }
+                }
+                
+            case .multiplication:
                 let num1 = numbers[0]
                 let num2 = numbers[1]
                 
-                // 破十法：适用于被减数的个位小于减数的情况
-                if num1 > 10 && num2 < 10 && (num1 % 10) < num2 {
-                    return .breakingTen
+                // Level 4 (10以内乘法) 使用乘法口诀法
+                if level == .level4 && num1 <= 10 && num2 <= 10 {
+                    return .multiplicationTable
                 }
-                // 借十法：适用于个位数不够减的情况
-                else if num1 > 10 && num2 <= 10 && (num1 % 10) < num2 {
-                    return .borrowingTen
+                // Level 5 (20以内乘法) 对于较大数使用分解乘法
+                else if level == .level5 && (num1 > 10 || num2 > 10) && num1 <= 20 && num2 <= 20 {
+                    return .decompositionMultiplication
                 }
-                // 平十法：适用于从特定数字中减去接近它的数
-                else if num1 > 10 && num2 >= 10 && num1 - num2 < 10 {
-                    return .levelingTen
+                // 其他情况使用乘法口诀法
+                else if (level == .level4 || level == .level5) && num1 <= 20 && num2 <= 20 {
+                    return .multiplicationTable
+                }
+                
+            case .division:
+                let num1 = numbers[0]
+                let num2 = numbers[1]
+                
+                // Level 4 和 Level 5 的除法使用验算法
+                if (level == .level4 || level == .level5) && num1 <= 20 && num2 <= 10 {
+                    return .divisionVerification
                 }
             }
         }
@@ -174,6 +218,14 @@ class Question: NSObject, NSCoding, Identifiable {
             return generateMakingTenSolution()
         case .levelingTen:
             return generateLevelingTenSolution()
+        case .multiplicationTable:
+            return generateMultiplicationTableSolution()
+        case .decompositionMultiplication:
+            return generateDecompositionMultiplicationSolution()
+        case .divisionVerification:
+            return generateDivisionVerificationSolution()
+        case .groupingDivision:
+            return generateGroupingDivisionSolution()
         case .standard:
             return generateStandardSolution()
         }
@@ -312,13 +364,24 @@ class Question: NSObject, NSCoding, Identifiable {
             let num2 = numbers[1]
             let result = correctAnswer
             
-            if operations[0] == .addition {
+            switch operations[0] {
+            case .addition:
                 return "solution.standard.addition".localizedFormat(
                     num1, num2, result,
                     num1, num2, result
                 )
-            } else {
+            case .subtraction:
                 return "solution.standard.subtraction".localizedFormat(
+                    num1, num2, result,
+                    num1, num2, result
+                )
+            case .multiplication:
+                return "solution.standard.multiplication".localizedFormat(
+                    num1, num2, result,
+                    num1, num2, result
+                )
+            case .division:
+                return "solution.standard.division".localizedFormat(
                     num1, num2, result,
                     num1, num2, result
                 )
@@ -331,17 +394,27 @@ class Question: NSObject, NSCoding, Identifiable {
             let op2 = operations[1]
             
             var intermediateResult = 0
-            if op1 == .addition {
+            switch op1 {
+            case .addition:
                 intermediateResult = num1 + num2
-            } else {
+            case .subtraction:
                 intermediateResult = num1 - num2
+            case .multiplication:
+                intermediateResult = num1 * num2
+            case .division:
+                intermediateResult = num2 != 0 ? num1 / num2 : 0
             }
             
             var finalResult = 0
-            if op2 == .addition {
+            switch op2 {
+            case .addition:
                 finalResult = intermediateResult + num3
-            } else {
+            case .subtraction:
                 finalResult = intermediateResult - num3
+            case .multiplication:
+                finalResult = intermediateResult * num3
+            case .division:
+                finalResult = num3 != 0 ? intermediateResult / num3 : 0
             }
             
             return "solution.standard.three_numbers".localizedFormat(
@@ -389,14 +462,32 @@ class Question: NSObject, NSCoding, Identifiable {
             firstStepSolution = firstStepQuestion.generateBorrowingTenSolution()
         case .levelingTen:
             firstStepSolution = firstStepQuestion.generateLevelingTenSolution()
+        case .multiplicationTable:
+            firstStepSolution = firstStepQuestion.generateMultiplicationTableSolution()
+        case .decompositionMultiplication:
+            firstStepSolution = firstStepQuestion.generateDecompositionMultiplicationSolution()
+        case .divisionVerification:
+            firstStepSolution = firstStepQuestion.generateDivisionVerificationSolution()
+        case .groupingDivision:
+            firstStepSolution = firstStepQuestion.generateGroupingDivisionSolution()
         case .standard:
             if op1 == .addition {
                 firstStepSolution = "solution.standard.addition".localizedFormat(
                     num1, num2, intermediateResult,
                     num1, num2, intermediateResult
                 )
-            } else {
+            } else if op1 == .subtraction {
                 firstStepSolution = "solution.standard.subtraction".localizedFormat(
+                    num1, num2, intermediateResult,
+                    num1, num2, intermediateResult
+                )
+            } else if op1 == .multiplication {
+                firstStepSolution = "solution.standard.multiplication".localizedFormat(
+                    num1, num2, intermediateResult,
+                    num1, num2, intermediateResult
+                )
+            } else if op1 == .division {
+                firstStepSolution = "solution.standard.division".localizedFormat(
                     num1, num2, intermediateResult,
                     num1, num2, intermediateResult
                 )
@@ -414,14 +505,32 @@ class Question: NSObject, NSCoding, Identifiable {
             secondStepSolution = secondStepQuestion.generateBorrowingTenSolution()
         case .levelingTen:
             secondStepSolution = secondStepQuestion.generateLevelingTenSolution()
+        case .multiplicationTable:
+            secondStepSolution = secondStepQuestion.generateMultiplicationTableSolution()
+        case .decompositionMultiplication:
+            secondStepSolution = secondStepQuestion.generateDecompositionMultiplicationSolution()
+        case .divisionVerification:
+            secondStepSolution = secondStepQuestion.generateDivisionVerificationSolution()
+        case .groupingDivision:
+            secondStepSolution = secondStepQuestion.generateGroupingDivisionSolution()
         case .standard:
             if op2 == .addition {
                 secondStepSolution = "solution.standard.addition".localizedFormat(
                     intermediateResult, num3, correctAnswer,
                     intermediateResult, num3, correctAnswer
                 )
-            } else {
+            } else if op2 == .subtraction {
                 secondStepSolution = "solution.standard.subtraction".localizedFormat(
+                    intermediateResult, num3, correctAnswer,
+                    intermediateResult, num3, correctAnswer
+                )
+            } else if op2 == .multiplication {
+                secondStepSolution = "solution.standard.multiplication".localizedFormat(
+                    intermediateResult, num3, correctAnswer,
+                    intermediateResult, num3, correctAnswer
+                )
+            } else if op2 == .division {
+                secondStepSolution = "solution.standard.division".localizedFormat(
                     intermediateResult, num3, correctAnswer,
                     intermediateResult, num3, correctAnswer
                 )
@@ -435,5 +544,91 @@ class Question: NSObject, NSCoding, Identifiable {
             secondStepSolution,
             num1, op1.symbol, num2, op2.symbol, num3, correctAnswer
         )
+    }
+    
+    // 生成乘法口诀法解析
+    private func generateMultiplicationTableSolution() -> String {
+        if operations.count == 1 && operations[0] == .multiplication {
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            let result = correctAnswer
+            
+            return "solution.multiplication_table.steps".localizedFormat(
+                num1, num2, result,
+                num1, num2, result
+            )
+        }
+        return "solution.not_applicable".localizedFormat("solution.multiplication_table".localized)
+    }
+    
+    // 生成分解乘法解析
+    private func generateDecompositionMultiplicationSolution() -> String {
+        if operations.count == 1 && operations[0] == .multiplication {
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            let result = correctAnswer
+            
+            // 找出较大的数进行分解
+            let larger = max(num1, num2)
+            let smaller = min(num1, num2)
+            
+            // 如果较大数大于10，进行分解
+            if larger > 10 {
+                let tens = (larger / 10) * 10  // 十位部分
+                let ones = larger % 10         // 个位部分
+                
+                let tensProduct = tens * smaller
+                let onesProduct = ones * smaller
+                let finalResult = tensProduct + onesProduct
+                
+                return "solution.decomposition_multiplication.steps".localizedFormat(
+                    num1, num2, result,
+                    larger, tens, ones,
+                    smaller, tens, tensProduct,
+                    smaller, ones, onesProduct,
+                    tensProduct, onesProduct, finalResult,
+                    num1, num2, result
+                )
+            }
+        }
+        return "solution.not_applicable".localizedFormat("solution.decomposition_multiplication".localized)
+    }
+    
+    // 生成除法验算法解析
+    private func generateDivisionVerificationSolution() -> String {
+        if operations.count == 1 && operations[0] == .division {
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            let result = correctAnswer
+            
+            // 验算：商 × 除数 = 被除数
+            let verification = result * num2
+            
+            return "solution.division_verification.steps".localizedFormat(
+                num1, num2, result,
+                result, num2,
+                result, num2, verification,
+                num1, verification,
+                num1, num2, result
+            )
+        }
+        return "solution.not_applicable".localizedFormat("solution.division_verification".localized)
+    }
+    
+    // 生成分组除法解析
+    private func generateGroupingDivisionSolution() -> String {
+        if operations.count == 1 && operations[0] == .division {
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            let result = correctAnswer
+            
+            return "solution.grouping_division.steps".localizedFormat(
+                num1, num2, result,
+                num1, num2,
+                result, num2, num1,
+                num1, num2, result
+            )
+        }
+        return "solution.not_applicable".localizedFormat("solution.grouping_division".localized)
     }
 }

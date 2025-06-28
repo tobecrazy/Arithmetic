@@ -19,22 +19,12 @@ class GameState: ObservableObject {
     
     // 根据难度等级获取总题目数
     var totalQuestions: Int {
-        switch difficultyLevel {
-        case .level1: return 20
-        case .level2: return 25
-        case .level3: return 50
-        case .level4: return 100
-        }
+        return difficultyLevel.questionCount
     }
     
     // 根据难度等级获取每题分数
     var pointsPerQuestion: Int {
-        switch difficultyLevel {
-        case .level1: return 5
-        case .level2: return 4
-        case .level3: return 2
-        case .level4: return 1
-        }
+        return difficultyLevel.pointsPerQuestion
     }
     
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
@@ -42,16 +32,8 @@ class GameState: ObservableObject {
         self.timeRemaining = timeInMinutes * 60
         self.totalTime = timeInMinutes * 60
         
-        // 计算题目数量
-        let questionCount: Int
-        switch difficultyLevel {
-        case .level1: questionCount = 20
-        case .level2: questionCount = 25
-        case .level3: questionCount = 50
-        case .level4: questionCount = 100
-        }
-        
-        self.userAnswers = Array(repeating: nil, count: questionCount)
+        // 使用难度等级的题目数量
+        self.userAnswers = Array(repeating: nil, count: difficultyLevel.questionCount)
         generateQuestions()
     }
     

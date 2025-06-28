@@ -108,11 +108,6 @@ class GameProgressManager {
     
     // Helper method: Get total questions for a difficulty level
     private func getTotalQuestions(for level: DifficultyLevel) -> Int {
-        switch level {
-        case .level1: return 20
-        case .level2: return 25
-        case .level3: return 50
-        case .level4: return 100
-        }
+        return level.questionCount
     }
 }

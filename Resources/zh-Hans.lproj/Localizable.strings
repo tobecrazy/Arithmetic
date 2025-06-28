@@ -1,8 +1,10 @@
 "app.title" = "小学算术练习";
-"difficulty.level1" = "等级1 (10以内)";
-"difficulty.level2" = "等级2 (20以内)";
-"difficulty.level3" = "等级3 (50以内)";
-"difficulty.level4" = "等级4 (100以内)";
+"difficulty.level1" = "等级1 (10以内加减法)";
+"difficulty.level2" = "等级2 (20以内加减法)";
+"difficulty.level3" = "等级3 (50以内加减法)";
+"difficulty.level4" = "等级4 (10以内乘除法)";
+"difficulty.level5" = "等级5 (20以内乘除法)";
+"difficulty.level6" = "等级6 (100以内混合运算)";
 "difficulty.level" = "难度等级";
 "button.start" = "开始游戏";
 "button.start_new" = "开始新游戏";
@@ -73,6 +75,10 @@
 "solution.borrowing_ten" = "借十法";
 "solution.making_ten" = "凑十法";
 "solution.leveling_ten" = "平十法";
+"solution.multiplication_table" = "乘法口诀法";
+"solution.decomposition_multiplication" = "分解乘法";
+"solution.division_verification" = "除法验算法";
+"solution.grouping_division" = "分组除法";
 "solution.standard" = "标准计算";
 "solution.not_applicable" = "此题不适用%@";
 
@@ -89,6 +95,18 @@
 
 "solution.standard.subtraction" = "标准减法解析：\n%d - %d = %d\n\n直接计算%d减%d等于%d";
 
+"solution.standard.multiplication" = "标准乘法解析：\n%d × %d = %d\n\n直接计算%d乘%d等于%d";
+
+"solution.standard.division" = "标准除法解析：\n%d ÷ %d = %d\n\n直接计算%d除以%d等于%d";
+
 "solution.standard.three_numbers" = "标准计算解析：\n%d %@ %d %@ %d = ?\n\n步骤1：计算%d %@ %d = %d\n步骤2：计算%d %@ %d = %d\n\n所以，%d %@ %d %@ %d = %d";
 
 "solution.three_numbers_level2" = "等级2三数运算解析：\n%d %@ %d %@ %d = ?\n\n第一步解析：\n%@\n\n第二步解析：\n%@\n\n所以，%d %@ %d %@ %d = %d";
+
+"solution.multiplication_table.steps" = "乘法口诀法解析：\n%d × %d = %d\n\n根据乘法口诀表：%d乘%d得%d";
+
+"solution.decomposition_multiplication.steps" = "分解乘法解析：\n%d × %d = %d\n\n步骤1：将%d分解为%d和%d\n步骤2：计算%d × %d = %d\n步骤3：计算%d × %d = %d\n步骤4：%d + %d = %d\n\n所以，%d × %d = %d";
+
+"solution.division_verification.steps" = "除法验算法解析：\n%d ÷ %d = %d\n\n思考：%d × %d = ?\n验算：%d × %d = %d\n因为%d = %d，所以%d ÷ %d = %d";
+
+"solution.grouping_division.steps" = "分组除法解析：\n%d ÷ %d = %d\n\n将%d个物品平均分成%d组\n每组有%d × %d = %d个物品\n所以，%d ÷ %d = %d";

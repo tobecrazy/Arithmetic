@@ -1,8 +1,10 @@
 "app.title" = "Elementary Arithmetic Practice";
-"difficulty.level1" = "Level 1 (Numbers 1-10)";
-"difficulty.level2" = "Level 2 (Numbers 1-20)";
-"difficulty.level3" = "Level 3 (Numbers 1-50)";
-"difficulty.level4" = "Level 4 (Numbers 1-100)";
+"difficulty.level1" = "Level 1 (Addition & Subtraction 1-10)";
+"difficulty.level2" = "Level 2 (Addition & Subtraction 1-20)";
+"difficulty.level3" = "Level 3 (Addition & Subtraction 1-50)";
+"difficulty.level4" = "Level 4 (Multiplication & Division 1-10)";
+"difficulty.level5" = "Level 5 (Multiplication & Division 1-20)";
+"difficulty.level6" = "Level 6 (Mixed Operations 1-100)";
 "difficulty.level" = "Difficulty Level";
 "button.start" = "Start Game";
 "button.start_new" = "Start New Game";
@@ -73,6 +75,10 @@
 "solution.borrowing_ten" = "Regrouping Method";
 "solution.making_ten" = "Make Ten Strategy";
 "solution.leveling_ten" = "Compensation Method";
+"solution.multiplication_table" = "Multiplication Table Method";
+"solution.decomposition_multiplication" = "Decomposition Multiplication";
+"solution.division_verification" = "Division Verification";
+"solution.grouping_division" = "Grouping Division";
 "solution.standard" = "Standard Algorithm";
 "solution.not_applicable" = "The %@ strategy is not applicable to this problem";
 
@@ -89,6 +95,18 @@
 
 "solution.standard.subtraction" = "Standard Subtraction:\nSolve: %d - %d = %d\n\nUsing the standard algorithm:\nSubtract %d - %d = %d";
 
+"solution.standard.multiplication" = "Standard Multiplication:\nSolve: %d × %d = %d\n\nUsing the standard algorithm:\nMultiply %d × %d = %d";
+
+"solution.standard.division" = "Standard Division:\nSolve: %d ÷ %d = %d\n\nUsing the standard algorithm:\nDivide %d ÷ %d = %d";
+
 "solution.standard.three_numbers" = "Multi-Step Calculation:\nSolve: %d %@ %d %@ %d = ?\n\nStep 1: First calculate %d %@ %d = %d\nStep 2: Then calculate %d %@ %d = %d\n\nFinal Answer: %d %@ %d %@ %d = %d";
 
 "solution.three_numbers_level2" = "Level 2 Multi-Step Problem:\nSolve: %d %@ %d %@ %d = ?\n\nFirst Step Explanation:\n%@\n\nSecond Step Explanation:\n%@\n\nFinal Answer: %d %@ %d %@ %d = %d";
+
+"solution.multiplication_table.steps" = "Multiplication Table Method:\nSolve: %d × %d = %d\n\nUsing multiplication table: %d times %d equals %d";
+
+"solution.decomposition_multiplication.steps" = "Decomposition Multiplication:\nSolve: %d × %d = %d\n\nStep 1: Break apart %d into %d + %d\nStep 2: Calculate %d × %d = %d\nStep 3: Calculate %d × %d = %d\nStep 4: Add the results: %d + %d = %d\n\nAnswer: %d × %d = %d";
+
+"solution.division_verification.steps" = "Division Verification:\nSolve: %d ÷ %d = %d\n\nThink: What times %d equals %d?\nVerification: %d × %d = %d\nSince %d = %d, therefore %d ÷ %d = %d";
+
+"solution.grouping_division.steps" = "Grouping Division:\nSolve: %d ÷ %d = %d\n\nDivide %d items into %d equal groups\nEach group has %d × %d = %d items\nTherefore: %d ÷ %d = %d";
