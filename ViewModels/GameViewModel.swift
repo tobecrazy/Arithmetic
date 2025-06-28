@@ -212,15 +212,28 @@ func moveToNextQuestion() {
     
     // 刷新解析内容
     private func refreshSolutionContent() {
-        if showSolutionSteps {
-            updateSolutionContent()
+        DispatchQueue.main.async { [weak self] in
+            if self?.showSolutionSteps == true {
+                self?.updateSolutionContent()
+            }
         }
     }
     
     // 更新解析内容
     func updateSolutionContent() {
         let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
-        solutionContent = currentQuestion.getSolutionSteps(for: gameState.difficultyLevel)
+        let newSolutionContent = currentQuestion.getSolutionSteps(for: gameState.difficultyLevel)
+        
+        // Debug: Print solution content for verification
+        #if DEBUG
+        print("Updating solution content for language: \(LocalizationManager.shared.currentLanguage.rawValue)")
+        print("Solution content: \(newSolutionContent)")
+        #endif
+        
+        solutionContent = newSolutionContent
+        
+        // Force UI update
+        objectWillChange.send()
     }
     
     // 显示解析

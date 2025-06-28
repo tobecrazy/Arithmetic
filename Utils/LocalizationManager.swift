@@ -7,7 +7,16 @@ class LocalizationManager: ObservableObject {
     @Published var currentLanguage: Language {
         didSet {
             UserDefaults.standard.set(currentLanguage.rawValue, forKey: "app_language")
-            NotificationCenter.default.post(name: Notification.Name("LanguageChanged"), object: nil)
+            
+            // Debug: Print language change
+            #if DEBUG
+            print("Language changed to: \(currentLanguage.rawValue)")
+            #endif
+            
+            // Post notification on main thread to ensure UI updates
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name("LanguageChanged"), object: nil)
+            }
             
             // Ensure the shared instance is also updated
             if self != LocalizationManager.shared {

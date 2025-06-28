@@ -67,7 +67,7 @@ struct WrongQuestionsView: View {
                             
                             // 显示解析内容
                             if self.expandedQuestionIds.contains(question.id) {
-                                Text(question.solutionSteps)
+                                Text(question.currentLanguageSolutionSteps)
                                     .font(.footnote)
                                     .padding(8)
                                     .background(Color.yellow.opacity(0.1))
@@ -141,6 +141,10 @@ struct WrongQuestionsView: View {
         .onAppear {
             loadWrongQuestions()
         }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
+            // 当语言变化时，重新生成解析内容
+            refreshSolutionContent()
+        }
     }
     
     // 加载错题
@@ -185,7 +189,8 @@ struct WrongQuestionsView: View {
                     timesShown: Int(entity.timesShown),
                     timesWrong: Int(entity.timesWrong),
                     solutionMethod: solutionMethod,
-                    solutionSteps: solutionSteps
+                    solutionSteps: solutionSteps,
+                    originalEntity: entity
                 )
             }
             
@@ -224,6 +229,57 @@ struct WrongQuestionsView: View {
         wrongQuestionManager.deleteMasteredQuestions()
         loadWrongQuestions()
     }
+    
+    // 刷新解析内容
+    private func refreshSolutionContent() {
+        let fetchRequest: NSFetchRequest<WrongQuestionEntity> = WrongQuestionEntity.fetchRequest()
+        
+        if let level = selectedLevel {
+            fetchRequest.predicate = NSPredicate(format: "level == %@", level.rawValue)
+        }
+        
+        do {
+            let entities = try viewContext.fetch(fetchRequest)
+            wrongQuestions = entities.map { entity in
+                // 重新生成解析内容以适应新语言
+                var solutionMethod = "standard"
+                var solutionSteps = ""
+                
+                // 尝试从数据库实体重新创建Question对象并生成解析
+                if let question = entity.toQuestion() {
+                    let level = DifficultyLevel(rawValue: entity.level) ?? .level1
+                    solutionMethod = question.getSolutionMethod(for: level).rawValue
+                    solutionSteps = question.getSolutionSteps(for: level)
+                    
+                    #if DEBUG
+                    print("Refreshed solution for question \(entity.questionText): \(solutionSteps)")
+                    #endif
+                } else {
+                    // 如果无法重新创建Question对象，使用存储的内容
+                    if let method = entity.value(forKey: "solutionMethod") as? String {
+                        solutionMethod = method
+                    }
+                    if let steps = entity.value(forKey: "solutionSteps") as? String {
+                        solutionSteps = steps
+                    }
+                }
+                
+                return WrongQuestionViewModel(
+                    id: entity.id,
+                    questionText: entity.questionText,
+                    correctAnswer: Int(entity.correctAnswer),
+                    level: DifficultyLevel(rawValue: entity.level) ?? .level1,
+                    timesShown: Int(entity.timesShown),
+                    timesWrong: Int(entity.timesWrong),
+                    solutionMethod: solutionMethod,
+                    solutionSteps: solutionSteps,
+                    originalEntity: entity
+                )
+            }
+        } catch {
+            print("Error refreshing solution content: \(error)")
+        }
+    }
 }
 
 // 错题视图模型
@@ -236,6 +292,30 @@ struct WrongQuestionViewModel: Identifiable {
     let timesWrong: Int
     let solutionMethod: String
     let solutionSteps: String
+    let originalEntity: WrongQuestionEntity?
+    
+    // 获取当前语言的解析内容
+    var currentLanguageSolutionSteps: String {
+        if let entity = originalEntity, let question = entity.toQuestion() {
+            return question.getSolutionSteps(for: level)
+        }
+        return solutionSteps
+    }
+    
+    // 便捷初始化方法（保持向后兼容）
+    init(id: UUID, questionText: String, correctAnswer: Int, level: DifficultyLevel, 
+         timesShown: Int, timesWrong: Int, solutionMethod: String, solutionSteps: String, 
+         originalEntity: WrongQuestionEntity? = nil) {
+        self.id = id
+        self.questionText = questionText
+        self.correctAnswer = correctAnswer
+        self.level = level
+        self.timesShown = timesShown
+        self.timesWrong = timesWrong
+        self.solutionMethod = solutionMethod
+        self.solutionSteps = solutionSteps
+        self.originalEntity = originalEntity
+    }
 }
 
 struct WrongQuestionsView_Previews: PreviewProvider {
