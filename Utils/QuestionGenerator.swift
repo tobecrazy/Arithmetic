@@ -21,10 +21,10 @@ class QuestionGenerator {
             
             // 等级2及以上有概率生成三数运算题目
             if difficultyLevel != .level1 && Double.random(in: 0...1) < getThreeNumberProbability(difficultyLevel) {
-                newQuestion = generateThreeNumberQuestion(in: difficultyLevel.range)
+                newQuestion = generateThreeNumberQuestion(difficultyLevel: difficultyLevel)
                 combination = getCombinationKey(for: newQuestion)
             } else {
-                newQuestion = generateTwoNumberQuestion(in: difficultyLevel.range)
+                newQuestion = generateTwoNumberQuestion(difficultyLevel: difficultyLevel)
                 combination = getCombinationKey(for: newQuestion)
             }
             
@@ -80,144 +80,125 @@ class QuestionGenerator {
     }
     
     // 生成两数运算题目
-    private static func generateTwoNumberQuestion(in range: ClosedRange<Int>) -> Question {
-        // 根据范围确定当前难度等级
-        let difficultyFactor: Double
-        let isLevel2OrAbove: Bool
-        switch range.upperBound {
-        case 10:
-            difficultyFactor = 0.0  // 等级1
-            isLevel2OrAbove = false
-        case 20:
-            difficultyFactor = 0.30 // 等级2
-            isLevel2OrAbove = true
-        case 50:
-            difficultyFactor = 0.60  // 等级3
-            isLevel2OrAbove = true
-        case 100:
-            difficultyFactor = 0.80 // 等级4
-            isLevel2OrAbove = true
-        default:
-            difficultyFactor = 0.0
-            isLevel2OrAbove = false
-        }
+    private static func generateTwoNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
+        let range = difficultyLevel.range
+        let supportedOperations = difficultyLevel.supportedOperations
         
-        // 根据难度因子决定操作类型
-        // 难度越高，减法的概率越大
-        let operations = Question.Operation.allCases
-        let operation: Question.Operation
-        if Double.random(in: 0...1) < (0.4 + difficultyFactor * 0.2) {
-            operation = .subtraction // 随着难度增加，减法概率从40%增加到55%
-        } else {
-            operation = .addition
-        }
+        // 随机选择一个支持的运算类型
+        let operation = supportedOperations.randomElement()!
         
         var number1: Int
         var number2: Int
-        var result: Int
         
-        // 根据难度因子调整数字范围
-        // 难度越高，数字越倾向于使用范围上限
-        let lowerBoundAdjusted = Int(Double(range.lowerBound) + Double(range.upperBound - range.lowerBound) * difficultyFactor * 0.5)
-        
-        // 确保从等级2开始，不出现简单的算术题
-        let minNumber = isLevel2OrAbove ? max(2, lowerBoundAdjusted) : lowerBoundAdjusted
+        // 根据难度等级设置最小数字
+        let minNumber = difficultyLevel == .level1 ? 1 : 2
         
         // 尝试生成符合条件的题目
-        let maxAttempts = 5 // 增加尝试次数以满足更严格的条件
+        let maxAttempts = 10
         var attempts = 0
         
         repeat {
             switch operation {
             case .addition:
-                if isLevel2OrAbove {
-                    number1 = safeRandom(in: minNumber...range.upperBound)
-                    let minSecondNumber = max(1, 11 - number1)
-                    let maxSecondNumber = range.upperBound - number1 > 0 ? range.upperBound - number1 : 1
-                    if minSecondNumber <= maxSecondNumber {
-                        number2 = safeRandom(in: minSecondNumber...maxSecondNumber)
-                    } else {
-                        number1 = max(1, range.upperBound - 9)
-                        number2 = safeRandom(in: max(1, 11 - number1)...range.upperBound)
-                    }
-                } else {
+                // 加法：确保结果不超过范围上限
+                if difficultyLevel == .level1 {
                     number1 = safeRandom(in: minNumber...range.upperBound)
                     number2 = safeRandom(in: minNumber...range.upperBound)
                     if number1 + number2 > range.upperBound {
                         number2 = range.upperBound - number1
                     }
-                }
-                result = number1 + number2
-            case .subtraction:
-                if isLevel2OrAbove {
-                    number1 = safeRandom(in: max(10, minNumber)...range.upperBound)
-                    let maxSubtractor = number1 - 1
-                    number2 = safeRandom(in: max(1, minNumber)...maxSubtractor)
-                    if number1 == number2 {
-                        number2 = max(1, number2 - 1)
-                    }
                 } else {
+                    // 等级2及以上，确保总和大于10
                     number1 = safeRandom(in: minNumber...range.upperBound)
-                    let minSubtractor = max(1, Int(Double(number1) * (0.3 + difficultyFactor * 0.4)))
-                    number2 = min(number1 - 1, safeRandom(in: minSubtractor...number1))
-                    if number1 == number2 && number1 > minSubtractor {
+                    let minSecondNumber = max(minNumber, 11 - number1)
+                    let maxSecondNumber = range.upperBound - number1
+                    if minSecondNumber <= maxSecondNumber {
+                        number2 = safeRandom(in: minSecondNumber...maxSecondNumber)
+                    } else {
+                        number1 = max(minNumber, range.upperBound - 9)
+                        number2 = safeRandom(in: max(minNumber, 11 - number1)...range.upperBound - number1)
+                    }
+                }
+                
+            case .subtraction:
+                // 减法：确保结果为正数
+                if difficultyLevel == .level1 {
+                    number1 = safeRandom(in: minNumber...range.upperBound)
+                    number2 = safeRandom(in: minNumber...number1)
+                    if number1 == number2 && number1 > minNumber {
                         number2 = number1 - 1
                     }
+                } else {
+                    // 等级2及以上，确保被减数至少为10
+                    number1 = safeRandom(in: max(10, minNumber)...range.upperBound)
+                    number2 = safeRandom(in: minNumber...number1 - 1)
                 }
-                result = number1 - number2
+                
             case .multiplication:
-                // For multiplication, use smaller numbers to keep results within range
-                let maxFactor = Int(sqrt(Double(range.upperBound)))
-                number1 = safeRandom(in: max(1, minNumber)...min(maxFactor, range.upperBound))
-                number2 = safeRandom(in: max(1, minNumber)...min(range.upperBound / max(1, number1), range.upperBound))
-                result = number1 * number2
+                // 乘法：确保结果不超过范围上限，避免过多×1
+                let maxFactor = min(range.upperBound, Int(sqrt(Double(range.upperBound))))
+                
+                // 避免过多×1的题目
+                if Double.random(in: 0...1) < 0.15 { // 15%概率生成×1
+                    number1 = safeRandom(in: 2...maxFactor)
+                    number2 = 1
+                } else {
+                    number1 = safeRandom(in: 2...maxFactor)
+                    number2 = safeRandom(in: 2...min(range.upperBound / number1, maxFactor))
+                }
+                
+                // 确保结果不超过范围
+                if number1 * number2 > range.upperBound {
+                    number2 = range.upperBound / number1
+                    if number2 < 1 {
+                        number1 = safeRandom(in: 2...range.upperBound)
+                        number2 = 1
+                    }
+                }
+                
             case .division:
-                // For division, generate result first, then multiply to get dividend
-                result = safeRandom(in: max(1, minNumber)...range.upperBound)
-                number2 = safeRandom(in: max(1, minNumber)...min(10, range.upperBound)) // Keep divisor reasonable
-                number1 = result * number2 // Ensure exact division
+                // 除法：先生成商，再计算被除数，确保整除
+                let quotient = safeRandom(in: 1...range.upperBound)
+                number2 = safeRandom(in: 2...min(10, range.upperBound)) // 除数2-10，避免÷1
+                number1 = quotient * number2 // 被除数 = 商 × 除数，确保整除
+                
+                // 如果被除数超过范围，重新调整
+                if number1 > range.upperBound {
+                    number2 = safeRandom(in: 2...range.upperBound)
+                    let maxQuotient = range.upperBound / number2
+                    let actualQuotient = safeRandom(in: 1...maxQuotient)
+                    number1 = actualQuotient * number2
+                }
             }
+            
             attempts += 1
-        } while (number1 == 0 || number2 == 0 || result == 0) && attempts < maxAttempts
+        } while (number1 <= 0 || number2 <= 0 || 
+                 (operation == .multiplication && number1 * number2 > range.upperBound) ||
+                 (operation == .division && number1 > range.upperBound)) && attempts < maxAttempts
         
-        // 如果尝试多次后仍不满足条件，进行最后的调整
-        if number1 == 0 || number2 == 0 || result == 0 {
-            if operation == .addition {
-                number1 = max(5, number1)
-                number2 = max(6, number2)
-            } else {
-                number1 = max(10, number1)
-                number2 = max(1, min(number1 - 1, number2))
-            }
-            result = operation == .addition ? number1 + number2 : number1 - number2
+        // 最后的安全检查和调整
+        if number1 <= 0 || number2 <= 0 {
+            number1 = max(minNumber, number1)
+            number2 = max(minNumber, number2)
         }
         
         return Question(number1: number1, number2: number2, operation: operation)
     }
     
     // 生成三数运算题目
-    private static func generateThreeNumberQuestion(in range: ClosedRange<Int>) -> Question {
-        // 根据范围确定当前难度等级
-        let difficultyFactor: Double
-        switch range.upperBound {
-        case 20: difficultyFactor = 0.25 // 等级2
-        case 50: difficultyFactor = 0.5  // 等级3
-        case 100: difficultyFactor = 0.75 // 等级4
-        default: difficultyFactor = 0.25
-        }
+    private static func generateThreeNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
+        let range = difficultyLevel.range
+        let supportedOperations = difficultyLevel.supportedOperations
         
         // 获取当前难度等级的上限
         let upperBound = range.upperBound
         
-        // 根据难度因子调整数字范围
-        let lowerBoundAdjusted = Int(Double(range.lowerBound) + Double(upperBound - range.lowerBound) * difficultyFactor * 0.3)
-        
         // 确保不出现简单的算术题，最小数字至少为2
-        let minNumber = max(2, lowerBoundAdjusted)
+        let minNumber = 2
         
         // 生成三个数字，确保它们不会太大，以便运算过程中不超过上限
         // 对于加法，每个数字最大不超过上限的一半
-        let maxNumberForAddition = upperBound / 2
+        let maxNumberForAddition = upperBound / 3 // 改为三分之一，为三数运算留出空间
         
         var number1 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
         var number2 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
@@ -227,20 +208,46 @@ class QuestionGenerator {
         var operation1: Question.Operation
         var operation2: Question.Operation
         
-        // 随机决定操作类型
-        operation1 = Double.random(in: 0...1) < 0.5 ? .addition : .subtraction
-        operation2 = Double.random(in: 0...1) < 0.5 ? .addition : .subtraction
+        // 根据难度等级选择操作类型
+        if difficultyLevel == .level6 {
+            // 等级6：混合运算，随机选择任意支持的操作
+            operation1 = supportedOperations.randomElement()!
+            operation2 = supportedOperations.randomElement()!
+        } else if difficultyLevel == .level4 || difficultyLevel == .level5 {
+            // 等级4和5：只使用乘除法
+            operation1 = supportedOperations.randomElement()! // 从[multiplication, division]中选择
+            operation2 = supportedOperations.randomElement()! // 从[multiplication, division]中选择
+        } else {
+            // 等级2和3：只使用加减法
+            operation1 = Double.random(in: 0...1) < 0.5 ? .addition : .subtraction
+            operation2 = Double.random(in: 0...1) < 0.5 ? .addition : .subtraction
+        }
         
         // 尝试生成符合条件的题目
-        let maxAttempts = 5 // 增加尝试次数以满足更严格的条件
+        let maxAttempts = 10 // 增加尝试次数以满足更严格的条件
         var attempts = 0
         var intermediateResult: Int
         var finalResult: Int
         
         repeat {
-            // 对于减法操作，确保被减数大于等于10
-            if operation1 == .subtraction {
+            // 根据操作类型调整数字生成策略
+            switch operation1 {
+            case .addition:
+                // 加法：保持原有逻辑
+                break
+            case .subtraction:
+                // 减法：确保被减数大于等于10
                 number1 = safeRandom(in: max(10, minNumber)...range.upperBound)
+            case .multiplication:
+                // 乘法：使用较小的数字避免结果过大
+                let maxFactor = min(10, Int(sqrt(Double(range.upperBound))))
+                number1 = safeRandom(in: 2...maxFactor)
+                number2 = safeRandom(in: 2...min(range.upperBound / max(1, number1), maxFactor))
+            case .division:
+                // 除法：先生成商，再计算被除数
+                let quotient = safeRandom(in: 1...min(range.upperBound, 20))
+                number2 = safeRandom(in: 2...min(10, range.upperBound))
+                number1 = quotient * number2
             }
             
             // 确保没有操作数为0
@@ -249,7 +256,52 @@ class QuestionGenerator {
             number3 = max(number3, minNumber)
             
             // 计算中间结果
-            intermediateResult = operation1 == .addition ? number1 + number2 : number1 - number2
+            switch operation1 {
+            case .addition:
+                intermediateResult = number1 + number2
+            case .subtraction:
+                intermediateResult = number1 - number2
+            case .multiplication:
+                intermediateResult = number1 * number2
+            case .division:
+                intermediateResult = number2 != 0 ? number1 / number2 : number1
+            }
+            
+            // 对于第二个操作，根据操作类型调整number3
+            switch operation2 {
+            case .addition, .subtraction:
+                // 加减法：保持原有逻辑
+                break
+            case .multiplication:
+                // 乘法：确保number3不会导致结果过大
+                let maxMultiplier = min(10, range.upperBound / max(1, intermediateResult))
+                if maxMultiplier >= 2 {
+                    number3 = safeRandom(in: 2...maxMultiplier)
+                } else {
+                    number3 = 2
+                    operation2 = .addition // 改为加法避免结果过大
+                }
+            case .division:
+                // 除法：确保能整除
+                if intermediateResult > 1 {
+                    // 找到intermediateResult的因数作为除数
+                    var divisors: [Int] = []
+                    for i in 2...min(10, intermediateResult) {
+                        if intermediateResult % i == 0 {
+                            divisors.append(i)
+                        }
+                    }
+                    if !divisors.isEmpty {
+                        number3 = divisors.randomElement()!
+                    } else {
+                        number3 = 2
+                        operation2 = .addition // 改为加法
+                    }
+                } else {
+                    number3 = 2
+                    operation2 = .addition // 改为加法
+                }
+            }
             
             // 如果中间结果为负数，调整第一个操作或数字
             if intermediateResult < 0 {
@@ -354,7 +406,16 @@ class QuestionGenerator {
             }
             
             // 计算最终结果
-            finalResult = operation2 == .addition ? intermediateResult + number3 : intermediateResult - number3
+            switch operation2 {
+            case .addition:
+                finalResult = intermediateResult + number3
+            case .subtraction:
+                finalResult = intermediateResult - number3
+            case .multiplication:
+                finalResult = intermediateResult * number3
+            case .division:
+                finalResult = number3 != 0 ? intermediateResult / number3 : intermediateResult
+            }
             
             // 确保最终结果不超过上限
             if finalResult > upperBound {
@@ -464,16 +525,26 @@ class QuestionGenerator {
         
         // 最终验证：确保使用Question的correctAnswer计算逻辑不会产生负数
         var testResult = number1
-        if operation1 == .addition {
+        switch operation1 {
+        case .addition:
             testResult += number2
-        } else {
+        case .subtraction:
             testResult -= number2
+        case .multiplication:
+            testResult *= number2
+        case .division:
+            testResult = number2 != 0 ? testResult / number2 : testResult
         }
         
-        if operation2 == .addition {
+        switch operation2 {
+        case .addition:
             testResult += number3
-        } else {
+        case .subtraction:
             testResult -= number3
+        case .multiplication:
+            testResult *= number3
+        case .division:
+            testResult = number3 != 0 ? testResult / number3 : testResult
         }
         
         // 如果最终结果为负数，调整操作或数字
@@ -482,10 +553,15 @@ class QuestionGenerator {
             operation2 = .addition
             // 重新计算结果确认
             testResult = number1
-            if operation1 == .addition {
+            switch operation1 {
+            case .addition:
                 testResult += number2
-            } else {
+            case .subtraction:
                 testResult -= number2
+            case .multiplication:
+                testResult *= number2
+            case .division:
+                testResult = number2 != 0 ? testResult / number2 : testResult
             }
             testResult += number3
             
