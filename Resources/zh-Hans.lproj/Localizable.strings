@@ -81,7 +81,7 @@
 
 "solution.borrowing_ten.steps" = "借十法解析：\n%d - %d = ?\n\n步骤1：将%d分解为%d和%d\n步骤2：因为%d小于%d，所以从十位借1得到%d\n步骤3：%d - %d = %d\n步骤4：%d + %d = %d\n\n所以，%d - %d = %d";
 
-"solution.making_ten.steps" = "凑十法解析：\n%d + %d = ?\n\n步骤1：找出%d与10的差值：10 - %d = %d\n步骤2：将%d分解为%d和%d\n步骤3：%d + %d = 10\n步骤4：10 + %d = %d\n\n所以，%d + %d = %d";
+"solution.making_ten.steps" = "凑十法解析：\n%d + %d = ?\n\n步骤1：看大数%d，需要%d凑成10\n步骤2：拆小数%d，分解为%d和%d\n步骤3：%d + %d = 10\n步骤4：10 + %d = %d\n\n所以，%d + %d = %d";
 
 "solution.leveling_ten.steps" = "平十法解析：\n%d - %d = ?\n\n步骤1：将%d分解为%d和%d\n步骤2：%d - %d = 10\n步骤3：10 - %d = %d\n\n所以，%d - %d = %d";
 

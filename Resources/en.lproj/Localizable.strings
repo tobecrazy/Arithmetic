@@ -81,7 +81,7 @@
 
 "solution.borrowing_ten.steps" = "Borrowing Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and %d\nStep 2: Since %d is less than %d, borrow 1 from tens place to get %d\nStep 3: %d - %d = %d\nStep 4: %d + %d = %d\n\nTherefore, %d - %d = %d";
 
-"solution.making_ten.steps" = "Making Ten Method:\n%d + %d = ?\n\nStep 1: Find the difference between %d and 10: 10 - %d = %d\nStep 2: Split %d into %d and %d\nStep 3: %d + %d = 10\nStep 4: 10 + %d = %d\n\nTherefore, %d + %d = %d";
+"solution.making_ten.steps" = "Making Ten Method:\n%d + %d = ?\n\nStep 1: Look at the larger number %d, it needs %d to make 10\nStep 2: Split the smaller number %d into %d and %d\nStep 3: %d + %d = 10\nStep 4: 10 + %d = %d\n\nTherefore, %d + %d = %d";
 
 "solution.leveling_ten.steps" = "Leveling Ten Method:\n%d - %d = ?\n\nStep 1: Split %d into %d and %d\nStep 2: %d - %d = 10\nStep 3: 10 - %d = %d\n\nTherefore, %d - %d = %d";
 

@@ -118,21 +118,37 @@ class Question: NSObject, NSCoding, Identifiable {
         if operations.count == 1 {
             switch operations[0] {
             case .addition:
-                // 凑十法：适用于个位数相加且和大于10的情况
-                if numbers[0] < 10 && numbers[1] < 10 && numbers[0] + numbers[1] > 10 {
-                    return .makingTen
+                // 凑十法：适用于两个个位数相加且和大于10的情况
+                // 或者一个数小于10，另一个数也相对较小，且和超过10
+                let num1 = numbers[0]
+                let num2 = numbers[1]
+                let sum = num1 + num2
+                
+                if sum > 10 && sum <= 20 {
+                    let larger = max(num1, num2)
+                    let smaller = min(num1, num2)
+                    let neededToMakeTen = 10 - larger
+                    
+                    // 检查是否可以应用凑十法：较大数小于10，且较小数足够分解
+                    if larger < 10 && neededToMakeTen > 0 && neededToMakeTen <= smaller {
+                        return .makingTen
+                    }
                 }
+                
             case .subtraction:
-                // 破十法：适用于被减数的个位小于减数的个位
-                if numbers[0] > 10 && numbers[1] < 10 && (numbers[0] % 10) < numbers[1] {
+                let num1 = numbers[0]
+                let num2 = numbers[1]
+                
+                // 破十法：适用于被减数的个位小于减数的情况
+                if num1 > 10 && num2 < 10 && (num1 % 10) < num2 {
                     return .breakingTen
                 }
                 // 借十法：适用于个位数不够减的情况
-                else if numbers[0] % 10 < numbers[1] % 10 {
+                else if num1 > 10 && num2 <= 10 && (num1 % 10) < num2 {
                     return .borrowingTen
                 }
                 // 平十法：适用于从特定数字中减去接近它的数
-                else if numbers[0] - numbers[1] < 10 && numbers[1] > 8 {
+                else if num1 > 10 && num2 >= 10 && num1 - num2 < 10 {
                     return .levelingTen
                 }
             }
@@ -178,7 +194,6 @@ class Question: NSObject, NSCoding, Identifiable {
             
             // 检查是否适合使用破十法（被减数的个位小于减数）
             if num1 > 10 && num2 < 10 && (num1 % 10) < num2 {
-                let tens = (num1 / 10) * 10  // 十位部分（如13的10）
                 let ones = num1 % 10  // 个位部分（如13的3）
                 let tenMinusSubtrahend = 10 - num2  // 10减去减数的结果（如10-9=1）
                 let finalResult = tenMinusSubtrahend + ones  // 最终结果（如1+3=4）
@@ -254,7 +269,7 @@ class Question: NSObject, NSCoding, Identifiable {
             let num2 = numbers[1]
             let result = num1 + num2
             
-            // 凑十法逻辑：拆小数，补大数，凑成10，加剩数
+            // 凑十法逻辑：看大数拆小数，凑成十再加余
             // 1. 确定较大数和较小数
             // 2. 计算较大数需要多少才能凑成10
             // 3. 从较小数中拆出这个数量来补大数
@@ -266,15 +281,31 @@ class Question: NSObject, NSCoding, Identifiable {
             let remainderFromSmaller = smaller - neededToMakeTen  // 较小数拆出部分后的剩余
             
             // 验证凑十法是否适用（较小数必须大于等于所需的补充数）
-            if neededToMakeTen > 0 && neededToMakeTen <= smaller {
-                return "solution.making_ten.steps".localizedFormat(
-                    num1, num2,                           // %d + %d = ?
-                    larger, larger, neededToMakeTen,      // 找出%d与10的差值：10 - %d = %d
-                    smaller, neededToMakeTen, remainderFromSmaller,  // 将%d分解为%d和%d
-                    larger, neededToMakeTen,              // %d + %d = 10
-                    remainderFromSmaller, result,         // 10 + %d = %d
-                    num1, num2, result                    // 所以，%d + %d = %d
-                )
+            if neededToMakeTen > 0 && neededToMakeTen <= smaller && remainderFromSmaller >= 0 {
+                // 根据当前语言选择正确的格式
+                let currentLanguage = LocalizationManager.shared.currentLanguage
+                
+                if currentLanguage == .chinese {
+                    // 中文解析 - 正确的凑十法逻辑：看大数拆小数
+                    return String(format: "凑十法解析：\n%d + %d = ?\n\n步骤1：看大数%d，需要%d凑成10\n步骤2：拆小数%d，分解为%d和%d\n步骤3：%d + %d = 10\n步骤4：10 + %d = %d\n\n所以，%d + %d = %d",
+                        num1, num2,                           // %d + %d = ?
+                        larger, neededToMakeTen,              // 看大数%d，需要%d凑成10
+                        smaller, neededToMakeTen, remainderFromSmaller,  // 拆小数%d，分解为%d和%d
+                        larger, neededToMakeTen,              // %d + %d = 10
+                        remainderFromSmaller, result,         // 10 + %d = %d
+                        num1, num2, result                    // 所以，%d + %d = %d
+                    )
+                } else {
+                    // 英文解析
+                    return String(format: "Making Ten Method:\n%d + %d = ?\n\nStep 1: Look at the larger number %d, it needs %d to make 10\nStep 2: Split the smaller number %d into %d and %d\nStep 3: %d + %d = 10\nStep 4: 10 + %d = %d\n\nTherefore, %d + %d = %d",
+                        num1, num2,                           // %d + %d = ?
+                        larger, neededToMakeTen,              // Look at the larger number %d, it needs %d to make 10
+                        smaller, neededToMakeTen, remainderFromSmaller,  // Split the smaller number %d into %d and %d
+                        larger, neededToMakeTen,              // %d + %d = 10
+                        remainderFromSmaller, result,         // 10 + %d = %d
+                        num1, num2, result                    // Therefore, %d + %d = %d
+                    )
+                }
             }
         }
         return "solution.not_applicable".localizedFormat("solution.making_ten".localized)
