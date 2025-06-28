@@ -121,53 +121,104 @@ class QuestionGenerator {
                 }
                 
             case .subtraction:
-                // 减法：确保结果为正数
+                // 减法：确保结果为正数且有意义的差值
                 if difficultyLevel == .level1 {
                     number1 = safeRandom(in: minNumber...range.upperBound)
                     number2 = safeRandom(in: minNumber...number1)
+                    
+                    // 避免相同数字相减，确保差值至少为1
                     if number1 == number2 && number1 > minNumber {
                         number2 = number1 - 1
                     }
+                    // 进一步提高教学价值，避免差值过小
+                    if number1 - number2 < 2 && number1 > minNumber + 1 {
+                        number2 = max(minNumber, number1 - 2)
+                    }
                 } else {
-                    // 等级2及以上，确保被减数至少为10
+                    // 等级2及以上，确保被减数至少为10，差值有意义
                     number1 = safeRandom(in: max(10, minNumber)...range.upperBound)
-                    number2 = safeRandom(in: minNumber...number1 - 1)
+                    let maxSubtractor = number1 - 2 // 确保差值至少为2
+                    number2 = safeRandom(in: minNumber...max(minNumber, maxSubtractor))
+                    
+                    // 避免相同数字相减
+                    if number1 == number2 {
+                        number2 = max(minNumber, number1 - 2)
+                    }
+                    
+                    // 确保差值不会太小，提高计算挑战性
+                    if number1 - number2 < 2 {
+                        number2 = max(minNumber, number1 - safeRandom(in: 2...min(5, number1 - minNumber)))
+                    }
                 }
                 
             case .multiplication:
-                // 乘法：确保结果不超过范围上限，避免过多×1
+                // 乘法：确保结果不超过范围上限，大幅减少×1题目
                 let maxFactor = min(range.upperBound, Int(sqrt(Double(range.upperBound))))
                 
-                // 避免过多×1的题目
-                if Double.random(in: 0...1) < 0.15 { // 15%概率生成×1
+                // 大幅减少×1的题目，提高教学价值
+                if Double.random(in: 0...1) < 0.05 { // 降低到5%概率生成×1
                     number1 = safeRandom(in: 2...maxFactor)
                     number2 = 1
                 } else {
+                    // 优先生成2-9的乘法，避免过于简单的×1
                     number1 = safeRandom(in: 2...maxFactor)
-                    number2 = safeRandom(in: 2...min(range.upperBound / number1, maxFactor))
+                    let minSecondFactor = 2 // 确保第二个因数至少为2
+                    let maxSecondFactor = min(range.upperBound / number1, maxFactor)
+                    
+                    if maxSecondFactor >= minSecondFactor {
+                        number2 = safeRandom(in: minSecondFactor...maxSecondFactor)
+                    } else {
+                        // 如果无法生成合适的第二个因数，调整第一个因数
+                        number1 = safeRandom(in: 2...min(maxFactor, range.upperBound / 2))
+                        number2 = safeRandom(in: 2...min(range.upperBound / number1, maxFactor))
+                    }
                 }
                 
                 // 确保结果不超过范围
                 if number1 * number2 > range.upperBound {
                     number2 = range.upperBound / number1
-                    if number2 < 1 {
-                        number1 = safeRandom(in: 2...range.upperBound)
-                        number2 = 1
+                    if number2 < 2 {
+                        // 如果第二个因数小于2，重新生成更小的第一个因数
+                        number1 = safeRandom(in: 2...min(maxFactor, range.upperBound / 2))
+                        number2 = safeRandom(in: 2...range.upperBound / number1)
                     }
                 }
                 
             case .division:
-                // 除法：先生成商，再计算被除数，确保整除
-                let quotient = safeRandom(in: 1...range.upperBound)
+                // 除法：先生成商，再计算被除数，确保整除且避免相同数字
+                var quotient = safeRandom(in: 2...min(range.upperBound, 10)) // 商至少为2，提高教学价值
                 number2 = safeRandom(in: 2...min(10, range.upperBound)) // 除数2-10，避免÷1
+                
+                // 避免商为1的简单除法，除非是特殊情况
+                if quotient == 1 && Double.random(in: 0...1) > 0.1 { // 90%概率避免商为1
+                    quotient = safeRandom(in: 2...min(range.upperBound, 10))
+                }
+                
                 number1 = quotient * number2 // 被除数 = 商 × 除数，确保整除
+                
+                // 避免被除数等于除数的情况（如6÷6=1）
+                if number1 == number2 {
+                    if quotient < min(range.upperBound, 10) {
+                        quotient += 1
+                        number1 = quotient * number2
+                    } else {
+                        number2 = max(2, number2 - 1)
+                        number1 = quotient * number2
+                    }
+                }
                 
                 // 如果被除数超过范围，重新调整
                 if number1 > range.upperBound {
-                    number2 = safeRandom(in: 2...range.upperBound)
+                    number2 = safeRandom(in: 2...min(range.upperBound, 10))
                     let maxQuotient = range.upperBound / number2
-                    let actualQuotient = safeRandom(in: 1...maxQuotient)
-                    number1 = actualQuotient * number2
+                    quotient = safeRandom(in: 2...max(2, maxQuotient)) // 确保商至少为2
+                    number1 = quotient * number2
+                    
+                    // 再次检查避免相同数字
+                    if number1 == number2 && quotient > 2 {
+                        quotient = max(2, quotient - 1)
+                        number1 = quotient * number2
+                    }
                 }
             }
             
@@ -239,15 +290,39 @@ class QuestionGenerator {
                 // 减法：确保被减数大于等于10
                 number1 = safeRandom(in: max(10, minNumber)...range.upperBound)
             case .multiplication:
-                // 乘法：使用较小的数字避免结果过大
+                // 乘法：使用较小的数字避免结果过大，减少×1概率
                 let maxFactor = min(10, Int(sqrt(Double(range.upperBound))))
-                number1 = safeRandom(in: 2...maxFactor)
-                number2 = safeRandom(in: 2...min(range.upperBound / max(1, number1), maxFactor))
+                
+                // 减少×1的概率，提高教学价值
+                if Double.random(in: 0...1) < 0.05 { // 5%概率生成×1
+                    number1 = safeRandom(in: 2...maxFactor)
+                    number2 = 1
+                } else {
+                    number1 = safeRandom(in: 2...maxFactor)
+                    number2 = safeRandom(in: 2...min(range.upperBound / max(1, number1), maxFactor))
+                }
             case .division:
-                // 除法：先生成商，再计算被除数
-                let quotient = safeRandom(in: 1...min(range.upperBound, 20))
+                // 除法：先生成商，再计算被除数，避免相同数字
+                var quotient = safeRandom(in: 2...min(range.upperBound, 20)) // 商至少为2
                 number2 = safeRandom(in: 2...min(10, range.upperBound))
+                
+                // 避免商为1的简单除法
+                if quotient == 1 && Double.random(in: 0...1) > 0.1 {
+                    quotient = safeRandom(in: 2...min(range.upperBound, 20))
+                }
+                
                 number1 = quotient * number2
+                
+                // 避免被除数等于除数
+                if number1 == number2 {
+                    if quotient < min(range.upperBound, 20) {
+                        quotient += 1
+                        number1 = quotient * number2
+                    } else {
+                        number2 = max(2, number2 - 1)
+                        number1 = quotient * number2
+                    }
+                }
             }
             
             // 确保没有操作数为0
