@@ -13,26 +13,30 @@ struct WrongQuestionsView: View {
     private let wrongQuestionManager = WrongQuestionManager()
     
     var body: some View {
-        VStack {
-            // 标题
-            Text("wrong_questions.title".localized)
-                .font(.adaptiveTitle())
-                .padding()
-            
-            // 难度选择器
-            Picker("wrong_questions.filter_by_level".localized, selection: $selectedLevel) {
-                Text("wrong_questions.all_levels".localized).tag(nil as DifficultyLevel?)
-                ForEach(DifficultyLevel.allCases) { level in
-                    Text(level.localizedName).tag(level as DifficultyLevel?)
+        VStack(spacing: 0) {
+            // 固定顶部区域：标题和难度选择器
+            VStack {
+                // 标题
+                Text("wrong_questions.title".localized)
+                    .font(.adaptiveTitle())
+                    .padding()
+                
+                // 难度选择器
+                Picker("wrong_questions.filter_by_level".localized, selection: $selectedLevel) {
+                    Text("wrong_questions.all_levels".localized).tag(nil as DifficultyLevel?)
+                    ForEach(DifficultyLevel.allCases) { level in
+                        Text(level.localizedName).tag(level as DifficultyLevel?)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .onChange(of: selectedLevel) { _ in
+                    loadWrongQuestions()
                 }
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal)
-            .onChange(of: selectedLevel) { _ in
-                loadWrongQuestions()
-            }
+            .background(Color(.systemBackground))
             
-            // 错题列表
+            // 可滚动的主要内容区域
             if wrongQuestions.isEmpty {
                 VStack {
                     Spacer()
@@ -67,12 +71,15 @@ struct WrongQuestionsView: View {
                             
                             // 显示解析内容
                             if self.expandedQuestionIds.contains(question.id) {
-                                Text(question.currentLanguageSolutionSteps)
-                                    .font(.footnote)
-                                    .padding(8)
-                                    .background(Color.yellow.opacity(0.1))
-                                    .cornerRadius(8)
-                                    .multilineTextAlignment(.leading)
+                                ScrollView {
+                                    Text(question.currentLanguageSolutionSteps)
+                                        .font(.footnote)
+                                        .padding(8)
+                                        .background(Color.yellow.opacity(0.1))
+                                        .cornerRadius(8)
+                                        .multilineTextAlignment(.leading)
+                                }
+                                .frame(maxHeight: 150) // 限制解析内容的最大高度
                             }
                             
                             HStack {
@@ -96,47 +103,51 @@ struct WrongQuestionsView: View {
                 }
             }
             
-            // 底部按钮
-            HStack {
-                Button(action: {
-                    showingDeleteAlert = true
-                }) {
-                    Text("wrong_questions.delete_all".localized)
-                        .foregroundColor(.red)
+            // 固定底部按钮区域
+            VStack {
+                Divider()
+                HStack {
+                    Button(action: {
+                        showingDeleteAlert = true
+                    }) {
+                        Text("wrong_questions.delete_all".localized)
+                            .foregroundColor(.red)
+                    }
+                    .disabled(wrongQuestions.isEmpty)
+                    .alert(isPresented: $showingDeleteAlert) {
+                        Alert(
+                            title: Text("alert.delete_all_title".localized),
+                            message: Text("alert.delete_all_message".localized),
+                            primaryButton: .destructive(Text("alert.delete_confirm".localized)) {
+                                deleteAllWrongQuestions()
+                            },
+                            secondaryButton: .cancel(Text("alert.cancel".localized))
+                        )
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        showingDeleteMasteredAlert = true
+                    }) {
+                        Text("wrong_questions.delete_mastered".localized)
+                            .foregroundColor(.blue)
+                    }
+                    .disabled(wrongQuestions.isEmpty)
+                    .alert(isPresented: $showingDeleteMasteredAlert) {
+                        Alert(
+                            title: Text("alert.delete_mastered_title".localized),
+                            message: Text("alert.delete_mastered_message".localized),
+                            primaryButton: .destructive(Text("alert.delete_confirm".localized)) {
+                                deleteMasteredQuestions()
+                            },
+                            secondaryButton: .cancel(Text("alert.cancel".localized))
+                        )
+                    }
                 }
-                .disabled(wrongQuestions.isEmpty)
-                .alert(isPresented: $showingDeleteAlert) {
-                    Alert(
-                        title: Text("alert.delete_all_title".localized),
-                        message: Text("alert.delete_all_message".localized),
-                        primaryButton: .destructive(Text("alert.delete_confirm".localized)) {
-                            deleteAllWrongQuestions()
-                        },
-                        secondaryButton: .cancel(Text("alert.cancel".localized))
-                    )
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    showingDeleteMasteredAlert = true
-                }) {
-                    Text("wrong_questions.delete_mastered".localized)
-                        .foregroundColor(.blue)
-                }
-                .disabled(wrongQuestions.isEmpty)
-                .alert(isPresented: $showingDeleteMasteredAlert) {
-                    Alert(
-                        title: Text("alert.delete_mastered_title".localized),
-                        message: Text("alert.delete_mastered_message".localized),
-                        primaryButton: .destructive(Text("alert.delete_confirm".localized)) {
-                            deleteMasteredQuestions()
-                        },
-                        secondaryButton: .cancel(Text("alert.cancel".localized))
-                    )
-                }
+                .padding()
             }
-            .padding()
+            .background(Color(.systemBackground))
         }
         .onAppear {
             loadWrongQuestions()

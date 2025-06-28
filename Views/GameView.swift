@@ -154,12 +154,15 @@ struct GameView: View {
                             
                             // 显示解析内容
                             if viewModel.showSolutionSteps {
-                                Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
-                                    .font(.adaptiveBody())
-                                    .padding()
-                                    .background(Color.yellow.opacity(0.1))
-                                    .cornerRadius(.adaptiveCornerRadius)
-                                    .multilineTextAlignment(.leading)
+                                ScrollView {
+                                    Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
+                                        .font(.adaptiveBody())
+                                        .padding()
+                                        .background(Color.yellow.opacity(0.1))
+                                        .cornerRadius(.adaptiveCornerRadius)
+                                        .multilineTextAlignment(.leading)
+                                }
+                                .frame(maxHeight: 200) // 限制解析内容的最大高度
                             }
                             
                             // Next Question button
@@ -481,12 +484,15 @@ struct GameView: View {
                                 
                                 // 显示解析内容
                                 if viewModel.showSolutionSteps {
-                                    Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
-                                        .font(.adaptiveBody())
-                                        .padding()
-                                        .background(Color.yellow.opacity(0.1))
-                                        .cornerRadius(.adaptiveCornerRadius)
-                                        .multilineTextAlignment(.leading)
+                                    ScrollView {
+                                        Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
+                                            .font(.adaptiveBody())
+                                            .padding()
+                                            .background(Color.yellow.opacity(0.1))
+                                            .cornerRadius(.adaptiveCornerRadius)
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                    .frame(maxHeight: 150) // iPad横屏时稍微小一点
                                 }
                                 
                                 // Next Question button
