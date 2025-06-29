@@ -277,7 +277,7 @@ class QuestionGenerator {
         // 尝试生成符合条件的题目
         let maxAttempts = 10 // 增加尝试次数以满足更严格的条件
         var attempts = 0
-        var intermediateResult: Int
+        var intermediateResult: Int = 0
         var finalResult: Int
         
         repeat {
