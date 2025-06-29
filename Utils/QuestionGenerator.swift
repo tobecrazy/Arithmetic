@@ -302,25 +302,54 @@ class QuestionGenerator {
                     number2 = safeRandom(in: 2...min(range.upperBound / max(1, number1), maxFactor))
                 }
             case .division:
-                // 除法：先生成商，再计算被除数，避免相同数字
-                var quotient = safeRandom(in: 2...min(range.upperBound, 20)) // 商至少为2
-                number2 = safeRandom(in: 2...min(10, range.upperBound))
-                
-                // 避免商为1的简单除法
-                if quotient == 1 && Double.random(in: 0...1) > 0.1 {
-                    quotient = safeRandom(in: 2...min(range.upperBound, 20))
+                // Ensured integer division: number1 = quotient * number2
+                // Aim for quotient >= 2, number2 >= 2
+                var quotient: Int
+                // Try to keep number2 small to allow larger quotients within range
+                number2 = safeRandom(in: 2...min(10, range.upperBound / 2)) // Max divisor 10, ensure number2 isn't too big
+                if number2 == 0 { number2 = 2 } // Safety for range.upperBound / 2 being < 2
+
+                let maxQuotient = range.upperBound / number2
+                if maxQuotient < 2 {
+                    // This case means range.upperBound is very small relative to number2 (e.g. range < 4 for number2=2)
+                    if number2 > 2 { // Try smaller number2 if possible
+                        number2 -= 1
+                        let newMaxQuotient = range.upperBound / number2
+                        if newMaxQuotient >= 2 {
+                            quotient = safeRandom(in: 2...newMaxQuotient)
+                        } else { // Still not enough room
+                            quotient = 1 // Allow quotient of 1 if range is too restrictive
+                        }
+                    } else { // number2 is already 2 (or was 1 and became 0, then 2)
+                         quotient = 1 // Allow quotient of 1
+                    }
+                } else {
+                    quotient = safeRandom(in: 2...maxQuotient)
                 }
                 
                 number1 = quotient * number2
                 
-                // 避免被除数等于除数
-                if number1 == number2 {
-                    if quotient < min(range.upperBound, 20) {
-                        quotient += 1
-                        number1 = quotient * number2
-                    } else {
-                        number2 = max(2, number2 - 1)
-                        number1 = quotient * number2
+                // If number1 > range.upperBound (should be prevented by maxQuotient logic)
+                // For safety, cap number1 if it somehow exceeds.
+                if number1 > range.upperBound {
+                    // Recalculate to fit, ensuring it's a multiple of number2
+                    let finalQuotient = range.upperBound / number2
+                    number1 = finalQuotient * number2
+                }
+                // Ensure number1 is at least minNumber, if capping made it too small (e.g. if range.upperBound is tiny)
+                if number1 < minNumber {
+                    // This scenario suggests very restrictive ranges.
+                    // Fallback to a simple valid division if possible, or change operation.
+                    number2 = 2
+                    number1 = minNumber * number2 // e.g. 2*2 = 4
+                    if number1 > range.upperBound { // If even this is too big, ranges are problematic
+                        // Consider changing operation or signalling an issue
+                        // For now, stick to the values, even if small
+                         number1 = safeRandom(in: minNumber...range.upperBound)
+                         number2 = 1 // Simplest division
+                         if number1 % number2 != 0 { // Should not happen with number2 = 1
+                             operation1 = .addition // Fallback operation
+                         }
                     }
                 }
             }
@@ -330,210 +359,109 @@ class QuestionGenerator {
             number2 = max(number2, minNumber)
             number3 = max(number3, minNumber)
             
-            // 计算中间结果
-            switch operation1 {
-            case .addition:
-                intermediateResult = number1 + number2
-            case .subtraction:
-                intermediateResult = number1 - number2
-            case .multiplication:
-                intermediateResult = number1 * number2
-            case .division:
-                intermediateResult = number2 != 0 ? number1 / number2 : number1
-            }
-            
-            // 对于第二个操作，根据操作类型调整number3
-            switch operation2 {
-            case .addition, .subtraction:
-                // 加减法：保持原有逻辑
-                break
-            case .multiplication:
-                // 乘法：确保number3不会导致结果过大
-                let maxMultiplier = min(10, range.upperBound / max(1, intermediateResult))
-                if maxMultiplier >= 2 {
-                    number3 = safeRandom(in: 2...maxMultiplier)
-                } else {
-                    number3 = 2
-                    operation2 = .addition // 改为加法避免结果过大
+            // Adjustment for number3 if operation2 is division, considering operator precedence
+            if operation2 == .division {
+                let op1Prec = operation1.precedence
+                let op2Prec = operation2.precedence
+
+                var dividendForOp2: Int
+                if op1Prec < op2Prec { // e.g., num1 + (num2 / num3) -> num2 is the dividend
+                    dividendForOp2 = number2
+                } else { // e.g., (num1 op1 num2) / num3 -> (num1 op1 num2) is the dividend
+                    // Calculate num1 op1 num2
+                    switch operation1 {
+                    case .addition: dividendForOp2 = number1 + number2
+                    case .subtraction: dividendForOp2 = number1 - number2
+                    case .multiplication: dividendForOp2 = number1 * number2
+                    case .division: // number1 / number2 has already been ensured to be integer by prior logic
+                        dividendForOp2 = number2 != 0 ? number1 / number2 : 0
+                    }
                 }
-            case .division:
-                // 除法：确保能整除
-                if intermediateResult > 1 {
-                    // 找到intermediateResult的因数作为除数
+
+                // Now, ensure number3 is a proper divisor for dividendForOp2
+                if dividendForOp2 == 0 {
+                    number3 = safeRandom(in: 2...10); if number3 == 0 { number3 = 2 }
+                } else {
                     var divisors: [Int] = []
-                    for i in 2...min(10, intermediateResult) {
-                        if intermediateResult % i == 0 {
-                            divisors.append(i)
+                    let absDividend = abs(dividendForOp2)
+                    if absDividend >= 1 {
+                        for i in 2...min(10, absDividend) { // Prefer divisors >= 2
+                            if absDividend % i == 0 { divisors.append(i) }
                         }
                     }
                     if !divisors.isEmpty {
                         number3 = divisors.randomElement()!
                     } else {
-                        number3 = 2
-                        operation2 = .addition // 改为加法
+                        if dividendForOp2 != 0 { number3 = 1 } // Fallback to 1 if no other divisors
+                        else { number3 = 2; operation2 = .addition }
                     }
-                } else {
-                    number3 = 2
-                    operation2 = .addition // 改为加法
+                    if number3 == 0 { number3 = 1 } // Final safety for number3 != 0
+                }
+            }
+
+            // Calculate finalResult using correct order of operations
+            let num1_calc = number1, num2_calc = number2, num3_calc = number3
+            let op1_calc = operation1, op2_calc = operation2
+
+            if op1_calc.precedence < op2_calc.precedence {
+                var intermediateB_op2_C: Int
+                switch op2_calc {
+                case .multiplication: intermediateB_op2_C = num2_calc * num3_calc
+                case .division: intermediateB_op2_C = num3_calc != 0 ? num2_calc / num3_calc : 0
+                default: intermediateB_op2_C = 0
+                }
+                switch op1_calc {
+                case .addition: finalResult = num1_calc + intermediateB_op2_C
+                case .subtraction: finalResult = num1_calc - intermediateB_op2_C
+                default: finalResult = 0
+                }
+            } else {
+                var intermediateA_op1_B: Int
+                switch op1_calc {
+                case .addition: intermediateA_op1_B = num1_calc + num2_calc
+                case .subtraction: intermediateA_op1_B = num1_calc - num2_calc
+                case .multiplication: intermediateA_op1_B = num1_calc * num2_calc
+                case .division: intermediateA_op1_B = num2_calc != 0 ? num1_calc / num2_calc : 0
+                default: intermediateA_op1_B = 0 // Should not happen with defined operations
+                }
+                switch op2_calc {
+                case .addition: finalResult = intermediateA_op1_B + num3_calc
+                case .subtraction: finalResult = intermediateA_op1_B - num3_calc
+                case .multiplication: finalResult = intermediateA_op1_B * num3_calc
+                case .division: finalResult = num3_calc != 0 ? intermediateA_op1_B / num3_calc : 0
+                default: finalResult = 0 // Should not happen
                 }
             }
             
-            // 如果中间结果为负数，调整第一个操作或数字
-            if intermediateResult < 0 {
-                // 将第一个操作改为加法，或者交换number1和number2
-                if operation1 == .subtraction {
-                    if Double.random(in: 0...1) < 0.5 {
-                        operation1 = .addition
-                        intermediateResult = number1 + number2
-                    } else {
-                        // 交换number1和number2，确保number1 > number2
-                        let temp = number1
-                        number1 = number2
-                        number2 = temp
-                        intermediateResult = number1 - number2
-                    }
-                }
-            }
-            
-            // 确保中间结果不超过上限
-            if intermediateResult > upperBound {
-                // 如果是加法导致超过上限，改为减法
-                if operation1 == .addition {
-                    operation1 = .subtraction
-                    // 确保number1 > number2，避免负数结果
-                    if number1 < number2 {
-                        let temp = number1
-                        number1 = number2
-                        number2 = temp
-                    }
-                    intermediateResult = number1 - number2
-                } else {
-                    // 如果是减法但仍然超过上限（不太可能），减小number1
-                    number1 = safeRandom(in: max(10, minNumber)...min(upperBound, range.upperBound))
-                    number2 = safeRandom(in: minNumber...min(number1 - 1, range.upperBound))
-                    intermediateResult = number1 - number2
-                }
-            }
-            
-            // 避免中间结果为0
-            if intermediateResult == 0 {
-                // 如果中间结果为0，调整number1或number2
-                if operation1 == .addition {
-                    // 如果是加法，增加数字使总和大于10
-                    number1 = max(6, number1)
-                    number2 = max(5, number2)
-                } else {
-                    // 如果是减法，确保number1 != number2
-                    if number1 == number2 {
-                        number1 = max(10, number1 + 1)
-                    }
-                }
-                intermediateResult = operation1 == .addition ? number1 + number2 : number1 - number2
-            }
-            
-            // 对于加法，确保总和大于10
-            if operation1 == .addition && intermediateResult <= 10 {
-                // 调整数字使总和大于10
-                number1 = max(6, number1)
-                number2 = max(5, number2)
-                intermediateResult = number1 + number2
-            }
-            
-            // 对于第二个操作是减法，确保被减数大于等于10
-            if operation2 == .subtraction && intermediateResult < 10 {
-                // 如果中间结果小于10，改为加法或调整数字
-                if Double.random(in: 0...1) < 0.5 {
-                    operation2 = .addition
-                } else {
-                    // 调整前面的数字使中间结果大于等于10
-                    if operation1 == .addition {
-                        number1 = max(number1, 5)
-                        number2 = max(number2, 5)
-                        intermediateResult = number1 + number2
-                    } else {
-                        number1 = max(number1, 10 + number2)
-                        intermediateResult = number1 - number2
-                    }
-                }
-            }
-            
-            // 避免两个相同的数相减
-            if operation2 == .subtraction && intermediateResult == number3 {
-                // 调整number3，避免两个相同的数相减
-                number3 = max(minNumber, number3 - 1)
-            }
-            
-            // 计算最终结果前，确保不会出现负数
-            if operation2 == .subtraction && intermediateResult <= number3 {
-                // 如果是减法且中间结果小于等于number3，会导致负数结果
-                // 改为加法或确保中间结果大于number3
-                if Double.random(in: 0...1) < 0.5 {
-                    operation2 = .addition
-                } else {
-                    // 确保number3小于intermediateResult
-                    if intermediateResult > minNumber {
-                        number3 = safeRandom(in: minNumber..<intermediateResult)
-                    } else {
-                        // 如果intermediateResult <= minNumber，改为加法
-                        operation2 = .addition
-                    }
-                }
-            }
-            
-            // 计算最终结果
-            switch operation2 {
-            case .addition:
-                finalResult = intermediateResult + number3
-            case .subtraction:
-                finalResult = intermediateResult - number3
-            case .multiplication:
-                finalResult = intermediateResult * number3
-            case .division:
-                finalResult = number3 != 0 ? intermediateResult / number3 : intermediateResult
-            }
-            
-            // 确保最终结果不超过上限
+            // Simplified adjustment logic:
+            // Focus on finalResult properties (range, sign, not zero).
+            // The generator might need more attempts or smarter initial number choices
+            // if the previous fine-grained intermediate adjustments are removed.
+
+            // Ensure final result is not too large
             if finalResult > upperBound {
-                if operation2 == .addition {
-                    // 如果加法导致超过上限，改为减法
-                    operation2 = .subtraction
-                    // 确保中间结果 > number3，避免负数结果
-                    if intermediateResult <= number3 {
-                        if intermediateResult > minNumber {
-                            number3 = safeRandom(in: minNumber..<intermediateResult)
-                        } else {
-                            // 如果intermediateResult <= minNumber，调整number1和number2
-                            number1 += 2
-                            intermediateResult = operation1 == .addition ? number1 + number2 : number1 - number2
-                            // 确保中间结果大于minNumber
-                            if intermediateResult > minNumber {
-                                number3 = safeRandom(in: minNumber..<intermediateResult)
-                            } else {
-                                number3 = minNumber
-                                operation2 = .addition
-                            }
-                        }
-                    }
-                    finalResult = intermediateResult - number3
-                } else {
-                    // 如果是减法但仍然超过上限（不太可能），减小number1和number2
-                    number1 = safeRandom(in: max(10, minNumber)...min(upperBound / 2, range.upperBound))
-                    number2 = safeRandom(in: minNumber...min(number1, range.upperBound))
-                    intermediateResult = operation1 == .addition ? number1 + number2 : number1 - number2
-                    
-                    // 重新计算最终结果
-                    if operation2 == .subtraction && intermediateResult <= number3 {
-                        if intermediateResult > minNumber {
-                            number3 = safeRandom(in: minNumber..<intermediateResult)
-                        } else {
-                            operation2 = .addition
-                        }
-                    }
-                    finalResult = operation2 == .addition ? intermediateResult + number3 : intermediateResult - number3
+                // This is a simple catch-all. Ideally, numbers are chosen to prevent this.
+                // If it happens, one strategy is to reduce one of the numbers, or change an operation
+                // from multiply/add to divide/subtract if possible, or just retry the loop.
+                // For now, the loop's `attempts < maxAttempts` will handle this by retrying.
+                // Consider reducing the magnitude of numbers if this happens often.
+                if operation1 == .multiplication || operation2 == .multiplication {
+                     // If multiplication is involved, try making numbers smaller
+                     number1 = max(minNumber, number1 / 2)
+                     number2 = max(minNumber, number2 / 2)
+                     number3 = max(minNumber, number3 / 2)
+                } else if operation1 == .addition || operation2 == .addition {
+                    // If addition, also try making numbers smaller
+                     number1 = max(minNumber, number1 - 1)
+                     number2 = max(minNumber, number2 - 1)
+                     number3 = max(minNumber, number3 - 1)
                 }
+                // Recalculate finalResult after adjustment (or let loop retry)
+                // For simplicity, let the main loop condition catch this and retry.
             }
             
-            // 再次检查最终结果是否为负数（以防万一）
+            // Ensure final result is not negative (unless allowed by difficulty)
+            // Assuming standard levels want positive results for now.
             if finalResult < 0 {
                 // 如果仍然为负数，强制改为加法
                 operation2 = .addition

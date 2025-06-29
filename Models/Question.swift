@@ -33,19 +33,68 @@ class Question: NSObject, NSCoding, Identifiable {
             case .division: return numbers[1] != 0 ? numbers[0] / numbers[1] : 0
             }
         } else if numbers.count == 3 && operations.count == 2 {
-            // 三数运算，从左到右计算
-            var result = numbers[0]
-            for i in 0..<operations.count {
-                switch operations[i] {
-                case .addition: result += numbers[i + 1]
-                case .subtraction: result -= numbers[i + 1]
-                case .multiplication: result *= numbers[i + 1]
-                case .division: result = numbers[i + 1] != 0 ? result / numbers[i + 1] : 0
+            // Three-number operations with order of operations (PEMDAS/BODMAS)
+            // Higher precedence for multiplication and division
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            let num3 = numbers[2]
+            let op1 = operations[0]
+            let op2 = operations[1]
+
+            let op1Precedence = op1.precedence
+            let op2Precedence = op2.precedence
+
+            if op1Precedence < op2Precedence {
+                // Second operation has higher precedence (e.g., A + B * C or A - B / C)
+                var intermediateResult2: Int
+                switch op2 {
+                case .multiplication:
+                    intermediateResult2 = num2 * num3
+                case .division:
+                    intermediateResult2 = num3 != 0 ? num2 / num3 : 0 // Handle division by zero
+                default:
+                    // Should not happen as precedence rules mean op2 must be * or / here
+                    intermediateResult2 = 0
+                }
+
+                switch op1 {
+                case .addition:
+                    return num1 + intermediateResult2
+                case .subtraction:
+                    return num1 - intermediateResult2
+                default:
+                    // Should not happen
+                    return 0
+                }
+            } else {
+                // Operations have same precedence or first operation has higher precedence
+                // (e.g., A * B + C, A / B - C, A + B - C, A * B / C)
+                // Calculate left-to-right
+                var intermediateResult1: Int
+                switch op1 {
+                case .addition:
+                    intermediateResult1 = num1 + num2
+                case .subtraction:
+                    intermediateResult1 = num1 - num2
+                case .multiplication:
+                    intermediateResult1 = num1 * num2
+                case .division:
+                    intermediateResult1 = num2 != 0 ? num1 / num2 : 0 // Handle division by zero
+                }
+
+                switch op2 {
+                case .addition:
+                    return intermediateResult1 + num3
+                case .subtraction:
+                    return intermediateResult1 - num3
+                case .multiplication:
+                    return intermediateResult1 * num3
+                case .division:
+                    return num3 != 0 ? intermediateResult1 / num3 : 0 // Handle division by zero
                 }
             }
-            return result
         }
-        return 0 // 默认返回0（不应该发生）
+        return 0 // Default return for invalid setup (should not happen)
     }
     
     enum Operation: String, CaseIterable, Codable {
@@ -56,6 +105,17 @@ class Question: NSObject, NSCoding, Identifiable {
         
         var symbol: String {
             return self.rawValue
+        }
+
+        // Precedence for order of operations
+        // Higher number means higher precedence
+        var precedence: Int {
+            switch self {
+            case .addition, .subtraction:
+                return 1
+            case .multiplication, .division:
+                return 2
+            }
         }
     }
     
@@ -393,36 +453,48 @@ class Question: NSObject, NSCoding, Identifiable {
             let op1 = operations[0]
             let op2 = operations[1]
             
-            var intermediateResult = 0
-            switch op1 {
-            case .addition:
-                intermediateResult = num1 + num2
-            case .subtraction:
-                intermediateResult = num1 - num2
-            case .multiplication:
-                intermediateResult = num1 * num2
-            case .division:
-                intermediateResult = num2 != 0 ? num1 / num2 : 0
+            let actualFinalResult = self.correctAnswer // Get the already correctly calculated answer
+
+            if op1.precedence < op2.precedence {
+                // Higher precedence for op2 (e.g., A + B*C). Calculate num2 op2 num3 first.
+                var firstPartResult: Int
+                switch op2 {
+                case .multiplication: firstPartResult = num2 * num3
+                case .division: firstPartResult = num3 != 0 ? num2 / num3 : 0
+                default: firstPartResult = 0 // Should not happen
+                }
+
+                // Step 2: num1 op1 (result of firstPart)
+                // finalResult is actualFinalResult
+
+                 return "solution.standard.three_numbers_op2_first".localizedFormat(
+                    num1, op1.symbol, num2, op2.symbol, num3, // Question: %1$d %2$@ %3$d %4$@ %5$d = ?
+                    num2, op2.symbol, num3, firstPartResult, // Step 1: %6$d %7$@ %8$d = %9$d  (B op2 C = res1)
+                    num1, op1.symbol, firstPartResult, actualFinalResult, // Step 2: %10$d %11$@ %12$d = %13$d (A op1 res1 = final)
+                    num1, op1.symbol, num2, op2.symbol, num3, actualFinalResult // Conclusion: %14$d ... = %19$d
+                )
+
+            } else {
+                // Higher or same precedence for op1 (e.g., A*B+C or A+B-C). Calculate num1 op1 num2 first.
+                var firstPartResult: Int
+                switch op1 {
+                case .addition: firstPartResult = num1 + num2
+                case .subtraction: firstPartResult = num1 - num2
+                case .multiplication: firstPartResult = num1 * num2
+                case .division: firstPartResult = num2 != 0 ? num1 / num2 : 0
+                default: firstPartResult = 0 // Should not happen
+                }
+
+                // Step 2: (result of firstPart) op2 num3
+                // finalResult is actualFinalResult
+
+                 return "solution.standard.three_numbers".localizedFormat(
+                    num1, op1.symbol, num2, op2.symbol, num3,
+                    num1, op1.symbol, num2, firstPartResult,
+                    firstPartResult, op2.symbol, num3, actualFinalResult,
+                    num1, op1.symbol, num2, op2.symbol, num3, actualFinalResult
+                )
             }
-            
-            var finalResult = 0
-            switch op2 {
-            case .addition:
-                finalResult = intermediateResult + num3
-            case .subtraction:
-                finalResult = intermediateResult - num3
-            case .multiplication:
-                finalResult = intermediateResult * num3
-            case .division:
-                finalResult = num3 != 0 ? intermediateResult / num3 : 0
-            }
-            
-            return "solution.standard.three_numbers".localizedFormat(
-                num1, op1.symbol, num2, op2.symbol, num3,
-                num1, op1.symbol, num2, intermediateResult,
-                intermediateResult, op2.symbol, num3, finalResult,
-                num1, op1.symbol, num2, op2.symbol, num3, finalResult
-            )
         }
         
         return "solution.standard".localized
