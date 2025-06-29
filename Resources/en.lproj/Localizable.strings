@@ -100,6 +100,7 @@
 "solution.standard.division" = "Standard Division:\nSolve: %d ÷ %d = %d\n\nUsing the standard algorithm:\nDivide %d ÷ %d = %d";
 
 "solution.standard.three_numbers" = "Multi-Step Calculation:\nSolve: %d %@ %d %@ %d = ?\n\nStep 1: First calculate %d %@ %d = %d\nStep 2: Then calculate %d %@ %d = %d\n\nFinal Answer: %d %@ %d %@ %d = %d";
+"solution.standard.three_numbers_op2_first" = "Multi-Step Calculation (Order of Operations):\nSolve: %1$d %2$@ %3$d %4$@ %5$d = ?\n\nStep 1 (higher precedence): %6$d %7$@ %8$d = %9$d\nStep 2: %10$d %11$@ %12$d = %13$d\n\nFinal Answer: %14$d %15$@ %16$d %17$@ %18$d = %19$d";
 
 "solution.three_numbers_level2" = "Level 2 Multi-Step Problem:\nSolve: %d %@ %d %@ %d = ?\n\nFirst Step Explanation:\n%@\n\nSecond Step Explanation:\n%@\n\nFinal Answer: %d %@ %d %@ %d = %d";
 

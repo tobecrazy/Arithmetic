@@ -100,6 +100,7 @@
 "solution.standard.division" = "标准除法解析：\n%d ÷ %d = %d\n\n直接计算%d除以%d等于%d";
 
 "solution.standard.three_numbers" = "标准计算解析：\n%d %@ %d %@ %d = ?\n\n步骤1：计算%d %@ %d = %d\n步骤2：计算%d %@ %d = %d\n\n所以，%d %@ %d %@ %d = %d";
+"solution.standard.three_numbers_op2_first" = "标准计算解析（按运算顺序）：\n题目：%1$d %2$@ %3$d %4$@ %5$d = ？\n\n步骤1（先算乘除）：%6$d %7$@ %8$d = %9$d\n步骤2（后算加减）：%10$d %11$@ %12$d = %13$d\n\n所以，%14$d %15$@ %16$d %17$@ %18$d = %19$d";
 
 "solution.three_numbers_level2" = "等级2三数运算解析：\n%d %@ %d %@ %d = ?\n\n第一步解析：\n%@\n\n第二步解析：\n%@\n\n所以，%d %@ %d %@ %d = %d";
 

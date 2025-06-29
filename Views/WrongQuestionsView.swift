@@ -170,37 +170,26 @@ struct WrongQuestionsView: View {
             // Use the viewContext directly to ensure we're using the correct context
             let entities = try viewContext.fetch(fetchRequest)
             wrongQuestions = entities.map { entity in
-                // 获取解析方法和步骤，如果不存在则使用默认值
-                var solutionMethod = "standard"
-                var solutionSteps = ""
-                
-                do {
-                    if let method = entity.value(forKey: "solutionMethod") as? String {
-                        solutionMethod = method
-                    }
-                    if let steps = entity.value(forKey: "solutionSteps") as? String {
-                        solutionSteps = steps
-                    }
-                } catch {
-                    print("Error accessing solution fields: \(error)")
-                    
-                    // 如果无法访问字段，则尝试生成解析
-                    if let question = entity.toQuestion() {
-                        let level = DifficultyLevel(rawValue: entity.level) ?? .level1
-                        solutionMethod = question.getSolutionMethod(for: level).rawValue
-                        solutionSteps = question.getSolutionSteps(for: level)
-                    }
+                var determinedCorrectAnswer: Int = Int(entity.correctAnswer) // Default to stored
+                var determinedSolutionMethod: String = entity.solutionMethod // Default to stored
+                var determinedSolutionSteps: String = entity.solutionSteps   // Default to stored
+
+                if let question = entity.toQuestion() { // Attempt to reconstruct the Question object
+                    let qLevel = DifficultyLevel(rawValue: entity.level) ?? .level1
+                    determinedCorrectAnswer = question.correctAnswer // Use freshly computed answer
+                    determinedSolutionMethod = question.getSolutionMethod(for: qLevel).rawValue // Use freshly computed method
+                    determinedSolutionSteps = question.getSolutionSteps(for: qLevel) // Use freshly computed steps
                 }
                 
                 return WrongQuestionViewModel(
                     id: entity.id,
                     questionText: entity.questionText,
-                    correctAnswer: Int(entity.correctAnswer),
+                    correctAnswer: determinedCorrectAnswer, // Use the up-to-date correct answer
                     level: DifficultyLevel(rawValue: entity.level) ?? .level1,
                     timesShown: Int(entity.timesShown),
                     timesWrong: Int(entity.timesWrong),
-                    solutionMethod: solutionMethod,
-                    solutionSteps: solutionSteps,
+                    solutionMethod: determinedSolutionMethod,
+                    solutionSteps: determinedSolutionSteps,
                     originalEntity: entity
                 )
             }
@@ -252,38 +241,33 @@ struct WrongQuestionsView: View {
         do {
             let entities = try viewContext.fetch(fetchRequest)
             wrongQuestions = entities.map { entity in
-                // 重新生成解析内容以适应新语言
-                var solutionMethod = "standard"
-                var solutionSteps = ""
-                
-                // 尝试从数据库实体重新创建Question对象并生成解析
+                var determinedCorrectAnswer: Int = Int(entity.correctAnswer) // Default to stored
+                var determinedSolutionMethod: String = entity.solutionMethod // Default to stored
+                var determinedSolutionSteps: String = entity.solutionSteps   // Default to stored
+
+                // 尝试从数据库实体重新创建Question对象并生成解析, 同时更新答案
                 if let question = entity.toQuestion() {
-                    let level = DifficultyLevel(rawValue: entity.level) ?? .level1
-                    solutionMethod = question.getSolutionMethod(for: level).rawValue
-                    solutionSteps = question.getSolutionSteps(for: level)
+                    let qLevel = DifficultyLevel(rawValue: entity.level) ?? .level1
+                    determinedCorrectAnswer = question.correctAnswer // Use freshly computed answer
+                    determinedSolutionMethod = question.getSolutionMethod(for: qLevel).rawValue // Use freshly computed method
+                    determinedSolutionSteps = question.getSolutionSteps(for: qLevel) // Use freshly computed steps
                     
                     #if DEBUG
-                    print("Refreshed solution for question \(entity.questionText): \(solutionSteps)")
+                    print("Refreshed solution and answer for question \(entity.questionText): steps: \(determinedSolutionSteps), answer: \(determinedCorrectAnswer)")
                     #endif
-                } else {
-                    // 如果无法重新创建Question对象，使用存储的内容
-                    if let method = entity.value(forKey: "solutionMethod") as? String {
-                        solutionMethod = method
-                    }
-                    if let steps = entity.value(forKey: "solutionSteps") as? String {
-                        solutionSteps = steps
-                    }
                 }
+                // No explicit 'else' needed here for fallback, as defaults are already set from entity.
+                // If entity.toQuestion() fails, we use the stored values.
                 
                 return WrongQuestionViewModel(
                     id: entity.id,
                     questionText: entity.questionText,
-                    correctAnswer: Int(entity.correctAnswer),
+                    correctAnswer: determinedCorrectAnswer, // Use the up-to-date correct answer
                     level: DifficultyLevel(rawValue: entity.level) ?? .level1,
                     timesShown: Int(entity.timesShown),
                     timesWrong: Int(entity.timesWrong),
-                    solutionMethod: solutionMethod,
-                    solutionSteps: solutionSteps,
+                    solutionMethod: determinedSolutionMethod,
+                    solutionSteps: determinedSolutionSteps,
                     originalEntity: entity
                 )
             }
