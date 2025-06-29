@@ -1,217 +1,376 @@
-# 小学生算术学习应用 (Elementary Arithmetic Learning App)
+<div align="center">
 
-一个使用SwiftUI开发的小学生算术学习应用，帮助学生练习基础的四则运算（加减乘除）。支持中文和英文界面，适配iPhone和iPad设备。
+# 🧮 小学生算术学习应用
+## Elementary Arithmetic Learning App
 
-An elementary arithmetic learning application developed with SwiftUI to help students practice basic four arithmetic operations (addition, subtraction, multiplication, and division). Supports both Chinese and English interfaces, and is optimized for iPhone and iPad devices.
+[![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
+[![Swift](https://img.shields.io/badge/Swift-5.5+-orange.svg)](https://swift.org/)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-3.0+-green.svg)](https://developer.apple.com/xcode/swiftui/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 功能特点 (Features)
+*一个使用SwiftUI开发的智能算术学习应用，帮助小学生掌握基础四则运算*
 
-### 错题收集系统 (Wrong Questions Collection System)
-- 自动收集用户答错的题目
-- 从主页面和结果页面均可访问错题集
-- 按难度等级分类错题
-- 显示错题统计信息（展示次数、错误次数）
-- 支持删除单个错题、所有错题或已掌握的错题
-- 智能识别已掌握的错题（正确率达到70%以上）
-- 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点
+*An intelligent arithmetic learning application built with SwiftUI to help elementary students master basic mathematical operations*
 
-### 错题解析系统 (Wrong Question Analysis System)
-- **加减法解析方法**（适用于等级2 - 20以内加减法）：
-  - **凑十法 (Making Ten Method)**: 适用于个位数相加且和大于10的情况，通过将一个数分解来凑成10，然后加上剩余部分
-  - **破十法 (Breaking Ten Method)**: 适用于减法运算中被减数的个位数字小于减数的个位数字的情况，将被减数分解为10和余数，用10减去减数得到一个结果，再与余数相加。例如：12-6（2<6），将12分解为10和2，10-6=4，4+2=6；13-9（3<9），将13分解为10和3，10-9=1，1+3=4；21-7（1<7），将21分解为20和1，再将20分解为10+10，10-7=3，3+10+1=14
-  - **平十法 (Leveling Ten Method)**: 适用于减法运算，将减数分解为两部分，使得被减数减去第一部分等于10，然后用10减去第二部分得到结果。例如：19-16，将16分解为9和7，19-9=10，10-7=3
-  - **借十法 (Borrowing Ten Method)**: 适用于个位数不够减的情况，从十位借1当10来计算
-- **乘除法解析方法**（适用于等级4和等级5）：
-  - **乘法口诀法 (Multiplication Table Method)**: 基于乘法口诀表的标准乘法计算
-  - **分解乘法 (Decomposition Multiplication)**: 将较大数分解为十位和个位，分别相乘后相加。例如：12×3 = (10+2)×3 = 30+6 = 36
-  - **除法验算法 (Division Verification)**: 通过乘法验证除法结果的正确性
-  - **分组除法 (Grouping Division)**: 通过分组的方式理解除法概念
-- 系统自动选择最适合的解题方法进行解析
-- 对于三数运算，分两步应用这些方法：先计算前两个数，再将结果与第三个数计算
-- 其他等级使用标准计算方法
-- 在答错题目后可立即查看解析
-- 在错题集中可随时查看历史错题的解析
-- 完全支持中英文双语解析内容
-- 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
+[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation)
 
-### 游戏进度保存 (Game Progress Saving)
-- 自动保存游戏进度
-- 支持暂停游戏并在稍后继续
-- 保存当前难度等级、分数、剩余时间和答题进度
-- 显示上次保存的时间和进度信息
+</div>
 
-### 难度等级系统 (Difficulty Level System)
-- **等级1**: 10以内加减法 (Addition & Subtraction 1-10)，20道题 (20 questions)
-- **等级2**: 20以内加减法 (Addition & Subtraction 1-20)，25道题 (25 questions)
-- **等级3**: 50以内加减法 (Addition & Subtraction 1-50)，50道题 (50 questions)
-- **等级4**: 10以内乘除法 (Multiplication & Division 1-10)，20道题 (20 questions)
-- **等级5**: 20以内乘除法 (Multiplication & Division 1-20)，25道题 (25 questions)
-- **等级6**: 100以内混合运算 (Mixed Operations 1-100)，100道题 (100 questions)
+---
 
-### 题目生成系统 (Question Generation System)
-- 根据难度等级生成不同数量的不重复算术题
-- **整数结果保证**：所有算术运算（加减乘除）均产生整数结果，无小数或分数
-- **加减法等级**（等级1-3）：
-  - 等级1：两个数字的加减法运算
-  - 等级2-3：两个数字的加减法运算 + 三个数字的连加、连减或加减混合运算（如 5 + 3 - 2 = ?）
-  - 难度越高，三数运算出现概率越大（等级2：40%，等级3：60%）
-- **乘除法等级**（等级4-5）：
-  - **纯乘除法运算**：等级4和5只生成乘法和除法题目，不包含加减法
-  - 智能生成乘法题目，避免过多×1的简单题目
-  - **整除保证**：所有除法题目采用"商×除数=被除数"的逆向生成方式，确保100%整除，无小数结果
-  - 等级4：基于乘法口诀表的10以内乘除法（两数和三数运算均为乘除法）
-  - 等级5：包含分解乘法的20以内乘除法（两数和三数运算均为乘除法）
-- **混合运算等级**（等级6）：
-  - **两数运算**：包含加减法或乘除法的题目
-  - **三数运算**：包含加减乘除四种运算的混合题目，如：8 × 2 + 5 = ?、20 ÷ 4 - 3 = ?、6 + 4 × 2 = ?
-  - **智能运算组合**：确保混合运算中每步计算都产生合理的整数结果
-  - **除法整除保证**：三数运算中的除法通过因数分解确保整除性
-  - **运算顺序**：严格遵循先乘除后加减的运算顺序计算三数混合运算题目的答案及解析步骤。
-  - **除法整除强化**：进一步强化了三数运算中所有除法步骤（无论是第一步还是第二步运算，且无论运算顺序如何）的整除逻辑，确保中间和最终结果均为整数。
-- 确保所有运算结果不为负数
-- 确保所有运算过程中的中间结果和最终结果不超过当前难度等级的上限
-- **智能题目质量控制**：
-  - **乘法优化**：×1题目占比降至5%，大幅提高教学价值
-  - **除法优化**：完全避免÷1，除数范围2-10，避免相同数字除法（如6÷6=1）
-  - **减法优化**：避免相同数字相减，确保差值至少为2，提高计算挑战性
-  - **商值控制**：90%概率避免商为1的简单除法，优先生成有意义的计算题目
-  - 运算结果严格控制在各等级数值范围内
+## 📋 目录 (Table of Contents)
 
-### 计分系统 (Scoring System)
-- 根据难度等级设置不同的分值：
-  - **等级1**: 每题5分，总分100分 (20题 × 5分)
-  - **等级2**: 每题4分，总分100分 (25题 × 4分)
-  - **等级3**: 每题2分，总分100分 (50题 × 2分)
-  - **等级4**: 每题5分，总分100分 (20题 × 5分)
-  - **等级5**: 每题4分，总分100分 (25题 × 4分)
-  - **等级6**: 每题1分，总分100分 (100题 × 1分)
-- 答对得分，答错不得分
-- 实时显示当前得分
+- [✨ 功能特点 (Features)](#-功能特点-features)
+- [🚀 快速开始 (Quick Start)](#-快速开始-quick-start)
+- [🎯 难度等级系统 (Difficulty Levels)](#-难度等级系统-difficulty-levels)
+- [📥 安装说明 (Installation)](#-安装说明-installation)
+- [📖 使用说明 (Usage)](#-使用说明-usage)
+- [🏗️ 技术实现 (Technical Implementation)](#️-技术实现-technical-implementation)
+- [📁 项目结构 (Project Structure)](#-项目结构-project-structure)
+- [⚙️ 系统要求 (Requirements)](#️-系统要求-requirements)
+- [🔄 最近更新 (Recent Updates)](#-最近更新-recent-updates)
+- [🤝 贡献指南 (Contributing)](#-贡献指南-contributing)
+- [📄 许可证 (License)](#-许可证-license)
 
-### 时间管理系统 (Time Management System)
-- 可配置限制时间：3-30分钟
-- 显示倒计时器
-- 时间到自动结束答题并计算成绩
-- 重新开始游戏时自动重置计时器
+---
 
-### 输入验证系统 (Input Validation System)
-- 仅允许输入数字字符
-- 自动过滤非数字输入
-- 支持数字键盘和外部键盘输入
+## ✨ 功能特点 (Features)
 
-### 语言设置 (Language Settings)
-- 支持中文和英文界面
-- 可随时切换语言
+<div align="center">
 
-### 设备适配 (Device Adaptation)
-- 支持iPhone和iPad设备
-- 针对iPad的横屏模式进行了特别优化
-- 响应式布局设计
+| 🎯 核心功能 | 🧠 智能系统 | 🌐 用户体验 |
+|------------|------------|------------|
+| 6级难度体系 | 错题收集分析 | 中英文双语 |
+| 四则运算练习 | 8种解题方法 | 设备自适应 |
+| 实时计分系统 | 进度自动保存 | 响应式设计 |
 
-## 安装说明 (Installation)
+</div>
 
-1. 确保你已安装最新版本的Xcode (13.0+)
-2. 克隆此仓库到本地:
+### 🔍 错题收集系统 (Wrong Questions Collection System)
+- **智能收集** - 自动收集用户答错的题目
+- **多入口访问** - 从主页面和结果页面均可访问错题集
+- **分类管理** - 按难度等级分类错题
+- **统计分析** - 显示错题统计信息（展示次数、错误次数）
+- **灵活删除** - 支持删除单个错题、所有错题或已掌握的错题
+- **智能识别** - 自动识别已掌握的错题（正确率达到70%以上）
+- **优先练习** - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点
+
+### 🧠 错题解析系统 (Wrong Question Analysis System)
+
+#### 📐 加减法解析方法（适用于等级2 - 20以内加减法）
+- **🔟 凑十法 (Making Ten Method)** 
+  - 适用于个位数相加且和大于10的情况
+  - 通过将一个数分解来凑成10，然后加上剩余部分
+- **💥 破十法 (Breaking Ten Method)** 
+  - 适用于减法运算中被减数的个位数字小于减数的个位数字的情况
+  - 将被减数分解为10和余数，用10减去减数得到一个结果，再与余数相加
+- **📊 平十法 (Leveling Ten Method)** 
+  - 适用于减法运算，将减数分解为两部分
+  - 使得被减数减去第一部分等于10，然后用10减去第二部分得到结果
+- **🔄 借十法 (Borrowing Ten Method)** 
+  - 适用于个位数不够减的情况，从十位借1当10来计算
+
+#### 🔢 乘除法解析方法（适用于等级4和等级5）
+- **📚 乘法口诀法 (Multiplication Table Method)** - 基于乘法口诀表的标准乘法计算
+- **🧩 分解乘法 (Decomposition Multiplication)** - 将较大数分解为十位和个位，分别相乘后相加
+- **✅ 除法验算法 (Division Verification)** - 通过乘法验证除法结果的正确性
+- **👥 分组除法 (Grouping Division)** - 通过分组的方式理解除法概念
+
+> **💡 智能解析特点**
+> - 系统自动选择最适合的解题方法进行解析
+> - 对于三数运算，分两步应用这些方法：先计算前两个数，再将结果与第三个数计算
+> - 完全支持中英文双语解析内容
+> - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
+
+### 💾 游戏进度保存 (Game Progress Saving)
+- **自动保存** - 自动保存游戏进度
+- **断点续练** - 支持暂停游戏并在稍后继续
+- **全面记录** - 保存当前难度等级、分数、剩余时间和答题进度
+- **进度显示** - 显示上次保存的时间和进度信息
+
+### 🎲 题目生成系统 (Question Generation System)
+- **不重复生成** - 根据难度等级生成不同数量的不重复算术题
+- **🔢 整数结果保证** - 所有算术运算（加减乘除）均产生整数结果，无小数或分数
+- **📈 智能难度递进** - 难度越高，三数运算出现概率越大
+- **🎯 智能题目质量控制**：
+  - **乘法优化** - ×1题目占比降至5%，大幅提高教学价值
+  - **除法优化** - 完全避免÷1，除数范围2-10，避免相同数字除法
+  - **减法优化** - 避免相同数字相减，确保差值至少为2，提高计算挑战性
+  - **商值控制** - 90%概率避免商为1的简单除法，优先生成有意义的计算题目
+
+### ⏱️ 时间管理系统 (Time Management System)
+- **灵活时间设置** - 可配置限制时间：3-30分钟
+- **实时倒计时** - 显示倒计时器
+- **自动结束** - 时间到自动结束答题并计算成绩
+- **智能重置** - 重新开始游戏时自动重置计时器
+
+### 🌐 多语言支持 (Language Settings)
+- **双语界面** - 支持中文和英文界面
+- **实时切换** - 可随时切换语言
+- **完整本地化** - 包括解析内容的完整双语支持
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 🚀 快速开始 (Quick Start)
+
+### 📱 基本使用流程
+1. **选择难度** - 在主页面选择适合的难度等级（1-6级）
+2. **设置时间** - 配置答题时间（3-30分钟）
+3. **选择语言** - 选择界面语言（中文或英文）
+4. **开始练习** - 点击"开始游戏"按钮开始答题
+5. **查看解析** - 答错题目后可立即查看详细解析
+6. **错题复习** - 通过错题集功能巩固薄弱环节
+
+### 🎯 推荐学习路径
+```
+等级1 (10以内加减法) → 等级2 (20以内加减法) → 等级3 (50以内加减法)
+                                    ↓
+等级6 (100以内混合运算) ← 等级5 (20以内乘除法) ← 等级4 (10以内乘除法)
+```
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 🎯 难度等级系统 (Difficulty Levels)
+
+<div align="center">
+
+| 等级 | 运算类型 | 题目数量 | 每题分值 | 总分 | 特色功能 |
+|------|----------|----------|----------|------|----------|
+| **Level 1** | 10以内加减法 | 20题 | 5分 | 100分 | 基础入门 |
+| **Level 2** | 20以内加减法 | 25题 | 4分 | 100分 | 🔟 四种解法 |
+| **Level 3** | 50以内加减法 | 50题 | 2分 | 100分 | 进阶练习 |
+| **Level 4** | 10以内乘除法 | 20题 | 5分 | 100分 | 🔢 口诀基础 |
+| **Level 5** | 20以内乘除法 | 25题 | 4分 | 100分 | 🧩 分解方法 |
+| **Level 6** | 100以内混合运算 | 100题 | 1分 | 100分 | 🔄 综合应用 |
+
+</div>
+
+### 📊 运算类型详解
+
+#### 🟢 加减法等级（Level 1-3）
+- **Level 1**: 两个数字的基础加减法运算
+- **Level 2-3**: 
+  - 两个数字的加减法运算
+  - 三个数字的连加、连减或加减混合运算（如 `5 + 3 - 2 = ?`）
+  - 难度递进：Level 2（40%三数运算）→ Level 3（60%三数运算）
+
+#### 🔵 乘除法等级（Level 4-5）
+- **纯乘除法运算** - 只生成乘法和除法题目，不包含加减法
+- **整除保证** - 所有除法题目采用"商×除数=被除数"的逆向生成方式，确保100%整除
+- **Level 4**: 基于乘法口诀表的10以内乘除法
+- **Level 5**: 包含分解乘法的20以内乘除法
+
+#### 🟡 混合运算等级（Level 6）
+- **两数运算**: 包含加减法或乘除法的题目
+- **三数运算**: 包含加减乘除四种运算的混合题目
+- **运算顺序**: 严格遵循先乘除后加减的运算顺序
+- **智能组合**: 确保混合运算中每步计算都产生合理的整数结果
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 📥 安装说明 (Installation)
+
+### 🛠️ 开发环境要求
+- **Xcode**: 13.0+ 
+- **iOS**: 15.0+
+- **Swift**: 5.5+
+- **SwiftUI**: 3.0+
+
+### 📦 安装步骤
+
+1. **克隆仓库**
    ```bash
    git clone https://github.com/tobecrazy/Arithmetic.git
+   cd Arithmetic
    ```
-3. 打开Arithmetic.xcodeproj文件
-4. 选择目标设备（iPhone或iPad模拟器或实机）
-5. 点击运行按钮或按下Cmd+R开始构建和运行应用
 
-## 技术实现 (Technical Implementation)
+2. **打开项目**
+   ```bash
+   open Arithmetic.xcodeproj
+   ```
 
-- **架构模式**: MVVM (Model-View-ViewModel)
+3. **选择目标设备**
+   - iPhone模拟器或实机
+   - iPad模拟器或实机（已优化横屏模式）
+
+4. **构建运行**
+   - 点击运行按钮或按下 `Cmd+R`
+   - 等待构建完成并自动启动应用
+
+### 🔧 故障排除
+- 确保Xcode版本满足要求
+- 检查iOS部署目标设置
+- 清理构建缓存：`Product → Clean Build Folder`
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 📖 使用说明 (Usage Instructions)
+
+### 🎮 游戏操作流程
+
+1. **🏠 主页操作**
+   - 选择难度等级（1-6级）
+   - 设置答题时间（3-30分钟）
+   - 选择界面语言（中文/英文）
+   - 点击"开始游戏"或"错题集"
+
+2. **📝 答题页面**
+   - 查看题目并输入答案
+   - 点击"提交"按钮确认答案
+   - 答错时可点击"查看解析"查看详细步骤
+   - 实时查看得分和剩余时间
+
+3. **📊 结果页面**
+   - 查看最终得分和评价
+   - 点击"错题集"查看本次错题
+   - 选择"重新开始"或"返回主页"
+
+4. **📚 错题集管理**
+   - 按难度等级筛选错题
+   - 查看错题的详细解析
+   - 删除已掌握的题目
+   - 清空所有错题记录
+
+### 🎯 学习建议
+
+- **循序渐进** - 从低等级开始，逐步提高难度
+- **错题重练** - 重点关注错题集，反复练习薄弱环节
+- **理解解析** - 仔细阅读解题步骤，掌握解题方法
+- **定期复习** - 利用进度保存功能，保持学习连续性
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 🏗️ 技术实现 (Technical Implementation)
+
+### 🏛️ 架构设计
+- **设计模式**: MVVM (Model-View-ViewModel)
 - **UI框架**: SwiftUI
-- **数据持久化**: CoreData
-- **本地化**: 使用标准的iOS本地化机制
-- **响应式设计**: 使用GeometryReader和环境值适配不同设备和方向
-- **导航管理**: 使用自定义导航工具实现视图间的无缝导航
+- **数据持久化**: Core Data
+- **本地化**: iOS标准本地化机制
+- **响应式设计**: GeometryReader + 环境值适配
 
-## 项目结构 (Project Structure)
+### 🧮 核心算法
+
+#### 🎲 智能题目生成
+```swift
+// 题目生成核心逻辑
+- 不重复算法：使用Set确保题目唯一性
+- 整数保证：除法采用"商×除数=被除数"逆向生成
+- 质量控制：智能权重系统避免简单题目
+- 难度递进：基于概率的三数运算生成
+```
+
+#### 🔍 解题方法选择
+```swift
+// 解题方法智能选择
+- 基于题目特征自动选择最适合的解题方法
+- 支持8种不同的解题策略
+- 三数运算分步解析
+- 完整的中英文解析生成
+```
+
+### 💾 数据管理
+
+#### Core Data 实体设计
+- **WrongQuestionEntity** - 错题数据存储
+- **GameProgressEntity** - 游戏进度保存
+- **解析数据** - 包含完整的解题步骤信息
+
+#### 本地化系统
+- **双语资源** - `zh-Hans.lproj` / `en.lproj`
+- **动态切换** - 运行时语言切换支持
+- **完整覆盖** - UI文本和解析内容全面本地化
+
+### 📱 设备适配
+- **响应式布局** - 自适应iPhone/iPad不同屏幕尺寸
+- **横屏优化** - iPad横屏模式特别优化
+- **字体适配** - 基于设备类型的自适应字体系统
+- **输入优化** - 数字键盘和外部键盘双重支持
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 📁 项目结构 (Project Structure)
 
 ```
 Arithmetic/
-├── App/
-│   └── ArithmeticApp.swift
-├── Views/
-│   ├── ContentView.swift
-│   ├── GameView.swift
-│   ├── ResultView.swift
-│   ├── WrongQuestionsView.swift
-│   └── LanguageSelectorView.swift
-├── Models/
-│   ├── Question.swift  # 包含题目模型和解析方法
-│   ├── DifficultyLevel.swift
-│   └── GameState.swift
-├── ViewModels/
-│   └── GameViewModel.swift
-├── CoreData/
-│   ├── ArithmeticModel.swift
-│   ├── CoreDataManager.swift
-│   ├── WrongQuestionEntity.swift  # 包含错题实体和解析数据
-│   ├── WrongQuestionManager.swift
-│   ├── GameProgressEntity.swift
-│   └── GameProgressManager.swift
-├── Utils/
-│   ├── LocalizationManager.swift
-│   ├── QuestionGenerator.swift
-│   ├── NavigationUtil.swift
-│   └── DeviceUtils.swift
-├── Extensions/
-│   ├── String+Localized.swift
-│   ├── Font+Adaptive.swift
-│   ├── View+Navigation.swift
-│   └── CGFloat+Adaptive.swift
-└── Resources/
-    ├── zh-Hans.lproj/Localizable.strings
-    └── en.lproj/Localizable.strings
+├── 📱 App/
+│   └── ArithmeticApp.swift                 # 应用入口
+├── 🖼️ Views/                               # 视图层
+│   ├── ContentView.swift                   # 主视图
+│   ├── GameView.swift                      # 游戏视图
+│   ├── ResultView.swift                    # 结果视图
+│   ├── WrongQuestionsView.swift           # 错题集视图
+│   └── LanguageSelectorView.swift         # 语言选择视图
+├── 📊 Models/                              # 数据模型
+│   ├── Question.swift                      # 题目模型（包含解析方法）
+│   ├── DifficultyLevel.swift              # 难度等级模型
+│   └── GameState.swift                     # 游戏状态模型
+├── 🧠 ViewModels/                          # 视图模型
+│   └── GameViewModel.swift                 # 游戏逻辑控制器
+├── 💾 CoreData/                            # 数据持久化
+│   ├── ArithmeticModel.swift              # Core Data模型
+│   ├── CoreDataManager.swift              # 数据管理器
+│   ├── WrongQuestionEntity.swift          # 错题实体
+│   ├── WrongQuestionManager.swift         # 错题管理器
+│   ├── GameProgressEntity.swift           # 进度实体
+│   └── GameProgressManager.swift          # 进度管理器
+├── 🛠️ Utils/                               # 工具类
+│   ├── LocalizationManager.swift          # 本地化管理
+│   ├── QuestionGenerator.swift            # 题目生成器
+│   ├── NavigationUtil.swift               # 导航工具
+│   └── DeviceUtils.swift                  # 设备工具
+├── 🔧 Extensions/                          # 扩展
+│   ├── String+Localized.swift             # 字符串本地化扩展
+│   ├── Font+Adaptive.swift                # 字体适配扩展
+│   ├── View+Navigation.swift              # 视图导航扩展
+│   └── CGFloat+Adaptive.swift             # 尺寸适配扩展
+└── 🌐 Resources/                           # 资源文件
+    ├── zh-Hans.lproj/Localizable.strings  # 中文本地化
+    └── en.lproj/Localizable.strings       # 英文本地化
 ```
 
-## 系统要求 (System Requirements)
+[⬆️ 返回目录](#-目录-table-of-contents)
 
-- iOS 15.0+
-- iPadOS 15.0+
-- Xcode 13.0+
-- Swift 5.5+
+---
 
-## 使用说明 (Usage Instructions)
+## ⚙️ 系统要求 (System Requirements)
 
-1. 在主页面选择难度等级
-2. 设置答题时间（3-30分钟）
-3. 选择界面语言（中文或英文）
-4. 点击"开始游戏"按钮开始答题，或点击"错题集"按钮查看错题
-5. 在答题页面输入答案并点击"提交"
-6. 答错的题目会自动添加到错题集中，并提供解析
-7. 点击"查看解析"按钮可以查看基于四种算术方法的详细解题步骤
-8. 完成所有题目或时间结束后，查看结果页面的得分和评价
-8. 在结果页面可以点击"错题集"按钮查看本次练习中答错的题目
-9. 可以点击"重新开始"按钮重新开始游戏，所有数据将被重置
-10. 或点击"返回主页"按钮返回到主页面
-11. 在错题集页面可以按难度等级筛选错题，并可以删除已掌握的题目
-12. 如果有未完成的游戏，可以选择继续上次的游戏进度
+### 📱 设备支持
+- **iPhone**: iOS 15.0+
+- **iPad**: iPadOS 15.0+
+- **处理器**: A12 Bionic或更新
+- **存储空间**: 50MB可用空间
 
-## 贡献指南 (Contribution Guidelines)
+### 🛠️ 开发环境
+- **macOS**: 12.0+ (Monterey)
+- **Xcode**: 13.0+
+- **Swift**: 5.5+
+- **SwiftUI**: 3.0+
 
-我们欢迎所有形式的贡献，包括但不限于：
+### 🌐 语言支持
+- **简体中文** (zh-Hans)
+- **English** (en)
 
-1. 报告问题和错误
-2. 提交功能请求
-3. 提交代码改进
-4. 改进文档
+[⬆️ 返回目录](#-目录-table-of-contents)
 
-请遵循以下步骤进行贡献：
+---
 
-1. Fork此仓库
-2. 创建你的特性分支 (`git checkout -b feature/amazing-feature`)
-3. 提交你的更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 打开一个Pull Request
+## 🔄 最近更新 (Recent Updates)
 
-## 最近更新 (Recent Updates)
-
-### 2025-06-29 (运算类型严格分离修复)
-- **🎯 关键修复**: 修复了等级4和5的三数运算仍包含加减法的问题
+### 🎯 2025-06-29 (运算类型严格分离修复)
+- **🔧 关键修复**: 修复了等级4和5的三数运算仍包含加减法的问题
 - **📐 运算类型严格分离**: 
   - 等级4和5的三数运算现在严格只使用乘法和除法运算
   - 等级6的混合运算逻辑得到完善，支持真正的四则混合运算
@@ -222,20 +381,15 @@ Arithmetic/
 - **⚙️ 算法重构**: 重新组织了三数运算的生成逻辑，先计算中间结果再调整第三个数字
 - **📋 文档完善**: 更新README明确说明各等级的严格运算类型要求
 
-### 2025-06-29 (题目生成系统修复)
-- **🔧 重大修复**: 修复了等级4和等级5未按预期生成乘除法题目的问题
-- **🎯 运算类型修正**: 
-  - 等级4现在正确生成10以内的乘法和除法题目
-  - 等级5现在正确生成20以内的乘法和除法题目
-  - 等级6现在正确生成包含加减乘除的混合运算题目
+### 🔧 2025-06-29 (题目生成系统修复)
+- **🎯 重大修复**: 修复了等级4和等级5未按预期生成乘除法题目的问题
 - **🧮 整数结果保证**: 强化了所有运算的整数结果保证机制
   - 除法运算采用"商×除数=被除数"的逆向生成方式，确保100%整除
   - 乘法运算智能控制因数范围，避免结果超出等级限制
   - 混合运算中每个中间步骤都确保产生合理的整数结果
 - **⚡ 算法优化**: 重构了题目生成算法，使用难度等级的supportedOperations属性替代硬编码逻辑
-- **📝 文档更新**: 更新README明确说明所有运算均产生整数结果的保证
 
-### 2025-06-28 (晚间重大更新)
+### 🌟 2025-06-28 (晚间重大更新)
 - **🎯 新增乘除法功能**: 完全重新设计关卡逻辑，新增10以内和20以内的乘除法运算
 - **📚 6级难度体系**: 
   - 等级1-3：加减法（10以内、20以内、50以内）
@@ -250,26 +404,105 @@ Arithmetic/
 - **🌐 完整多语言支持**: 中英文解析内容完全对应
 - **🔧 架构优化**: 使用DifficultyLevel属性替代硬编码，提高可维护性
 
-### 2025-06-28 (早期修复)
+### 🔨 2025-06-28 (早期修复)
 - **重大修复**: 彻底修复了凑十法解析中的逻辑错误，消除了"10 - 10 = 4"等错误计算
 - **解析优化**: 重构了凑十法的核心实现，确保严格按照"看大数拆小数，凑成十再加余"的正确教学原则
 - **多语言修复**: 同时修复了中文和英文版本的本地化字符串模板，确保解析步骤描述准确
-- **参数验证**: 加强了参数传递验证，防止格式化字符串中的参数错误
 - **代码重构**: 使用直接字符串格式化替代可能有问题的本地化模板，提高了代码的可靠性
-- **构建优化**: 清理了构建缓存，确保所有修复都能正确应用到编译后的应用中
 
-### 2025-06-24
-- **代码优化**: 移除了对特定算术题（如"12-6"和"13-9"）的特殊处理逻辑，使所有题目都通过标准算法处理，提高了代码的一致性和可维护性
+### 🚀 2025-06-24 (代码优化)
+- **代码优化**: 移除了对特定算术题的特殊处理逻辑，使所有题目都通过标准算法处理
 - **错误修复**: 修复了平十法解析中的逻辑错误，确保所有类似"19-16"的题目都能得到正确的解析步骤
 - **性能改进**: 通过消除硬编码的特殊情况处理，提高了系统的可扩展性和稳定性
 
-## 许可证 (License)
+[⬆️ 返回目录](#-目录-table-of-contents)
 
-此项目采用MIT许可证 - 详情请查看 [LICENSE](LICENSE) 文件
+---
 
-## 联系与支持 (Contact & Support)
+## 🤝 贡献指南 (Contributing Guidelines)
 
-如有任何问题或建议，请通过以下方式联系我们：
+我们欢迎所有形式的贡献！🎉
 
-- 提交GitHub Issue
-- 发送电子邮件至: [tobecrazy@qq.com](mailto:tobecrazy@qq.com)
+### 🌟 贡献方式
+- 🐛 报告问题和错误
+- 💡 提交功能请求  
+- 🔧 提交代码改进
+- 📝 改进文档
+- 🌐 协助翻译
+
+### 📋 贡献流程
+
+1. **🍴 Fork 仓库**
+   ```bash
+   # Fork this repository to your GitHub account
+   ```
+
+2. **🌿 创建特性分支**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+
+3. **💻 提交更改**
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+
+4. **🚀 推送分支**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
+5. **📬 创建 Pull Request**
+   - 详细描述你的更改
+   - 包含相关的测试用例
+   - 确保代码符合项目规范
+
+### 📏 代码规范
+- 遵循Swift官方编码规范
+- 使用有意义的变量和函数命名
+- 添加必要的注释和文档
+- 确保代码通过所有测试
+
+### 🐛 问题报告
+使用GitHub Issues报告问题时，请包含：
+- 详细的问题描述
+- 重现步骤
+- 预期行为vs实际行为
+- 设备和系统版本信息
+- 相关截图或日志
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 📄 许可证 (License)
+
+本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件
+
+### 📞 联系与支持 (Contact & Support)
+
+<div align="center">
+
+| 联系方式 | 信息 |
+|---------|------|
+| 📧 邮箱 | [tobecrazy@qq.com](mailto:tobecrazy@qq.com) |
+| 🐛 问题反馈 | [GitHub Issues](https://github.com/tobecrazy/Arithmetic/issues) |
+| 💡 功能建议 | [GitHub Discussions](https://github.com/tobecrazy/Arithmetic/discussions) |
+
+**如有任何问题或建议，欢迎通过以上方式联系我们！**
+
+</div>
+
+---
+
+<div align="center">
+
+**⭐ 如果这个项目对你有帮助，请给我们一个星标！**
+
+**🎓 让我们一起帮助孩子们更好地学习数学！**
+
+Made with ❤️ by [tobecrazy](https://github.com/tobecrazy)
+
+</div>
+
+[⬆️ 返回顶部](#-小学生算术学习应用)
