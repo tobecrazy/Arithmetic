@@ -310,12 +310,23 @@ class QuestionGenerator {
         }
         
         // 尝试生成符合条件的题目
-        let maxAttempts = 10 // 增加尝试次数以满足更严格的条件
+        let maxAttempts = 20 // 增加尝试次数以满足更严格的条件，包括避免重复数字
         var attempts = 0
         var intermediateResult: Int = 0
-        var finalResult: Int
+        var finalResult: Int = 0
         
         repeat {
+            // 重新生成数字以避免重复
+            number1 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
+            number2 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
+            number3 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
+            
+            // 检查并避免重复数字模式，减少过于简单的题目
+            if hasRepetitivePattern(num1: number1, num2: number2, num3: number3, op1: operation1, op2: operation2) {
+                attempts += 1
+                continue // 跳过这次循环，重新生成
+            }
+            
             // 根据操作类型调整数字生成策略
             switch operation1 {
             case .addition:
@@ -548,7 +559,8 @@ class QuestionGenerator {
             }
             
             attempts += 1
-        } while (number1 == 0 || number2 == 0 || number3 == 0 || finalResult == 0) && attempts < maxAttempts
+        } while (number1 == 0 || number2 == 0 || number3 == 0 || finalResult == 0 || 
+                 hasRepetitivePattern(num1: number1, num2: number2, num3: number3, op1: operation1, op2: operation2)) && attempts < maxAttempts
         
         // 如果尝试多次后仍不满足条件，进行最后的调整
         if number1 == 0 || number2 == 0 || number3 == 0 || finalResult == 0 {
@@ -631,5 +643,98 @@ class QuestionGenerator {
         }
         
         return Question(number1: number1, number2: number2, number3: number3, operation1: operation1, operation2: operation2)
+    }
+    
+    // 检查是否存在重复数字模式，避免过于简单的题目
+    private static func hasRepetitivePattern(num1: Int, num2: Int, num3: Int, op1: Question.Operation, op2: Question.Operation) -> Bool {
+        // 检查是否有两个或三个相同的数字
+        let numbers = [num1, num2, num3]
+        let uniqueNumbers = Set(numbers)
+        
+        // 如果三个数字都相同，直接拒绝
+        if uniqueNumbers.count == 1 {
+            return true
+        }
+        
+        // 如果有两个相同数字，检查是否会产生过于简单的运算
+        if uniqueNumbers.count == 2 {
+            // 找出重复的数字和它的位置
+            var duplicateNumber: Int = 0
+            var duplicatePositions: [Int] = []
+            
+            for (index, number) in numbers.enumerated() {
+                if numbers.filter({ $0 == number }).count == 2 {
+                    duplicateNumber = number
+                    duplicatePositions.append(index)
+                }
+            }
+            
+            // 检查特定的重复模式
+            if duplicatePositions.count == 2 {
+                // 情况1: 第一个和第二个数字相同 (A op1 A op2 C)
+                if duplicatePositions == [0, 1] {
+                    // 检查是否会产生简单的运算，如 A - A = 0 或 A ÷ A = 1
+                    if op1 == .subtraction || op1 == .division {
+                        return true // 拒绝 A - A op2 C 或 A ÷ A op2 C 这类题目
+                    }
+                }
+                
+                // 情况2: 第一个和第三个数字相同 (A op1 B op2 A)
+                if duplicatePositions == [0, 2] {
+                    // 根据运算优先级检查
+                    if op1.precedence >= op2.precedence {
+                        // 左到右计算: (A op1 B) op2 A
+                        // 如果第二个操作是减法或除法，可能产生简单结果
+                        if op2 == .subtraction || op2 == .division {
+                            return true // 拒绝可能产生 X - A = 0 或 X ÷ A = 1 的情况
+                        }
+                    } else {
+                        // 先计算 B op2 A，然后 A op1 result
+                        // 这种情况相对复杂，暂时允许
+                    }
+                }
+                
+                // 情况3: 第二个和第三个数字相同 (A op1 B op2 B)
+                if duplicatePositions == [1, 2] {
+                    // 根据运算优先级检查
+                    if op1.precedence < op2.precedence {
+                        // 先计算 B op2 B，然后 A op1 result
+                        if op2 == .subtraction || op2 == .division {
+                            return true // 拒绝 A op1 (B - B) 或 A op1 (B ÷ B) 这类题目
+                        }
+                    } else {
+                        // 左到右计算: (A op1 B) op2 B
+                        // 如果第二个操作是减法或除法，检查是否会产生简单结果
+                        if op2 == .subtraction || op2 == .division {
+                            // 进一步检查：如果 A op1 B 的结果等于 B，则会产生简单运算
+                            // 这里简化处理，直接拒绝这类模式
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 额外检查：避免连续相同操作导致的简化
+        // 例如：A + B - B 或 A × B ÷ B
+        if op1 == .addition && op2 == .subtraction && num2 == num3 {
+            return true // 拒绝 A + B - B 模式
+        }
+        if op1 == .subtraction && op2 == .addition && num2 == num3 {
+            return true // 拒绝 A - B + B 模式
+        }
+        if op1 == .multiplication && op2 == .division && num2 == num3 {
+            return true // 拒绝 A × B ÷ B 模式
+        }
+        if op1 == .division && op2 == .multiplication && num2 == num3 {
+            return true // 拒绝 A ÷ B × B 模式
+        }
+        
+        // 检查是否所有数字都太小（都小于等于3），这可能导致过于简单的题目
+        if numbers.allSatisfy({ $0 <= 3 }) {
+            return true
+        }
+        
+        return false // 没有发现重复模式，允许生成
     }
 }
