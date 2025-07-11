@@ -71,6 +71,7 @@
 "button.show_solution" = "Show Solution";
 "button.hide_solution" = "Hide Solution";
 "solution.title" = "Solution Strategy";
+"solution.content" = "Solution Content";
 "solution.breaking_ten" = "Break Apart Ten";
 "solution.borrowing_ten" = "Regrouping Method";
 "solution.making_ten" = "Make Ten Strategy";

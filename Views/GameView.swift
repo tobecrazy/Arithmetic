@@ -154,15 +154,44 @@ struct GameView: View {
                             
                             // 显示解析内容
                             if viewModel.showSolutionSteps {
-                                ScrollView {
-                                    Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
-                                        .font(.adaptiveBody())
-                                        .padding()
-                                        .background(Color.yellow.opacity(0.1))
-                                        .cornerRadius(.adaptiveCornerRadius)
-                                        .multilineTextAlignment(.leading)
+                                VStack(spacing: 0) {
+                                    // 解析内容标题栏
+                                    HStack {
+                                        Text("solution.content".localized)
+                                            .font(.caption)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.secondary)
+                                        Spacer()
+                                        Image(systemName: "scroll")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.horizontal, 10)
+                                    .padding(.top, 8)
+                                    
+                                    // 解析内容区域
+                                    ScrollView(.vertical, showsIndicators: true) {
+                                        Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
+                                            .font(.footnote)
+                                            .lineSpacing(2)
+                                            .padding(12)
+                                            .background(Color.yellow.opacity(0.1))
+                                            .cornerRadius(8)
+                                            .multilineTextAlignment(.leading)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(.horizontal, 6) // 内部padding，为滚动条留出空间
+                                    }
+                                    .frame(height: calculateGameSolutionHeight())
+                                    .padding(.horizontal, 10) // 左右两端10px padding
+                                    .padding(.bottom, 8)
                                 }
-                                .frame(maxHeight: 200) // 限制解析内容的最大高度
+                                .background(Color(.systemBackground))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                )
+                                .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
                             }
                             
                             // Next Question button
@@ -484,15 +513,44 @@ struct GameView: View {
                                 
                                 // 显示解析内容
                                 if viewModel.showSolutionSteps {
-                                    ScrollView {
-                                        Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
-                                            .font(.adaptiveBody())
-                                            .padding()
-                                            .background(Color.yellow.opacity(0.1))
-                                            .cornerRadius(.adaptiveCornerRadius)
-                                            .multilineTextAlignment(.leading)
+                                    VStack(spacing: 0) {
+                                        // 解析内容标题栏
+                                        HStack {
+                                            Text("solution.content".localized)
+                                                .font(.caption)
+                                                .fontWeight(.medium)
+                                                .foregroundColor(.secondary)
+                                            Spacer()
+                                            Image(systemName: "scroll")
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
+                                        .padding(.horizontal, 10)
+                                        .padding(.top, 6)
+                                        
+                                        // 解析内容区域
+                                        ScrollView(.vertical, showsIndicators: true) {
+                                            Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
+                                                .font(.caption)
+                                                .lineSpacing(1.5)
+                                                .padding(10)
+                                                .background(Color.yellow.opacity(0.1))
+                                                .cornerRadius(6)
+                                                .multilineTextAlignment(.leading)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .padding(.horizontal, 4) // 内部padding，为滚动条留出空间
+                                        }
+                                        .frame(height: calculateGameSolutionHeight())
+                                        .padding(.horizontal, 10) // 左右两端10px padding
+                                        .padding(.bottom, 6)
                                     }
-                                    .frame(maxHeight: 150) // iPad横屏时稍微小一点
+                                    .background(Color(.systemBackground))
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                    )
+                                    .shadow(color: Color.black.opacity(0.05), radius: 1, x: 0, y: 1)
                                 }
                                 
                                 // Next Question button
@@ -684,6 +742,61 @@ struct GameView: View {
                 // Update local state to force UI refresh
                 currentTime = viewModel.gameState.timeRemaining
             }
+        }
+    }
+    
+    // 计算解析内容的动态高度（答题界面专用）
+    private func calculateGameSolutionHeight() -> CGFloat {
+        // 获取当前屏幕尺寸
+        let screenBounds = UIScreen.main.bounds
+        let currentScreenHeight = screenBounds.height
+        let currentScreenWidth = screenBounds.width
+        
+        // 判断是否为横屏模式
+        let isLandscape = currentScreenWidth > currentScreenHeight
+        
+        // 计算答题界面固定UI元素占用的高度
+        let topInfoHeight: CGFloat = 80 // 顶部信息栏
+        let questionHeight: CGFloat = 100 // 题目显示区域
+        let inputHeight: CGFloat = 80 // 输入框区域
+        let buttonHeight: CGFloat = 120 // 按钮区域
+        let safeAreaHeight: CGFloat = DeviceUtils.isIPad ? 100 : 80 // 安全区域
+        
+        // 计算可用高度
+        let availableHeight = currentScreenHeight - topInfoHeight - questionHeight - inputHeight - buttonHeight - safeAreaHeight
+        
+        // 根据设备类型和方向调整最大高度
+        let maxHeight: CGFloat
+        let minHeight: CGFloat = 100
+        
+        if DeviceUtils.isIPad {
+            if isLandscape {
+                // iPad横屏：右侧面板空间有限
+                maxHeight = max(availableHeight * 0.4, 120)
+            } else {
+                // iPad竖屏：可以使用更多空间
+                maxHeight = max(availableHeight * 0.5, 180)
+            }
+        } else {
+            if isLandscape {
+                // iPhone横屏：垂直空间非常有限
+                maxHeight = max(availableHeight * 0.3, 80)
+            } else {
+                // iPhone竖屏：适中的空间分配
+                maxHeight = max(availableHeight * 0.4, 150)
+            }
+        }
+        
+        // 根据size class进一步调整
+        if horizontalSizeClass == .regular && verticalSizeClass == .regular {
+            // 大屏设备（如iPad）
+            return max(min(maxHeight * 1.1, availableHeight * 0.6), minHeight)
+        } else if horizontalSizeClass == .compact && verticalSizeClass == .compact {
+            // 紧凑模式（如iPhone横屏）
+            return max(min(maxHeight * 0.8, availableHeight * 0.3), minHeight)
+        } else {
+            // 标准模式
+            return max(min(maxHeight, availableHeight * 0.4), minHeight)
         }
     }
     

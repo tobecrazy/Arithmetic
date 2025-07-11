@@ -71,6 +71,7 @@
 "button.show_solution" = "查看解析";
 "button.hide_solution" = "隐藏解析";
 "solution.title" = "解题思路";
+"solution.content" = "解析内容";
 "solution.breaking_ten" = "破十法";
 "solution.borrowing_ten" = "借十法";
 "solution.making_ten" = "凑十法";

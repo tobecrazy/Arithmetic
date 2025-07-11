@@ -3,6 +3,8 @@ import CoreData
 
 struct WrongQuestionsView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     @State private var selectedLevel: DifficultyLevel? = nil
     @State private var wrongQuestions: [WrongQuestionViewModel] = []
     @State private var showingDeleteAlert = false
@@ -71,15 +73,44 @@ struct WrongQuestionsView: View {
                             
                             // 显示解析内容
                             if self.expandedQuestionIds.contains(question.id) {
-                                ScrollView {
-                                    Text(question.currentLanguageSolutionSteps)
-                                        .font(.footnote)
-                                        .padding(8)
-                                        .background(Color.yellow.opacity(0.1))
-                                        .cornerRadius(8)
-                                        .multilineTextAlignment(.leading)
+                                VStack(spacing: 0) {
+                                    // 解析内容标题栏
+                                    HStack {
+                                        Text("solution.content".localized)
+                                            .font(.caption)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.secondary)
+                                        Spacer()
+                                        Image(systemName: "scroll")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.horizontal, 20)
+                                    .padding(.top, 8)
+                                    
+                                    // 解析内容区域
+                                    ScrollView(.vertical, showsIndicators: true) {
+                                        Text(question.currentLanguageSolutionSteps)
+                                            .font(.footnote)
+                                            .lineSpacing(2)
+                                            .padding(12)
+                                            .background(Color.yellow.opacity(0.1))
+                                            .cornerRadius(8)
+                                            .multilineTextAlignment(.leading)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(.horizontal, 8) // 内部padding，为滚动条留出空间
+                                    }
+                                    .frame(height: calculateSolutionHeight(screenHeight: UIScreen.main.bounds.height))
+                                    .padding(.horizontal, 20) // 左右两端20px padding
+                                    .padding(.bottom, 8)
                                 }
-                                .frame(maxHeight: 150) // 限制解析内容的最大高度
+                                .background(Color(.systemBackground))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                )
+                                .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
                             }
                             
                             HStack {
@@ -228,6 +259,61 @@ struct WrongQuestionsView: View {
     private func deleteMasteredQuestions() {
         wrongQuestionManager.deleteMasteredQuestions()
         loadWrongQuestions()
+    }
+    
+    // 计算解析内容的动态高度
+    private func calculateSolutionHeight(screenHeight: CGFloat) -> CGFloat {
+        // 获取当前屏幕尺寸
+        let screenBounds = UIScreen.main.bounds
+        let currentScreenHeight = screenBounds.height
+        let currentScreenWidth = screenBounds.width
+        
+        // 判断是否为横屏模式
+        let isLandscape = currentScreenWidth > currentScreenHeight
+        
+        // 计算固定UI元素占用的高度
+        let titleHeight: CGFloat = 60 // 标题区域
+        let pickerHeight: CGFloat = 50 // 难度选择器
+        let buttonHeight: CGFloat = 80 // 底部按钮区域
+        let questionInfoHeight: CGFloat = 120 // 题目信息和统计信息
+        let safeAreaHeight: CGFloat = DeviceUtils.isIPad ? 120 : 100 // 安全区域和其他边距
+        
+        // 计算可用高度
+        let availableHeight = currentScreenHeight - titleHeight - pickerHeight - buttonHeight - questionInfoHeight - safeAreaHeight
+        
+        // 根据设备类型和方向调整最大高度
+        let maxHeight: CGFloat
+        let minHeight: CGFloat = 120
+        
+        if DeviceUtils.isIPad {
+            if isLandscape {
+                // iPad横屏：可以使用更多垂直空间
+                maxHeight = max(availableHeight * 0.7, 250)
+            } else {
+                // iPad竖屏：适中的空间分配
+                maxHeight = max(availableHeight * 0.6, 200)
+            }
+        } else {
+            if isLandscape {
+                // iPhone横屏：垂直空间有限，使用较小比例
+                maxHeight = max(availableHeight * 0.4, 120)
+            } else {
+                // iPhone竖屏：标准比例
+                maxHeight = max(availableHeight * 0.5, 150)
+            }
+        }
+        
+        // 根据size class进一步调整
+        if horizontalSizeClass == .regular && verticalSizeClass == .regular {
+            // 大屏设备（如iPad）
+            return max(min(maxHeight * 1.2, availableHeight * 0.8), minHeight)
+        } else if horizontalSizeClass == .compact && verticalSizeClass == .compact {
+            // 紧凑模式（如iPhone横屏）
+            return max(min(maxHeight * 0.8, availableHeight * 0.4), minHeight)
+        } else {
+            // 标准模式
+            return max(min(maxHeight, availableHeight * 0.6), minHeight)
+        }
     }
     
     // 刷新解析内容
