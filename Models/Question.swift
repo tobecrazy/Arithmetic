@@ -124,6 +124,68 @@ class Question: NSObject, NSCoding, Identifiable {
         return lhs.numbers == rhs.numbers && lhs.operations == rhs.operations
     }
     
+    // 验证题目是否数学上合理（所有除法都能整除）
+    func isValid() -> Bool {
+        if numbers.count == 2 && operations.count == 1 {
+            // 两数运算验证
+            switch operations[0] {
+            case .division:
+                return numbers[1] != 0 && numbers[0] % numbers[1] == 0
+            default:
+                return true
+            }
+        } else if numbers.count == 3 && operations.count == 2 {
+            // 三数运算验证 - 需要考虑运算顺序
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            let num3 = numbers[2]
+            let op1 = operations[0]
+            let op2 = operations[1]
+            
+            // 检查所有可能的除法操作是否能整除
+            if op1.precedence < op2.precedence {
+                // 第二个操作优先级更高 (e.g., A + B ÷ C 或 A - B × C)
+                if op2 == .division {
+                    // 检查 B ÷ C 是否能整除
+                    if num3 == 0 || num2 % num3 != 0 {
+                        return false
+                    }
+                }
+            } else {
+                // 第一个操作优先级更高或相等 (e.g., A ÷ B × C 或 A × B ÷ C)
+                if op1 == .division {
+                    // 检查 A ÷ B 是否能整除
+                    if num2 == 0 || num1 % num2 != 0 {
+                        return false
+                    }
+                }
+                if op2 == .division {
+                    // 计算中间结果
+                    var intermediateResult: Int
+                    switch op1 {
+                    case .addition: intermediateResult = num1 + num2
+                    case .subtraction: intermediateResult = num1 - num2
+                    case .multiplication: intermediateResult = num1 * num2
+                    case .division: 
+                        if num2 == 0 || num1 % num2 != 0 {
+                            return false // 第一步除法就不能整除
+                        }
+                        intermediateResult = num1 / num2
+                    }
+                    // 检查中间结果 ÷ C 是否能整除
+                    if num3 == 0 || intermediateResult % num3 != 0 {
+                        return false
+                    }
+                }
+            }
+            
+            // 额外检查：确保最终结果为正整数
+            let finalResult = self.correctAnswer
+            return finalResult > 0
+        }
+        return false
+    }
+    
     // 题目的字符串表示
     var questionText: String {
         if numbers.count == 2 && operations.count == 1 {

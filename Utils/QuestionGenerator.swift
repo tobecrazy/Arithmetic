@@ -5,17 +5,20 @@ class QuestionGenerator {
         var questions: [Question] = []
         var generatedCombinations: Set<String> = []
         
-        // 首先添加错题集中的题目
+        // 首先添加错题集中的题目，但需要验证其有效性
         for wrongQuestion in wrongQuestions {
             let combination = getCombinationKey(for: wrongQuestion)
-            if !generatedCombinations.contains(combination) {
+            if !generatedCombinations.contains(combination) && wrongQuestion.isValid() {
                 questions.append(wrongQuestion)
                 generatedCombinations.insert(combination)
             }
         }
         
         // 如果错题不足，生成新题目补充
-        while questions.count < count {
+        var failedAttempts = 0
+        let maxFailedAttempts = 100 // 防止无限循环
+        
+        while questions.count < count && failedAttempts < maxFailedAttempts {
             let newQuestion: Question
             let combination: String
             
@@ -28,8 +31,24 @@ class QuestionGenerator {
                 combination = getCombinationKey(for: newQuestion)
             }
             
-            if !generatedCombinations.contains(combination) {
+            if !generatedCombinations.contains(combination) && newQuestion.isValid() {
                 questions.append(newQuestion)
+                generatedCombinations.insert(combination)
+                failedAttempts = 0 // 重置失败计数
+            } else {
+                failedAttempts += 1
+            }
+        }
+        
+        // 如果仍然没有足够的题目，用简单的加法题目补充
+        while questions.count < count {
+            let num1 = Int.random(in: 2...min(10, difficultyLevel.range.upperBound))
+            let num2 = Int.random(in: 2...min(10, difficultyLevel.range.upperBound))
+            let fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition)
+            let combination = getCombinationKey(for: fallbackQuestion)
+            
+            if !generatedCombinations.contains(combination) {
+                questions.append(fallbackQuestion)
                 generatedCombinations.insert(combination)
             }
         }
@@ -185,40 +204,56 @@ class QuestionGenerator {
                 }
                 
             case .division:
-                // 除法：先生成商，再计算被除数，确保整除且避免相同数字
-                var quotient = safeRandom(in: 2...min(range.upperBound, 10)) // 商至少为2，提高教学价值
-                number2 = safeRandom(in: 2...min(10, range.upperBound)) // 除数2-10，避免÷1
+                // 除法：确保整除，先选择除数和商，再计算被除数
+                // 选择除数（2-10之间，避免÷1）
+                number2 = safeRandom(in: 2...min(10, range.upperBound))
                 
-                // 避免商为1的简单除法，除非是特殊情况
-                if quotient == 1 && Double.random(in: 0...1) > 0.1 { // 90%概率避免商为1
-                    quotient = safeRandom(in: 2...min(range.upperBound, 10))
+                // 计算可能的最大商，确保被除数不超过范围
+                let maxPossibleQuotient = range.upperBound / number2
+                
+                // 选择商（至少为2，避免过于简单的除法）
+                let minQuotient = max(2, minNumber)
+                let quotient: Int
+                
+                if maxPossibleQuotient >= minQuotient {
+                    quotient = safeRandom(in: minQuotient...maxPossibleQuotient)
+                } else {
+                    // 如果无法生成合适的商，调整除数
+                    number2 = max(2, range.upperBound / minQuotient)
+                    quotient = minQuotient
                 }
                 
-                number1 = quotient * number2 // 被除数 = 商 × 除数，确保整除
+                // 计算被除数，确保整除
+                number1 = quotient * number2
+                
+                // 最终验证：确保被除数在范围内且不等于除数
+                if number1 > range.upperBound {
+                    // 重新选择更小的除数
+                    number2 = safeRandom(in: 2...min(5, range.upperBound / minQuotient))
+                    number1 = minQuotient * number2
+                }
                 
                 // 避免被除数等于除数的情况（如6÷6=1）
                 if number1 == number2 {
-                    if quotient < min(range.upperBound, 10) {
-                        quotient += 1
+                    if quotient < maxPossibleQuotient {
+                        number1 = (quotient + 1) * number2
+                    } else if number2 > 2 {
+                        number2 -= 1
                         number1 = quotient * number2
                     } else {
-                        number2 = max(2, number2 - 1)
-                        number1 = quotient * number2
+                        // 最后的调整：确保不相等
+                        number1 = max(number1 + number2, minNumber * number2)
+                        if number1 > range.upperBound {
+                            number1 = quotient * number2 // 保持原值
+                        }
                     }
                 }
                 
-                // 如果被除数超过范围，重新调整
-                if number1 > range.upperBound {
-                    number2 = safeRandom(in: 2...min(range.upperBound, 10))
-                    let maxQuotient = range.upperBound / number2
-                    quotient = safeRandom(in: 2...max(2, maxQuotient)) // 确保商至少为2
-                    number1 = quotient * number2
-                    
-                    // 再次检查避免相同数字
-                    if number1 == number2 && quotient > 2 {
-                        quotient = max(2, quotient - 1)
-                        number1 = quotient * number2
-                    }
+                // 最终安全检查：确保整除
+                if number2 != 0 && number1 % number2 != 0 {
+                    // 强制调整为整除
+                    let actualQuotient = number1 / number2
+                    number1 = actualQuotient * number2
                 }
             }
             
@@ -302,55 +337,49 @@ class QuestionGenerator {
                     number2 = safeRandom(in: 2...min(range.upperBound / max(1, number1), maxFactor))
                 }
             case .division:
-                // Ensured integer division: number1 = quotient * number2
-                // Aim for quotient >= 2, number2 >= 2
-                var quotient: Int
-                // Try to keep number2 small to allow larger quotients within range
-                number2 = safeRandom(in: 2...min(10, range.upperBound / 2)) // Max divisor 10, ensure number2 isn't too big
-                if number2 == 0 { number2 = 2 } // Safety for range.upperBound / 2 being < 2
-
+                // 除法：确保整除，先选择除数和商，再计算被除数
+                // 选择除数（2-10之间，避免÷1）
+                number2 = safeRandom(in: 2...min(10, range.upperBound / 2))
+                if number2 == 0 { number2 = 2 } // 安全检查
+                
+                // 计算可能的最大商，确保被除数不超过范围
                 let maxQuotient = range.upperBound / number2
-                if maxQuotient < 2 {
-                    // This case means range.upperBound is very small relative to number2 (e.g. range < 4 for number2=2)
-                    if number2 > 2 { // Try smaller number2 if possible
-                        number2 -= 1
-                        let newMaxQuotient = range.upperBound / number2
-                        if newMaxQuotient >= 2 {
-                            quotient = safeRandom(in: 2...newMaxQuotient)
-                        } else { // Still not enough room
-                            quotient = 1 // Allow quotient of 1 if range is too restrictive
-                        }
-                    } else { // number2 is already 2 (or was 1 and became 0, then 2)
-                         quotient = 1 // Allow quotient of 1
-                    }
+                let minQuotient = max(2, minNumber)
+                
+                let quotient: Int
+                if maxQuotient >= minQuotient {
+                    quotient = safeRandom(in: minQuotient...maxQuotient)
                 } else {
-                    quotient = safeRandom(in: 2...maxQuotient)
+                    // 如果无法生成合适的商，调整除数
+                    number2 = max(2, range.upperBound / minQuotient)
+                    quotient = minQuotient
                 }
                 
+                // 计算被除数，确保整除
                 number1 = quotient * number2
                 
-                // If number1 > range.upperBound (should be prevented by maxQuotient logic)
-                // For safety, cap number1 if it somehow exceeds.
+                // 最终验证：确保被除数在范围内
                 if number1 > range.upperBound {
-                    // Recalculate to fit, ensuring it's a multiple of number2
                     let finalQuotient = range.upperBound / number2
                     number1 = finalQuotient * number2
                 }
-                // Ensure number1 is at least minNumber, if capping made it too small (e.g. if range.upperBound is tiny)
+                
+                // 确保被除数至少为最小值
                 if number1 < minNumber {
-                    // This scenario suggests very restrictive ranges.
-                    // Fallback to a simple valid division if possible, or change operation.
                     number2 = 2
-                    number1 = minNumber * number2 // e.g. 2*2 = 4
-                    if number1 > range.upperBound { // If even this is too big, ranges are problematic
-                        // Consider changing operation or signalling an issue
-                        // For now, stick to the values, even if small
-                         number1 = safeRandom(in: minNumber...range.upperBound)
-                         number2 = 1 // Simplest division
-                         if number1 % number2 != 0 { // Should not happen with number2 = 1
-                             operation1 = .addition // Fallback operation
-                         }
+                    number1 = max(minNumber, 2) * number2
+                    if number1 > range.upperBound {
+                        // 如果仍然超出范围，改为加法操作
+                        operation1 = .addition
+                        number1 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
+                        number2 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
                     }
+                }
+                
+                // 最终安全检查：确保整除
+                if number2 != 0 && number1 % number2 != 0 {
+                    let actualQuotient = number1 / number2
+                    number1 = actualQuotient * number2
                 }
             }
             
@@ -359,43 +388,69 @@ class QuestionGenerator {
             number2 = max(number2, minNumber)
             number3 = max(number3, minNumber)
             
-            // Adjustment for number3 if operation2 is division, considering operator precedence
-            if operation2 == .division {
-                let op1Prec = operation1.precedence
-                let op2Prec = operation2.precedence
-
-                var dividendForOp2: Int
-                if op1Prec < op2Prec { // e.g., num1 + (num2 / num3) -> num2 is the dividend
-                    dividendForOp2 = number2
-                } else { // e.g., (num1 op1 num2) / num3 -> (num1 op1 num2) is the dividend
-                    // Calculate num1 op1 num2
-                    switch operation1 {
-                    case .addition: dividendForOp2 = number1 + number2
-                    case .subtraction: dividendForOp2 = number1 - number2
-                    case .multiplication: dividendForOp2 = number1 * number2
-                    case .division: // number1 / number2 has already been ensured to be integer by prior logic
-                        dividendForOp2 = number2 != 0 ? number1 / number2 : 0
+            // Special handling for division operations to ensure integer results
+            if operation1 == .division || operation2 == .division {
+                // Handle first operation division
+                if operation1 == .division {
+                    // Ensure number1 is divisible by number2
+                    if number2 != 0 && number1 % number2 != 0 {
+                        // Regenerate to ensure divisibility
+                        let quotient = max(2, number1 / number2)
+                        number1 = quotient * number2
                     }
                 }
+                
+                // Handle second operation division with precedence consideration
+                if operation2 == .division {
+                    let op1Prec = operation1.precedence
+                    let op2Prec = operation2.precedence
 
-                // Now, ensure number3 is a proper divisor for dividendForOp2
-                if dividendForOp2 == 0 {
-                    number3 = safeRandom(in: 2...10); if number3 == 0 { number3 = 2 }
-                } else {
-                    var divisors: [Int] = []
-                    let absDividend = abs(dividendForOp2)
-                    if absDividend >= 1 {
-                        for i in 2...min(10, absDividend) { // Prefer divisors >= 2
-                            if absDividend % i == 0 { divisors.append(i) }
+                    var dividendForOp2: Int
+                    if op1Prec < op2Prec { // e.g., num1 + (num2 / num3) -> num2 is the dividend
+                        dividendForOp2 = number2
+                        // Ensure number2 is divisible by number3
+                        if number3 != 0 && number2 % number3 != 0 {
+                            let quotient = max(2, number2 / number3)
+                            number2 = quotient * number3
+                        }
+                    } else { // e.g., (num1 op1 num2) / num3 -> (num1 op1 num2) is the dividend
+                        // Calculate num1 op1 num2
+                        switch operation1 {
+                        case .addition: dividendForOp2 = number1 + number2
+                        case .subtraction: dividendForOp2 = number1 - number2
+                        case .multiplication: dividendForOp2 = number1 * number2
+                        case .division: 
+                            // Ensure integer division first
+                            if number2 != 0 && number1 % number2 != 0 {
+                                let quotient = max(2, number1 / number2)
+                                number1 = quotient * number2
+                            }
+                            dividendForOp2 = number2 != 0 ? number1 / number2 : 0
+                        }
+
+                        // Now, ensure number3 is a proper divisor for dividendForOp2
+                        if dividendForOp2 <= 0 {
+                            number3 = 2
+                            operation2 = .addition // Fallback to addition
+                        } else {
+                            var divisors: [Int] = []
+                            let absDividend = abs(dividendForOp2)
+                            for i in 2...min(10, absDividend) { // Prefer divisors >= 2
+                                if absDividend % i == 0 { divisors.append(i) }
+                            }
+                            if !divisors.isEmpty {
+                                number3 = divisors.randomElement()!
+                            } else {
+                                // If no suitable divisors found, change operation
+                                if dividendForOp2 > 1 { 
+                                    number3 = 1 // Last resort
+                                } else { 
+                                    number3 = 2
+                                    operation2 = .addition // Change to addition
+                                }
+                            }
                         }
                     }
-                    if !divisors.isEmpty {
-                        number3 = divisors.randomElement()!
-                    } else {
-                        if dividendForOp2 != 0 { number3 = 1 } // Fallback to 1 if no other divisors
-                        else { number3 = 2; operation2 = .addition }
-                    }
-                    if number3 == 0 { number3 = 1 } // Final safety for number3 != 0
                 }
             }
 
