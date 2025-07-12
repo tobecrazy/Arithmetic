@@ -112,3 +112,10 @@
 "solution.division_verification.steps" = "Division Verification:\nSolve: %d ÷ %d = %d\n\nThink: What times %d equals %d?\nVerification: %d × %d = %d\nSince %d = %d, therefore %d ÷ %d = %d";
 
 "solution.grouping_division.steps" = "Grouping Division:\nSolve: %d ÷ %d = %d\n\nDivide %d items into %d equal groups\nEach group has %d × %d = %d items\nTherefore: %d ÷ %d = %d";
+
+/* Multiplication Table */
+"button.multiplication_table" = "9×9 Multiplication Table";
+"multiplication_table.title" = "Multiplication Table";
+"multiplication_table.instructions" = "This is the complete 9×9 multiplication table, containing all multiplication operations from 1 to 9. Different colors represent different difficulty levels.";
+"multiplication_table.formula" = "%@ × %@ = %@";
+"button.back" = "Back";

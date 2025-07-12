@@ -112,3 +112,10 @@
 "solution.division_verification.steps" = "除法验算法解析：\n%d ÷ %d = %d\n\n思考：%d × %d = ?\n验算：%d × %d = %d\n因为%d = %d，所以%d ÷ %d = %d";
 
 "solution.grouping_division.steps" = "分组除法解析：\n%d ÷ %d = %d\n\n将%d个物品平均分成%d组\n每组有%d × %d = %d个物品\n所以，%d ÷ %d = %d";
+
+/* Multiplication Table */
+"button.multiplication_table" = "9×9 乘法表";
+"multiplication_table.title" = "九九乘法表";
+"multiplication_table.instructions" = "这是完整的九九乘法表，包含1到9的所有乘法运算。不同颜色代表不同难度级别。";
+"multiplication_table.formula" = "%@ × %@ = %@";
+"button.back" = "返回";

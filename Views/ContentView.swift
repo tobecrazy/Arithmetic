@@ -6,6 +6,7 @@ struct ContentView: View {
     @State private var timeInMinutes: Int = 5
     @State private var navigateToGame = false
     @State private var navigateToWrongQuestions = false
+    @State private var navigateToMultiplicationTable = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -144,6 +145,20 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
+                        .padding(.bottom, 10)
+                        
+                        // 9×9乘法表按钮
+                        Button(action: {
+                            navigateToMultiplicationTable = true
+                        }) {
+                            Text("button.multiplication_table".localized)
+                                .font(.adaptiveBody())
+                                .padding()
+                                .frame(width: 200)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(.adaptiveCornerRadius)
+                        }
                         .padding(.bottom, 50)
                         
                         NavigationLink(
@@ -158,6 +173,14 @@ struct ContentView: View {
                             destination: WrongQuestionsView()
                                 .environmentObject(localizationManager),
                             isActive: $navigateToWrongQuestions
+                        ) {
+                            EmptyView()
+                        }
+                        
+                        NavigationLink(
+                            destination: MultiplicationTableView()
+                                .environmentObject(localizationManager),
+                            isActive: $navigateToMultiplicationTable
                         ) {
                             EmptyView()
                         }
@@ -265,6 +288,21 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 10)
+                    
+                    // 9×9乘法表按钮
+                    Button(action: {
+                        navigateToMultiplicationTable = true
+                    }) {
+                        Text("button.multiplication_table".localized)
+                            .font(.adaptiveBody())
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(.adaptiveCornerRadius)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 10)
                     .padding(.bottom, 30) // 添加底部间距
                     
                     NavigationLink(
@@ -279,6 +317,14 @@ struct ContentView: View {
                         destination: WrongQuestionsView()
                             .environmentObject(localizationManager),
                         isActive: $navigateToWrongQuestions
+                    ) {
+                        EmptyView()
+                    }
+                    
+                    NavigationLink(
+                        destination: MultiplicationTableView()
+                            .environmentObject(localizationManager),
+                        isActive: $navigateToMultiplicationTable
                     ) {
                         EmptyView()
                     }
