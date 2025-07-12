@@ -3,10 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-Demo
-[![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://developer.apple.com/ios/) 
-
-[![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
+[![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
 [![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.5+-orange.svg)](https://swift.org/)
@@ -332,6 +329,7 @@ Arithmetic/
 │   ├── GameView.swift                      # 游戏视图
 │   ├── ResultView.swift                    # 结果视图
 │   ├── WrongQuestionsView.swift           # 错题集视图
+│   ├── MultiplicationTableView.swift      # 九九乘法表视图
 │   └── LanguageSelectorView.swift         # 语言选择视图
 ├── 📊 Models/                              # 数据模型
 │   ├── Question.swift                      # 题目模型（包含解析方法）
