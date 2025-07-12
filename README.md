@@ -4,6 +4,7 @@
 ## Elementary Arithmetic Learning App
 
 Demo
+[![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://developer.apple.com/ios/) 
 
 [![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
 
