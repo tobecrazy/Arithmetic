@@ -3,6 +3,10 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
+Demo
+
+[![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
+
 [![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.5+-orange.svg)](https://swift.org/)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-3.0+-green.svg)](https://developer.apple.com/xcode/swiftui/)
