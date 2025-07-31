@@ -25,11 +25,11 @@
 - [✨ 功能特点 (Features)](#-功能特点-features)
 - [🚀 快速开始 (Quick Start)](#-快速开始-quick-start)
 - [🎯 难度等级系统 (Difficulty Levels)](#-难度等级系统-difficulty-levels)
+- [⚙️ 系统要求 (Requirements)](#️-系统要求-requirements)
 - [📥 安装说明 (Installation)](#-安装说明-installation)
 - [📖 使用说明 (Usage)](#-使用说明-usage)
 - [🏗️ 技术实现 (Technical Implementation)](#️-技术实现-technical-implementation)
 - [📁 项目结构 (Project Structure)](#-项目结构-project-structure)
-- [⚙️ 系统要求 (Requirements)](#️-系统要求-requirements)
 - [🔄 最近更新 (Recent Updates)](#-最近更新-recent-updates)
 - [🤝 贡献指南 (Contributing)](#-贡献指南-contributing)
 - [📄 许可证 (License)](#-许可证-license)
@@ -186,6 +186,28 @@
 - **三数运算**: 包含加减乘除四种运算的混合题目
 - **运算顺序**: 严格遵循先乘除后加减的运算顺序
 - **智能组合**: 确保混合运算中每步计算都产生合理的整数结果
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## ⚙️ 系统要求 (System Requirements)
+
+### 📱 设备支持
+- **iPhone**: iOS 15.0+
+- **iPad**: iPadOS 15.0+
+- **处理器**: A12 Bionic或更新
+- **存储空间**: 50MB可用空间
+
+### 🛠️ 开发环境
+- **macOS**: 12.0+ (Monterey)
+- **Xcode**: 13.0+
+- **Swift**: 5.5+
+- **SwiftUI**: 3.0+
+
+### 🌐 语言支持
+- **简体中文** (zh-Hans)
+- **English** (en)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -358,28 +380,6 @@ Arithmetic/
     ├── zh-Hans.lproj/Localizable.strings  # 中文本地化
     └── en.lproj/Localizable.strings       # 英文本地化
 ```
-
-[⬆️ 返回目录](#-目录-table-of-contents)
-
----
-
-## ⚙️ 系统要求 (System Requirements)
-
-### 📱 设备支持
-- **iPhone**: iOS 15.0+
-- **iPad**: iPadOS 15.0+
-- **处理器**: A12 Bionic或更新
-- **存储空间**: 50MB可用空间
-
-### 🛠️ 开发环境
-- **macOS**: 12.0+ (Monterey)
-- **Xcode**: 13.0+
-- **Swift**: 5.5+
-- **SwiftUI**: 3.0+
-
-### 🌐 语言支持
-- **简体中文** (zh-Hans)
-- **English** (en)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
