@@ -15,6 +15,7 @@
 		8A2AE9182E06A88A00A99591 /* ArithmeticModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE90C2E06A88A00A99591 /* ArithmeticModel.swift */; };
 		8A2AE91A2E06FFC800A99591 /* WrongQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE9192E06FFC800A99591 /* WrongQuestionsView.swift */; };
 		8A2AE91B2E06FFC900A99591 /* MultiplicationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */; };
+		8A2AE91D2E06FFC900A99591 /* AboutMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */; };
 		8AF3ABA42E05AE3600F67CDE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3AB9F2E05AE3600F67CDE /* ContentView.swift */; };
 		8AF3ABA52E05AE3600F67CDE /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3ABA22E05AE3600F67CDE /* ResultView.swift */; };
 		8AF3ABA62E05AE3600F67CDE /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3AB912E05AE3600F67CDE /* GameState.swift */; };
@@ -44,6 +45,7 @@
 		8A2AE9112E06A88A00A99591 /* WrongQuestionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongQuestionManager.swift; sourceTree = "<group>"; };
 		8A2AE9192E06FFC800A99591 /* WrongQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongQuestionsView.swift; sourceTree = "<group>"; };
 		8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationTableView.swift; sourceTree = "<group>"; };
+		8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeView.swift; sourceTree = "<group>"; };
 		8AF3AB8B2E05AE3600F67CDE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AF3AB8C2E05AE3600F67CDE /* CGFloat+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Adaptive.swift"; sourceTree = "<group>"; };
 		8AF3AB8D2E05AE3600F67CDE /* Font+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Adaptive.swift"; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			children = (
 				8A2AE9192E06FFC800A99591 /* WrongQuestionsView.swift */,
 				8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */,
+				8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */,
 				8AF3AB9F2E05AE3600F67CDE /* ContentView.swift */,
 				8AF3ABA02E05AE3600F67CDE /* GameView.swift */,
 				8AF3ABA12E05AE3600F67CDE /* LanguageSelectorView.swift */,
@@ -271,6 +274,7 @@
 				8AF3ABB02E05AE3600F67CDE /* Question.swift in Sources */,
 				8A2AE91A2E06FFC800A99591 /* WrongQuestionsView.swift in Sources */,
 				8A2AE91B2E06FFC900A99591 /* MultiplicationTableView.swift in Sources */,
+				8A2AE91D2E06FFC900A99591 /* AboutMeView.swift in Sources */,
 				8AF3ABB12E05AE3600F67CDE /* QuestionGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

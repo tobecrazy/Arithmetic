@@ -119,3 +119,9 @@
 "multiplication_table.instructions" = "This is the complete 9×9 multiplication table, containing all multiplication operations from 1 to 9. Different colors represent different difficulty levels.";
 "multiplication_table.formula" = "%@ × %@ = %@";
 "button.back" = "Back";
+
+/* About Me */
+"button.about_me" = "About Me";
+"about.page_title" = "About Me";
+"about.title" = "About the Developer";
+"about.content" = "This is an elementary arithmetic practice app designed to help children improve their math skills through interactive exercises. The app provides various difficulty levels and tracks progress to make learning fun and engaging.";

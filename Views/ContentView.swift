@@ -7,10 +7,32 @@ struct ContentView: View {
     @State private var navigateToGame = false
     @State private var navigateToWrongQuestions = false
     @State private var navigateToMultiplicationTable = false
+    @State private var navigateToAboutMe = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    // Computed properties for navigation destinations
+    private var gameDestination: some View {
+        GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
+            .environmentObject(localizationManager)
+    }
+    
+    private var wrongQuestionsDestination: some View {
+        WrongQuestionsView()
+            .environmentObject(localizationManager)
+    }
+    
+    private var multiplicationTableDestination: some View {
+        MultiplicationTableView()
+            .environmentObject(localizationManager)
+    }
+    
+    private var aboutMeDestination: some View {
+        AboutMeView()
+            .environmentObject(localizationManager)
+    }
     
     // 动态网格列数计算
     private var gridColumns: [GridItem] {
@@ -159,28 +181,47 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
+                        .padding(.bottom, 10)
+                        
+                        // 关于我按钮
+                        Button(action: {
+                            navigateToAboutMe = true
+                        }) {
+                            Text("button.about_me".localized)
+                                .font(.adaptiveBody())
+                                .padding()
+                                .frame(width: 200)
+                                .background(Color.purple)
+                                .foregroundColor(.white)
+                                .cornerRadius(.adaptiveCornerRadius)
+                        }
                         .padding(.bottom, 50)
                         
+                        // Navigation Links
                         NavigationLink(
-                            destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
-                                .environmentObject(localizationManager),
+                            destination: gameDestination,
                             isActive: $navigateToGame
                         ) {
                             EmptyView()
                         }
                         
                         NavigationLink(
-                            destination: WrongQuestionsView()
-                                .environmentObject(localizationManager),
+                            destination: wrongQuestionsDestination,
                             isActive: $navigateToWrongQuestions
                         ) {
                             EmptyView()
                         }
                         
                         NavigationLink(
-                            destination: MultiplicationTableView()
-                                .environmentObject(localizationManager),
+                            destination: multiplicationTableDestination,
                             isActive: $navigateToMultiplicationTable
+                        ) {
+                            EmptyView()
+                        }
+                        
+                        NavigationLink(
+                            destination: aboutMeDestination,
+                            isActive: $navigateToAboutMe
                         ) {
                             EmptyView()
                         }
@@ -303,28 +344,48 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 10)
+                    
+                    // 关于我按钮
+                    Button(action: {
+                        navigateToAboutMe = true
+                    }) {
+                        Text("button.about_me".localized)
+                            .font(.adaptiveBody())
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.purple)
+                            .foregroundColor(.white)
+                            .cornerRadius(.adaptiveCornerRadius)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 10)
                     .padding(.bottom, 30) // 添加底部间距
                     
+                    // Navigation Links
                     NavigationLink(
-                        destination: GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
-                            .environmentObject(localizationManager),
+                        destination: gameDestination,
                         isActive: $navigateToGame
                     ) {
                         EmptyView()
                     }
                     
                     NavigationLink(
-                        destination: WrongQuestionsView()
-                            .environmentObject(localizationManager),
+                        destination: wrongQuestionsDestination,
                         isActive: $navigateToWrongQuestions
                     ) {
                         EmptyView()
                     }
                     
                     NavigationLink(
-                        destination: MultiplicationTableView()
-                            .environmentObject(localizationManager),
+                        destination: multiplicationTableDestination,
                         isActive: $navigateToMultiplicationTable
+                    ) {
+                        EmptyView()
+                    }
+                    
+                    NavigationLink(
+                        destination: aboutMeDestination,
+                        isActive: $navigateToAboutMe
                     ) {
                         EmptyView()
                     }

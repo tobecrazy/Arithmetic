@@ -119,3 +119,9 @@
 "multiplication_table.instructions" = "这是完整的九九乘法表，包含1到9的所有乘法运算。不同颜色代表不同难度级别。";
 "multiplication_table.formula" = "%@ × %@ = %@";
 "button.back" = "返回";
+
+/* About Me */
+"button.about_me" = "关于我";
+"about.page_title" = "关于我";
+"about.title" = "关于开发者";
+"about.content" = "这是一个小学算术练习应用，旨在通过互动练习帮助孩子们提高数学技能。应用提供多种难度级别并跟踪学习进度，让学习变得有趣且富有吸引力。";

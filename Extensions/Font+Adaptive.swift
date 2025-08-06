@@ -5,6 +5,10 @@ extension Font {
         return UIDevice.current.userInterfaceIdiom == .pad ? .largeTitle : .title
     }
     
+    static func adaptiveTitle2() -> Font {
+        return UIDevice.current.userInterfaceIdiom == .pad ? .title : .title2
+    }
+    
     static func adaptiveHeadline() -> Font {
         return UIDevice.current.userInterfaceIdiom == .pad ? .title : .headline
     }
