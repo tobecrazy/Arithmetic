@@ -56,75 +56,54 @@ struct MultiplicationTableView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                // Fixed header
-                VStack {
-                    Text("multiplication_table.title".localized)
-                        .font(.adaptiveTitle())
-                        .padding()
-                    
-                    // Instructions
-                    Text("multiplication_table.instructions".localized)
-                        .font(.adaptiveBody())
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        .padding(.bottom)
-                }
-                .background(Color(.systemBackground))
-                
-                // Scrollable multiplication table
-                ScrollView([.vertical, .horizontal], showsIndicators: true) {
-                    LazyVGrid(columns: gridColumns, spacing: 12) {
-                        ForEach(Array(multiplicationResults.enumerated()), id: \.offset) { index, item in
-                            VStack(spacing: 4) {
-                                Text(item.0)
-                                    .font(.adaptiveBody())
-                                    .fontWeight(.medium)
-                                    .multilineTextAlignment(.center)
-                                    .lineLimit(2)
-                                    .minimumScaleFactor(0.8)
-                            }
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 8)
-                            .frame(minHeight: 60)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                    .fill(item.1)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                    )
-                            )
-                        }
-                    }
+        VStack(spacing: 0) {
+            // Fixed header
+            VStack {
+                Text("multiplication_table.title".localized)
+                    .font(.adaptiveTitle())
                     .padding()
-                }
                 
-                // Fixed bottom area with return button
-                VStack {
-                    Divider()
-                    
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("button.back".localized)
-                            .font(.adaptiveHeadline())
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(.adaptiveCornerRadius)
-                    }
-                    .padding()
-                }
-                .background(Color(.systemBackground))
+                // Instructions
+                Text("multiplication_table.instructions".localized)
+                    .font(.adaptiveBody())
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                    .padding(.bottom)
             }
-            .navigationBarHidden(true)
+            .background(Color(.systemBackground))
+            
+            // Scrollable multiplication table
+            ScrollView([.vertical, .horizontal], showsIndicators: true) {
+                LazyVGrid(columns: gridColumns, spacing: 12) {
+                    ForEach(Array(multiplicationResults.enumerated()), id: \.offset) { index, item in
+                        VStack(spacing: 4) {
+                            Text(item.0)
+                                .font(.adaptiveBody())
+                                .fontWeight(.medium)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.8)
+                        }
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 8)
+                        .frame(minHeight: 60)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                                .fill(item.1)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                )
+                        )
+                    }
+                }
+                .padding()
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationTitle("multiplication_table.title".localized)
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
