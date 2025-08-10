@@ -6,8 +6,7 @@ struct ContentView: View {
     @State private var timeInMinutes: Int = 5
     @State private var navigateToGame = false
     @State private var navigateToWrongQuestions = false
-    @State private var navigateToMultiplicationTable = false
-    @State private var navigateToAboutMe = false
+    @State private var navigateToOtherOptions = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -24,13 +23,8 @@ struct ContentView: View {
             .environmentObject(localizationManager)
     }
     
-    private var multiplicationTableDestination: some View {
-        MultiplicationTableView()
-            .environmentObject(localizationManager)
-    }
-    
-    private var aboutMeDestination: some View {
-        AboutMeView()
+    private var otherOptionsDestination: some View {
+        OtherOptionsView()
             .environmentObject(localizationManager)
     }
     
@@ -142,29 +136,15 @@ struct ContentView: View {
                         }
                         .padding(.bottom, 10)
                         
-                        // 9×9乘法表按钮
+                        // 其他选项按钮
                         Button(action: {
-                            navigateToMultiplicationTable = true
+                            navigateToOtherOptions = true
                         }) {
-                            Text("button.multiplication_table".localized)
+                            Text("button.other_options".localized)
                                 .font(.adaptiveBody())
                                 .padding()
                                 .frame(width: 200)
-                                .background(Color.green)
-                                .foregroundColor(.white)
-                                .cornerRadius(.adaptiveCornerRadius)
-                        }
-                        .padding(.bottom, 10)
-                        
-                        // 关于我按钮
-                        Button(action: {
-                            navigateToAboutMe = true
-                        }) {
-                            Text("button.about_me".localized)
-                                .font(.adaptiveBody())
-                                .padding()
-                                .frame(width: 200)
-                                .background(Color.purple)
+                                .background(Color.gray)
                                 .foregroundColor(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
@@ -186,15 +166,8 @@ struct ContentView: View {
                         }
                         
                         NavigationLink(
-                            destination: multiplicationTableDestination,
-                            isActive: $navigateToMultiplicationTable
-                        ) {
-                            EmptyView()
-                        }
-                        
-                        NavigationLink(
-                            destination: aboutMeDestination,
-                            isActive: $navigateToAboutMe
+                            destination: otherOptionsDestination,
+                            isActive: $navigateToOtherOptions
                         ) {
                             EmptyView()
                         }
@@ -277,30 +250,15 @@ struct ContentView: View {
                     .padding(.horizontal)
                     .padding(.top, 10)
                     
-                    // 9×9乘法表按钮
+                    // 其他选项按钮
                     Button(action: {
-                        navigateToMultiplicationTable = true
+                        navigateToOtherOptions = true
                     }) {
-                        Text("button.multiplication_table".localized)
+                        Text("button.other_options".localized)
                             .font(.adaptiveBody())
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(.adaptiveCornerRadius)
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 10)
-                    
-                    // 关于我按钮
-                    Button(action: {
-                        navigateToAboutMe = true
-                    }) {
-                        Text("button.about_me".localized)
-                            .font(.adaptiveBody())
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.purple)
                             .foregroundColor(.white)
                             .cornerRadius(.adaptiveCornerRadius)
                     }
@@ -324,15 +282,8 @@ struct ContentView: View {
                     }
                     
                     NavigationLink(
-                        destination: multiplicationTableDestination,
-                        isActive: $navigateToMultiplicationTable
-                    ) {
-                        EmptyView()
-                    }
-                    
-                    NavigationLink(
-                        destination: aboutMeDestination,
-                        isActive: $navigateToAboutMe
+                        destination: otherOptionsDestination,
+                        isActive: $navigateToOtherOptions
                     ) {
                         EmptyView()
                     }

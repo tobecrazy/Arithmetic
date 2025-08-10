@@ -120,6 +120,11 @@
 "multiplication_table.formula" = "%@ × %@ = %@";
 "button.back" = "返回";
 
+/* Other Options */
+"button.other_options" = "其他选项";
+"other_options.title" = "其他选项";
+"other_options.back" = "返回主页";
+
 /* About Me */
 "button.about_me" = "关于我";
 "about.page_title" = "关于我";
