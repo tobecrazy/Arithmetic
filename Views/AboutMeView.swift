@@ -6,6 +6,7 @@ import SwiftUI
 
 struct AboutMeView: View {
     @EnvironmentObject var localizationManager: LocalizationManager
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
@@ -59,6 +60,20 @@ struct AboutMeView: View {
         }
         .navigationTitle("about.page_title".localized)
         .navigationBarTitleDisplayMode(.large)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("button.back".localized)
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+        }
     }
 }
 

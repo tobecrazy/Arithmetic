@@ -104,6 +104,20 @@ struct MultiplicationTableView: View {
         }
         .navigationTitle("multiplication_table.title".localized)
         .navigationBarTitleDisplayMode(.large)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("button.back".localized)
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+        }
     }
 }
 

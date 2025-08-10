@@ -3,6 +3,7 @@ import CoreData
 
 struct WrongQuestionsView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @State private var selectedLevel: DifficultyLevel? = nil
@@ -186,6 +187,22 @@ struct WrongQuestionsView: View {
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
             // 当语言变化时，重新生成解析内容
             refreshSolutionContent()
+        }
+        .navigationTitle("wrong_questions.title".localized)
+        .navigationBarTitleDisplayMode(.large)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("button.back".localized)
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
         }
     }
     
