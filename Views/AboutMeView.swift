@@ -15,7 +15,7 @@ struct AboutMeView: View {
             VStack(spacing: 20) {
                 // Image section with AsyncImage
                 VStack {
-                    AsyncImage(url: URL(string: "https://images2015.cnblogs.com/blog/418763/201610/418763-20161014225758390-402578379.gif")) { image in
+                    AsyncImage(url: URL(string: "https://images.cnblogs.com/cnblogs_com/tobecrazy/432338/o_250810143405_Card.png")) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
