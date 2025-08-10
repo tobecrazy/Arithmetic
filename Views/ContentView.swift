@@ -34,47 +34,26 @@ struct ContentView: View {
             .environmentObject(localizationManager)
     }
     
-    // 动态网格列数计算
-    private var gridColumns: [GridItem] {
-        let levelCount = DifficultyLevel.allCases.count
-        let minItemWidth: CGFloat = 150
-        let screenWidth = UIScreen.main.bounds.width * 0.5 // iPad横屏左侧区域
-        let maxColumns = max(1, Int(screenWidth / minItemWidth))
-        let optimalColumns = min(maxColumns, 3) // 最多3列，保持美观
-        
-        return Array(repeating: GridItem(.flexible()), count: optimalColumns)
-    }
-    
-    // 难度级别卡片组件
+    // 难度选择器组件
     @ViewBuilder
-    private func difficultyLevelCard(for level: DifficultyLevel) -> some View {
-        Button(action: {
-            selectedDifficulty = level
-        }) {
-            VStack {
-                Text(level.localizedName)
-                    .font(.adaptiveBody())
-                    .multilineTextAlignment(.center)
-                
-                if selectedDifficulty == level {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.blue)
-                        .padding(.top, 5)
+    private func difficultyPicker() -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("difficulty.level".localized)
+                .font(.adaptiveHeadline())
+            
+            Picker("difficulty.level".localized, selection: $selectedDifficulty) {
+                ForEach(DifficultyLevel.allCases) { level in
+                    Text(level.localizedName)
+                        .tag(level)
                 }
             }
+            .pickerStyle(.menu)
             .padding()
-            .frame(minHeight: 100)
-            .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                    .fill(selectedDifficulty == level ? Color.blue.opacity(0.1) : Color.gray.opacity(0.1))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                            .stroke(selectedDifficulty == level ? Color.blue : Color.clear, lineWidth: 2)
-                    )
+                    .fill(Color.gray.opacity(0.1))
             )
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     // iPad横屏专用布局
@@ -87,15 +66,9 @@ struct ContentView: View {
                         .font(.adaptiveTitle())
                         .padding()
                     
-                    // 难度选择 (动态网格，支持滚动)
-                    ScrollView {
-                        LazyVGrid(columns: gridColumns, spacing: 20) {
-                            ForEach(DifficultyLevel.allCases) { level in
-                                difficultyLevelCard(for: level)
-                            }
-                        }
+                    // 难度选择器
+                    difficultyPicker()
                         .padding()
-                    }
                     
                     Spacer()
                 }
@@ -243,35 +216,9 @@ struct ContentView: View {
                         .font(.adaptiveTitle())
                         .padding()
                     
-                    // 难度选择
-                    LazyVStack(alignment: .leading, spacing: 10) {
-                        ForEach(DifficultyLevel.allCases) { level in
-                            Button(action: {
-                                selectedDifficulty = level
-                            }) {
-                                HStack {
-                                    Text(level.localizedName)
-                                        .font(.adaptiveBody())
-                                    Spacer()
-                                    if selectedDifficulty == level {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.blue)
-                                    }
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                        .fill(selectedDifficulty == level ? Color.blue.opacity(0.1) : Color.gray.opacity(0.1))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                                .stroke(selectedDifficulty == level ? Color.blue : Color.clear, lineWidth: 2)
-                                        )
-                                )
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        }
-                    }
-                    .padding(.horizontal)
+                    // 难度选择器
+                    difficultyPicker()
+                        .padding(.horizontal)
                     
                     // 时间设置
                     VStack(alignment: .leading) {
