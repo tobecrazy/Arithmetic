@@ -42,6 +42,7 @@ struct ContentView: View {
                 }
             }
             .pickerStyle(.menu)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius)

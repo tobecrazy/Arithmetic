@@ -123,7 +123,7 @@
 /* Other Options */
 "button.other_options" = "其他选项";
 "other_options.title" = "其他选项";
-"other_options.back" = "返回主页";
+"other_options.back" = "返回";
 
 /* About Me */
 "button.about_me" = "关于我";
