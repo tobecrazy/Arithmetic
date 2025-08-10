@@ -11,6 +11,7 @@ struct WrongQuestionsView: View {
     @State private var showingDeleteAlert = false
     @State private var showingDeleteMasteredAlert = false
     @State private var expandedQuestionIds: [UUID] = []
+    @State private var refreshTrigger = UUID()
     @EnvironmentObject var localizationManager: LocalizationManager
     
     private let wrongQuestionManager = WrongQuestionManager()
@@ -184,8 +185,10 @@ struct WrongQuestionsView: View {
         .onAppear {
             loadWrongQuestions()
         }
+        .id(refreshTrigger) // Force refresh when language changes
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
-            // 当语言变化时，重新生成解析内容
+            // 当语言变化时，重新生成解析内容并刷新UI
+            refreshTrigger = UUID()
             refreshSolutionContent()
         }
         .navigationTitle("wrong_questions.title".localized)

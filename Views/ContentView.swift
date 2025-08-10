@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var navigateToGame = false
     @State private var navigateToWrongQuestions = false
     @State private var navigateToOtherOptions = false
+    @State private var refreshTrigger = UUID()
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -297,10 +298,16 @@ struct ContentView: View {
     
     var body: some View {
         // 根据设备类型和方向选择不同布局
-        if DeviceUtils.isIPad && DeviceUtils.isLandscape(with: (horizontalSizeClass, verticalSizeClass)) {
-            iPadLandscapeLayout
-        } else {
-            defaultLayout
+        Group {
+            if DeviceUtils.isIPad && DeviceUtils.isLandscape(with: (horizontalSizeClass, verticalSizeClass)) {
+                iPadLandscapeLayout
+            } else {
+                defaultLayout
+            }
+        }
+        .id(refreshTrigger) // Force refresh when language changes
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
+            refreshTrigger = UUID()
         }
     }
 }
