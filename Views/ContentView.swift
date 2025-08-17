@@ -37,13 +37,14 @@ struct ContentView: View {
                 .font(.adaptiveHeadline())
             
             Picker("difficulty.level".localized, selection: $selectedDifficulty) {
-                ForEach(DifficultyLevel.allCases) { level in
-                    Text(level.localizedName)
-                        .tag(level)
-                }
-            }
-            .pickerStyle(.menu)
-            .frame(maxWidth: .infinity, alignment: .leading)
+                            ForEach(DifficultyLevel.allCases) { level in
+                                Text(level.localizedName)
+                                    .tag(level)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                        .labelsHidden()
+                        .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
