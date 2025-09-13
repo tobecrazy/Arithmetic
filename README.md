@@ -111,6 +111,16 @@
 > - 完全支持中英文双语解析内容
 > - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
 
+### 🎤 问题朗读功能 (Question Read-Aloud Feature)
+- **清晰发音** - 在游戏界面，点击题目可以朗读当前题目。
+- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换。
+- **辅助学习** - 帮助儿童通过听觉理解题目，特别适合低年级学生。
+
+### 🎤 Question Read-Aloud Feature
+- **Clear Pronunciation** - In the game view, tap the question to hear it read aloud.
+- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings.
+- **Learning Aid** - Helps children understand the questions through auditory learning, especially suitable for younger students.
+
 ### 💾 游戏进度保存 (Game Progress Saving)
 - **自动保存** - 自动保存游戏进度
 - **断点续练** - 支持暂停游戏并在稍后继续
@@ -409,6 +419,18 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🎤 2025-09-13 (新增题目朗读功能)
+- **🆕 全新功能**: 在游戏界面，用户可以点击题目来收听题目的朗读。
+- **🗣️ TTS扩展**: `TTSHelper` 现在也被用于朗读问题，增强了其在应用中的作用。
+- **🌐 双语支持**: 为朗读功能添加了相应的中文和英文本地化字符串。
+- **🧠 模型更新**: `Question` 模型中新增了用于语音朗读的本地化问题文本。
+
+### 🎤 2025-09-13 (Added Question Read-Aloud Feature)
+- **🆕 New Feature**: In the game view, users can tap the question to listen to it being read aloud.
+- **🗣️ TTS Expansion**: `TTSHelper` is now also used for reading questions, expanding its role in the app.
+- **🌐 Bilingual Support**: Added localized strings for the read-aloud feature in both Chinese and English.
+- **🧠 Model Update**: The `Question` model has been updated with localized question text for speech.
 
 ### 🔊 2025-09-13 (新增九九乘法表双语发音功能)
 - **🆕 全新功能**: 为九九乘法表增加中英文双语发音功能。
