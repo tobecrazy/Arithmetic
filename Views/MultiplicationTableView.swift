@@ -1,10 +1,12 @@
 import SwiftUI
+import AVFoundation
 
 struct MultiplicationTableView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @EnvironmentObject var localizationManager: LocalizationManager
     @Environment(\.presentationMode) var presentationMode
+    @StateObject private var ttsHelper = TTSHelper()
     
     // Grid configuration for different device types
     private var gridColumns: [GridItem] {
@@ -55,6 +57,47 @@ struct MultiplicationTableView: View {
         return results
     }
     
+    // Extract mathematical expression from index
+    private func extractMathExpression(from formattedString: String, at index: Int) -> String {
+        // Calculate i and j from index (0-based to 1-based)
+        let i = (index / 9) + 1
+        let result = i * j
+        
+        // Return the mathematical expression in standard format
+        return "\(i) × \(j) = \(result)"
+    }
+    
+    // Create multiplication button view
+    private func multiplicationButton(for item: (String, Color), at index: Int) -> some View {
+        Button(action: {
+            let mathExpression = extractMathExpression(from: item.0, at: index)
+            ttsHelper.speakMathExpression(mathExpression, language: localizationManager.currentLanguage)
+        }) {
+            VStack(spacing: 4) {
+                Text(item.0)
+                    .font(.adaptiveBody())
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+                    .foregroundColor(.primary)
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 8)
+            .frame(minHeight: 60)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                    .fill(item.1)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             // Fixed header
@@ -77,26 +120,7 @@ struct MultiplicationTableView: View {
             ScrollView([.vertical, .horizontal], showsIndicators: true) {
                 LazyVGrid(columns: gridColumns, spacing: 12) {
                     ForEach(Array(multiplicationResults.enumerated()), id: \.offset) { index, item in
-                        VStack(spacing: 4) {
-                            Text(item.0)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.8)
-                        }
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 8)
-                        .frame(minHeight: 60)
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                .fill(item.1)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                )
-                        )
+                        multiplicationButton(for: item, at: index)
                     }
                 }
                 .padding()
