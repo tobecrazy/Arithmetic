@@ -72,6 +72,18 @@
 - **双向滚动** - 支持垂直和水平滚动，确保所有内容可访问
 - **学习辅助** - 作为乘法练习的参考工具，帮助学生记忆乘法口诀
 
+### 🔊 九九乘法表双语发音 (Bilingual TTS for Multiplication Table)
+- **真人发音** - 集成iOS原生TTS引擎，提供清晰的真人发音。
+- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换。
+- **即时反馈** - 点击乘法表中的任意按钮，即可听到对应的乘法表达式发音，如“三七二十一”或“three times seven is twenty-one”。
+- **学习辅助** - 帮助儿童通过听觉学习，加深对乘法口诀的记忆。
+
+### 🔊 Bilingual TTS for Multiplication Table
+- **Native TTS Engine** - Integrated with the native iOS TTS engine for clear, human-like speech.
+- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings.
+- **Instant Feedback** - Tap any button in the multiplication table to hear the corresponding multiplication expression, such as "三七二十一" or "three times seven is twenty-one".
+- **Auditory Learning** - Helps children learn and memorize the multiplication table through auditory feedback.
+
 ### 🧠 错题解析系统 (Wrong Question Analysis System)
 
 #### 📐 加减法解析方法（适用于等级2 - 20以内加减法）
@@ -380,6 +392,7 @@ Arithmetic/
 │   ├── LocalizationManager.swift          # 本地化管理
 │   ├── QuestionGenerator.swift            # 题目生成器
 │   ├── NavigationUtil.swift               # 导航工具
+│   ├── TTSHelper.swift                    # TTS辅助类
 │   └── DeviceUtils.swift                  # 设备工具
 ├── 🔧 Extensions/                          # 扩展
 │   ├── String+Localized.swift             # 字符串本地化扩展
@@ -396,6 +409,18 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🔊 2025-09-13 (新增九九乘法表双语发音功能)
+- **🆕 全新功能**: 为九九乘法表增加中英文双语发音功能。
+- **🗣️ TTS集成**: 新增 `TTSHelper` 工具类，封装了 `AVSpeechSynthesizer`，用于处理文本到语音的转换。
+- ** interactive learning**: 用户点击乘法表中的按钮，可以听到对应算式的发音，增强了互动性和趣味性。
+- **🌐 双语支持**: 支持中文和英文两种语言的发音，并能根据当前应用语言环境自动切换。
+
+### 🔊 2025-09-13 (Added Bilingual TTS for Multiplication Table)
+- **🆕 New Feature**: Added bilingual (Chinese and English) text-to-speech functionality to the multiplication table.
+- **🗣️ TTS Integration**: Added a new `TTSHelper` utility to encapsulate `AVSpeechSynthesizer` for text-to-speech conversion.
+- **Interactive Learning**: Users can tap on buttons in the multiplication table to hear the pronunciation of the corresponding expressions, enhancing interactivity and engagement.
+- **🌐 Bilingual Support**: Supports both Chinese and English pronunciation, automatically switching based on the current app language.
 
 ### 🎨 2025-01-10 (界面优化重构)
 - **🆕 难度选择优化**: 将复杂的按钮网格优化为简洁的Picker下拉菜单
