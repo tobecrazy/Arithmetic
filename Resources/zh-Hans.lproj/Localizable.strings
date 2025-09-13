@@ -125,6 +125,9 @@
 "other_options.title" = "其他选项";
 "other_options.back" = "返回";
 
+/* Question Reading */
+"question.read_aloud" = "计算%@等于多少？";
+
 /* About Me */
 "button.about_me" = "关于我";
 "about.page_title" = "关于我";

@@ -125,6 +125,9 @@
 "other_options.title" = "Other Options";
 "other_options.back" = "Back to Main";
 
+/* Question Reading */
+"question.read_aloud" = "What is %@?";
+
 /* About Me */
 "button.about_me" = "About Me";
 "about.page_title" = "About Me";

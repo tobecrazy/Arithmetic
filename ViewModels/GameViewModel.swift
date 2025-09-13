@@ -70,6 +70,9 @@ class GameViewModel: ObservableObject {
         
         // 激活计时器
         timerActive = true
+        
+        // 读出当前题目
+        readCurrentQuestion()
     }
     
     func resetGame() {
@@ -95,6 +98,9 @@ class GameViewModel: ObservableObject {
         
         // 激活计时器
         timerActive = true
+        
+        // 读出当前题目
+        readCurrentQuestion()
     }
     
 func submitAnswer(_ answer: Int) {
@@ -102,7 +108,18 @@ func submitAnswer(_ answer: Int) {
     
     if isCorrect {
         // If answer is correct, move to next question immediately
-        gameState.moveToNextQuestion()
+        if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
+            gameState.currentQuestionIndex += 1
+            gameState.showingCorrectAnswer = false
+            
+            // 读出新题目
+            readCurrentQuestion()
+            
+            // Force UI update by triggering objectWillChange
+            self.objectWillChange.send()
+        } else {
+            gameState.gameCompleted = true
+        }
     } else {
         // If answer is incorrect, we'll wait for the user to click the "Next Question" button
         // Note: The wrong question is already added to the collection in gameState.checkAnswer()
@@ -171,6 +188,9 @@ func moveToNextQuestion() {
     if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
         gameState.currentQuestionIndex += 1
         gameState.showingCorrectAnswer = false
+        
+        // 读出新题目
+        readCurrentQuestion()
         
         // Force UI update by triggering objectWillChange
         self.objectWillChange.send()
@@ -246,6 +266,22 @@ func moveToNextQuestion() {
     func hideSolution() {
         showSolutionSteps = false
         solutionContent = ""
+    }
+    
+    // 读出当前题目
+    func readCurrentQuestion() {
+        guard gameState.currentQuestionIndex < gameState.questions.count else { return }
+        
+        let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
+        let currentLanguage = LocalizationManager.shared.currentLanguage
+        let speechText = currentQuestion.questionTextForSpeech
+        
+        // 使用TTSHelper读出题目
+        TTSHelper.shared.speakMathExpression(speechText, language: currentLanguage)
+        
+        #if DEBUG
+        print("Reading question: \(speechText)")
+        #endif
     }
     
     deinit {

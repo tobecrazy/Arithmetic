@@ -198,6 +198,23 @@ class Question: NSObject, NSCoding, Identifiable {
         return "Invalid Question"
     }
     
+    // 获取用于语音朗读的题目文本
+    var questionTextForSpeech: String {
+        let questionExpression: String
+        if numbers.count == 2 && operations.count == 1 {
+            // 简单的两数运算，去掉 "= ?" 部分
+            questionExpression = "\(numbers[0]) \(operations[0].symbol) \(numbers[1])"
+        } else if numbers.count == 3 && operations.count == 2 {
+            // 三数运算，去掉 "= ?" 部分
+            questionExpression = "\(numbers[0]) \(operations[0].symbol) \(numbers[1]) \(operations[1].symbol) \(numbers[2])"
+        } else {
+            questionExpression = "Invalid Question"
+        }
+        
+        // 使用本地化字符串格式化语音文本
+        return "question.read_aloud".localizedFormat(questionExpression)
+    }
+    
     // 便捷初始化方法 - 两数运算
     init(number1: Int, number2: Int, operation: Operation) {
         self.id = UUID()
