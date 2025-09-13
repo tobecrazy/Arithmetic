@@ -61,6 +61,7 @@ struct MultiplicationTableView: View {
     private func extractMathExpression(from formattedString: String, at index: Int) -> String {
         // Calculate i and j from index (0-based to 1-based)
         let i = (index / 9) + 1
+        let j = (index % 9) + 1
         let result = i * j
         
         // Return the mathematical expression in standard format
