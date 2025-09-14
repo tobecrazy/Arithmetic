@@ -147,7 +147,7 @@ struct ContentView: View {
                                 .font(.adaptiveBody())
                                 .padding()
                                 .frame(width: 200)
-                                .background(Color.gray)
+                                .background(Color.green)
                                 .foregroundColor(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }

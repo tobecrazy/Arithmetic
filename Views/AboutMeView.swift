@@ -13,25 +13,14 @@ struct AboutMeView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                // Image section with AsyncImage
+                // Image section with CachedAsyncImageView
                 VStack {
-                    AsyncImage(url: URL(string: "https://images.cnblogs.com/cnblogs_com/tobecrazy/432338/o_250810143405_Card.png")) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: 300, maxHeight: 200)
-                            .cornerRadius(.adaptiveCornerRadius)
-                    } placeholder: {
-                        // Placeholder while loading
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 100))
-                            .foregroundColor(.gray.opacity(0.5))
-                            .frame(maxWidth: 300, maxHeight: 200)
-                            .background(
-                                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                    .fill(Color.gray.opacity(0.1))
-                            )
-                    }
+                    CachedAsyncImageView(
+                        url: URL(string: "https://images.cnblogs.com/cnblogs_com/tobecrazy/432338/o_250810143405_Card.png"),
+                        placeholder: Image(systemName: "person.circle.fill")
+                    )
+                    .frame(maxWidth: 300, maxHeight: 200)
+                    .cornerRadius(.adaptiveCornerRadius)
                 }
                 .padding(.top, 20)
                 
