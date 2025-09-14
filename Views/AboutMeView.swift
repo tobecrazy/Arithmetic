@@ -51,6 +51,12 @@ struct AboutMeView: View {
                         .lineSpacing(4)
                         .padding(.horizontal, 20)
                         .foregroundColor(.primary.opacity(0.8))
+                    
+                    // GitHub Link
+                    Link("about.github_link".localized, destination: URL(string: "https://github.com/tobecrazy/Arithmetic")!)
+                        .font(.adaptiveBody())
+                        .foregroundColor(.blue)
+                        .padding(.top, 10)
                 }
                 .padding(.vertical, 20)
                 

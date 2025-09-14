@@ -133,3 +133,4 @@
 "about.page_title" = "关于我";
 "about.title" = "关于开发者";
 "about.content" = "这是一个小学算术练习应用，旨在通过互动练习帮助孩子们提高数学技能。应用提供多种难度级别并跟踪学习进度，让学习变得有趣且富有吸引力。";
+"about.github_link" = "点击访问我的Github仓库";

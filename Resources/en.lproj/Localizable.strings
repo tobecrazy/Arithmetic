@@ -133,3 +133,4 @@
 "about.page_title" = "About Me";
 "about.title" = "About the Developer";
 "about.content" = "This is an elementary arithmetic practice app designed to help children improve their math skills through interactive exercises. The app provides various difficulty levels and tracks progress to make learning fun and engaging.";
+"about.github_link" = "Visit GitHub Repository";
