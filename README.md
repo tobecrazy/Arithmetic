@@ -440,6 +440,17 @@ Arithmetic/
 
 ## 🔄 最近更新 (Recent Updates)
 
+### ⚙️ 2025-09-26 (应用图标修复)
+- **🔧 关键修复**: 解决了应用图标在设备上无法正确显示的问题。
+- **⚙️ 配置修正**: 向 `Info.plist` 文件添加了 `CFBundleIcons` 键，确保系统能正确识别图标集。
+- **🎨 资源文件优化**: 简化了 `AppIcon.appiconset` 中的 `Contents.json` 文件，采用单一 1024x1024px 图标源并由 Xcode 自动生成所有尺寸，遵循了现代化的最佳实践，提高了图标管理的可靠性。
+
+### ⚙️ 2025-09-26 (App Icon Fix)
+- **🔧 Key Fix**: Resolved an issue where the app icon was not displaying correctly on devices.
+- **⚙️ Configuration Correction**: Added the `CFBundleIcons` key to the `Info.plist` file to ensure the system correctly identifies the icon set.
+- **🎨 Asset Optimization**: Simplified the `Contents.json` file within `AppIcon.appiconset` to use a single 1024x1024px source icon, allowing Xcode to auto-generate all required sizes. This follows modern best practices and improves the reliability of icon management.
+
+
 ### 🌟 2025-09-14 (新增图片缓存功能)
 - **🆕 全新功能**: 为"关于我"页面的开发者头像添加了图片缓存功能
 - **💾 缓存机制**: 实现了基于内存和磁盘的二级缓存系统
