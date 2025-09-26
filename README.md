@@ -154,6 +154,17 @@
 - **离线访问** - 网络异常时也能显示已缓存的图片
 - **存储优化** - 自动管理缓存大小，避免占用过多存储空间
 
+### 🌐 GitHub Repository Link
+- **便捷访问** - 在"关于我"页面新增GitHub仓库链接
+- **开源支持** - 用户可直接访问项目开源地址，了解开发进展
+- **中英双语** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本
+
+### 🖼️ 图片缓存功能 (Image Caching Feature)
+- **智能缓存** - 自动缓存"关于我"页面的开发者头像
+- **二级存储** - 结合内存缓存和磁盘缓存，提高加载速度
+- **离线访问** - 网络异常时也能显示已缓存的图片
+- **存储优化** - 自动管理缓存大小，避免占用过多存储空间
+
 ### 🌐 Language Settings
 - **Bilingual Interface** - Supports both Chinese and English interfaces
 - **Real-time Switching** - Language can be switched at any time
@@ -164,6 +175,12 @@
 - **Two-level Storage** - Combines memory caching and disk caching to improve loading speed
 - **Offline Access** - Can display cached images even when network is unavailable
 - **Storage Optimization** - Automatically manages cache size to avoid excessive storage usage
+
+### 🎨 UI Improvements
+- **Cleaner Picker** - Difficulty picker labels are now hidden to create a cleaner interface
+- **Custom Navigation** - Added custom back button functionality across multiple views
+- **Layout Refinements** - Adjusted picker alignment and overall layout improvements
+- **View Simplification** - Removed unnecessary NavigationView wrappers for better performance
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -449,6 +466,24 @@ Arithmetic/
 - **🔧 Key Fix**: Resolved an issue where the app icon was not displaying correctly on devices.
 - **⚙️ Configuration Correction**: Added the `CFBundleIcons` key to the `Info.plist` file to ensure the system correctly identifies the icon set.
 - **🎨 Asset Optimization**: Simplified the `Contents.json` file within `AppIcon.appiconset` to use a single 1024x1024px source icon, allowing Xcode to auto-generate all required sizes. This follows modern best practices and improves the reliability of icon management.
+
+
+### 🌟 2025-09-26 (新增GitHub仓库链接)
+- **🔗 新增功能**: 在"关于我"页面添加了GitHub仓库链接
+- **📖 开源支持**: 用户可以直接访问项目开源地址，了解开发进展和贡献代码
+- **🌍 本地化**: 支持中英文双语显示，中文为"点击访问我的Github仓库"，英文为"Visit GitHub Repository"
+
+### 🌟 2025-09-26 (Added GitHub Repository Link)
+- **🔗 New Feature**: Added a GitHub repository link to the "About Me" page
+- **📖 Open Source Support**: Users can directly access the project's open source repository to learn about development progress and contribute code
+- **🌍 Localization**: Supports bilingual display with "点击访问我的Github仓库" in Chinese and "Visit GitHub Repository" in English
+
+
+### 🎨 2025-09-26 (UI Improvements)
+- **🎨 Cleaner Interface**: Hid labels in difficulty picker to create a cleaner user interface
+- **🔙 Navigation Enhancement**: Added custom back button functionality to multiple views
+- **📏 Layout Refinements**: Adjusted picker alignment and other layout improvements
+- **⚡ Performance Optimization**: Removed unnecessary NavigationView wrappers for better performance and stability
 
 
 ### 🌟 2025-09-14 (新增图片缓存功能)
