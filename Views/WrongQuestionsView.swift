@@ -25,18 +25,48 @@ struct WrongQuestionsView: View {
                     .font(.adaptiveTitle())
                     .padding()
                 
-                // 难度选择器
-                Picker("wrong_questions.filter_by_level".localized, selection: $selectedLevel) {
-                    Text("wrong_questions.all_levels".localized).tag(nil as DifficultyLevel?)
-                    ForEach(DifficultyLevel.allCases) { level in
-                        Text(level.localizedName).tag(level as DifficultyLevel?)
+                // 难度选择器 - 支持水平滚动
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        // 全部难度选项
+                        Button(action: {
+                            selectedLevel = nil
+                            loadWrongQuestions()
+                        }) {
+                            Text("wrong_questions.all_levels".localized)
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(selectedLevel == nil ? .white : .primary)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .fill(selectedLevel == nil ? Color.blue : Color(.systemGray5))
+                                )
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        // 各个难度级别选项
+                        ForEach(DifficultyLevel.allCases) { level in
+                            Button(action: {
+                                selectedLevel = level
+                                loadWrongQuestions()
+                            }) {
+                                Text(level.localizedName)
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundColor(selectedLevel == level ? .white : .primary)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(selectedLevel == level ? Color.blue : Color(.systemGray5))
+                                    )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
-                .onChange(of: selectedLevel) { _ in
-                    loadWrongQuestions()
-                }
+                .padding(.bottom, 8)
             }
             .background(Color(.systemBackground))
             
