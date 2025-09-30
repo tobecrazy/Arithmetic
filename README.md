@@ -111,15 +111,38 @@
 > - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
 
 ### 🎤 问题朗读功能 (Question Read-Aloud Feature)
-- **智能发音** - 在游戏界面，点击题目可以朗读当前题目，数学运算符会被正确发音
-- **运算符识别** - 自动将数学符号转换为自然语言："-" 读作"减"，"+" 读作"加"，"×" 读作"乘以"，"÷" 读作"除以"
-- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换
-- **辅助学习** - 帮助儿童通过听觉理解题目，特别适合低年级学生和视觉学习困难的学生
 
-- **Intelligent Pronunciation** - In the game view, tap the question to hear it read aloud with proper mathematical operator pronunciation
-- **Operator Recognition** - Automatically converts mathematical symbols to natural language: "-" pronounced as "minus", "+" as "plus", "×" as "times", "÷" as "divided by"
-- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings
-- **Learning Aid** - Helps children understand the questions through auditory learning, especially suitable for younger students and those with visual learning difficulties
+#### 🎯 中文版功能特点
+- **智能语音朗读** - 在游戏界面，点击任意题目文本即可朗读当前算术题
+- **数学符号智能识别** - 自动将数学运算符转换为标准中文读音
+  - "+" 读作"加"
+  - "-" 读作"减"
+  - "×" 读作"乘以"
+  - "÷" 读作"除以"
+  - "=" 读作"等于"
+- **数字智能转换** - 将阿拉伯数字转换为中文数字读音（如"8"读作"八"）
+- **完整句式朗读** - 按照"计算[题目]等于多少？"的标准格式朗读
+- **听觉学习辅助** - 特别适合低年级学生和需要听觉辅助的学习者
+
+#### 🌍 English Version Features
+- **Intelligent Voice Reading** - Tap any question text in the game interface to hear the current arithmetic problem read aloud
+- **Mathematical Symbol Recognition** - Automatically converts mathematical operators to standard English pronunciation
+  - "+" pronounced as "plus"
+  - "-" pronounced as "minus"
+  - "×" pronounced as "times"
+  - "÷" pronounced as "divided by"
+  - "=" pronounced as "equals"
+- **Number Conversion** - Converts Arabic numerals to spelled-out English numbers (e.g., "8" pronounced as "eight")
+- **Complete Sentence Reading** - Reads in the standard format "What is [question]?"
+- **Auditory Learning Support** - Especially suitable for young students and learners who need auditory assistance
+
+#### 🔧 技术特性 (Technical Features)
+- **原生TTS引擎** - 基于iOS原生AVSpeechSynthesizer，确保高质量语音输出
+- **自适应语言切换** - 根据应用当前语言设置自动选择中文或英文发音
+- **无缝交互体验** - 题目文本外观保持不变，点击即可触发朗读功能
+- **Native TTS Engine** - Built on iOS native AVSpeechSynthesizer for high-quality voice output
+- **Adaptive Language Switching** - Automatically selects Chinese or English pronunciation based on current app language settings
+- **Seamless Interactive Experience** - Question text appearance remains unchanged, tap to trigger read-aloud functionality
 
 ### 💾 游戏进度保存 (Game Progress Saving)
 - **自动保存** - 自动保存游戏进度
@@ -330,6 +353,7 @@ flowchart TB
 
 2. **📝 答题页面 (Answer Page)**
    - 查看题目并输入答案 / View questions and input answers
+   - **点击题目文本可朗读当前问题** / **Tap question text to hear current question read aloud**
    - 点击"提交"按钮确认答案 / Click "Submit" button to confirm answer
    - 答错时可点击"查看解析"查看详细步骤 / Click "View Analysis" for detailed steps when wrong
    - 实时查看得分和剩余时间 / View real-time score and remaining time
@@ -383,6 +407,16 @@ flowchart TB
 - 支持8种不同的解题策略
 - 三数运算分步解析
 - 完整的中英文解析生成
+```
+
+### 🎤 问题朗读系统
+```swift
+// TTS智能语音系统
+- TTSHelper单例模式，统一管理语音合成
+- speakMathExpression()方法，智能处理数学表达式
+- 运算符正则表达式替换，确保标准读音
+- 数字转换为拼写形式，提高语音自然度
+- 双语言环境自适应切换
 ```
 
 ### 💾 数据管理
@@ -465,21 +499,31 @@ Arithmetic/
 
 ## 🔄 最近更新 (Recent Updates)
 
-### 🎤 2025-09-30 (问题朗读功能增强)
-- **🔧 核心优化**: 修复了数学运算符发音问题，现在点击题目时运算符会被正确朗读
-- **📢 智能识别**: 升级了TTS系统，自动将数学符号转换为自然语言发音
-  - 中文："-" 正确读作"减"，"+" 读作"加"，"×" 读作"乘以"，"÷" 读作"除以"
-  - 英文："-" 读作"minus"，"+" 读作"plus"，"×" 读作"times"，"÷" 读作"divided by"
-- **♿ 无障碍改进**: 增强了视觉学习困难学生的使用体验
-- **🎯 用户体验**: 题目文本保持原有外观，但现在支持点击朗读功能
+### 🎤 2025-09-30 (问题朗读功能重大增强)
+- **🔧 核心代码优化**: 重构了GameView中的TTS调用逻辑，从`speak(text:language:)`升级为`speakMathExpression(_:language:)`
+- **📢 数学符号智能转换**: 完全重写了数学运算符的语音处理系统
+  - **中文语音**: "-" 正确读作"减"，"+" 读作"加"，"×" 读作"乘以"，"÷" 读作"除以"，"=" 读作"等于"
+  - **数字转换**: 阿拉伯数字自动转换为中文读音（如"8"读作"八"）
+  - **完整句式**: 按照"计算[题目]等于多少？"格式朗读
+- **🎯 交互体验升级**:
+  - 题目文本现在完全可点击，保持原有视觉外观
+  - 使用`PlainButtonStyle()`确保无按钮样式干扰
+  - 支持iPhone和iPad横竖屏所有布局模式
+- **♿ 无障碍功能增强**: 为视觉学习困难和听觉学习者提供更好的辅助支持
+- **⚡ 性能优化**: 使用TTSHelper单例模式，提高语音合成效率
 
-### 🎤 2025-09-30 (Question Read-Aloud Feature Enhancement)
-- **🔧 Core Optimization**: Fixed mathematical operator pronunciation issues, operators are now correctly pronounced when tapping questions
-- **📢 Intelligent Recognition**: Upgraded TTS system to automatically convert mathematical symbols to natural language pronunciation
-  - Chinese: "-" correctly pronounced as "减", "+" as "加", "×" as "乘以", "÷" as "除以"
-  - English: "-" pronounced as "minus", "+" as "plus", "×" as "times", "÷" as "divided by"
-- **♿ Accessibility Improvement**: Enhanced user experience for students with visual learning difficulties
-- **🎯 User Experience**: Question text maintains original appearance while now supporting tap-to-read functionality
+### 🎤 2025-09-30 (Question Read-Aloud Feature Major Enhancement)
+- **🔧 Core Code Optimization**: Refactored TTS call logic in GameView, upgraded from `speak(text:language:)` to `speakMathExpression(_:language:)`
+- **📢 Mathematical Symbol Intelligent Conversion**: Completely rewrote the voice processing system for mathematical operators
+  - **English Voice**: "-" correctly pronounced as "minus", "+" as "plus", "×" as "times", "÷" as "divided by", "=" as "equals"
+  - **Number Conversion**: Arabic numerals automatically converted to spelled-out English (e.g., "8" pronounced as "eight")
+  - **Complete Sentence Format**: Reads in "What is [question]?" format
+- **🎯 Interaction Experience Upgrade**:
+  - Question text is now fully clickable while maintaining original visual appearance
+  - Uses `PlainButtonStyle()` to ensure no button styling interference
+  - Supports all layout modes for iPhone and iPad in both portrait and landscape orientations
+- **♿ Accessibility Enhancement**: Provides better assistive support for students with visual learning difficulties and auditory learners
+- **⚡ Performance Optimization**: Uses TTSHelper singleton pattern to improve speech synthesis efficiency
 
 ### ⚙️ 2025-09-26 (应用图标修复)
 - **🔧 关键修复**: 解决了应用图标在设备上无法正确显示的问题。
