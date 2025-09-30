@@ -11,9 +11,12 @@ struct GameView: View {
     @State private var hasAppeared = false // Track if view has appeared before
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var localizationManager: LocalizationManager
-    
+
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
+
+    // TTS Helper for question read-aloud
+    private let ttsHelper = TTSHelper.shared
     
     // 创建一个每秒触发一次的计时器发布者
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -122,10 +125,18 @@ struct GameView: View {
                 // 题目显示
                 if viewModel.gameState.questions.count > viewModel.gameState.currentQuestionIndex {
                     let currentQuestion = viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex]
-                    
-                    Text(currentQuestion.questionText)
-                        .font(.system(size: 40, weight: .bold))
-                        .padding()
+
+                    Button(action: {
+                        // Read the question aloud using speakMathExpression for proper operator pronunciation
+                        let questionToRead = "question.read_aloud".localizedFormat(currentQuestion.questionText)
+                        ttsHelper.speakMathExpression(questionToRead, language: localizationManager.currentLanguage)
+                    }) {
+                        Text(currentQuestion.questionText)
+                            .font(.system(size: 40, weight: .bold))
+                            .foregroundColor(.primary)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding()
                     
                     // 答案反馈
                     if viewModel.gameState.showingCorrectAnswer {
@@ -456,10 +467,18 @@ struct GameView: View {
                     // 题目显示
                     if viewModel.gameState.questions.count > viewModel.gameState.currentQuestionIndex {
                         let currentQuestion = viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex]
-                        
-                        Text(currentQuestion.questionText)
-                            .font(.system(size: 60, weight: .bold))
-                            .padding()
+
+                        Button(action: {
+                            // Read the question aloud using speakMathExpression for proper operator pronunciation
+                            let questionToRead = "question.read_aloud".localizedFormat(currentQuestion.questionText)
+                            ttsHelper.speakMathExpression(questionToRead, language: localizationManager.currentLanguage)
+                        }) {
+                            Text(currentQuestion.questionText)
+                                .font(.system(size: 60, weight: .bold))
+                                .foregroundColor(.primary)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding()
                     }
                     
                     Spacer()
