@@ -12,10 +12,12 @@ struct CachedAsyncImageView: View {
     @State private var isLoading = false
     private let url: URL?
     private let placeholder: Image
+    private let onLoadingStateChanged: ((Bool) -> Void)?
     
-    init(url: URL?, placeholder: Image = Image(systemName: "photo")) {
+    init(url: URL?, placeholder: Image = Image(systemName: "photo"), onLoadingStateChanged: ((Bool) -> Void)? = nil) {
         self.url = url
         self.placeholder = placeholder
+        self.onLoadingStateChanged = onLoadingStateChanged
     }
     
     var body: some View {
@@ -38,11 +40,13 @@ struct CachedAsyncImageView: View {
         guard let url = url, !isLoading else { return }
         
         isLoading = true
+        onLoadingStateChanged?(true)
         
         ImageCacheManager.shared.downloadAndCacheImage(from: url) { image in
             DispatchQueue.main.async {
                 self.image = image
                 self.isLoading = false
+                self.onLoadingStateChanged?(false)
             }
         }
     }

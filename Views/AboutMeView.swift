@@ -9,18 +9,46 @@ struct AboutMeView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    @State private var isImageLoading = false
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 // Image section with CachedAsyncImageView
                 VStack {
-                    CachedAsyncImageView(
-                        url: URL(string: "https://images.cnblogs.com/cnblogs_com/tobecrazy/432338/o_250810143405_Card.png"),
-                        placeholder: Image(systemName: "person.circle.fill")
-                    )
+                    ZStack {
+                        CachedAsyncImageView(
+                            url: URL(string: "https://images.cnblogs.com/cnblogs_com/tobecrazy/432338/o_250810143405_Card.png"),
+                            placeholder: Image(systemName: "person.circle.fill"),
+                            onLoadingStateChanged: { loading in
+                                isImageLoading = loading
+                            }
+                        )
+                        .frame(maxWidth: 300, maxHeight: 200)
+                        .cornerRadius(.adaptiveCornerRadius)
+                        
+                        // Progress indicator overlay
+                        if isImageLoading {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                                    .fill(Color.black.opacity(0.3))
+                                    .frame(maxWidth: 300, maxHeight: 200)
+                                
+                                VStack(spacing: 12) {
+                                    ProgressViewUtils.LoadingProgressIndicator(
+                                        color: .white,
+                                        size: 40
+                                    )
+                                    
+                                    Text("Loading...")
+                                        .font(.caption)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            .transition(.opacity)
+                        }
+                    }
                     .frame(maxWidth: 300, maxHeight: 200)
-                    .cornerRadius(.adaptiveCornerRadius)
                 }
                 .padding(.top, 20)
                 

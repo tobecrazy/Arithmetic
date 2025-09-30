@@ -111,13 +111,15 @@
 > - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
 
 ### 🎤 问题朗读功能 (Question Read-Aloud Feature)
-- **清晰发音** - 在游戏界面，点击题目可以朗读当前题目
+- **智能发音** - 在游戏界面，点击题目可以朗读当前题目，数学运算符会被正确发音
+- **运算符识别** - 自动将数学符号转换为自然语言："-" 读作"减"，"+" 读作"加"，"×" 读作"乘以"，"÷" 读作"除以"
 - **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换
-- **辅助学习** - 帮助儿童通过听觉理解题目，特别适合低年级学生
+- **辅助学习** - 帮助儿童通过听觉理解题目，特别适合低年级学生和视觉学习困难的学生
 
-- **Clear Pronunciation** - In the game view, tap the question to hear it read aloud
+- **Intelligent Pronunciation** - In the game view, tap the question to hear it read aloud with proper mathematical operator pronunciation
+- **Operator Recognition** - Automatically converts mathematical symbols to natural language: "-" pronounced as "minus", "+" as "plus", "×" as "times", "÷" as "divided by"
 - **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings
-- **Learning Aid** - Helps children understand the questions through auditory learning, especially suitable for younger students
+- **Learning Aid** - Helps children understand the questions through auditory learning, especially suitable for younger students and those with visual learning difficulties
 
 ### 💾 游戏进度保存 (Game Progress Saving)
 - **自动保存** - 自动保存游戏进度
@@ -462,6 +464,22 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🎤 2025-09-30 (问题朗读功能增强)
+- **🔧 核心优化**: 修复了数学运算符发音问题，现在点击题目时运算符会被正确朗读
+- **📢 智能识别**: 升级了TTS系统，自动将数学符号转换为自然语言发音
+  - 中文："-" 正确读作"减"，"+" 读作"加"，"×" 读作"乘以"，"÷" 读作"除以"
+  - 英文："-" 读作"minus"，"+" 读作"plus"，"×" 读作"times"，"÷" 读作"divided by"
+- **♿ 无障碍改进**: 增强了视觉学习困难学生的使用体验
+- **🎯 用户体验**: 题目文本保持原有外观，但现在支持点击朗读功能
+
+### 🎤 2025-09-30 (Question Read-Aloud Feature Enhancement)
+- **🔧 Core Optimization**: Fixed mathematical operator pronunciation issues, operators are now correctly pronounced when tapping questions
+- **📢 Intelligent Recognition**: Upgraded TTS system to automatically convert mathematical symbols to natural language pronunciation
+  - Chinese: "-" correctly pronounced as "减", "+" as "加", "×" as "乘以", "÷" as "除以"
+  - English: "-" pronounced as "minus", "+" as "plus", "×" as "times", "÷" as "divided by"
+- **♿ Accessibility Improvement**: Enhanced user experience for students with visual learning difficulties
+- **🎯 User Experience**: Question text maintains original appearance while now supporting tap-to-read functionality
 
 ### ⚙️ 2025-09-26 (应用图标修复)
 - **🔧 关键修复**: 解决了应用图标在设备上无法正确显示的问题。

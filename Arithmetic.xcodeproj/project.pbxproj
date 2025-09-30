@@ -21,6 +21,7 @@
 		8AD2D94D2E77173A004603C4 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2D94B2E77173A004603C4 /* NavigationUtil.swift */; };
 		8AD2D94F2E77174C004603C4 /* CachedAsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2D94E2E77174C004603C4 /* CachedAsyncImageView.swift */; };
 		8AD2D9512E77175B004603C4 /* View+Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2D9502E77175B004603C4 /* View+Navigation.swift */; };
+		8AF18A492E8BB16A007B05D0 /* ProgressViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF18A482E8BB16A007B05D0 /* ProgressViewUtils.swift */; };
 		8AF3ABA42E05AE3600F67CDE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3AB9F2E05AE3600F67CDE /* ContentView.swift */; };
 		8AF3ABA52E05AE3600F67CDE /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3ABA22E05AE3600F67CDE /* ResultView.swift */; };
 		8AF3ABA62E05AE3600F67CDE /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3AB912E05AE3600F67CDE /* GameState.swift */; };
@@ -57,6 +58,7 @@
 		8AD2D94B2E77173A004603C4 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		8AD2D94E2E77174C004603C4 /* CachedAsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImageView.swift; sourceTree = "<group>"; };
 		8AD2D9502E77175B004603C4 /* View+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Navigation.swift"; sourceTree = "<group>"; };
+		8AF18A482E8BB16A007B05D0 /* ProgressViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewUtils.swift; sourceTree = "<group>"; };
 		8AF3AB8B2E05AE3600F67CDE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AF3AB8C2E05AE3600F67CDE /* CGFloat+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Adaptive.swift"; sourceTree = "<group>"; };
 		8AF3AB8D2E05AE3600F67CDE /* Font+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Adaptive.swift"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		8AF3AB9C2E05AE3600F67CDE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8AF18A482E8BB16A007B05D0 /* ProgressViewUtils.swift */,
 				8AD2D94A2E77173A004603C4 /* ImageCacheManager.swift */,
 				8AD2D94B2E77173A004603C4 /* NavigationUtil.swift */,
 				8AF3EA7C2E75A6B700E0F439 /* TTSHelper.swift */,
@@ -293,6 +296,7 @@
 				8AF3ABAF2E05AE3600F67CDE /* DeviceUtils.swift in Sources */,
 				8AF3ABB02E05AE3600F67CDE /* Question.swift in Sources */,
 				8A2AE91A2E06FFC800A99591 /* WrongQuestionsView.swift in Sources */,
+				8AF18A492E8BB16A007B05D0 /* ProgressViewUtils.swift in Sources */,
 				8A2AE91B2E06FFC900A99591 /* MultiplicationTableView.swift in Sources */,
 				8A2AE91D2E06FFC900A99591 /* AboutMeView.swift in Sources */,
 				8A2AE91F2E06FFC900A99591 /* OtherOptionsView.swift in Sources */,
