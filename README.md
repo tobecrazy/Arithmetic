@@ -73,16 +73,15 @@
 - **学习辅助** - 作为乘法练习的参考工具，帮助学生记忆乘法口诀
 
 ### 🔊 九九乘法表双语发音 (Bilingual TTS for Multiplication Table)
-- **真人发音** - 集成iOS原生TTS引擎，提供清晰的真人发音。
-- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换。
-- **即时反馈** - 点击乘法表中的任意按钮，即可听到对应的乘法表达式发音，如"三七二十一"或"three times seven is twenty-one"。
-- **学习辅助** - 帮助儿童通过听觉学习，加深对乘法口诀的记忆。
+- **真人发音** - 集成iOS原生TTS引擎，提供清晰的真人发音
+- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换
+- **即时反馈** - 点击乘法表中的任意按钮，即可听到对应的乘法表达式发音，如"三七二十一"或"three times seven is twenty-one"
+- **学习辅助** - 帮助儿童通过听觉学习，加深对乘法口诀的记忆
 
-### 🔊 Bilingual TTS for Multiplication Table
-- **Native TTS Engine** - Integrated with the native iOS TTS engine for clear, human-like speech.
-- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings.
-- **Instant Feedback** - Tap any button in the multiplication table to hear the corresponding multiplication expression, such as "三七二十一" or "three times seven is twenty-one".
-- **Auditory Learning** - Helps children learn and memorize the multiplication table through auditory feedback.
+- **Native TTS Engine** - Integrated with the native iOS TTS engine for clear, human-like speech
+- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings
+- **Instant Feedback** - Tap any button in the multiplication table to hear the corresponding multiplication expression, such as "三七二十一" or "three times seven is twenty-one"
+- **Auditory Learning** - Helps children learn and memorize the multiplication table through auditory feedback
 
 ### 🧠 错题解析系统 (Wrong Question Analysis System)
 
@@ -112,14 +111,13 @@
 > - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
 
 ### 🎤 问题朗读功能 (Question Read-Aloud Feature)
-- **清晰发音** - 在游戏界面，点击题目可以朗读当前题目。
-- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换。
-- **辅助学习** - 帮助儿童通过听觉理解题目，特别适合低年级学生。
+- **清晰发音** - 在游戏界面，点击题目可以朗读当前题目
+- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换
+- **辅助学习** - 帮助儿童通过听觉理解题目，特别适合低年级学生
 
-### 🎤 Question Read-Aloud Feature
-- **Clear Pronunciation** - In the game view, tap the question to hear it read aloud.
-- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings.
-- **Learning Aid** - Helps children understand the questions through auditory learning, especially suitable for younger students.
+- **Clear Pronunciation** - In the game view, tap the question to hear it read aloud
+- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings
+- **Learning Aid** - Helps children understand the questions through auditory learning, especially suitable for younger students
 
 ### 💾 游戏进度保存 (Game Progress Saving)
 - **自动保存** - 自动保存游戏进度
@@ -154,29 +152,30 @@
 - **离线访问** - 网络异常时也能显示已缓存的图片
 - **存储优化** - 自动管理缓存大小，避免占用过多存储空间
 
-### 🌐 GitHub Repository Link
+### 🌐 GitHub仓库链接 (GitHub Repository Link)
 - **便捷访问** - 在"关于我"页面新增GitHub仓库链接
 - **开源支持** - 用户可直接访问项目开源地址，了解开发进展
 - **中英双语** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本
 
-### 🖼️ 图片缓存功能 (Image Caching Feature)
-- **智能缓存** - 自动缓存"关于我"页面的开发者头像
-- **二级存储** - 结合内存缓存和磁盘缓存，提高加载速度
-- **离线访问** - 网络异常时也能显示已缓存的图片
-- **存储优化** - 自动管理缓存大小，避免占用过多存储空间
+- **Convenient Access** - Added GitHub repository link to the "About Me" page
+- **Open Source Support** - Users can directly access the project's open source repository to understand development progress
+- **Bilingual Support** - Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository"
 
-### 🌐 Language Settings
+### 🌐 多语言支持 (Language Settings)
+- **双语界面** - 支持中文和英文界面
+- **实时切换** - 可随时切换语言
+- **完整本地化** - 包括解析内容的完整双语支持
+
 - **Bilingual Interface** - Supports both Chinese and English interfaces
 - **Real-time Switching** - Language can be switched at any time
 - **Complete Localization** - Full bilingual support including analysis content
 
-### 🖼️ Image Caching Feature
-- **Smart Caching** - Automatically caches the developer avatar on the "About Me" page
-- **Two-level Storage** - Combines memory caching and disk caching to improve loading speed
-- **Offline Access** - Can display cached images even when network is unavailable
-- **Storage Optimization** - Automatically manages cache size to avoid excessive storage usage
+### 🎨 UI界面优化 (UI Improvements)
+- **简洁选择器** - 隐藏难度选择器标签，创建更清洁的界面
+- **自定义导航** - 在多个视图中添加自定义返回按钮功能
+- **布局优化** - 调整选择器对齐和整体布局改进
+- **视图简化** - 移除不必要的NavigationView包装器以获得更好的性能
 
-### 🎨 UI Improvements
 - **Cleaner Picker** - Difficulty picker labels are now hidden to create a cleaner interface
 - **Custom Navigation** - Added custom back button functionality across multiple views
 - **Layout Refinements** - Adjusted picker alignment and overall layout improvements
@@ -188,7 +187,7 @@
 
 ## 🚀 快速开始 (Quick Start)
 
-### 📱 基本使用流程
+### 📱 基本使用流程 (Basic Usage Flow)
 1. **选择难度** - 在主页面选择适合的难度等级（1-6级）
 2. **设置时间** - 配置答题时间（3-30分钟）
 3. **选择语言** - 选择界面语言（中文或英文）
@@ -196,13 +195,20 @@
 5. **查看解析** - 答错题目后可立即查看详细解析
 6. **错题复习** - 通过错题集功能巩固薄弱环节
 
-### 🎯 推荐学习路径
+1. **Select Difficulty** - Choose appropriate difficulty level (Level 1-6) on the main page
+2. **Set Time** - Configure answering time (3-30 minutes)
+3. **Choose Language** - Select interface language (Chinese or English)
+4. **Start Practice** - Click "Start Game" button to begin answering
+5. **View Analysis** - Check detailed analysis immediately after wrong answers
+6. **Review Wrong Questions** - Consolidate weak points through wrong questions collection
+
+### 🎯 推荐学习路径 (Recommended Learning Path)
 ```mermaid
 flowchart TB
-    L1[等级1 - 10以内加减法] --> L2[等级2 - 20以内加减法]
-    L2 --> L3[等级3 - 50以内加减法]
-    L3 --> L6[等级6 - 100以内混合运算]
-    L4[等级4 - 10以内乘除法] --> L5[等级5 - 20以内乘除法]
+    L1[等级1 - 10以内加减法<br/>Level 1 - Addition/Subtraction within 10] --> L2[等级2 - 20以内加减法<br/>Level 2 - Addition/Subtraction within 20]
+    L2 --> L3[等级3 - 50以内加减法<br/>Level 3 - Addition/Subtraction within 50]
+    L3 --> L6[等级6 - 100以内混合运算<br/>Level 6 - Mixed Operations within 100]
+    L4[等级4 - 10以内乘除法<br/>Level 4 - Multiplication/Division within 10] --> L5[等级5 - 20以内乘除法<br/>Level 5 - Multiplication/Division within 20]
     L5 --> L6
 ```
 
@@ -252,21 +258,21 @@ flowchart TB
 
 ## ⚙️ 系统要求 (System Requirements)
 
-### 📱 设备支持
+### 📱 设备支持 (Device Support)
 - **iPhone**: iOS 15.0+
 - **iPad**: iPadOS 15.0+
-- **处理器**: A12 Bionic或更新
-- **存储空间**: 50MB可用空间
+- **处理器**: A12 Bionic或更新 / A12 Bionic or newer
+- **存储空间**: 50MB可用空间 / 50MB available storage
 
-### 🛠️ 开发环境
+### 🛠️ 开发环境 (Development Environment)
 - **macOS**: 12.0+ (Monterey)
 - **Xcode**: 13.0+
 - **Swift**: 5.5+
 - **SwiftUI**: 3.0+
 
-### 🌐 语言支持
-- **简体中文** (zh-Hans)
-- **English** (en)
+### 🌐 语言支持 (Language Support)
+- **简体中文** (zh-Hans) / **Simplified Chinese**
+- **English** (en) / **英文**
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -274,37 +280,37 @@ flowchart TB
 
 ## 📥 安装说明 (Installation)
 
-### 🛠️ 开发环境要求
-- **Xcode**: 13.0+ 
+### 🛠️ 开发环境要求 (Development Environment Requirements)
+- **Xcode**: 13.0+
 - **iOS**: 15.0+
 - **Swift**: 5.5+
 - **SwiftUI**: 3.0+
 
-### 📦 安装步骤
+### 📦 安装步骤 (Installation Steps)
 
-1. **克隆仓库**
+1. **克隆仓库 (Clone Repository)**
    ```bash
    git clone https://github.com/tobecrazy/Arithmetic.git
    cd Arithmetic
    ```
 
-2. **打开项目**
+2. **打开项目 (Open Project)**
    ```bash
    open Arithmetic.xcodeproj
    ```
 
-3. **选择目标设备**
-   - iPhone模拟器或实机
-   - iPad模拟器或实机（已优化横屏模式）
+3. **选择目标设备 (Select Target Device)**
+   - iPhone模拟器或实机 / iPhone Simulator or Physical Device
+   - iPad模拟器或实机（已优化横屏模式）/ iPad Simulator or Physical Device (optimized for landscape mode)
 
-4. **构建运行**
-   - 点击运行按钮或按下 `Cmd+R`
-   - 等待构建完成并自动启动应用
+4. **构建运行 (Build and Run)**
+   - 点击运行按钮或按下 `Cmd+R` / Click the Run button or press `Cmd+R`
+   - 等待构建完成并自动启动应用 / Wait for build completion and automatic app launch
 
-### 🔧 故障排除
-- 确保Xcode版本满足要求
-- 检查iOS部署目标设置
-- 清理构建缓存：`Product → Clean Build Folder`
+### 🔧 故障排除 (Troubleshooting)
+- 确保Xcode版本满足要求 / Ensure Xcode version meets requirements
+- 检查iOS部署目标设置 / Check iOS deployment target settings
+- 清理构建缓存：`Product → Clean Build Folder` / Clean build cache: `Product → Clean Build Folder`
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -312,37 +318,37 @@ flowchart TB
 
 ## 📖 使用说明 (Usage Instructions)
 
-### 🎮 游戏操作流程
+### 🎮 游戏操作流程 (Game Operation Flow)
 
-1. **🏠 主页操作**
-   - 选择难度等级（1-6级）
-   - 设置答题时间（3-30分钟）
-   - 选择界面语言（中文/英文）
-   - 点击"开始游戏"或"错题集"
+1. **🏠 主页操作 (Home Page Operations)**
+   - 选择难度等级（1-6级）/ Select difficulty level (Level 1-6)
+   - 设置答题时间（3-30分钟）/ Set answering time (3-30 minutes)
+   - 选择界面语言（中文/英文）/ Choose interface language (Chinese/English)
+   - 点击"开始游戏"或"错题集" / Click "Start Game" or "Wrong Questions"
 
-2. **📝 答题页面**
-   - 查看题目并输入答案
-   - 点击"提交"按钮确认答案
-   - 答错时可点击"查看解析"查看详细步骤
-   - 实时查看得分和剩余时间
+2. **📝 答题页面 (Answer Page)**
+   - 查看题目并输入答案 / View questions and input answers
+   - 点击"提交"按钮确认答案 / Click "Submit" button to confirm answer
+   - 答错时可点击"查看解析"查看详细步骤 / Click "View Analysis" for detailed steps when wrong
+   - 实时查看得分和剩余时间 / View real-time score and remaining time
 
-3. **📊 结果页面**
-   - 查看最终得分和评价
-   - 点击"错题集"查看本次错题
-   - 选择"重新开始"或"返回主页"
+3. **📊 结果页面 (Result Page)**
+   - 查看最终得分和评价 / View final score and evaluation
+   - 点击"错题集"查看本次错题 / Click "Wrong Questions" to view current wrong answers
+   - 选择"重新开始"或"返回主页" / Choose "Restart" or "Return to Home"
 
-4. **📚 错题集管理**
-   - 按难度等级筛选错题
-   - 查看错题的详细解析
-   - 删除已掌握的题目
-   - 清空所有错题记录
+4. **📚 错题集管理 (Wrong Questions Management)**
+   - 按难度等级筛选错题 / Filter wrong questions by difficulty level
+   - 查看错题的详细解析 / View detailed analysis of wrong questions
+   - 删除已掌握的题目 / Delete mastered questions
+   - 清空所有错题记录 / Clear all wrong question records
 
-### 🎯 学习建议
+### 🎯 学习建议 (Learning Suggestions)
 
-- **循序渐进** - 从低等级开始，逐步提高难度
-- **错题重练** - 重点关注错题集，反复练习薄弱环节
-- **理解解析** - 仔细阅读解题步骤，掌握解题方法
-- **定期复习** - 利用进度保存功能，保持学习连续性
+- **循序渐进** - 从低等级开始，逐步提高难度 / **Progressive Learning** - Start from low levels and gradually increase difficulty
+- **错题重练** - 重点关注错题集，反复练习薄弱环节 / **Wrong Question Review** - Focus on wrong questions collection and repeatedly practice weak points
+- **理解解析** - 仔细阅读解题步骤，掌握解题方法 / **Understand Analysis** - Carefully read solution steps and master problem-solving methods
+- **定期复习** - 利用进度保存功能，保持学习连续性 / **Regular Review** - Use progress saving feature to maintain learning continuity
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
