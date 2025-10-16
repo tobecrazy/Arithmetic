@@ -134,3 +134,153 @@
 "about.title" = "关于开发者";
 "about.content" = "这是一个小学算术练习应用，旨在通过互动练习帮助孩子们提高数学技能。应用提供多种难度级别并跟踪学习进度，让学习变得有趣且富有吸引力。";
 "about.github_link" = "点击访问我的Github仓库";
+
+/* Formula Guide */
+"button.formula_guide" = "小学生公式大全";
+"formula_guide_title" = "小学生数学公式大全";
+
+/* Geometry Formulas */
+"geometry_formulas_title" = "几何形体计算公式";
+"plane_figures_title" = "平面图形";
+"solid_figures_title" = "立体图形";
+
+/* Geometric Shapes */
+"rectangle" = "长方形";
+"square" = "正方形";
+"triangle" = "三角形";
+"parallelogram" = "平行四边形";
+"trapezoid" = "梯形";
+"circle" = "圆";
+"cuboid" = "长方体";
+"cube" = "正方体";
+"cylinder" = "圆柱";
+"cone" = "圆锥";
+
+/* Formula Types */
+"perimeter_formula" = "周长";
+"area_formula" = "面积";
+"volume_formula" = "体积";
+"volume_formula_alt" = "体积公式（二）";
+"diameter_formula" = "直径";
+"radius_formula" = "半径";
+"circumference_formula" = "周长";
+"lateral_surface_area" = "侧面积";
+"surface_area" = "表面积";
+"interior_angles_sum" = "内角和";
+"base_area" = "底面积";
+"height" = "高";
+
+/* Unit Conversions */
+"unit_conversions_title" = "单位换算";
+"length_units" = "长度单位";
+"area_units" = "面积单位";
+"volume_units" = "体积单位";
+"mass_units" = "质量单位";
+"time_units" = "时间单位";
+
+/* Units */
+"kilometer" = "千米";
+"meter" = "米";
+"decimeter" = "分米";
+"centimeter" = "厘米";
+"millimeter" = "毫米";
+"square_meter" = "平方米";
+"square_decimeter" = "平方分米";
+"square_centimeter" = "平方厘米";
+"square_millimeter" = "平方毫米";
+"hectare" = "公顷";
+"cubic_meter" = "立方米";
+"cubic_decimeter" = "立方分米";
+"cubic_centimeter" = "立方厘米";
+"liter" = "升";
+"milliliter" = "毫升";
+"ton" = "吨";
+"kilogram" = "千克";
+"gram" = "克";
+"year" = "年";
+"month" = "月";
+"day" = "日";
+"hour" = "小时";
+"minute" = "分钟";
+"second" = "秒";
+
+/* Quantity Relations */
+"quantity_relations_title" = "数量关系计算公式";
+"basic_relations" = "基本关系";
+"arithmetic_operations" = "四则运算关系";
+
+/* Basic Relations Terms */
+"unit_number" = "每份数";
+"units" = "份数";
+"total" = "总数";
+"speed" = "速度";
+"time" = "时间";
+"distance" = "路程";
+"unit_price" = "单价";
+"quantity" = "数量";
+"total_price" = "总价";
+"work_efficiency" = "工作效率";
+"work_time" = "工作时间";
+"work_total" = "工作总量";
+
+/* Arithmetic Operations Terms */
+"addend" = "加数";
+"sum" = "和";
+"minuend" = "被减数";
+"subtrahend" = "减数";
+"difference" = "差";
+"factor" = "因数";
+"product" = "积";
+"dividend" = "被除数";
+"divisor" = "除数";
+"quotient" = "商";
+
+/* Arithmetic Laws */
+"arithmetic_laws_title" = "算术运算定律";
+"operation_laws" = "运算定律";
+"fraction_operations" = "分数运算法则";
+
+/* Operation Laws */
+"commutative_law_addition" = "加法交换律";
+"associative_law_addition" = "加法结合律";
+"commutative_law_multiplication" = "乘法交换律";
+"associative_law_multiplication" = "乘法结合律";
+"distributive_law" = "乘法分配律";
+
+/* Fraction Operations */
+"fraction_addition_same_denominator" = "同分母分数相加减：分子相加减，分母不变";
+"fraction_addition_different_denominator" = "异分母分数相加减：先通分，然后再加减";
+"fraction_multiplication" = "分数乘法：分子相乘作分子，分母相乘作分母";
+"fraction_division" = "分数除法：除以一个数等于乘以这个数的倒数";
+
+/* Special Problems */
+"special_problems_title" = "特殊问题";
+"sum_difference_problem" = "和差问题";
+"sum_multiple_problem" = "和倍问题";
+"plant_tree_problem" = "植树问题";
+"meeting_problem" = "相遇问题";
+"chase_problem" = "追及问题";
+"profit_problem" = "利润问题";
+
+/* Problem Solving Terms */
+"large_number_formula" = "大数";
+"small_number_formula" = "小数";
+"small_number" = "小数";
+"multiple" = "倍数";
+"trees" = "株数";
+"segments" = "段数";
+"both_ends_plant" = "两端都植树";
+"one_end_plant" = "一端植树";
+"no_end_plant" = "两端不植树";
+"meeting_distance" = "相遇路程";
+"speed_sum" = "速度和";
+"meeting_time" = "相遇时间";
+"chase_distance" = "追及距离";
+"speed_difference" = "速度差";
+"chase_time" = "追及时间";
+"profit" = "利润";
+"selling_price" = "售出价";
+"cost" = "成本";
+"profit_rate" = "利润率";
+
+"back" = "返回";

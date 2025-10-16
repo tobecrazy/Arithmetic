@@ -8,6 +8,7 @@ struct OtherOptionsView: View {
     
     @State private var navigateToMultiplicationTable = false
     @State private var navigateToAboutMe = false
+    @State private var navigateToFormulaGuide = false
     
     // Computed properties for navigation destinations
     private var multiplicationTableDestination: some View {
@@ -17,6 +18,11 @@ struct OtherOptionsView: View {
     
     private var aboutMeDestination: some View {
         AboutMeView()
+            .environmentObject(localizationManager)
+    }
+
+    private var formulaGuideDestination: some View {
+        FormulaGuideView()
             .environmentObject(localizationManager)
     }
     
@@ -57,7 +63,39 @@ struct OtherOptionsView: View {
                     .cornerRadius(.adaptiveCornerRadius)
                 }
                 .padding(.horizontal)
-                
+
+                // 公式大全按钮
+                Button(action: {
+                    navigateToFormulaGuide = true
+                }) {
+                    HStack {
+                        Image(systemName: "function")
+                            .font(.title2)
+                            .foregroundColor(.white)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("button.formula_guide".localized)
+                                .font(.adaptiveHeadline())
+                                .foregroundColor(.white)
+
+                            Text("formula_guide.title".localized)
+                                .font(.adaptiveBody())
+                                .foregroundColor(.white.opacity(0.8))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(.adaptiveCornerRadius)
+                }
+                .padding(.horizontal)
+
                 // 关于我按钮
                 Button(action: {
                     navigateToAboutMe = true
@@ -118,6 +156,13 @@ struct OtherOptionsView: View {
                 NavigationLink(
                     destination: aboutMeDestination,
                     isActive: $navigateToAboutMe
+                ) {
+                    EmptyView()
+                }
+
+                NavigationLink(
+                    destination: formulaGuideDestination,
+                    isActive: $navigateToFormulaGuide
                 ) {
                     EmptyView()
                 }

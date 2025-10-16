@@ -17,6 +17,7 @@
 		8A2AE91B2E06FFC900A99591 /* MultiplicationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */; };
 		8A2AE91D2E06FFC900A99591 /* AboutMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */; };
 		8A2AE91F2E06FFC900A99591 /* OtherOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE9202E06FFC900A99591 /* OtherOptionsView.swift */; };
+		8ABE41362EA0778E007EC146 /* FormulaGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABE41352EA0778E007EC146 /* FormulaGuideView.swift */; };
 		8AD2D94C2E77173A004603C4 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2D94A2E77173A004603C4 /* ImageCacheManager.swift */; };
 		8AD2D94D2E77173A004603C4 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2D94B2E77173A004603C4 /* NavigationUtil.swift */; };
 		8AD2D94F2E77174C004603C4 /* CachedAsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2D94E2E77174C004603C4 /* CachedAsyncImageView.swift */; };
@@ -54,6 +55,7 @@
 		8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationTableView.swift; sourceTree = "<group>"; };
 		8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeView.swift; sourceTree = "<group>"; };
 		8A2AE9202E06FFC900A99591 /* OtherOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherOptionsView.swift; sourceTree = "<group>"; };
+		8ABE41352EA0778E007EC146 /* FormulaGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormulaGuideView.swift; sourceTree = "<group>"; };
 		8AD2D94A2E77173A004603C4 /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		8AD2D94B2E77173A004603C4 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		8AD2D94E2E77174C004603C4 /* CachedAsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImageView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		8AF3ABA32E05AE3600F67CDE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8ABE41352EA0778E007EC146 /* FormulaGuideView.swift */,
 				8AD2D94E2E77174C004603C4 /* CachedAsyncImageView.swift */,
 				8A2AE9192E06FFC800A99591 /* WrongQuestionsView.swift */,
 				8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */,
@@ -290,6 +293,7 @@
 				8AF3ABAA2E05AE3600F67CDE /* GameView.swift in Sources */,
 				8AF3ABAB2E05AE3600F67CDE /* LanguageSelectorView.swift in Sources */,
 				8AF3ABAC2E05AE3600F67CDE /* CGFloat+Adaptive.swift in Sources */,
+				8ABE41362EA0778E007EC146 /* FormulaGuideView.swift in Sources */,
 				8AF3ABAD2E05AE3600F67CDE /* Font+Adaptive.swift in Sources */,
 				8AD2D94F2E77174C004603C4 /* CachedAsyncImageView.swift in Sources */,
 				8AF3ABAE2E05AE3600F67CDE /* LocalizationManager.swift in Sources */,

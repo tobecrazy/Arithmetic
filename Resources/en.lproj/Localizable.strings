@@ -134,3 +134,153 @@
 "about.title" = "About the Developer";
 "about.content" = "This is an elementary arithmetic practice app designed to help children improve their math skills through interactive exercises. The app provides various difficulty levels and tracks progress to make learning fun and engaging.";
 "about.github_link" = "Visit GitHub Repository";
+
+/* Formula Guide */
+"button.formula_guide" = "Elementary Math Formulas";
+"formula_guide.title" = "Elementary Math Formula Guide";
+
+/* Geometry Formulas */
+"geometry_formulas_title" = "Geometric Formulas";
+"plane_figures_title" = "Plane Figures";
+"solid_figures_title" = "Solid Figures";
+
+/* Geometric Shapes */
+"rectangle" = "Rectangle";
+"square" = "Square";
+"triangle" = "Triangle";
+"parallelogram" = "Parallelogram";
+"trapezoid" = "Trapezoid";
+"circle" = "Circle";
+"cuboid" = "Cuboid";
+"cube" = "Cube";
+"cylinder" = "Cylinder";
+"cone" = "Cone";
+
+/* Formula Types */
+"perimeter_formula" = "Perimeter";
+"area_formula" = "Area";
+"volume_formula" = "Volume";
+"volume_formula_alt" = "Volume Formula (Alternative)";
+"diameter_formula" = "Diameter";
+"radius_formula" = "Radius";
+"circumference_formula" = "Circumference";
+"lateral_surface_area" = "Lateral Surface Area";
+"surface_area" = "Surface Area";
+"interior_angles_sum" = "Interior Angles Sum";
+"base_area" = "Base Area";
+"height" = "Height";
+
+/* Unit Conversions */
+"unit_conversions_title" = "Unit Conversions";
+"length_units" = "Length Units";
+"area_units" = "Area Units";
+"volume_units" = "Volume Units";
+"mass_units" = "Mass Units";
+"time_units" = "Time Units";
+
+/* Units */
+"kilometer" = "Kilometer";
+"meter" = "Meter";
+"decimeter" = "Decimeter";
+"centimeter" = "Centimeter";
+"millimeter" = "Millimeter";
+"square_meter" = "Square Meter";
+"square_decimeter" = "Square Decimeter";
+"square_centimeter" = "Square Centimeter";
+"square_millimeter" = "Square Millimeter";
+"hectare" = "Hectare";
+"cubic_meter" = "Cubic Meter";
+"cubic_decimeter" = "Cubic Decimeter";
+"cubic_centimeter" = "Cubic Centimeter";
+"liter" = "Liter";
+"milliliter" = "Milliliter";
+"ton" = "Ton";
+"kilogram" = "Kilogram";
+"gram" = "Gram";
+"year" = "Year";
+"month" = "Month";
+"day" = "Day";
+"hour" = "Hour";
+"minute" = "Minute";
+"second" = "Second";
+
+/* Quantity Relations */
+"quantity_relations_title" = "Quantity Relationship Formulas";
+"basic_relations" = "Basic Relations";
+"arithmetic_operations" = "Arithmetic Operations";
+
+/* Basic Relations Terms */
+"unit_number" = "Unit Number";
+"units" = "Units";
+"total" = "Total";
+"speed" = "Speed";
+"time" = "Time";
+"distance" = "Distance";
+"unit_price" = "Unit Price";
+"quantity" = "Quantity";
+"total_price" = "Total Price";
+"work_efficiency" = "Work Efficiency";
+"work_time" = "Work Time";
+"work_total" = "Work Total";
+
+/* Arithmetic Operations Terms */
+"addend" = "Addend";
+"sum" = "Sum";
+"minuend" = "Minuend";
+"subtrahend" = "Subtrahend";
+"difference" = "Difference";
+"factor" = "Factor";
+"product" = "Product";
+"dividend" = "Dividend";
+"divisor" = "Divisor";
+"quotient" = "Quotient";
+
+/* Arithmetic Laws */
+"arithmetic_laws_title" = "Arithmetic Laws";
+"operation_laws" = "Operation Laws";
+"fraction_operations" = "Fraction Operations";
+
+/* Operation Laws */
+"commutative_law_addition" = "Commutative Law of Addition";
+"associative_law_addition" = "Associative Law of Addition";
+"commutative_law_multiplication" = "Commutative Law of Multiplication";
+"associative_law_multiplication" = "Associative Law of Multiplication";
+"distributive_law" = "Distributive Law";
+
+/* Fraction Operations */
+"fraction_addition_same_denominator" = "Same denominator fractions: Add/subtract numerators, keep denominator";
+"fraction_addition_different_denominator" = "Different denominator fractions: Find common denominator first";
+"fraction_multiplication" = "Fraction multiplication: Multiply numerators and denominators";
+"fraction_division" = "Fraction division: Multiply by the reciprocal";
+
+/* Special Problems */
+"special_problems_title" = "Special Problem Types";
+"sum_difference_problem" = "Sum and Difference Problems";
+"sum_multiple_problem" = "Sum and Multiple Problems";
+"plant_tree_problem" = "Tree Planting Problems";
+"meeting_problem" = "Meeting Problems";
+"chase_problem" = "Chase Problems";
+"profit_problem" = "Profit Problems";
+
+/* Problem Solving Terms */
+"large_number_formula" = "Larger Number";
+"small_number_formula" = "Smaller Number";
+"small_number" = "Smaller Number";
+"multiple" = "Multiple";
+"trees" = "Number of Trees";
+"segments" = "Number of Segments";
+"both_ends_plant" = "Plant at Both Ends";
+"one_end_plant" = "Plant at One End";
+"no_end_plant" = "No Plants at Ends";
+"meeting_distance" = "Meeting Distance";
+"speed_sum" = "Sum of Speeds";
+"meeting_time" = "Meeting Time";
+"chase_distance" = "Chase Distance";
+"speed_difference" = "Speed Difference";
+"chase_time" = "Chase Time";
+"profit" = "Profit";
+"selling_price" = "Selling Price";
+"cost" = "Cost";
+"profit_rate" = "Profit Rate";
+"back" = "Back";
+"formula_guide_title" = "Essential Formulas for Elementary School Mathematics";
