@@ -195,6 +195,27 @@
 - **Real-time Switching** - Language can be switched at any time
 - **Complete Localization** - Full bilingual support including analysis content
 
+### 📐 新增小学数学公式大全 (New Elementary Math Formula Guide)
+- ** comprehensive Formula Guide ** - 新增全面的小学数学公式指南
+- **几何形体计算** - 包含平面图形和立体图形的周长、面积、体积公式
+  - 平面图形：长方形、正方形、三角形、平行四边形、梯形、圆形
+  - 立体图形：长方体、正方体、圆柱、圆锥
+- **单位换算** - 涵盖长度、面积、体积、质量、时间等单位换算
+- **数量关系** - 包含基本关系和四则运算关系公式
+- **运算定律** - 包括加法、乘法交换律和结合律、乘法分配律等
+- **特殊问题** - 涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等
+- **便捷访问** - 从"其他选项"页面可直接访问公式大全
+
+- **Comprehensive Formula Guide** - Added a comprehensive elementary math formula guide
+- **Geometry Formulas** - Includes perimeter, area, and volume formulas for plane and solid figures
+  - Plane Figures: Rectangle, Square, Triangle, Parallelogram, Trapezoid, Circle
+  - Solid Figures: Cuboid, Cube, Cylinder, Cone
+- **Unit Conversions** - Covers length, area, volume, mass, and time unit conversions
+- **Quantity Relations** - Includes basic relations and arithmetic operation relation formulas
+- **Arithmetic Laws** - Includes commutative, associative laws of addition and multiplication, distributive law, etc.
+- **Special Problems** - Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.
+- **Convenient Access** - The formula guide can be accessed directly from the "Other Options" page
+
 ### 🎨 UI界面优化 (UI Improvements)
 - **简洁选择器** - 隐藏难度选择器标签，创建更清洁的界面
 - **自定义导航** - 在多个视图中添加自定义返回按钮功能
@@ -462,6 +483,7 @@ Arithmetic/
 │   ├── MultiplicationTableView.swift      # 九九乘法表视图
 │   ├── LanguageSelectorView.swift         # 语言选择视图
 │   ├── AboutMeView.swift                  # 关于我视图
+│   ├── FormulaGuideView.swift             # 小学数学公式大全视图
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
 ├── 📊 Models/                              # 数据模型
 │   ├── Question.swift                      # 题目模型（包含解析方法）
@@ -586,6 +608,28 @@ Arithmetic/
 - **🗣️ TTS Integration**: Added a new `TTSHelper` utility to encapsulate `AVSpeechSynthesizer` for text-to-speech conversion.
 - **Interactive Learning**: Users can tap on buttons in the multiplication table to hear the pronunciation of the corresponding expressions, enhancing interactivity and engagement.
 - **🌐 Bilingual Support**: Supports both Chinese and English pronunciation, automatically switching based on the current app language.
+
+### 🌟 2025-10-16 (新增小学数学公式大全)
+- **🆕 全新功能**: 新增全面的小学数学公式指南
+- **📐 公式内容**:
+  - 几何形体计算公式：包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式
+  - 单位换算：涵盖长度、面积、体积、质量、时间等单位换算
+  - 数量关系：包含基本关系和四则运算关系公式
+  - 运算定律：包括加法、乘法交换律和结合律、乘法分配律等
+  - 特殊问题：涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等
+- **🌐 完整国际化**: 支持中英文双语显示
+- **📍 便捷访问**: 从"其他选项"页面可直接访问公式大全，使用function系统图标标识
+
+### 🌟 2025-10-16 (Added Elementary Math Formula Guide)
+- **🆕 New Feature**: Added a comprehensive elementary math formula guide
+- **📐 Formula Content**:
+  - Geometry formulas: Includes perimeter, area, and volume formulas for plane figures (rectangle, square, triangle, etc.) and solid figures (cuboid, cube, cylinder, etc.)
+  - Unit conversions: Covers length, area, volume, mass, and time unit conversions
+  - Quantity relations: Includes basic relations and arithmetic operation relation formulas
+  - Arithmetic laws: Includes commutative, associative laws of addition and multiplication, distributive law, etc.
+  - Special problems: Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.
+- **🌐 Full Internationalization**: Supports bilingual display in Chinese and English
+- **📍 Convenient Access**: Directly accessible from the "Other Options" page, identified with the function system icon
 
 ### 🎨 2025-01-10 (界面优化重构)
 - **🆕 难度选择优化**: 将复杂的按钮网格优化为简洁的Picker下拉菜单
