@@ -16,4 +16,8 @@ extension Font {
     static func adaptiveBody() -> Font {
         return UIDevice.current.userInterfaceIdiom == .pad ? .title3 : .body
     }
+    
+    static func adaptiveCaption() -> Font {
+        return UIDevice.current.userInterfaceIdiom == .pad ? .body : .caption
+    }
 }

@@ -186,6 +186,23 @@
 - **Open Source Support** - Users can directly access the project's open source repository to understand development progress
 - **Bilingual Support** - Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository"
 
+### 💻 系统信息显示 (System Information Display)
+- **设备信息** - 显示当前设备名称和CPU信息
+- **实时监控** - CPU占用率和内存使用情况实时更新
+- **内存详情** - 显示已使用、总内存、可用内存和使用百分比
+- **系统版本** - 显示当前iOS/iPadOS系统版本
+- **当前时间** - 实时显示当前时间，每秒更新
+- **双语支持** - 完整的中英文本地化支持
+- **可视化展示** - 使用进度条和图标直观显示系统状态
+
+- **Device Information** - Displays current device name and CPU information
+- **Real-time Monitoring** - CPU usage and memory usage update in real-time
+- **Memory Details** - Shows used, total, available memory and usage percentage
+- **System Version** - Displays current iOS/iPadOS system version
+- **Current Time** - Real-time display of current time, updated every second
+- **Bilingual Support** - Complete Chinese and English localization support
+- **Visual Display** - Uses progress bars and icons to intuitively show system status
+
 ### 🌐 多语言支持 (Language Settings)
 - **双语界面** - 支持中文和英文界面
 - **实时切换** - 可随时切换语言
