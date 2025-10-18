@@ -78,7 +78,7 @@ struct OtherOptionsView: View {
                                 .font(.adaptiveHeadline())
                                 .foregroundColor(.white)
 
-                            Text("formula_guide.title".localized)
+                            Text("formula_guide_desc".localized)
                                 .font(.adaptiveBody())
                                 .foregroundColor(.white.opacity(0.8))
                                 .multilineTextAlignment(.leading)

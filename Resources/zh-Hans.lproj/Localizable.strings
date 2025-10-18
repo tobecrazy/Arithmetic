@@ -138,6 +138,7 @@
 /* Formula Guide */
 "button.formula_guide" = "小学生公式大全";
 "formula_guide_title" = "小学生数学公式大全";
+"formula_guide_desc" = "一份适合小学生阶段的数学公式“大全”式速查，按主题整理，便于记忆与查找。括号内给了简单示例，便于理解。";
 
 /* Geometry Formulas */
 "geometry_formulas_title" = "几何形体计算公式";

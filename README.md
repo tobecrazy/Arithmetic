@@ -620,6 +620,41 @@ Arithmetic/
 - **🌐 完整国际化**: 支持中英文双语显示
 - **📍 便捷访问**: 从"其他选项"页面可直接访问公式大全，使用function系统图标标识
 
+### 🌟 2025-09-30 (难度选择器UI改进)
+- **🔄 交互方式变更**: 将错题集页面的难度选择器从Picker下拉菜单替换为水平滚动按钮
+- **🎯 用户体验优化**: 水平滚动按钮更便于用户快速选择和过滤不同难度的错题
+- **📱 响应式设计**: 新的按钮设计更好地适应不同屏幕尺寸
+- **🎨 视觉改进**: 选中状态高亮显示，提供更好的视觉反馈
+
+### 🌟 2025-09-30 (Difficulty Selector UI Improvement)
+- **🔄 Interaction Change**: Replaced the difficulty picker in Wrong Questions view with horizontally scrollable buttons
+- **🎯 User Experience Optimization**: Horizontal scroll buttons make it easier for users to quickly select and filter questions by difficulty level
+- **📱 Responsive Design**: The new button design better adapts to different screen sizes
+- **🎨 Visual Improvement**: Selected state is highlighted, providing better visual feedback
+
+### 🎨 2025-09-30 (进度视图工具和图像加载UI增强)
+- **🔧 新增工具类**: 新增 `ProgressViewUtils.swift`，包含可重用的进度条组件和加载指示器
+- **🖼️ 图像加载增强**: 更新 `CachedAsyncImageView` 以支持加载状态回调
+- **📱 用户体验优化**: `AboutMeView` 添加了加载时的覆盖层，改善用户体验
+- **🔄 视觉反馈**: 图像加载期间显示进度指示器，提供更好的视觉反馈
+
+### 🎨 2025-09-30 (Progress View Utilities and Image Loading UI Enhancement)
+- **🔧 New Utility Class**: Added `ProgressViewUtils.swift` with reusable progress bar components and loading indicators
+- **🖼️ Image Loading Enhancement**: Updated `CachedAsyncImageView` to support loading state callbacks
+- **📱 User Experience Optimization**: `AboutMeView` now displays a loading overlay while images are loading
+- **🔄 Visual Feedback**: Progress indicators are displayed during image loading, providing better visual feedback
+
+### 🌟 2025-10-16 (新增小学数学公式大全)
+- **🆕 全新功能**: 新增全面的小学数学公式指南
+- **📐 公式内容**:
+  - 几何形体计算公式：包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式
+  - 单位换算：涵盖长度、面积、体积、质量、时间等单位换算
+  - 数量关系：包含基本关系和四则运算关系公式
+  - 运算定律：包括加法、乘法交换律和结合律、乘法分配律等
+  - 特殊问题：涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等
+- **🌐 完整国际化**: 支持中英文双语显示
+- **📍 便捷访问**: 从"其他选项"页面可直接访问公式大全，使用function系统图标标识
+
 ### 🌟 2025-10-16 (Added Elementary Math Formula Guide)
 - **🆕 New Feature**: Added a comprehensive elementary math formula guide
 - **📐 Formula Content**:

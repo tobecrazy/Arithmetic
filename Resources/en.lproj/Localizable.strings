@@ -137,7 +137,8 @@
 
 /* Formula Guide */
 "button.formula_guide" = "Elementary Math Formulas";
-"formula_guide.title" = "Elementary Math Formula Guide";
+"formula_guide_title" = "Essential Formulas for Elementary School Mathematics";
+"formula_guide_desc" = "A comprehensive quick-reference guide of mathematical formulas for elementary school students, organized by topic for easy memorization and lookup. Simple examples are provided in parentheses for better understanding.";
 
 /* Geometry Formulas */
 "geometry_formulas_title" = "Geometric Formulas";
@@ -283,4 +284,3 @@
 "cost" = "Cost";
 "profit_rate" = "Profit Rate";
 "back" = "Back";
-"formula_guide_title" = "Essential Formulas for Elementary School Mathematics";
