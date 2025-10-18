@@ -137,6 +137,8 @@
 
 /* System Information */
 "system.info.title" = "系统信息";
+"system.info.page_title" = "系统信息";
+"system.info.description" = "实时系统监控和设备信息";
 "system.info.device_name" = "设备名称";
 "system.info.cpu_info" = "CPU信息";
 "system.info.cpu_usage" = "CPU占用率";

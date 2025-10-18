@@ -137,6 +137,8 @@
 
 /* System Information */
 "system.info.title" = "System Information";
+"system.info.page_title" = "System Information";
+"system.info.description" = "Real-time system monitoring and device information";
 "system.info.device_name" = "Device Name";
 "system.info.cpu_info" = "CPU Information";
 "system.info.cpu_usage" = "CPU Usage";
