@@ -134,6 +134,13 @@
 "about.title" = "关于开发者";
 "about.content" = "这是一个小学算术练习应用，旨在通过互动练习帮助孩子们提高数学技能。应用提供多种难度级别并跟踪学习进度，让学习变得有趣且富有吸引力。";
 "about.github_link" = "点击访问我的Github仓库";
+"about.device_info" = "设备信息";
+"about.device_name" = "设备名称";
+"about.cpu_info" = "CPU信息";
+"about.cpu_usage" = "CPU使用率";
+"about.memory_usage" = "内存使用率";
+"about.system_version" = "系统版本";
+"about.current_time" = "当前时间";
 
 /* Formula Guide */
 "button.formula_guide" = "小学生公式大全";

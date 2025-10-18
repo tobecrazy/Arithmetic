@@ -10,6 +10,7 @@ struct AboutMeView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @State private var isImageLoading = false
+    @StateObject private var deviceInfoManager = DeviceInfoManager()
     
     var body: some View {
         ScrollView {
@@ -74,6 +75,20 @@ struct AboutMeView: View {
                         .font(.adaptiveBody())
                         .foregroundColor(.blue)
                         .padding(.top, 10)
+                    
+                    // Device Information Section
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("about.device_info".localized)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                            .padding(.top, 10)
+                        
+                        DeviceInfoView()
+                            .environmentObject(deviceInfoManager)
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
                 }
                 .padding(.vertical, 20)
                 
@@ -95,6 +110,68 @@ struct AboutMeView: View {
                     }
                     .foregroundColor(.blue)
                 }
+            }
+        }
+    }
+}
+
+struct DeviceInfoView: View {
+    @EnvironmentObject var deviceInfoManager: DeviceInfoManager
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Device Name
+            HStack {
+                Text("about.device_name".localized + ": ")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(DeviceUtils.deviceModel)
+                    .foregroundColor(.secondary)
+            }
+            
+            // CPU Info
+            HStack {
+                Text("about.cpu_info".localized + ": ")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(DeviceUtils.deviceName)
+                    .foregroundColor(.secondary)
+            }
+            
+            // CPU Usage
+            HStack {
+                Text("about.cpu_usage".localized + ": ")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(String(format: "%.2f%%", deviceInfoManager.cpuUsage))
+                    .foregroundColor(.secondary)
+            }
+            
+            // Memory Usage
+            HStack {
+                Text("about.memory_usage".localized + ": ")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(String(format: "%.2f%%", deviceInfoManager.memoryUsage))
+                    .foregroundColor(.secondary)
+            }
+            
+            // System Version
+            HStack {
+                Text("about.system_version".localized + ": ")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(DeviceUtils.systemVersion)
+                    .foregroundColor(.secondary)
+            }
+            
+            // Current Time
+            HStack {
+                Text("about.current_time".localized + ": ")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(deviceInfoManager.currentTime)
+                    .foregroundColor(.secondary)
             }
         }
     }

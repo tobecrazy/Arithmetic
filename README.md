@@ -83,6 +83,19 @@
 - **Instant Feedback** - Tap any button in the multiplication table to hear the corresponding multiplication expression, such as "三七二十一" or "three times seven is twenty-one"
 - **Auditory Learning** - Helps children learn and memorize the multiplication table through auditory feedback
 
+### 📱 设备信息显示 (Device Information Display)
+- **全面信息展示** - 在"关于我"页面显示完整的设备信息，包括设备名称、CPU信息、系统版本
+- **实时监控** - 提供实时更新的CPU使用率和内存使用率监控
+- **时间显示** - 显示当前实时更新的系统时间
+- **国际化支持** - 完整的中英文界面支持，适配不同语言环境
+- **用户体验** - 清晰直观的界面布局，方便用户查看设备状态
+
+- **Comprehensive Information Display** - Shows complete device information on the "About Me" page, including device name, CPU info, and system version
+- **Real-time Monitoring** - Provides real-time CPU usage and memory usage monitoring with live updates
+- **Time Display** - Shows current system time with real-time updates
+- **Internationalization Support** - Full Chinese and English interface support, adapting to different language environments
+- **User Experience** - Clear and intuitive interface layout, making it easy for users to check device status
+
 ### 🧠 错题解析系统 (Wrong Question Analysis System)
 
 #### 📐 加减法解析方法（适用于等级2 - 20以内加减法）
@@ -656,15 +669,24 @@ Arithmetic/
 - **📍 便捷访问**: 从"其他选项"页面可直接访问公式大全，使用function系统图标标识
 
 ### 🌟 2025-10-16 (Added Elementary Math Formula Guide)
-- **🆕 New Feature**: Added a comprehensive elementary math formula guide
-- **📐 Formula Content**:
-  - Geometry formulas: Includes perimeter, area, and volume formulas for plane figures (rectangle, square, triangle, etc.) and solid figures (cuboid, cube, cylinder, etc.)
-  - Unit conversions: Covers length, area, volume, mass, and time unit conversions
-  - Quantity relations: Includes basic relations and arithmetic operation relation formulas
-  - Arithmetic laws: Includes commutative, associative laws of addition and multiplication, distributive law, etc.
-  - Special problems: Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.
-- **🌐 Full Internationalization**: Supports bilingual display in Chinese and English
-- **📍 Convenient Access**: Directly accessible from the "Other Options" page, identified with the function system icon
+- **newValue**: Added a comprehensive elementary math formula guide
+- **newValue**: Includes geometry formulas, unit conversions, quantity relations, arithmetic laws, and special problems
+- **newValue**: Supports bilingual display in Chinese and English
+- **newValue**: Directly accessible from the "Other Options" page, identified with the function system icon
+
+### 🌟 2025-10-18 (新增设备信息显示功能)
+- **newValue**: 在关于我页面新增设备信息显示
+- **newValue**: 显示设备名称、CPU信息、实时CPU使用率、内存使用率
+- **newValue**: 显示系统版本和实时更新的当前时间
+- **newValue**: 支持i18n国际化，提供中英文界面
+- **newValue**: 使用DeviceInfoManager类实现实时数据更新
+
+### 🌟 2025-10-18 (Added Device Information Display Feature)
+- **newValue**: Added device information display to the About Me page
+- **newValue**: Shows device name, CPU info, real-time CPU usage, and memory usage
+- **newValue**: Displays system version and real-time updating current time
+- **newValue**: Supports i18n internationalization with Chinese and English interfaces
+- **newValue**: Uses DeviceInfoManager class for real-time data updates
 
 ### 🎨 2025-01-10 (界面优化重构)
 - **🆕 难度选择优化**: 将复杂的按钮网格优化为简洁的Picker下拉菜单
