@@ -174,6 +174,68 @@ struct AboutMeView: View {
                         .background(Color.secondary.opacity(0.1))
                         .cornerRadius(8)
                         
+                        // Disk Usage (Real-time)
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "internaldrive")
+                                    .foregroundColor(.purple)
+                                    .frame(width: 20)
+                                Text("system.info.disk_usage".localized)
+                                    .font(.adaptiveBody())
+                                    .fontWeight(.medium)
+                                Spacer()
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text("system.info.disk_used".localized + ":")
+                                        .font(.adaptiveCaption())
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(systemInfoManager.diskUsage.usedDiskGB)
+                                        .font(.adaptiveCaption())
+                                        .fontWeight(.medium)
+                                }
+                                
+                                HStack {
+                                    Text("system.info.disk_total".localized + ":")
+                                        .font(.adaptiveCaption())
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(systemInfoManager.diskUsage.totalDiskGB)
+                                        .font(.adaptiveCaption())
+                                        .fontWeight(.medium)
+                                }
+                                
+                                HStack {
+                                    Text("system.info.disk_available".localized + ":")
+                                        .font(.adaptiveCaption())
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(systemInfoManager.diskUsage.availableDiskGB)
+                                        .font(.adaptiveCaption())
+                                        .fontWeight(.medium)
+                                }
+                                
+                                // Disk Usage Progress Bar
+                                ProgressView(value: systemInfoManager.diskUsage.usagePercentage, total: 100)
+                                    .progressViewStyle(LinearProgressViewStyle(tint: .purple))
+                                    .scaleEffect(x: 1, y: 0.8, anchor: .center)
+                                
+                                HStack {
+                                    Spacer()
+                                    Text(String(format: "%.1f%%", systemInfoManager.diskUsage.usagePercentage))
+                                        .font(.adaptiveCaption())
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.purple)
+                                }
+                            }
+                        }
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(Color.secondary.opacity(0.1))
+                        .cornerRadius(8)
+                        
                         // System Version
                         SystemInfoRow(
                             title: "system.info.system_version".localized,
@@ -181,13 +243,40 @@ struct AboutMeView: View {
                             icon: "gear"
                         )
                         
-                        // Current Time (Real-time)
-                        SystemInfoRow(
-                            title: "system.info.current_time".localized,
-                            value: systemInfoManager.currentTime,
-                            icon: "clock",
-                            isRealTime: true
-                        )
+                        // Current Date and Time (Real-time)
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "clock")
+                                    .foregroundColor(.blue)
+                                    .frame(width: 20)
+                                Text("system.info.current_time".localized)
+                                    .font(.adaptiveBody())
+                                    .fontWeight(.medium)
+                                Spacer()
+                            }
+                            
+                            VStack(alignment: .trailing, spacing: 4) {
+                                HStack {
+                                    Spacer()
+                                    Text(systemInfoManager.currentDate)
+                                        .font(.adaptiveBody())
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.blue)
+                                }
+                                
+                                HStack {
+                                    Spacer()
+                                    Text(systemInfoManager.currentTime)
+                                        .font(.adaptiveBody())
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                        }
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(Color.secondary.opacity(0.1))
+                        .cornerRadius(8)
                     }
                     .padding(.horizontal, 20)
                 }

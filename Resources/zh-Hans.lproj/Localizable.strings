@@ -144,6 +144,10 @@
 "system.info.memory_used" = "已使用";
 "system.info.memory_total" = "总内存";
 "system.info.memory_available" = "可用内存";
+"system.info.disk_usage" = "磁盘占用";
+"system.info.disk_used" = "已使用";
+"system.info.disk_total" = "总容量";
+"system.info.disk_available" = "可用空间";
 "system.info.system_version" = "系统版本";
 "system.info.current_time" = "当前时间";
 

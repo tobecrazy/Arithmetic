@@ -144,6 +144,10 @@
 "system.info.memory_used" = "Used";
 "system.info.memory_total" = "Total";
 "system.info.memory_available" = "Available";
+"system.info.disk_usage" = "Disk Usage";
+"system.info.disk_used" = "Used";
+"system.info.disk_total" = "Total";
+"system.info.disk_available" = "Available";
 "system.info.system_version" = "System Version";
 "system.info.current_time" = "Current Time";
 

@@ -7,11 +7,14 @@ class SystemInfoManager: ObservableObject {
     @Published var cpuInfo: String = ""
     @Published var cpuUsage: Double = 0.0
     @Published var memoryUsage: MemoryInfo = MemoryInfo()
+    @Published var diskUsage: DiskInfo = DiskInfo()
     @Published var systemVersion: String = ""
+    @Published var currentDate: String = ""
     @Published var currentTime: String = ""
     
     private var timer: Timer?
     private let dateFormatter: DateFormatter
+    private let timeFormatter: DateFormatter
     
     struct MemoryInfo {
         var usedMemory: Double = 0.0
@@ -36,10 +39,35 @@ class SystemInfoManager: ObservableObject {
         }
     }
     
+    struct DiskInfo {
+        var usedDisk: Double = 0.0
+        var totalDisk: Double = 0.0
+        var availableDisk: Double = 0.0
+        
+        var usagePercentage: Double {
+            guard totalDisk > 0 else { return 0.0 }
+            return (usedDisk / totalDisk) * 100
+        }
+        
+        var usedDiskGB: String {
+            return String(format: "%.1f GB", usedDisk / 1024 / 1024 / 1024)
+        }
+        
+        var totalDiskGB: String {
+            return String(format: "%.1f GB", totalDisk / 1024 / 1024 / 1024)
+        }
+        
+        var availableDiskGB: String {
+            return String(format: "%.1f GB", availableDisk / 1024 / 1024 / 1024)
+        }
+    }
+    
     init() {
         self.dateFormatter = DateFormatter()
-        self.dateFormatter.dateStyle = .medium
-        self.dateFormatter.timeStyle = .medium
+        self.dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        self.timeFormatter = DateFormatter()
+        self.timeFormatter.dateFormat = "HH:mm:ss"
         
         loadStaticInfo()
         startRealTimeUpdates()
@@ -126,14 +154,20 @@ class SystemInfoManager: ObservableObject {
     }
     
     private func updateRealTimeInfo() {
-        // Update current time
-        currentTime = dateFormatter.string(from: Date())
+        let now = Date()
+        
+        // Update current date and time
+        currentDate = dateFormatter.string(from: now)
+        currentTime = timeFormatter.string(from: now)
         
         // Update CPU usage
         cpuUsage = getCPUUsage()
         
         // Update memory usage
         memoryUsage = getMemoryInfo()
+        
+        // Update disk usage
+        diskUsage = getDiskInfo()
     }
     
     private func getCPUUsage() -> Double {
@@ -183,5 +217,31 @@ class SystemInfoManager: ObservableObject {
         memoryInfo.availableMemory = totalMemory - memoryInfo.usedMemory
         
         return memoryInfo
+    }
+    
+    private func getDiskInfo() -> DiskInfo {
+        var diskInfo = DiskInfo()
+        
+        do {
+            let fileURL = URL(fileURLWithPath: NSHomeDirectory())
+            let values = try fileURL.resourceValues(forKeys: [
+                .volumeTotalCapacityKey,
+                .volumeAvailableCapacityKey
+            ])
+            
+            if let totalCapacity = values.volumeTotalCapacity,
+               let availableCapacity = values.volumeAvailableCapacity {
+                diskInfo.totalDisk = Double(totalCapacity)
+                diskInfo.availableDisk = Double(availableCapacity)
+                diskInfo.usedDisk = diskInfo.totalDisk - diskInfo.availableDisk
+            }
+        } catch {
+            // If we can't get disk info, set default values
+            diskInfo.totalDisk = 0
+            diskInfo.availableDisk = 0
+            diskInfo.usedDisk = 0
+        }
+        
+        return diskInfo
     }
 }
