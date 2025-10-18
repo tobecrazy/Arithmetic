@@ -628,6 +628,28 @@ Arithmetic/
 
 
 
+### 🌟 2025-10-16 (新增小学数学公式大全)
+- **🆕 全新功能**: 新增全面的小学数学公式指南
+- **📐 公式内容**:
+  - 几何形体计算公式：包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式
+  - 单位换算：涵盖长度、面积、体积、质量、时间等单位换算
+  - 数量关系：包含基本关系和四则运算关系公式
+  - 运算定律：包括加法、乘法交换律和结合律、乘法分配律等
+  - 特殊问题：涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等
+- **🌐 完整国际化**: 支持中英文双语显示
+- **📍 便捷访问**: 从"其他选项"页面可直接访问公式大全，使用function系统图标标识
+
+### 🌟 2025-10-16 (Added Elementary Math Formula Guide)
+- **🆕 New Feature**: Added a comprehensive elementary math formula guide
+- **📐 Formula Content**:
+  - Geometry formulas: Includes perimeter, area, and volume formulas for plane figures (rectangle, square, triangle, etc.) and solid figures (cuboid, cube, cylinder, etc.)
+  - Unit conversions: Covers length, area, volume, mass, and time unit conversions
+  - Quantity relations: Includes basic relations and arithmetic operation relation formulas
+  - Arithmetic laws: Includes commutative, associative laws of addition and multiplication, distributive law, etc.
+  - Special problems: Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.
+- **🌐 Full Internationalization**: Supports bilingual display in Chinese and English
+- **📍 Convenient Access**: Directly accessible from the "Other Options" page, identified with the function system icon
+
 ### 🌟 2025-09-30 (难度选择器UI改进)
 - **🔄 交互方式变更**: 将错题集页面的难度选择器从Picker下拉菜单替换为水平滚动按钮
 - **🎯 用户体验优化**: 水平滚动按钮更便于用户快速选择和过滤不同难度的错题
@@ -761,20 +783,22 @@ Arithmetic/
 - **性能改进**: 通过消除硬编码的特殊情况处理，提高了系统的可扩展性和稳定性
 
 ### 🌟 2025-10-18 (新增系统信息显示功能)
-- **🆕 全新功能**: 在关于我页面新增系统信息显示功能
+- **🆕 全新功能**: 在关于我页面新增系统信息导航，点击可进入独立的系统信息页面
 - **📱 设备信息**: 显示设备名称、CPU信息、系统版本等基本信息
 - **📊 实时监控**: 实时更新CPU使用率、内存使用情况和当前时间
 - **🌐 国际化支持**: 提供完整的中英文界面支持
 - **🎨 UI组件**: 新增SystemInfoComponents用于显示系统信息
 - **⚙️ 数据管理**: 通过SystemInfoManager类管理实时数据更新
+- **📱 独立页面**: 从About Me页面导航到独立的系统信息查看页面
 
 ### 🌟 2025-10-18 (Added System Information Display)
-- **🆕 New Feature**: Added system information display to the About Me page
+- **🆕 New Feature**: Added system information navigation in About Me page, tapping leads to a dedicated system information page
 - **📱 Device Info**: Shows device name, CPU info, and system version
 - **📊 Real-time Monitoring**: Real-time updates of CPU usage, memory usage, and current time
 - **🌐 Internationalization**: Full Chinese and English interface support
 - **🎨 UI Components**: Added SystemInfoComponents for displaying system info
 - **⚙️ Data Management**: Real-time data updates managed through SystemInfoManager class
+- **📱 Dedicated Page**: Navigate from About Me page to a dedicated system information viewing page
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
