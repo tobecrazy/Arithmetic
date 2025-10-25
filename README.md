@@ -789,25 +789,55 @@ Arithmetic/
 - **错误修复**: 修复了平十法解析中的逻辑错误，确保所有类似"19-16"的题目都能得到正确的解析步骤
 - **性能改进**: 通过消除硬编码的特殊情况处理，提高了系统的可扩展性和稳定性
 
-### 🌟 2025-10-25 (系统信息功能增强)
+### 🌟 2025-10-25 (系统信息功能全面增强)
 - **📊 磁盘监控新增**: 在系统信息页面新增磁盘空间实时监控功能
   - 显示已使用磁盘空间、总磁盘空间和可用磁盘空间
   - 提供磁盘使用百分比可视化进度条
   - 自动检测并显示GB格式的磁盘容量信息
+- **📶 网络监控**: 新增完整的网络连接状态检测
+  - 检测Wi-Fi连接状态和名称显示
+  - 支持蜂窝网络运营商信息
+  - 实时显示连接类型和连接状态
+- **🔋 电池监控**: 实现完整的电池信息实时显示
+  - 电量百分比实时更新（0-100%）
+  - 充电状态检测（Charging/Unplugged/Full）
+  - 电源状态显示（AC Power/Battery Power）
+  - 系统开机时间记录和运行时长计算
+- **📺 屏幕信息**: 新增详细的屏幕规格显示
+  - 屏幕分辨率（逻辑分辨率和物理分辨率）
+  - 屏幕尺寸和缩放因子显示
+  - 屏幕刷新率检测（60Hz）
+  - 物理尺寸计算和显示
 - **🔧 代码架构优化**:
-  - SystemInfoManager新增DiskInfo结构体管理磁盘数据
-  - 实现基于NSHomeDirectory的磁盘空间检测算法
-  - 统一UI组件支持多种数据类型的进度显示
+  - SystemInfoManager新增NetworkInfo、BatteryInfo、ScreenInfo结构体
+  - 实现自定义Reachability网络检测
+  - 优化电池信息初始化和实时更新机制
+  - 统一UI组件支持多种数据类型的实时显示
 
-### 🌟 2025-10-25 (Enhanced System Information Features)
+### 🌟 2025-10-25 (Comprehensive System Information Enhancement)
 - **📊 New Disk Monitoring**: Added real-time disk space monitoring to system information page
   - Shows used disk space, total disk space, and available disk space
   - Provides visual progress bar for disk usage percentage
   - Automatically detects and displays disk capacity in GB format
+- **📶 Network Monitoring**: Added comprehensive network connection status detection
+  - Detects Wi-Fi connection status and SSID display
+  - Supports cellular network carrier information
+  - Real-time display of connection type and status
+- **🔋 Battery Monitoring**: Implemented complete battery information real-time display
+  - Real-time battery level updates (0-100%)
+  - Charging status detection (Charging/Unplugged/Full)
+  - Power source display (AC Power/Battery Power)
+  - System boot time recording and uptime calculation
+- **📺 Screen Information**: Added detailed screen specifications display
+  - Screen resolution (logical and physical resolution)
+  - Screen size and scale factor display
+  - Screen refresh rate detection (60Hz)
+  - Physical size calculation and display
 - **🔧 Architecture Optimization**:
-  - SystemInfoManager enhanced with DiskInfo structure for disk data management
-  - Implemented disk space detection algorithm based on NSHomeDirectory
-  - Unified UI components support progress display for multiple data types
+  - SystemInfoManager enhanced with NetworkInfo, BatteryInfo, ScreenInfo structures
+  - Implemented custom Reachability for network detection
+  - Optimized battery information initialization and real-time update mechanism
+  - Unified UI components supporting real-time display for multiple data types
 
 ### 🌟 2025-10-18 (新增系统信息显示功能)
 - **🆕 全新功能**: 在关于我页面新增系统信息导航，点击可进入独立的系统信息页面
