@@ -9,6 +9,7 @@ struct OtherOptionsView: View {
     @State private var navigateToMultiplicationTable = false
     @State private var navigateToAboutMe = false
     @State private var navigateToFormulaGuide = false
+    @State private var navigateToSystemInfo = false
     
     // Computed properties for navigation destinations
     private var multiplicationTableDestination: some View {
@@ -23,6 +24,11 @@ struct OtherOptionsView: View {
 
     private var formulaGuideDestination: some View {
         FormulaGuideView()
+            .environmentObject(localizationManager)
+    }
+
+    private var systemInfoDestination: some View {
+        SystemInfoView()
             .environmentObject(localizationManager)
     }
     
@@ -127,7 +133,39 @@ struct OtherOptionsView: View {
                     .cornerRadius(.adaptiveCornerRadius)
                 }
                 .padding(.horizontal)
-                
+
+                // 系统信息按钮
+                Button(action: {
+                    navigateToSystemInfo = true
+                }) {
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .font(.title2)
+                            .foregroundColor(.white)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("system.info.title".localized)
+                                .font(.adaptiveHeadline())
+                                .foregroundColor(.white)
+
+                            Text("system.info.description".localized)
+                                .font(.adaptiveBody())
+                                .foregroundColor(.white.opacity(0.8))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    .padding()
+                    .background(Color.red.opacity(0.6))
+                    .cornerRadius(.adaptiveCornerRadius)
+                }
+                .padding(.horizontal)
+
                 Spacer(minLength: 50)
                 
                 // 返回主页按钮
@@ -163,6 +201,13 @@ struct OtherOptionsView: View {
                 NavigationLink(
                     destination: formulaGuideDestination,
                     isActive: $navigateToFormulaGuide
+                ) {
+                    EmptyView()
+                }
+
+                NavigationLink(
+                    destination: systemInfoDestination,
+                    isActive: $navigateToSystemInfo
                 ) {
                     EmptyView()
                 }

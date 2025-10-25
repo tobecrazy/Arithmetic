@@ -10,7 +10,6 @@ struct AboutMeView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @State private var isImageLoading = false
-    @StateObject private var systemInfoManager = SystemInfoManager()
     
     var body: some View {
         ScrollView {
@@ -75,28 +74,6 @@ struct AboutMeView: View {
                         .font(.adaptiveBody())
                         .foregroundColor(.blue)
                         .padding(.top, 10)
-                    
-                    // System Information Navigation
-                    NavigationLink(destination: SystemInfoView()) {
-                        HStack {
-                            Image(systemName: "info.circle")
-                                .foregroundColor(.blue)
-                                .frame(width: 20)
-                            Text("system.info.title".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.secondary)
-                                .font(.caption)
-                        }
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 16)
-                        .background(Color.secondary.opacity(0.1))
-                        .cornerRadius(8)
-                        .foregroundColor(.primary)
-                    }
-                    .padding(.top, 15)
                 }
                 .padding(.vertical, 20)
                 
