@@ -55,10 +55,12 @@ class SystemInfoManager: ObservableObject {
     @Published var networkInfo: NetworkInfo = NetworkInfo()
     @Published var batteryInfo: BatteryInfo = BatteryInfo()
     @Published var screenInfo: ScreenInfo = ScreenInfo()
-    
+
     private var timer: Timer?
     private let dateFormatter: DateFormatter
     private let timeFormatter: DateFormatter
+    private var bootTimeInterval: TimeInterval = 0.0  // Cache boot time interval
+    private var batteryStateRetryCount = 0  // For battery state retry logic
     
     struct MemoryInfo {
         var usedMemory: Double = 0.0
@@ -113,8 +115,11 @@ class SystemInfoManager: ObservableObject {
         self.timeFormatter = DateFormatter()
         self.timeFormatter.dateFormat = "HH:mm:ss"
 
-        // Initialize battery info once
-        batteryInfo = getBatteryInfo()
+        // Enable battery monitoring early
+        UIDevice.current.isBatteryMonitoringEnabled = true
+
+        // Initialize boot time interval once
+        initializeBootTime()
 
         loadStaticInfo()
         startRealTimeUpdates()
@@ -122,6 +127,17 @@ class SystemInfoManager: ObservableObject {
     
     deinit {
         stopRealTimeUpdates()
+        UIDevice.current.isBatteryMonitoringEnabled = false
+    }
+
+    private func initializeBootTime() {
+        var bootTime = timeval()
+        var mib: [Int32] = [CTL_KERN, KERN_BOOTTIME]
+        var size = MemoryLayout<timeval>.size
+
+        if sysctl(&mib, u_int(mib.count), &bootTime, &size, nil, 0) == 0 {
+            bootTimeInterval = TimeInterval(bootTime.tv_sec) + TimeInterval(bootTime.tv_usec) / 1_000_000
+        }
     }
     
     private func loadStaticInfo() {
@@ -341,43 +357,57 @@ class SystemInfoManager: ObservableObject {
     private func getBatteryInfo() -> BatteryInfo {
         var batteryInfo = BatteryInfo()
 
-        // Enable battery monitoring
-        UIDevice.current.isBatteryMonitoringEnabled = true
-
         // Get battery level with proper error handling
         let batteryLevel = UIDevice.current.batteryLevel
         batteryInfo.level = batteryLevel >= 0 ? batteryLevel : 0.0
 
-        // Get battery state
+        // Get battery state with improved detection
         let batteryState = UIDevice.current.batteryState
         batteryInfo.isCharging = batteryState == .charging
 
-        // Get battery state with proper switch
+        // Enhanced battery state detection with fallback
         switch batteryState {
         case .charging:
             batteryInfo.state = "Charging"
             batteryInfo.powerSourceState = "AC Power"
+            batteryStateRetryCount = 0  // Reset retry count on success
         case .unplugged:
             batteryInfo.state = "Unplugged"
             batteryInfo.powerSourceState = "Battery Power"
+            batteryStateRetryCount = 0  // Reset retry count on success
         case .full:
             batteryInfo.state = "Full"
             batteryInfo.powerSourceState = "Full Charge"
-        default:
+            batteryStateRetryCount = 0  // Reset retry count on success
+        case .unknown:
+            // Implement retry logic for unknown state
+            if batteryStateRetryCount < 5 {
+                batteryStateRetryCount += 1
+                // On iOS Simulator or first few attempts, provide reasonable defaults
+                if batteryLevel > 0 {
+                    batteryInfo.state = batteryLevel >= 0.95 ? "Full" : "Unplugged"
+                    batteryInfo.powerSourceState = batteryLevel >= 0.95 ? "Full Charge" : "Battery Power"
+                } else {
+                    batteryInfo.state = "Unknown"
+                    batteryInfo.powerSourceState = "Unknown"
+                }
+            } else {
+                // After retries, assume unplugged if we have battery level data
+                batteryInfo.state = batteryLevel > 0 ? "Unplugged" : "Unknown"
+                batteryInfo.powerSourceState = batteryLevel > 0 ? "Battery Power" : "Unknown"
+            }
+        @unknown default:
             batteryInfo.state = "Unknown"
             batteryInfo.powerSourceState = "Unknown"
         }
 
-        // Get boot time - only calculate once
-        if batteryInfo.bootTimeString.isEmpty {
-            var bootTime = timeval()
-            var mib: [Int32] = [CTL_KERN, KERN_BOOTTIME]
-            var size = MemoryLayout<timeval>.size
+        // Calculate real-time uptime
+        if bootTimeInterval > 0 {
+            // Calculate current uptime
+            batteryInfo.timeIntervalSinceBoot = Date().timeIntervalSince1970 - bootTimeInterval
 
-            if sysctl(&mib, u_int(mib.count), &bootTime, &size, nil, 0) == 0 {
-                let bootTimeInterval = TimeInterval(bootTime.tv_sec) + TimeInterval(bootTime.tv_usec) / 1_000_000
-                batteryInfo.timeIntervalSinceBoot = Date().timeIntervalSince1970 - bootTimeInterval
-
+            // Format boot time string (only once or when empty)
+            if batteryInfo.bootTimeString.isEmpty {
                 let uptimeFormatter = DateFormatter()
                 uptimeFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 batteryInfo.bootTimeString = uptimeFormatter.string(from: Date(timeIntervalSince1970: bootTimeInterval))
@@ -427,6 +457,25 @@ class SystemInfoManager: ObservableObject {
         var powerSourceState: String = ""
         var timeIntervalSinceBoot: TimeInterval = 0.0
         var bootTimeString: String = ""
+
+        // Computed property for formatted uptime display
+        var uptimeString: String {
+            guard timeIntervalSinceBoot > 0 else { return "Unknown" }
+
+            let totalSeconds = Int(timeIntervalSinceBoot)
+            let days = totalSeconds / 86400
+            let hours = (totalSeconds % 86400) / 3600
+            let minutes = (totalSeconds % 3600) / 60
+            let seconds = totalSeconds % 60
+
+            if days > 0 {
+                return String(format: "%d days, %02d:%02d:%02d", days, hours, minutes, seconds)
+            } else if hours > 0 {
+                return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            } else {
+                return String(format: "%02d:%02d", minutes, seconds)
+            }
+        }
     }
 
     // MARK: - Screen Information

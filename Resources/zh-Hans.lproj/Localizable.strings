@@ -135,23 +135,6 @@
 "about.content" = "这是一个小学算术练习应用，旨在通过互动练习帮助孩子们提高数学技能。应用提供多种难度级别并跟踪学习进度，让学习变得有趣且富有吸引力。";
 "about.github_link" = "点击访问我的Github仓库";
 
-/* System Information */
-"system.info.title" = "系统信息";
-"system.info.page_title" = "系统信息";
-"system.info.description" = "实时系统监控和设备信息";
-"system.info.device_name" = "设备名称";
-"system.info.cpu_info" = "CPU信息";
-"system.info.cpu_usage" = "CPU占用率";
-"system.info.memory_usage" = "内存占用";
-"system.info.memory_used" = "已使用";
-"system.info.memory_total" = "总内存";
-"system.info.memory_available" = "可用内存";
-"system.info.disk_usage" = "磁盘占用";
-"system.info.disk_used" = "已使用";
-"system.info.disk_total" = "总容量";
-"system.info.disk_available" = "可用空间";
-"system.info.system_version" = "系统版本";
-"system.info.current_time" = "当前时间";
 
 /* Formula Guide */
 "button.formula_guide" = "小学生公式大全";
@@ -323,6 +306,7 @@
 "system.info.battery_state" = "电池状态";
 "system.info.power_source" = "电源状态";
 "system.info.boot_time" = "开机时间";
+"system.info.uptime" = "运行时长";
 "system.info.screen_info" = "屏幕信息";
 "system.info.screen_resolution" = "屏幕分辨率";
 "system.info.screen_size" = "屏幕尺寸";

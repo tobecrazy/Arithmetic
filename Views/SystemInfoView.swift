@@ -291,6 +291,17 @@ struct SystemInfoView: View {
                                     .font(.adaptiveCaption())
                                     .fontWeight(.medium)
                             }
+
+                            HStack {
+                                Text("system.info.uptime".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.batteryInfo.uptimeString)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.green)
+                            }
                         }
                     }
                     .padding(.vertical, 8)

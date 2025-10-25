@@ -135,23 +135,6 @@
 "about.content" = "This is an elementary arithmetic practice app designed to help children improve their math skills through interactive exercises. The app provides various difficulty levels and tracks progress to make learning fun and engaging.";
 "about.github_link" = "Visit GitHub Repository";
 
-/* System Information */
-"system.info.title" = "System Information";
-"system.info.page_title" = "System Information";
-"system.info.description" = "Real-time system monitoring and device information";
-"system.info.device_name" = "Device Name";
-"system.info.cpu_info" = "CPU Information";
-"system.info.cpu_usage" = "CPU Usage";
-"system.info.memory_usage" = "Memory Usage";
-"system.info.memory_used" = "Used";
-"system.info.memory_total" = "Total";
-"system.info.memory_available" = "Available";
-"system.info.disk_usage" = "Disk Usage";
-"system.info.disk_used" = "Used";
-"system.info.disk_total" = "Total";
-"system.info.disk_available" = "Available";
-"system.info.system_version" = "System Version";
-"system.info.current_time" = "Current Time";
 
 /* Formula Guide */
 "button.formula_guide" = "Elementary Math Formulas";
@@ -323,6 +306,7 @@
 "system.info.battery_state" = "Battery State";
 "system.info.power_source" = "Power Source";
 "system.info.boot_time" = "Boot Time";
+"system.info.uptime" = "Uptime";
 "system.info.screen_info" = "Screen Information";
 "system.info.screen_resolution" = "Screen Resolution";
 "system.info.screen_size" = "Screen Size";
