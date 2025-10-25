@@ -185,6 +185,187 @@ struct SystemInfoView: View {
                         value: systemInfoManager.systemVersion,
                         icon: "gear"
                     )
+
+                    // Network Information
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "wifi")
+                                .foregroundColor(.cyan)
+                                .frame(width: 20)
+                            Text("system.info.network_info".localized)
+                                .font(.adaptiveBody())
+                                .fontWeight(.medium)
+                            Spacer()
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("system.info.connection_type".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.networkInfo.connectionType)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            if !systemInfoManager.networkInfo.wifiSSID.isEmpty {
+                                HStack {
+                                    Text("system.info.wifi_ssid".localized + ":")
+                                        .font(.adaptiveCaption())
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(systemInfoManager.networkInfo.wifiSSID)
+                                        .font(.adaptiveCaption())
+                                        .fontWeight(.medium)
+                                }
+                            }
+
+                            if !systemInfoManager.networkInfo.cellularCarrier.isEmpty && systemInfoManager.networkInfo.cellularCarrier != "Unknown" {
+                                HStack {
+                                    Text("system.info.cellular_carrier".localized + ":")
+                                        .font(.adaptiveCaption())
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(systemInfoManager.networkInfo.cellularCarrier)
+                                        .font(.adaptiveCaption())
+                                        .fontWeight(.medium)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
+                    .background(Color.secondary.opacity(0.1))
+                    .cornerRadius(8)
+
+                    // Battery Information
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "battery.100")
+                                .foregroundColor(.green)
+                                .frame(width: 20)
+                            Text("system.info.battery_info".localized)
+                                .font(.adaptiveBody())
+                                .fontWeight(.medium)
+                            Spacer()
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("system.info.battery_level".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(String(format: "%.0f%%", systemInfoManager.batteryInfo.level * 100))
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.battery_state".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.batteryInfo.state)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.power_source".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.batteryInfo.powerSourceState)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.boot_time".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.batteryInfo.bootTimeString)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
+                    .background(Color.secondary.opacity(0.1))
+                    .cornerRadius(8)
+
+                    // Screen Information
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "display")
+                                .foregroundColor(.purple)
+                                .frame(width: 20)
+                            Text("system.info.screen_info".localized)
+                                .font(.adaptiveBody())
+                                .fontWeight(.medium)
+                            Spacer()
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("system.info.screen_resolution".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.screenInfo.screenResolution)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.screen_size".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(String(format: "%.0f × %.0f", systemInfoManager.screenInfo.screenSize.width, systemInfoManager.screenInfo.screenSize.height))
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.scale_factor".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(String(format: "%.0fx", systemInfoManager.screenInfo.scaleFactor))
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.refresh_rate".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(String(format: "%.0f Hz", systemInfoManager.screenInfo.refreshRate))
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+
+                            HStack {
+                                Text("system.info.physical_size".localized + ":")
+                                    .font(.adaptiveCaption())
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(systemInfoManager.screenInfo.physicalSize)
+                                    .font(.adaptiveCaption())
+                                    .fontWeight(.medium)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
+                    .background(Color.secondary.opacity(0.1))
+                    .cornerRadius(8)
                     
                     // Current Date and Time (Real-time)
                     VStack(alignment: .leading, spacing: 8) {

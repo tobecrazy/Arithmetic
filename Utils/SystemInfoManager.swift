@@ -1,6 +1,47 @@
 import SwiftUI
 import Foundation
 import UIKit
+import SystemConfiguration
+import CoreLocation
+
+// Simple Reachability for network status detection
+class Reachability {
+    enum Connection {
+        case wifi, cellular, none, unknown
+    }
+
+    var connection: Connection {
+        // Use SystemConfiguration to check network status
+        var flags = SCNetworkReachabilityFlags()
+        var zeroAddress = sockaddr_in()
+
+        zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+
+        let reachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        })
+
+        guard let reachability = reachability, SCNetworkReachabilityGetFlags(reachability, &flags) else {
+            return .unknown
+        }
+
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+
+        if !isReachable || needsConnection {
+            return .none
+        }
+
+        if flags.contains(.isWWAN) {
+            return .cellular
+        } else {
+            return .wifi
+        }
+    }
+}
 
 class SystemInfoManager: ObservableObject {
     @Published var deviceName: String = ""
@@ -11,6 +52,9 @@ class SystemInfoManager: ObservableObject {
     @Published var systemVersion: String = ""
     @Published var currentDate: String = ""
     @Published var currentTime: String = ""
+    @Published var networkInfo: NetworkInfo = NetworkInfo()
+    @Published var batteryInfo: BatteryInfo = BatteryInfo()
+    @Published var screenInfo: ScreenInfo = ScreenInfo()
     
     private var timer: Timer?
     private let dateFormatter: DateFormatter
@@ -172,6 +216,15 @@ class SystemInfoManager: ObservableObject {
         
         // Update disk usage
         diskUsage = getDiskInfo()
+
+        // Update network info
+        networkInfo = getNetworkInfo()
+
+        // Update battery info
+        batteryInfo = getBatteryInfo()
+
+        // Update screen info
+        screenInfo = getScreenInfo()
     }
     
     private func getCPUUsage() -> Double {
@@ -247,5 +300,130 @@ class SystemInfoManager: ObservableObject {
         }
         
         return diskInfo
+    }
+
+    private func getNetworkInfo() -> NetworkInfo {
+        var networkInfo = NetworkInfo()
+
+        // Use Reachability for simpler network detection
+        let reachability = Reachability()
+
+        switch reachability.connection {
+        case .wifi:
+            networkInfo.connectionType = "Wi-Fi"
+            networkInfo.isConnected = true
+            networkInfo.wifiSSID = "Connected"
+            networkInfo.wifiName = "Wi-Fi"
+        case .cellular:
+            networkInfo.connectionType = "Cellular"
+            networkInfo.isConnected = true
+            networkInfo.cellularCarrier = getCellularCarrier()
+        case .none:
+            networkInfo.connectionType = "None"
+            networkInfo.isConnected = false
+        case .unknown:
+            networkInfo.connectionType = "Unknown"
+            networkInfo.isConnected = false
+        }
+
+        return networkInfo
+    }
+
+    private func getCellularCarrier() -> String {
+        // This is a simplified implementation
+        // In a real app, you'd use Core Telephony framework
+        return "Unknown" // Placeholder for cellular carrier
+    }
+
+    private func getBatteryInfo() -> BatteryInfo {
+        var batteryInfo = BatteryInfo()
+
+        // Get battery level
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        batteryInfo.level = UIDevice.current.batteryLevel
+        batteryInfo.isCharging = UIDevice.current.batteryState == .charging
+
+        // Get battery state
+        switch UIDevice.current.batteryState {
+        case .charging:
+            batteryInfo.state = "Charging"
+            batteryInfo.powerSourceState = "AC Power"
+        case .unplugged:
+            batteryInfo.state = "Unplugged"
+            batteryInfo.powerSourceState = "Battery Power"
+        case .full:
+            batteryInfo.state = "Full"
+            batteryInfo.powerSourceState = "Full Charge"
+        default:
+            batteryInfo.state = "Unknown"
+            batteryInfo.powerSourceState = "Unknown"
+        }
+
+        // Get boot time
+        var bootTime = timeval()
+        var mib: [Int32] = [CTL_KERN, KERN_BOOTTIME]
+        var size = MemoryLayout<timeval>.size
+
+        if sysctl(&mib, u_int(mib.count), &bootTime, &size, nil, 0) == 0 {
+            let bootTimeInterval = TimeInterval(bootTime.tv_sec) + TimeInterval(bootTime.tv_usec) / 1_000_000
+            batteryInfo.timeIntervalSinceBoot = Date().timeIntervalSince1970 - bootTimeInterval
+
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            batteryInfo.bootTimeString = formatter.string(from: Date(timeIntervalSince1970: bootTimeInterval))
+        }
+
+        return batteryInfo
+    }
+
+    private func getScreenInfo() -> ScreenInfo {
+        var screenInfo = ScreenInfo()
+
+        let screen = UIScreen.main
+        let bounds = screen.bounds
+        let scale = screen.scale
+
+        screenInfo.screenSize = bounds.size
+        screenInfo.scaleFactor = scale
+        screenInfo.screenResolution = "\(Int(bounds.width * scale)) × \(Int(bounds.height * scale))"
+
+        // Get physical screen size (in inches)
+        let screenWidthMm = bounds.width * 25.4 / 163 * scale // 163 ppi is base iPhone density
+        let screenHeightMm = bounds.height * 25.4 / 163 * scale
+        let diagonalInches = sqrt(pow(screenWidthMm / 25.4, 2) + pow(screenHeightMm / 25.4, 2))
+        screenInfo.physicalSize = String(format: "%.1f inches", diagonalInches)
+
+        // Get refresh rate (60Hz is standard for most iOS devices)
+        screenInfo.refreshRate = 60.0
+
+        return screenInfo
+    }
+
+    // MARK: - Network Information
+    struct NetworkInfo {
+        var wifiName: String = ""
+        var wifiSSID: String = ""
+        var cellularCarrier: String = ""
+        var isConnected: Bool = false
+        var connectionType: String = ""
+    }
+
+    // MARK: - Battery Information
+    struct BatteryInfo {
+        var level: Float = 0.0
+        var state: String = ""
+        var isCharging: Bool = false
+        var powerSourceState: String = ""
+        var timeIntervalSinceBoot: TimeInterval = 0.0
+        var bootTimeString: String = ""
+    }
+
+    // MARK: - Screen Information
+    struct ScreenInfo {
+        var screenSize: CGSize = CGSize.zero
+        var screenResolution: String = ""
+        var scaleFactor: CGFloat = 0.0
+        var refreshRate: Double = 0.0
+        var physicalSize: String = ""
     }
 }
