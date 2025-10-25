@@ -112,6 +112,10 @@ class SystemInfoManager: ObservableObject {
             "iPhone16,2": "iPhone 15 Plus",
             "iPhone16,3": "iPhone 15 Pro",
             "iPhone16,4": "iPhone 15 Pro Max",
+            "iPhone17,1": "iPhone 16",
+            "iPhone17,2": "iPhone 16 Plus",
+            "iPhone17,3": "iPhone 16 Pro",
+            "iPhone17,4": "iPhone 16 Pro Max",
             
             // iPad
             "iPad13,1": "iPad Air (4th generation)",
