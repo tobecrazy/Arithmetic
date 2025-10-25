@@ -188,16 +188,18 @@
 
 ### 💻 系统信息显示 (System Information Display)
 - **设备信息** - 显示当前设备名称和CPU信息
-- **实时监控** - CPU占用率和内存使用情况实时更新
+- **实时监控** - CPU占用率、内存使用情况和磁盘空间实时更新
 - **内存详情** - 显示已使用、总内存、可用内存和使用百分比
+- **磁盘空间** - 显示已使用、总磁盘空间、可用磁盘空间和使用百分比
 - **系统版本** - 显示当前iOS/iPadOS系统版本
 - **当前时间** - 实时显示当前时间，每秒更新
 - **双语支持** - 完整的中英文本地化支持
 - **可视化展示** - 使用进度条和图标直观显示系统状态
 
 - **Device Information** - Displays current device name and CPU information
-- **Real-time Monitoring** - CPU usage and memory usage update in real-time
+- **Real-time Monitoring** - CPU usage, memory usage, and disk space update in real-time
 - **Memory Details** - Shows used, total, available memory and usage percentage
+- **Disk Space** - Shows used, total disk space, available disk space and usage percentage
 - **System Version** - Displays current iOS/iPadOS system version
 - **Current Time** - Real-time display of current time, updated every second
 - **Bilingual Support** - Complete Chinese and English localization support
@@ -501,6 +503,9 @@ Arithmetic/
 │   ├── LanguageSelectorView.swift         # 语言选择视图
 │   ├── AboutMeView.swift                  # 关于我视图
 │   ├── FormulaGuideView.swift             # 小学数学公式大全视图
+│   ├── OtherOptionsView.swift             # 其他选项视图
+│   ├── SystemInfoView.swift               # 系统信息视图
+│   ├── SystemInfoComponents.swift         # 系统信息组件
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
 ├── 📊 Models/                              # 数据模型
 │   ├── Question.swift                      # 题目模型（包含解析方法）
@@ -521,6 +526,8 @@ Arithmetic/
 │   ├── NavigationUtil.swift               # 导航工具
 │   ├── TTSHelper.swift                    # TTS辅助类
 │   ├── DeviceUtils.swift                  # 设备工具
+│   ├── SystemInfoManager.swift           # 系统信息管理器
+│   ├── ProgressViewUtils.swift            # 进度视图工具
 │   └── ImageCacheManager.swift            # 图片缓存管理器
 ├── 🔧 Extensions/                          # 扩展
 │   ├── String+Localized.swift             # 字符串本地化扩展
@@ -781,6 +788,26 @@ Arithmetic/
 - **代码优化**: 移除了对特定算术题的特殊处理逻辑，使所有题目都通过标准算法处理
 - **错误修复**: 修复了平十法解析中的逻辑错误，确保所有类似"19-16"的题目都能得到正确的解析步骤
 - **性能改进**: 通过消除硬编码的特殊情况处理，提高了系统的可扩展性和稳定性
+
+### 🌟 2025-10-25 (系统信息功能增强)
+- **📊 磁盘监控新增**: 在系统信息页面新增磁盘空间实时监控功能
+  - 显示已使用磁盘空间、总磁盘空间和可用磁盘空间
+  - 提供磁盘使用百分比可视化进度条
+  - 自动检测并显示GB格式的磁盘容量信息
+- **🔧 代码架构优化**:
+  - SystemInfoManager新增DiskInfo结构体管理磁盘数据
+  - 实现基于NSHomeDirectory的磁盘空间检测算法
+  - 统一UI组件支持多种数据类型的进度显示
+
+### 🌟 2025-10-25 (Enhanced System Information Features)
+- **📊 New Disk Monitoring**: Added real-time disk space monitoring to system information page
+  - Shows used disk space, total disk space, and available disk space
+  - Provides visual progress bar for disk usage percentage
+  - Automatically detects and displays disk capacity in GB format
+- **🔧 Architecture Optimization**:
+  - SystemInfoManager enhanced with DiskInfo structure for disk data management
+  - Implemented disk space detection algorithm based on NSHomeDirectory
+  - Unified UI components support progress display for multiple data types
 
 ### 🌟 2025-10-18 (新增系统信息显示功能)
 - **🆕 全新功能**: 在关于我页面新增系统信息导航，点击可进入独立的系统信息页面
