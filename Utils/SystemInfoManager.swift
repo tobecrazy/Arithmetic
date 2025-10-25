@@ -109,10 +109,13 @@ class SystemInfoManager: ObservableObject {
     init() {
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateFormat = "yyyy-MM-dd"
-        
+
         self.timeFormatter = DateFormatter()
         self.timeFormatter.dateFormat = "HH:mm:ss"
-        
+
+        // Initialize battery info once
+        batteryInfo = getBatteryInfo()
+
         loadStaticInfo()
         startRealTimeUpdates()
     }
@@ -338,13 +341,19 @@ class SystemInfoManager: ObservableObject {
     private func getBatteryInfo() -> BatteryInfo {
         var batteryInfo = BatteryInfo()
 
-        // Get battery level
+        // Enable battery monitoring
         UIDevice.current.isBatteryMonitoringEnabled = true
-        batteryInfo.level = UIDevice.current.batteryLevel
-        batteryInfo.isCharging = UIDevice.current.batteryState == .charging
+
+        // Get battery level with proper error handling
+        let batteryLevel = UIDevice.current.batteryLevel
+        batteryInfo.level = batteryLevel >= 0 ? batteryLevel : 0.0
 
         // Get battery state
-        switch UIDevice.current.batteryState {
+        let batteryState = UIDevice.current.batteryState
+        batteryInfo.isCharging = batteryState == .charging
+
+        // Get battery state with proper switch
+        switch batteryState {
         case .charging:
             batteryInfo.state = "Charging"
             batteryInfo.powerSourceState = "AC Power"
@@ -359,18 +368,20 @@ class SystemInfoManager: ObservableObject {
             batteryInfo.powerSourceState = "Unknown"
         }
 
-        // Get boot time
-        var bootTime = timeval()
-        var mib: [Int32] = [CTL_KERN, KERN_BOOTTIME]
-        var size = MemoryLayout<timeval>.size
+        // Get boot time - only calculate once
+        if batteryInfo.bootTimeString.isEmpty {
+            var bootTime = timeval()
+            var mib: [Int32] = [CTL_KERN, KERN_BOOTTIME]
+            var size = MemoryLayout<timeval>.size
 
-        if sysctl(&mib, u_int(mib.count), &bootTime, &size, nil, 0) == 0 {
-            let bootTimeInterval = TimeInterval(bootTime.tv_sec) + TimeInterval(bootTime.tv_usec) / 1_000_000
-            batteryInfo.timeIntervalSinceBoot = Date().timeIntervalSince1970 - bootTimeInterval
+            if sysctl(&mib, u_int(mib.count), &bootTime, &size, nil, 0) == 0 {
+                let bootTimeInterval = TimeInterval(bootTime.tv_sec) + TimeInterval(bootTime.tv_usec) / 1_000_000
+                batteryInfo.timeIntervalSinceBoot = Date().timeIntervalSince1970 - bootTimeInterval
 
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            batteryInfo.bootTimeString = formatter.string(from: Date(timeIntervalSince1970: bootTimeInterval))
+                let uptimeFormatter = DateFormatter()
+                uptimeFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                batteryInfo.bootTimeString = uptimeFormatter.string(from: Date(timeIntervalSince1970: bootTimeInterval))
+            }
         }
 
         return batteryInfo
