@@ -419,7 +419,7 @@ struct SystemInfoView: View {
             }
             .padding()
         }
-        .navigationTitle("system.info.page_title".localized)
+        .navigationTitle("system.info.title".localized)
         .navigationBarTitleDisplayMode(.large)
         .navigationBarBackButtonHidden(true)
         .toolbar {
