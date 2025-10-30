@@ -186,11 +186,38 @@
 - **Open Source Support** - Users can directly access the project's open source repository to understand development progress
 - **Bilingual Support** - Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository"
 
+### 🔋 电池监控与运行时长功能 (Battery Monitoring and Uptime Calculation)
+- **实时电池状态** - 实时监控设备电池电量、充电状态和电源类型
+- **智能状态检测** - 解决模拟器中电池状态显示"Unknown"的问题，提供智能状态推断
+- **运行时长计算** - 精确计算并实时更新系统自启动以来的运行时长
+- **智能格式化显示** - 根据运行时长自动选择合适的显示格式（天数、时:分:秒或分:秒）
+- **多场景支持** - 支持iOS模拟器和真实设备的电池状态检测
+- **国际化支持** - 完整的中英文本地化支持
+
+- **Real-time Battery Status** - Real-time monitoring of device battery level, charging status, and power source type
+- **Smart Status Detection** - Resolves the issue of battery status showing "Unknown" in simulator, provides intelligent status inference
+- **Uptime Calculation** - Precisely calculates and updates the system uptime since boot in real-time
+- **Smart Formatting Display** - Automatically selects appropriate display format based on uptime (days, HH:MM:SS, or MM:SS)
+- **Multi-scenario Support** - Supports battery status detection for both iOS simulator and real devices
+- **Internationalization Support** - Complete Chinese and English localization support
+
+### 🌐 网络连接监控 (Network Connection Monitoring)
+- **实时网络状态** - 检测当前网络连接类型（Wi-Fi/蜂窝网络）
+- **Wi-Fi信息** - 显示Wi-Fi连接名称（SSID）
+- **蜂窝网络信息** - 显示运营商信息（如适用）
+- **连接状态指示** - 提供网络连接状态的实时反馈
+
+- **Real-time Network Status** - Detects current network connection type (Wi-Fi/cellular)
+- **Wi-Fi Information** - Displays Wi-Fi connection name (SSID)
+- **Cellular Information** - Displays carrier information (where applicable)
+- **Connection Status Indicator** - Provides real-time feedback on network connection status
+
 ### 💻 系统信息显示 (System Information Display)
 - **设备信息** - 显示当前设备名称和CPU信息
 - **实时监控** - CPU占用率、内存使用情况和磁盘空间实时更新
 - **内存详情** - 显示已使用、总内存、可用内存和使用百分比
 - **磁盘空间** - 显示已使用、总磁盘空间、可用磁盘空间和使用百分比
+- **屏幕信息** - 显示屏幕分辨率、尺寸和刷新率
 - **系统版本** - 显示当前iOS/iPadOS系统版本
 - **当前时间** - 实时显示当前时间，每秒更新
 - **双语支持** - 完整的中英文本地化支持
@@ -200,6 +227,7 @@
 - **Real-time Monitoring** - CPU usage, memory usage, and disk space update in real-time
 - **Memory Details** - Shows used, total, available memory and usage percentage
 - **Disk Space** - Shows used, total disk space, available disk space and usage percentage
+- **Screen Information** - Displays screen resolution, size, and refresh rate
 - **System Version** - Displays current iOS/iPadOS system version
 - **Current Time** - Real-time display of current time, updated every second
 - **Bilingual Support** - Complete Chinese and English localization support
@@ -471,6 +499,23 @@ flowchart TB
 - **动态切换** - 运行时语言切换支持
 - **完整覆盖** - UI文本和解析内容全面本地化
 
+### 🔋 系统信息监控功能
+
+#### 实时监控模块
+- **系统信息管理器** - `SystemInfoManager.swift` 统一管理系统信息更新
+- **设备信息** - 实时获取设备名称、CPU信息、系统版本等
+- **性能监控** - CPU使用率、内存使用情况的实时更新
+- **电池监控** - 电池电量、充电状态、电源状态的实时检测
+- **网络监控** - Wi-Fi和蜂窝网络连接状态检测
+- **屏幕信息** - 分辨率、尺寸、刷新率等屏幕规格检测
+- **运行时长** - 精确计算系统自启动以来的运行时间
+
+#### 系统信息组件
+- **模块化设计** - 各类信息模块化设计，便于维护和扩展
+- **实时更新** - 使用计时器实现信息的定期更新
+- **可视化显示** - 使用进度条和图表直观显示资源使用情况
+- **错误处理** - 优雅处理系统信息获取失败的情况
+
 ### 📱 设备适配
 - **响应式布局** - 自适应iPhone/iPad不同屏幕尺寸
 - **横屏优化** - iPad横屏模式特别优化
@@ -491,9 +536,14 @@ Arithmetic/
 ├── 📄 LICENSE
 ├── 📝 Prompt.md
 ├── 📄 README.md
-├── 📁 .github/
+├── 📄 BATTERY_UPTIME_FIX_SUMMARY.md      # 电池和运行时长功能修复说明
+├── 📄 CLAUDE.md                          # Claude开发助手对话记录
+├── 📄 TTS_Implementation_Guide.md        # TTS功能实现指南
+├── 📁 .qwen/                            # Qwen开发助手配置
 ├── 📱 App/
 │   └── ArithmeticApp.swift                 # 应用入口
+├── 🖼️ Assets.xcassets/                     # 资源资产
+│   └── AppIcon.appiconset/                # 应用图标
 ├── 🖼️ Views/                               # 视图层
 │   ├── ContentView.swift                   # 主视图
 │   ├── GameView.swift                      # 游戏视图
@@ -526,7 +576,7 @@ Arithmetic/
 │   ├── NavigationUtil.swift               # 导航工具
 │   ├── TTSHelper.swift                    # TTS辅助类
 │   ├── DeviceUtils.swift                  # 设备工具
-│   ├── SystemInfoManager.swift           # 系统信息管理器
+│   ├── SystemInfoManager.swift           # 系统信息管理器（含电池、网络、屏幕信息）
 │   ├── ProgressViewUtils.swift            # 进度视图工具
 │   └── ImageCacheManager.swift            # 图片缓存管理器
 ├── 🔧 Extensions/                          # 扩展
@@ -535,8 +585,10 @@ Arithmetic/
 │   ├── View+Navigation.swift              # 视图导航扩展
 │   └── CGFloat+Adaptive.swift             # 尺寸适配扩展
 └── 🌐 Resources/                           # 资源文件
-    ├── zh-Hans.lproj/Localizable.strings  # 中文本地化
-    └── en.lproj/Localizable.strings       # 英文本地化
+    ├── zh-Hans.lproj/                     # 中文本地化
+    │   └── Localizable.strings            # 中文本地化字符串
+    └── en.lproj/                          # 英文本地化
+        └── Localizable.strings            # 英文本地化字符串
 ```
 
 [⬆️ 返回目录](#-目录-table-of-contents)
@@ -789,6 +841,34 @@ Arithmetic/
 - **错误修复**: 修复了平十法解析中的逻辑错误，确保所有类似"19-16"的题目都能得到正确的解析步骤
 - **性能改进**: 通过消除硬编码的特殊情况处理，提高了系统的可扩展性和稳定性
 
+### 🌟 2025-10-29 (电池信息和运行时长功能修复增强)
+- **🔋 电池状态检测修复**: 解决了电池状态在iOS模拟器中显示"Unknown"的问题
+  - 实现智能重试机制，最多重试5次以获取准确状态
+  - 添加基于电池电量的状态推断（电量≥95%显示"Full"）
+  - 提供合理的默认状态显示，避免"Unknown"状态
+- **⏱️ 运行时长实时计算**: 新增系统运行时长精确计算功能
+  - 实时更新系统开机运行时长（格式：X天 HH:MM:SS）
+  - 智能格式化显示：超过1天显示天数，超过1小时显示时分秒，小于1小时显示分秒
+  - 缓存开机时间戳，通过时间差计算实现高效实时更新
+- **🔧 代码架构优化**:
+  - SystemInfoManager新增bootTimeInterval和batteryStateRetryCount属性
+  - 实现电池状态重试机制和开机时间缓存
+  - 优化电池监控初始化和系统资源管理
+
+### 🌟 2025-10-29 (Battery Information and Uptime Calculation Enhancement)
+- **🔋 Battery Status Detection Fix**: Resolved the issue of battery status showing "Unknown" in iOS simulator
+  - Implemented smart retry mechanism, retrying up to 5 times to get accurate status
+  - Added battery-based status inference (battery level ≥95% shows "Full")
+  - Provides reasonable default status display, avoiding "Unknown" status
+- **⏱️ Real-time Uptime Calculation**: Added precise system uptime calculation feature
+  - Real-time update of system uptime since boot (format: X days HH:MM:SS)
+  - Smart formatting: Shows days if over 1 day, shows HH:MM:SS if over 1 hour, shows MM:SS if less than 1 hour
+  - Caches boot time timestamp, efficiently updates in real-time via time difference
+- **🔧 Architecture Optimization**:
+  - SystemInfoManager enhanced with bootTimeInterval and batteryStateRetryCount properties
+  - Implements battery status retry mechanism and boot time caching
+  - Optimized battery monitoring initialization and system resource management
+
 ### 🌟 2025-10-25 (系统信息功能全面增强)
 - **📊 磁盘监控新增**: 在系统信息页面新增磁盘空间实时监控功能
   - 显示已使用磁盘空间、总磁盘空间和可用磁盘空间
@@ -798,11 +878,6 @@ Arithmetic/
   - 检测Wi-Fi连接状态和名称显示
   - 支持蜂窝网络运营商信息
   - 实时显示连接类型和连接状态
-- **🔋 电池监控**: 实现完整的电池信息实时显示
-  - 电量百分比实时更新（0-100%）
-  - 充电状态检测（Charging/Unplugged/Full）
-  - 电源状态显示（AC Power/Battery Power）
-  - 系统开机时间记录和运行时长计算
 - **📺 屏幕信息**: 新增详细的屏幕规格显示
   - 屏幕分辨率（逻辑分辨率和物理分辨率）
   - 屏幕尺寸和缩放因子显示
@@ -823,11 +898,6 @@ Arithmetic/
   - Detects Wi-Fi connection status and SSID display
   - Supports cellular network carrier information
   - Real-time display of connection type and status
-- **🔋 Battery Monitoring**: Implemented complete battery information real-time display
-  - Real-time battery level updates (0-100%)
-  - Charging status detection (Charging/Unplugged/Full)
-  - Power source display (AC Power/Battery Power)
-  - System boot time recording and uptime calculation
 - **📺 Screen Information**: Added detailed screen specifications display
   - Screen resolution (logical and physical resolution)
   - Screen size and scale factor display
