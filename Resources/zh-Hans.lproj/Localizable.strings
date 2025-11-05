@@ -319,3 +319,31 @@
 "profit_rate" = "利润率";
 
 "back" = "返回";
+
+/* Welcome/Onboarding */
+"welcome.title" = "欢迎使用小学算术练习";
+"welcome.intro" = "通过互动练习帮助孩子们提高数学技能。应用提供多种难度级别并跟踪学习进度，让学习变得有趣且富有吸引力。";
+"welcome.levels.title" = "难度等级";
+"welcome.level1.desc" = "10以内加减法";
+"welcome.level2.desc" = "20以内加减法";
+"welcome.level3.desc" = "50以内加减法";
+"welcome.level4.desc" = "10以内乘除法";
+"welcome.level5.desc" = "20以内乘除法";
+"welcome.level6.desc" = "100以内混合运算";
+"welcome.features.title" = "主要功能";
+"welcome.feature.game.title" = "开始游戏";
+"welcome.feature.game.desc" = "选择难度等级开始练习，答对5题可以获得一颗星奖励。";
+"welcome.feature.solutions.title" = "解题思路";
+"welcome.feature.solutions.desc" = "提供多种解题方法帮助理解，如凑十法、破十法、乘法口诀等。";
+"welcome.feature.wrongquestions.title" = "错题集";
+"welcome.feature.wrongquestions.desc" = "自动收集错题，便于重点复习和巩固薄弱环节。";
+"welcome.feature.multiplication.title" = "九九乘法表";
+"welcome.feature.multiplication.desc" = "完整乘法表展示，帮助记忆和掌握乘法运算。";
+"welcome.howto.title" = "使用方法";
+"welcome.howto.step1.title" = "选择难度";
+"welcome.howto.step1.desc" = "从6个难度等级中选择适合的级别开始练习。";
+"welcome.howto.step2.title" = "开始练习";
+"welcome.howto.step2.desc" = "根据题目输入答案，系统会自动检查正误并给出反馈。";
+"welcome.howto.step3.title" = "查看结果";
+"welcome.howto.step3.desc" = "完成练习后查看得分和等级，点击“查看解析”了解详细解题思路。";
+"welcome.start_button" = "开始使用";

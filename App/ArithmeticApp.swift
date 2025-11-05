@@ -15,6 +15,12 @@ struct ArithmeticApp: App {
             ContentView()
                 .environmentObject(LocalizationManager())
                 .environment(\.managedObjectContext, coreDataManager.context)
+                .onAppear {
+                    // Check if this is the first time the app is launched
+                    if !UserDefaults.standard.bool(forKey: "HasLaunchedBefore") {
+                        UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
+                    }
+                }
         }
     }
 }

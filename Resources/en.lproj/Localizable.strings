@@ -318,3 +318,31 @@
 "cost" = "Cost";
 "profit_rate" = "Profit Rate";
 "back" = "Back";
+
+/* Welcome/Onboarding */
+"welcome.title" = "Welcome to Elementary Arithmetic Practice";
+"welcome.intro" = "Help children improve math skills through interactive exercises. The app provides various difficulty levels and tracks progress to make learning fun and engaging.";
+"welcome.levels.title" = "Difficulty Levels";
+"welcome.level1.desc" = "Addition & Subtraction within 10";
+"welcome.level2.desc" = "Addition & Subtraction within 20";
+"welcome.level3.desc" = "Addition & Subtraction within 50";
+"welcome.level4.desc" = "Multiplication & Division within 10";
+"welcome.level5.desc" = "Multiplication & Division within 20";
+"welcome.level6.desc" = "Mixed Operations within 100";
+"welcome.features.title" = "Main Features";
+"welcome.feature.game.title" = "Start Game";
+"welcome.feature.game.desc" = "Select difficulty level to start practicing. You'll get a star reward for every 5 correct answers.";
+"welcome.feature.solutions.title" = "Solution Approach";
+"welcome.feature.solutions.desc" = "Provides multiple problem-solving methods to help understanding, such as Making Ten, Breaking Ten, Multiplication Tables, etc.";
+"welcome.feature.wrongquestions.title" = "Wrong Questions";
+"welcome.feature.wrongquestions.desc" = "Automatically collects wrong answers for focused review and reinforcing weak areas.";
+"welcome.feature.multiplication.title" = "Multiplication Table";
+"welcome.feature.multiplication.desc" = "Complete multiplication table display to help memorize and master multiplication operations.";
+"welcome.howto.title" = "How to Use";
+"welcome.howto.step1.title" = "Select Difficulty";
+"welcome.howto.step1.desc" = "Choose from 6 difficulty levels that suit your current ability to start practicing.";
+"welcome.howto.step2.title" = "Start Practicing";
+"welcome.howto.step2.desc" = "Input answer based on the question. The system will automatically check correctness and provide feedback.";
+"welcome.howto.step3.title" = "Check Results";
+"welcome.howto.step3.desc" = "View score and grade after completion. Tap 'Show Solution' to see detailed solving approach.";
+"welcome.start_button" = "Get Started";
