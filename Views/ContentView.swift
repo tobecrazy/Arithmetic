@@ -13,22 +13,23 @@ struct ContentView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
-        // Check if this is the first launch
         Group {
-            if !UserDefaults.standard.bool(forKey: "HasLaunchedBefore") {
+            if showWelcome {
                 WelcomeView(showWelcome: $showWelcome)
-                    .onAppear {
-                        showWelcome = true
-                    }
                     .onChange(of: showWelcome) { newValue in
                         if !newValue {
-                            // User has finished welcome, mark as launched before and refresh
                             UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
                             refreshTrigger = UUID()
                         }
                     }
             } else {
                 mainContentView
+            }
+        }
+        .onAppear {
+            // Initialize welcome screen only on first launch
+            if !UserDefaults.standard.bool(forKey: "HasLaunchedBefore") {
+                showWelcome = true
             }
         }
     }
