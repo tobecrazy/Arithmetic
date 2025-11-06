@@ -20,6 +20,13 @@ struct ContentView: View {
                     .onAppear {
                         showWelcome = true
                     }
+                    .onChange(of: showWelcome) { newValue in
+                        if !newValue {
+                            // User has finished welcome, mark as launched before and refresh
+                            UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
+                            refreshTrigger = UUID()
+                        }
+                    }
             } else {
                 mainContentView
             }

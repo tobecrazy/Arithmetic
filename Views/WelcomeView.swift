@@ -123,6 +123,30 @@ struct WelcomeView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        // Add a "Start" button that appears on the last page of the tutorial
+        .overlay(
+            Group {
+                if currentPage == 3 {  // Last page
+                    VStack {
+                        Spacer()
+                        Button(action: {
+                            showWelcome = false
+                        }) {
+                            Text("welcome.start_button".localized)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 50)
+                    }
+                }
+            }
+        )
     }
 }
 
