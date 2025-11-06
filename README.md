@@ -45,70 +45,104 @@
 | 6级难度体系 | 错题收集分析 | 中英文双语 |
 | 四则运算练习 | 8种解题方法 | 设备自适应 |
 | 实时计分系统 | 进度自动保存 | 响应式设计 |
+| TTS语音朗读 | 九九乘法表 | 深色模式支持 |
 
 </div>
 
 ### 🔍 错题收集系统 (Wrong Questions Collection System)
-- **智能收集** - 自动收集用户答错的题目
-- **多入口访问** - 从主页面和结果页面均可访问错题集
-- **分类管理** - 按难度等级分类错题
-- **统计分析** - 显示错题统计信息（展示次数、错误次数）
-- **灵活删除** - 支持删除单个错题、所有错题或已掌握的错题
-- **智能识别** - 自动识别已掌握的错题（正确率达到70%以上）
-- **优先练习** - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点
+- **智能收集 (Intelligent Collection)** - 自动收集用户答错的题目 (Automatically collects user's wrong answers)
+- **多入口访问 (Multiple Access Points)** - 从主页面和结果页面均可访问错题集 (Accessible from both main page and result page)
+- **分类管理 (Categorized Management)** - 按难度等级分类错题 (Categorizes wrong questions by difficulty level)
+- **统计分析 (Statistical Analysis)** - 显示错题统计信息（展示次数、错误次数） (Shows statistics like display count, error count)
+- **灵活删除 (Flexible Deletion)** - 支持删除单个错题、所有错题或已掌握的错题 (Supports deleting individual, all, or mastered wrong questions)
+- **智能识别 (Smart Recognition)** - 自动识别已掌握的错题（正确率达到70%以上） (Automatically identifies mastered questions with 70%+ accuracy)
+- **优先练习 (Priority Practice)** - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点 (Questions appear with priority in subsequent practice to help consolidate weak points)
+
+### 🎯 智能解题方法 (Intelligent Solution Methods)
+- **加法方法 (Addition Method)** - 凑十法 (Making Ten Method)
+- **减法方法 (Subtraction Methods)** - 破十法 (Breaking Ten Method), 借十法 (Borrowing Ten Method), 平十法 (Leveling Ten Method)
+- **乘法方法 (Multiplication Methods)** - 乘法口诀法 (Multiplication Table Method), 分解乘法 (Decomposition Multiplication)
+- **除法方法 (Division Methods)** - 除法验算法 (Division Verification), 分组除法 (Grouping Division)
+- **智能选择 (Smart Selection)** - 系统自动选择最适合的解题方法进行解析 (System automatically selects the most suitable solution method for analysis)
 
 ### 🔢 九九乘法表 (9×9 Multiplication Table)
-- **完整乘法表** - 展示1×1到9×9的完整乘法运算表
-- **颜色分级** - 不同颜色标识不同难度级别，便于学习识别
-  - 🔵 蓝色：相同数字相乘（1×1, 2×2等）
-  - 🟢 绿色：结果≤10的简单运算
-  - 🟠 橙色：结果11-50的中等运算
-  - 🔴 红色：结果>50的挑战运算
-- **响应式布局** - 根据设备类型自动调整网格列数
-  - iPad横屏：9列完整显示
-  - iPad竖屏：6列优化阅读
-  - iPhone横屏：6列适配
-  - iPhone竖屏：3列紧凑显示
-- **双向滚动** - 支持垂直和水平滚动，确保所有内容可访问
-- **学习辅助** - 作为乘法练习的参考工具，帮助学生记忆乘法口诀
+- **完整乘法表 (Complete Multiplication Table)** - 展示1×1到9×9的完整乘法运算表 (Shows complete multiplication table from 1×1 to 9×9)
+- **颜色分级 (Color Grading)** - 不同颜色标识不同难度级别，便于学习识别 (Different colors indicate difficulty levels for easier learning recognition)
+  - 🔵 蓝色：相同数字相乘（1×1, 2×2等） (Blue: Same number multiplication (1×1, 2×2, etc.))
+  - 🟢 绿色：结果≤10的简单运算 (Green: Simple operations with results ≤10)
+  - 🟠 橙色：结果11-50的中等运算 (Orange: Medium operations with results 11-50)
+  - 🔴 红色：结果>50的挑战运算 (Red: Challenging operations with results >50)
+- **响应式布局 (Responsive Layout)** - 根据设备类型自动调整网格列数 (Automatically adjusts grid columns based on device type)
+  - iPad横屏：9列完整显示 (iPad Landscape: 9 columns for full display)
+  - iPad竖屏：6列优化阅读 (iPad Portrait: 6 columns for optimized reading)
+  - iPhone横屏：6列适配 (iPhone Landscape: 6 columns for adaptation)
+  - iPhone竖屏：3列紧凑显示 (iPhone Portrait: 3 columns for compact display)
+- **双向滚动 (Bidirectional Scrolling)** - 支持垂直和水平滚动，确保所有内容可访问 (Supports vertical and horizontal scrolling to ensure all content is accessible)
+- **学习辅助 (Learning Aid)** - 作为乘法练习的参考工具，帮助学生记忆乘法口诀 (As a reference tool for multiplication practice, helps students memorize multiplication tables)
 
 ### 🔊 九九乘法表双语发音 (Bilingual TTS for Multiplication Table)
-- **真人发音** - 集成iOS原生TTS引擎，提供清晰的真人发音
-- **双语支持** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换
-- **即时反馈** - 点击乘法表中的任意按钮，即可听到对应的乘法表达式发音，如"三七二十一"或"three times seven is twenty-one"
-- **学习辅助** - 帮助儿童通过听觉学习，加深对乘法口诀的记忆
+- **真人发音 (Human-like Pronunciation)** - 集成iOS原生TTS引擎，提供清晰的真人发音 (Integrated with the native iOS TTS engine for clear, human-like speech)
+- **双语支持 (Bilingual Support)** - 支持中英文双语发音，用户可以根据系统语言或应用内设置切换 (Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings)
+- **即时反馈 (Instant Feedback)** - 点击乘法表中的任意按钮，即可听到对应的乘法表达式发音，如"三七二十一"或"three times seven is twenty-one" (Tap any button in the multiplication table to hear the corresponding multiplication expression, such as "三七二十一" or "three times seven is twenty-one")
+- **学习辅助 (Learning Aid)** - 帮助儿童通过听觉学习，加深对乘法口诀的记忆 (Helps children learn and memorize the multiplication table through auditory feedback)
 
-- **Native TTS Engine** - Integrated with the native iOS TTS engine for clear, human-like speech
-- **Bilingual Support** - Supports both Chinese and English pronunciation, which can be switched based on system language or in-app settings
-- **Instant Feedback** - Tap any button in the multiplication table to hear the corresponding multiplication expression, such as "三七二十一" or "three times seven is twenty-one"
-- **Auditory Learning** - Helps children learn and memorize the multiplication table through auditory feedback
+### 🎤 问题朗读功能 (Question Read-Aloud Feature)
+
+#### 🎯 中文版功能特点 (Chinese Version Features)
+- **智能语音朗读** - 在游戏界面，点击任意题目文本即可朗读当前算术题
+- **数学符号智能识别** - 自动将数学运算符转换为标准中文读音
+  - "+" 读作"加"
+  - "-" 读作"减"
+  - "×" 读作"乘以"
+  - "÷" 读作"除以"
+  - "=" 读作"等于"
+- **数字智能转换** - 将阿拉伯数字转换为中文数字读音（如"8"读作"八"）
+- **完整句式朗读** - 按照"计算[题目]等于多少？"的标准格式朗读
+- **听觉学习辅助** - 特别适合低年级学生和需要听觉辅助的学习者
+
+#### 🌍 English Version Features (English Version Features)
+- **Intelligent Voice Reading** - Tap any question text in the game interface to hear the current arithmetic problem read aloud
+- **Mathematical Symbol Recognition** - Automatically converts mathematical operators to standard English pronunciation
+  - "+" pronounced as "plus"
+  - "-" pronounced as "minus"
+  - "×" pronounced as "times"
+  - "÷" pronounced as "divided by"
+  - "=" pronounced as "equals"
+- **Number Conversion** - Converts Arabic numerals to spelled-out English numbers (e.g., "8" pronounced as "eight")
+- **Complete Sentence Reading** - Reads in the standard format "What is [question]?"
+- **Auditory Learning Support** - Especially suitable for young students and learners who need auditory assistance
+
+#### 🔧 技术特性 (Technical Features)
+- **原生TTS引擎 (Native TTS Engine)** - 基于iOS原生AVSpeechSynthesizer，确保高质量语音输出 (Built on iOS native AVSpeechSynthesizer for high-quality voice output)
+- **自适应语言切换 (Adaptive Language Switching)** - 根据应用当前语言设置自动选择中文或英文发音 (Automatically selects Chinese or English pronunciation based on current app language settings)
+- **无缝交互体验 (Seamless Interactive Experience)** - 题目文本外观保持不变，点击即可触发朗读功能 (Question text appearance remains unchanged, tap to trigger read-aloud functionality)
 
 ### 🧠 错题解析系统 (Wrong Question Analysis System)
 
-#### 📐 加减法解析方法（适用于等级2 - 20以内加减法）
+#### 📐 加减法解析方法（适用于等级2 - 20以内加减法）(Addition/Subtraction Analysis Methods - Applicable to Level 2 - Addition/Subtraction within 20)
 - **🔟 凑十法 (Making Ten Method)** 
-  - 适用于个位数相加且和大于10的情况
-  - 通过将一个数分解来凑成10，然后加上剩余部分
+  - 适用于个位数相加且和大于10的情况 (Applicable when adding single digits with sum greater than 10)
+  - 通过将一个数分解来凑成10，然后加上剩余部分 (Decompose one number to make 10, then add the remainder)
 - **💥 破十法 (Breaking Ten Method)** 
-  - 适用于减法运算中被减数的个位数字小于减数的个位数字的情况
-  - 将被减数分解为10和余数，用10减去减数得到一个结果，再与余数相加
+  - 适用于减法运算中被减数的个位数字小于减数的个位数字的情况 (Applicable when the units digit of the minuend is less than that of the subtrahend in subtraction)
+  - 将被减数分解为10和余数，用10减去减数得到一个结果，再与余数相加 (Decompose the minuend into 10 and remainder, subtract the subtrahend from 10, then add to the remainder)
 - **📊 平十法 (Leveling Ten Method)** 
-  - 适用于减法运算，将减数分解为两部分
-  - 使得被减数减去第一部分等于10，然后用10减去第二部分得到结果
+  - 适用于减法运算，将减数分解为两部分 (Applicable to subtraction, decompose the subtrahend into two parts)
+  - 使得被减数减去第一部分等于10，然后用10减去第二部分得到结果 (Make the minuend minus the first part equal 10, then subtract the second part from 10)
 - **🔄 借十法 (Borrowing Ten Method)** 
-  - 适用于个位数不够减的情况，从十位借1当10来计算
+  - 适用于个位数不够减的情况，从十位借1当10来计算 (Applicable when units digit is insufficient for subtraction, borrow 1 from tens place as 10)
 
-#### 🔢 乘除法解析方法（适用于等级4和等级5）
-- **📚 乘法口诀法 (Multiplication Table Method)** - 基于乘法口诀表的标准乘法计算
-- **🧩 分解乘法 (Decomposition Multiplication)** - 将较大数分解为十位和个位，分别相乘后相加
-- **✅ 除法验算法 (Division Verification)** - 通过乘法验证除法结果的正确性
-- **👥 分组除法 (Grouping Division)** - 通过分组的方式理解除法概念
+#### 🔢 乘除法解析方法（适用于等级4和等级5）(Multiplication/Division Analysis Methods - Applicable to Levels 4 and 5)
+- **📚 乘法口诀法 (Multiplication Table Method)** - 基于乘法口诀表的标准乘法计算 (Standard multiplication calculation based on multiplication tables)
+- **🧩 分解乘法 (Decomposition Multiplication)** - 将较大数分解为十位和个位，分别相乘后相加 (Decompose larger numbers into tens and units, multiply separately then add)
+- **✅ 除法验算法 (Division Verification)** - 通过乘法验证除法结果的正确性 (Verify division results using multiplication)
+- **👥 分组除法 (Grouping Division)** - 通过分组的方式理解除法概念 (Understand division concept through grouping)
 
-> **💡 智能解析特点**
-> - 系统自动选择最适合的解题方法进行解析
-> - 对于三数运算，分两步应用这些方法：先计算前两个数，再将结果与第三个数计算
-> - 完全支持中英文双语解析内容
-> - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法
+> **💡 智能解析特点 (Intelligent Analysis Features)**
+> - 系统自动选择最适合的解题方法进行解析 (System automatically selects the most suitable analysis method)
+> - 对于三数运算，分两步应用这些方法：先计算前两个数，再将结果与第三个数计算 (For three-number operations, apply these methods in two steps: calculate the first two numbers, then apply the result with the third number)
+> - 完全支持中英文双语解析内容 (Fully supports bilingual analysis content in Chinese and English)
+> - 通过直观的步骤说明帮助学生理解解题思路和中国传统算术方法 (Helps students understand problem-solving approaches and traditional Chinese arithmetic methods through intuitive step-by-step explanations)
 
 ### 🎤 问题朗读功能 (Question Read-Aloud Feature)
 
@@ -145,26 +179,26 @@
 - **Seamless Interactive Experience** - Question text appearance remains unchanged, tap to trigger read-aloud functionality
 
 ### 💾 游戏进度保存 (Game Progress Saving)
-- **自动保存** - 自动保存游戏进度
-- **断点续练** - 支持暂停游戏并在稍后继续
-- **全面记录** - 保存当前难度等级、分数、剩余时间和答题进度
-- **进度显示** - 显示上次保存的时间和进度信息
+- **自动保存 (Auto Save)** - 自动保存游戏进度 (Automatically saves game progress)
+- **断点续练 (Resume from Breakpoint)** - 支持暂停游戏并在稍后继续 (Supports pausing the game and continuing later)
+- **全面记录 (Comprehensive Recording)** - 保存当前难度等级、分数、剩余时间和答题进度 (Saves current difficulty level, score, remaining time and question progress)
+- **进度显示 (Progress Display)** - 显示上次保存的时间和进度信息 (Displays the last saved time and progress information)
 
 ### 🎲 题目生成系统 (Question Generation System)
-- **不重复生成** - 根据难度等级生成不同数量的不重复算术题
-- **🔢 整数结果保证** - 所有算术运算（加减乘除）均产生整数结果，无小数或分数
-- **📈 智能难度递进** - 难度越高，三数运算出现概率越大
-- **🎯 智能题目质量控制**：
-  - **乘法优化** - ×1题目占比降至5%，大幅提高教学价值
-  - **除法优化** - 完全避免÷1，除数范围2-10，避免相同数字除法
-  - **减法优化** - 避免相同数字相减，确保差值至少为2，提高计算挑战性
-  - **商值控制** - 90%概率避免商为1的简单除法，优先生成有意义的计算题目
+- **不重复生成 (Non-repetitive Generation)** - 根据难度等级生成不同数量的不重复算术题 (Generates different quantities of non-repetitive arithmetic questions based on difficulty levels)
+- **🔢 整数结果保证 (Integer Result Guarantee)** - 所有算术运算（加减乘除）均产生整数结果，无小数或分数 (All arithmetic operations (addition, subtraction, multiplication, division) produce integer results, no decimals or fractions)
+- **📈 智能难度递进 (Intelligent Difficulty Progression)** - 难度越高，三数运算出现概率越大 (Higher difficulty levels have greater probability of three-number operations)
+- **🎯 智能题目质量控制 (Intelligent Question Quality Control)**：
+  - **乘法优化 (Multiplication Optimization)** - ×1题目占比降至5%，大幅提高教学价值 (×1 questions reduced to 5%, significantly improving educational value)
+  - **除法优化 (Division Optimization)** - 完全避免÷1，除数范围2-10，避免相同数字除法 (Completely avoids ÷1, divisor range 2-10, avoids same number divisions)
+  - **减法优化 (Subtraction Optimization)** - 避免相同数字相减，确保差值至少为2，提高计算挑战性 (Avoids same number subtraction, ensures difference is at least 2, increasing calculation challenge)
+  - **商值控制 (Quotient Control)** - 90%概率避免商为1的简单除法，优先生成有意义的计算题目 (90% probability avoids simple division with quotient of 1, prioritizes meaningful calculation questions)
 
 ### ⏱️ 时间管理系统 (Time Management System)
-- **灵活时间设置** - 可配置限制时间：3-30分钟
-- **实时倒计时** - 显示倒计时器
-- **自动结束** - 时间到自动结束答题并计算成绩
-- **智能重置** - 重新开始游戏时自动重置计时器
+- **灵活时间设置 (Flexible Time Setting)** - 可配置限制时间：3-30分钟 (Configurable time limit: 3-30 minutes)
+- **实时倒计时 (Real-time Countdown)** - 显示倒计时器 (Displays countdown timer)
+- **自动结束 (Automatic End)** - 时间到自动结束答题并计算成绩 (Automatically ends the quiz and calculates score when time is up)
+- **智能重置 (Smart Reset)** - 重新开始游戏时自动重置计时器 (Automatically resets the timer when restarting the game)
 
 ### 🌐 多语言支持 (Language Settings)
 - **双语界面** - 支持中文和英文界面
@@ -172,107 +206,62 @@
 - **完整本地化** - 包括解析内容的完整双语支持
 
 ### 🖼️ 图片缓存功能 (Image Caching Feature)
-- **智能缓存** - 自动缓存"关于我"页面的开发者头像
-- **二级存储** - 结合内存缓存和磁盘缓存，提高加载速度
-- **离线访问** - 网络异常时也能显示已缓存的图片
-- **存储优化** - 自动管理缓存大小，避免占用过多存储空间
+- **智能缓存 (Intelligent Caching)** - 自动缓存"关于我"页面的开发者头像 (Automatically caches developer avatars on the "About Me" page)
+- **二级存储 (Two-level Storage)** - 结合内存缓存和磁盘缓存，提高加载速度 (Combines memory and disk caching to improve loading speed)
+- **离线访问 (Offline Access)** - 网络异常时也能显示已缓存的图片 (Displays cached images even when network is unavailable)
+- **存储优化 (Storage Optimization)** - 自动管理缓存大小，避免占用过多存储空间 (Automatically manages cache size to avoid excessive storage usage)
 
 ### 🌐 GitHub仓库链接 (GitHub Repository Link)
-- **便捷访问** - 在"关于我"页面新增GitHub仓库链接
-- **开源支持** - 用户可直接访问项目开源地址，了解开发进展
-- **中英双语** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本
-
-- **Convenient Access** - Added GitHub repository link to the "About Me" page
-- **Open Source Support** - Users can directly access the project's open source repository to understand development progress
-- **Bilingual Support** - Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository"
+- **便捷访问 (Convenient Access)** - 在"关于我"页面新增GitHub仓库链接 (Added GitHub repository link to the "About Me" page)
+- **开源支持 (Open Source Support)** - 用户可直接访问项目开源地址，了解开发进展 (Users can directly access the project's open source repository to understand development progress)
+- **中英双语 (Bilingual Support)** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本 (Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository")
 
 ### 🔋 电池监控与运行时长功能 (Battery Monitoring and Uptime Calculation)
-- **实时电池状态** - 实时监控设备电池电量、充电状态和电源类型
-- **智能状态检测** - 解决模拟器中电池状态显示"Unknown"的问题，提供智能状态推断
-- **运行时长计算** - 精确计算并实时更新系统自启动以来的运行时长
-- **智能格式化显示** - 根据运行时长自动选择合适的显示格式（天数、时:分:秒或分:秒）
-- **多场景支持** - 支持iOS模拟器和真实设备的电池状态检测
-- **国际化支持** - 完整的中英文本地化支持
-
-- **Real-time Battery Status** - Real-time monitoring of device battery level, charging status, and power source type
-- **Smart Status Detection** - Resolves the issue of battery status showing "Unknown" in simulator, provides intelligent status inference
-- **Uptime Calculation** - Precisely calculates and updates the system uptime since boot in real-time
-- **Smart Formatting Display** - Automatically selects appropriate display format based on uptime (days, HH:MM:SS, or MM:SS)
-- **Multi-scenario Support** - Supports battery status detection for both iOS simulator and real devices
-- **Internationalization Support** - Complete Chinese and English localization support
+- **实时电池状态 (Real-time Battery Status)** - 实时监控设备电池电量、充电状态和电源类型 (Real-time monitoring of device battery level, charging status, and power source type)
+- **智能状态检测 (Smart Status Detection)** - 解决模拟器中电池状态显示"Unknown"的问题，提供智能状态推断 (Resolves the issue of battery status showing "Unknown" in simulator, provides intelligent status inference)
+- **运行时长计算 (Uptime Calculation)** - 精确计算并实时更新系统自启动以来的运行时长 (Precisely calculates and updates the system uptime since boot in real-time)
+- **智能格式化显示 (Smart Formatting Display)** - 根据运行时长自动选择合适的显示格式（天数、时:分:秒或分:秒） (Automatically selects appropriate display format based on uptime (days, HH:MM:SS, or MM:SS))
+- **多场景支持 (Multi-scenario Support)** - 支持iOS模拟器和真实设备的电池状态检测 (Supports battery status detection for both iOS simulator and real devices)
+- **国际化支持 (Internationalization Support)** - 完整的中英文本地化支持 (Complete Chinese and English localization support)
 
 ### 🌐 网络连接监控 (Network Connection Monitoring)
-- **实时网络状态** - 检测当前网络连接类型（Wi-Fi/蜂窝网络）
-- **Wi-Fi信息** - 显示Wi-Fi连接名称（SSID）
-- **蜂窝网络信息** - 显示运营商信息（如适用）
-- **连接状态指示** - 提供网络连接状态的实时反馈
-
-- **Real-time Network Status** - Detects current network connection type (Wi-Fi/cellular)
-- **Wi-Fi Information** - Displays Wi-Fi connection name (SSID)
-- **Cellular Information** - Displays carrier information (where applicable)
-- **Connection Status Indicator** - Provides real-time feedback on network connection status
+- **实时网络状态 (Real-time Network Status)** - 检测当前网络连接类型（Wi-Fi/蜂窝网络） (Detects current network connection type (Wi-Fi/cellular))
+- **Wi-Fi信息 (Wi-Fi Information)** - 显示Wi-Fi连接名称（SSID） (Displays Wi-Fi connection name (SSID))
+- **蜂窝网络信息 (Cellular Information)** - 显示运营商信息（如适用） (Displays carrier information (where applicable))
+- **连接状态指示 (Connection Status Indicator)** - 提供网络连接状态的实时反馈 (Provides real-time feedback on network connection status)
 
 ### 💻 系统信息显示 (System Information Display)
-- **设备信息** - 显示当前设备名称和CPU信息
-- **实时监控** - CPU占用率、内存使用情况和磁盘空间实时更新
-- **内存详情** - 显示已使用、总内存、可用内存和使用百分比
-- **磁盘空间** - 显示已使用、总磁盘空间、可用磁盘空间和使用百分比
-- **屏幕信息** - 显示屏幕分辨率、尺寸和刷新率
-- **系统版本** - 显示当前iOS/iPadOS系统版本
-- **当前时间** - 实时显示当前时间，每秒更新
-- **双语支持** - 完整的中英文本地化支持
-- **可视化展示** - 使用进度条和图标直观显示系统状态
-
-- **Device Information** - Displays current device name and CPU information
-- **Real-time Monitoring** - CPU usage, memory usage, and disk space update in real-time
-- **Memory Details** - Shows used, total, available memory and usage percentage
-- **Disk Space** - Shows used, total disk space, available disk space and usage percentage
-- **Screen Information** - Displays screen resolution, size, and refresh rate
-- **System Version** - Displays current iOS/iPadOS system version
-- **Current Time** - Real-time display of current time, updated every second
-- **Bilingual Support** - Complete Chinese and English localization support
-- **Visual Display** - Uses progress bars and icons to intuitively show system status
+- **设备信息 (Device Information)** - 显示当前设备名称和CPU信息 (Displays current device name and CPU information)
+- **实时监控 (Real-time Monitoring)** - CPU占用率、内存使用情况和磁盘空间实时更新 (CPU usage, memory usage, and disk space update in real-time)
+- **内存详情 (Memory Details)** - 显示已使用、总内存、可用内存和使用百分比 (Shows used, total, available memory and usage percentage)
+- **磁盘空间 (Disk Space)** - 显示已使用、总磁盘空间、可用磁盘空间和使用百分比 (Shows used, total disk space, available disk space and usage percentage)
+- **屏幕信息 (Screen Information)** - 显示屏幕分辨率、尺寸和刷新率 (Displays screen resolution, size, and refresh rate)
+- **系统版本 (System Version)** - 显示当前iOS/iPadOS系统版本 (Displays current iOS/iPadOS system version)
+- **当前时间 (Current Time)** - 实时显示当前时间，每秒更新 (Real-time display of current time, updated every second)
+- **双语支持 (Bilingual Support)** - 完整的中英文本地化支持 (Complete Chinese and English localization support)
+- **可视化展示 (Visual Display)** - 使用进度条和图标直观显示系统状态 (Uses progress bars and icons to intuitively show system status)
 
 ### 🌐 多语言支持 (Language Settings)
-- **双语界面** - 支持中文和英文界面
-- **实时切换** - 可随时切换语言
-- **完整本地化** - 包括解析内容的完整双语支持
-
-- **Bilingual Interface** - Supports both Chinese and English interfaces
-- **Real-time Switching** - Language can be switched at any time
-- **Complete Localization** - Full bilingual support including analysis content
+- **双语界面 (Bilingual Interface)** - 支持中文和英文界面 (Supports both Chinese and English interfaces)
+- **实时切换 (Real-time Switching)** - 可随时切换语言 (Language can be switched at any time)
+- **完整本地化 (Complete Localization)** - 包括解析内容的完整双语支持 (Full bilingual support including analysis content)
 
 ### 📐 新增小学数学公式大全 (New Elementary Math Formula Guide)
-- ** comprehensive Formula Guide ** - 新增全面的小学数学公式指南
-- **几何形体计算** - 包含平面图形和立体图形的周长、面积、体积公式
-  - 平面图形：长方形、正方形、三角形、平行四边形、梯形、圆形
-  - 立体图形：长方体、正方体、圆柱、圆锥
-- **单位换算** - 涵盖长度、面积、体积、质量、时间等单位换算
-- **数量关系** - 包含基本关系和四则运算关系公式
-- **运算定律** - 包括加法、乘法交换律和结合律、乘法分配律等
-- **特殊问题** - 涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等
-- **便捷访问** - 从"其他选项"页面可直接访问公式大全
-
-- **Comprehensive Formula Guide** - Added a comprehensive elementary math formula guide
-- **Geometry Formulas** - Includes perimeter, area, and volume formulas for plane and solid figures
-  - Plane Figures: Rectangle, Square, Triangle, Parallelogram, Trapezoid, Circle
-  - Solid Figures: Cuboid, Cube, Cylinder, Cone
-- **Unit Conversions** - Covers length, area, volume, mass, and time unit conversions
-- **Quantity Relations** - Includes basic relations and arithmetic operation relation formulas
-- **Arithmetic Laws** - Includes commutative, associative laws of addition and multiplication, distributive law, etc.
-- **Special Problems** - Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.
-- **Convenient Access** - The formula guide can be accessed directly from the "Other Options" page
+- ** comprehensive Formula Guide ** - 新增全面的小学数学公式指南 (Added a comprehensive elementary math formula guide)
+- **几何形体计算 (Geometry Calculations)** - 包含平面图形和立体图形的周长、面积、体积公式 (Includes perimeter, area, and volume formulas for plane and solid figures)
+  - 平面图形：长方形、正方形、三角形、平行四边形、梯形、圆形 (Plane figures: Rectangle, Square, Triangle, Parallelogram, Trapezoid, Circle)
+  - 立体图形：长方体、正方体、圆柱、圆锥 (Solid figures: Cuboid, Cube, Cylinder, Cone)
+- **单位换算 (Unit Conversions)** - 涵盖长度、面积、体积、质量、时间等单位换算 (Covers length, area, volume, mass, and time unit conversions)
+- **数量关系 (Quantity Relations)** - 包含基本关系和四则运算关系公式 (Includes basic relations and arithmetic operation relation formulas)
+- **运算定律 (Arithmetic Laws)** - 包括加法、乘法交换律和结合律、乘法分配律等 (Includes commutative, associative laws of addition and multiplication, distributive law, etc.)
+- **特殊问题 (Special Problems)** - 涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等 (Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.)
+- **便捷访问 (Convenient Access)** - 从"其他选项"页面可直接访问公式大全 (The formula guide can be accessed directly from the "Other Options" page)
 
 ### 🎨 UI界面优化 (UI Improvements)
-- **简洁选择器** - 隐藏难度选择器标签，创建更清洁的界面
-- **自定义导航** - 在多个视图中添加自定义返回按钮功能
-- **布局优化** - 调整选择器对齐和整体布局改进
-- **视图简化** - 移除不必要的NavigationView包装器以获得更好的性能
-
-- **Cleaner Picker** - Difficulty picker labels are now hidden to create a cleaner interface
-- **Custom Navigation** - Added custom back button functionality across multiple views
-- **Layout Refinements** - Adjusted picker alignment and overall layout improvements
-- **View Simplification** - Removed unnecessary NavigationView wrappers for better performance
+- **简洁选择器 (Cleaner Picker)** - 隐藏难度选择器标签，创建更清洁的界面 (Difficulty picker labels are now hidden to create a cleaner interface)
+- **自定义导航 (Custom Navigation)** - 在多个视图中添加自定义返回按钮功能 (Added custom back button functionality across multiple views)
+- **布局优化 (Layout Refinements)** - 调整选择器对齐和整体布局改进 (Adjusted picker alignment and overall layout improvements)
+- **视图简化 (View Simplification)** - 移除不必要的NavigationView包装器以获得更好的性能 (Removed unnecessary NavigationView wrappers for better performance)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -324,26 +313,26 @@ flowchart TB
 
 </div>
 
-### 📊 运算类型详解
+### 📊 运算类型详解 (Operation Type Details)
 
-#### 🟢 加减法等级（Level 1-3）
-- **Level 1**: 两个数字的基础加减法运算
+#### 🟢 加减法等级（Level 1-3）(Addition/Subtraction Levels (Level 1-3))
+- **Level 1**: 两个数字的基础加减法运算 (Basic addition/subtraction operations with two numbers)
 - **Level 2-3**: 
-  - 两个数字的加减法运算
-  - 三个数字的连加、连减或加减混合运算（如 `5 + 3 - 2 = ?`）
-  - 难度递进：Level 2（40%三数运算）→ Level 3（60%三数运算）
+  - 两个数字的加减法运算 (Addition/subtraction operations with two numbers)
+  - 三个数字的连加、连减或加减混合运算（如 `5 + 3 - 2 = ?`）(Sequential addition, subtraction or mixed operations with three numbers, e.g., `5 + 3 - 2 = ?`)
+  - 难度递进：Level 2（40%三数运算）→ Level 3（60%三数运算）(Difficulty progression: Level 2 (40% three-number operations) → Level 3 (60% three-number operations))
 
-#### 🔵 乘除法等级（Level 4-5）
-- **纯乘除法运算** - 只生成乘法和除法题目，不包含加减法
-- **整除保证** - 所有除法题目采用"商×除数=被除数"的逆向生成方式，确保100%整除
-- **Level 4**: 基于乘法口诀表的10以内乘除法
-- **Level 5**: 包含分解乘法的20以内乘除法
+#### 🔵 乘除法等级（Level 4-5）(Multiplication/Division Levels (Level 4-5))
+- **纯乘除法运算 (Pure multiplication/division operations)** - 只生成乘法和除法题目，不包含加减法 (Generates only multiplication and division questions, no addition or subtraction)
+- **整除保证 (Division guarantee)** - 所有除法题目采用"商×除数=被除数"的逆向生成方式，确保100%整除 (All division questions use reverse generation ("quotient × divisor = dividend") to ensure 100% divisibility)
+- **Level 4**: 基于乘法口诀表的10以内乘除法 (Multiplication/division within 10 based on multiplication tables)
+- **Level 5**: 包含分解乘法的20以内乘除法 (Multiplication/division within 20 including decomposition multiplication)
 
-#### 🟡 混合运算等级（Level 6）
-- **两数运算**: 包含加减法或乘除法的题目
-- **三数运算**: 包含加减乘除四种运算的混合题目
-- **运算顺序**: 严格遵循先乘除后加减的运算顺序
-- **智能组合**: 确保混合运算中每步计算都产生合理的整数结果
+#### 🟡 混合运算等级（Level 6）(Mixed Operations Level (Level 6))
+- **两数运算 (Two-number operations)**: 包含加减法或乘除法的题目 (Questions containing addition/subtraction or multiplication/division)
+- **三数运算 (Three-number operations)**: 包含加减乘除四种运算的混合题目 (Mixed questions containing all four operations: addition, subtraction, multiplication, division)
+- **运算顺序 (Operation order)**: 严格遵循先乘除后加减的运算顺序 (Strictly follows the order of multiplication/division before addition/subtraction)
+- **智能组合 (Smart combination)**: 确保混合运算中每步计算都产生合理的整数结果 (Ensures each step in mixed operations produces reasonable integer results)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -352,10 +341,10 @@ flowchart TB
 ## ⚙️ 系统要求 (System Requirements)
 
 ### 📱 设备支持 (Device Support)
-- **iPhone**: iOS 15.0+
+- **iPhone**: iOS 15.0+ 
 - **iPad**: iPadOS 15.0+
-- **处理器**: A12 Bionic或更新 / A12 Bionic or newer
-- **存储空间**: 50MB可用空间 / 50MB available storage
+- **处理器 (Processor)**: A12 Bionic或更新 / A12 Bionic or newer
+- **存储空间 (Storage)**: 50MB可用空间 / 50MB available storage
 
 ### 🛠️ 开发环境 (Development Environment)
 - **macOS**: 12.0+ (Monterey)
@@ -364,8 +353,8 @@ flowchart TB
 - **SwiftUI**: 3.0+
 
 ### 🌐 语言支持 (Language Support)
-- **简体中文** (zh-Hans) / **Simplified Chinese**
-- **English** (en) / **英文**
+- **简体中文 (Simplified Chinese)** (zh-Hans) / **Simplified Chinese**
+- **English** (en) / **英文 (Chinese)**
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -450,77 +439,80 @@ flowchart TB
 
 ## 🏗️ 技术实现 (Technical Implementation)
 
-### 🏛️ 架构设计
-- **设计模式**: MVVM (Model-View-ViewModel)
-- **UI框架**: SwiftUI
-- **数据持久化**: Core Data
-- **本地化**: iOS标准本地化机制
-- **响应式设计**: GeometryReader + 环境值适配
+### 🏛️ 架构设计 (Architecture Design)
+- **设计模式 (Design Pattern)**: MVVM (Model-View-ViewModel)
+- **UI框架 (UI Framework)**: SwiftUI 3.0+
+- **数据持久化 (Data Persistence)**: Core Data
+- **本地化 (Localization)**: iOS标准本地化机制 (iOS standard localization mechanism)
+- **响应式设计 (Responsive Design)**: GeometryReader + 环境值适配 (Environment value adaptation)
 
-### 🧮 核心算法
+### 🧮 核心算法 (Core Algorithms)
 
-#### 🎲 智能题目生成
+#### 🎲 智能题目生成 (Intelligent Question Generation)
 ```swift
-// 题目生成核心逻辑
-- 不重复算法：使用Set确保题目唯一性
-- 整数保证：除法采用"商×除数=被除数"逆向生成
-- 质量控制：智能权重系统避免简单题目
-- 难度递进：基于概率的三数运算生成
+// 题目生成核心逻辑 (Core logic for question generation)
+- 不重复算法：使用Set确保题目唯一性 (Non-repetitive algorithm: Use Set to ensure question uniqueness)
+- 整数保证：除法采用"商×除数=被除数"逆向生成，确保100%整除 (Integer guarantee: Division uses "quotient×divisor=dividend" reverse generation to ensure 100% divisibility)
+- 质量控制：智能权重系统避免简单题目（如×1运算仅占5%）(Quality control: Intelligent weight system to avoid simple questions (e.g., ×1 operations only account for 5%))
+- 难度递进：基于概率的三数运算生成（Level 2: 40%, Level 3: 60%）(Difficulty progression: Probability-based three-number operations generation (Level 2: 40%, Level 3: 60%))
+- 乘除法优化：避免÷1运算，除数范围2-10，确保有意义的计算题目 (Multiplication/division optimization: Avoid ÷1 operations, divisor range 2-10, ensure meaningful calculation questions)
 ```
 
-#### 🔍 解题方法选择
+#### 🔍 解题方法选择 (Problem-Solving Method Selection)
 ```swift
-// 解题方法智能选择
-- 基于题目特征自动选择最适合的解题方法
-- 支持8种不同的解题策略
-- 三数运算分步解析
-- 完整的中英文解析生成
+// 解题方法智能选择 (Intelligent problem-solving method selection)
+- 基于题目特征自动选择最适合的解题方法 (Automatically select the most suitable solution method based on question characteristics)
+- 支持8种不同的解题策略（凑十法、破十法、借十法、平十法、乘法口诀法、分解乘法、除法验算法、分组除法）(Supports 8 different solution strategies (Making Ten Method, Breaking Ten Method, Borrowing Ten Method, Leveling Ten Method, Multiplication Table Method, Decomposition Multiplication, Division Verification, Grouping Division))
+- 三数运算分步解析 (Step-by-step analysis for three-number operations)
+- 完整的中英文解析生成 (Complete Chinese/English analysis generation)
 ```
 
-### 🎤 问题朗读系统
+### 🎤 问题朗读系统 (Question Read-Aloud System)
 ```swift
-// TTS智能语音系统
-- TTSHelper单例模式，统一管理语音合成
-- speakMathExpression()方法，智能处理数学表达式
-- 运算符正则表达式替换，确保标准读音
-- 数字转换为拼写形式，提高语音自然度
-- 双语言环境自适应切换
+// TTS智能语音系统 (TTS Intelligent Voice System)
+- TTSHelper单例模式，统一管理语音合成 (TTSHelper singleton pattern, unified management of speech synthesis)
+- speakMathExpression()方法，智能处理数学表达式 (speakMathExpression() method, intelligent processing of mathematical expressions)
+- 运算符正则表达式替换，确保标准读音 (Operator regular expression replacement, ensuring standard pronunciation)
+- 数字转换为拼写形式，提高语音自然度 (Number conversion to spelling form, improving voice naturalness)
+- 双语言环境自适应切换 (Bilingual environment adaptive switching)
+- 支持加减乘除运算符的正确发音 (Support for correct pronunciation of +, -, ×, ÷ operators)
 ```
 
-### 💾 数据管理
+### 💾 数据管理 (Data Management)
 
-#### Core Data 实体设计
-- **WrongQuestionEntity** - 错题数据存储
-- **GameProgressEntity** - 游戏进度保存
-- **解析数据** - 包含完整的解题步骤信息
+#### Core Data 实体设计 (Core Data Entity Design)
+- **WrongQuestionEntity** - 错题数据存储（包含题目、答案、解析、统计信息）(Wrong question data storage (containing question, answer, analysis, statistics))
+- **GameProgressEntity** - 游戏进度保存（难度、分数、时间等）(Game progress saving (difficulty, score, time, etc.))
+- **解析数据** - 包含完整的解题步骤信息 (Analysis data - contains complete solution step information)
 
-#### 本地化系统
-- **双语资源** - `zh-Hans.lproj` / `en.lproj`
-- **动态切换** - 运行时语言切换支持
-- **完整覆盖** - UI文本和解析内容全面本地化
+#### 本地化系统 (Localization System)
+- **双语资源 (Bilingual Resources)** - `zh-Hans.lproj` / `en.lproj`
+- **动态切换 (Dynamic Switching)** - 运行时语言切换支持 (Runtime language switching support)
+- **完整覆盖 (Complete Coverage)** - UI文本和解析内容全面本地化 (Comprehensive localization of UI text and analysis content)
 
-### 🔋 系统信息监控功能
+### 🔋 系统信息监控功能 (System Information Monitoring Function)
 
-#### 实时监控模块
-- **系统信息管理器** - `SystemInfoManager.swift` 统一管理系统信息更新
-- **设备信息** - 实时获取设备名称、CPU信息、系统版本等
-- **性能监控** - CPU使用率、内存使用情况的实时更新
-- **电池监控** - 电池电量、充电状态、电源状态的实时检测
-- **网络监控** - Wi-Fi和蜂窝网络连接状态检测
-- **屏幕信息** - 分辨率、尺寸、刷新率等屏幕规格检测
-- **运行时长** - 精确计算系统自启动以来的运行时间
+#### 实时监控模块 (Real-time Monitoring Module)
+- **系统信息管理器 (System Information Manager)** - `SystemInfoManager.swift` 统一管理系统信息更新 (`SystemInfoManager.swift` unified system information update management)
+- **设备信息 (Device Information)** - 实时获取设备名称、CPU信息、系统版本等 (Real-time acquisition of device name, CPU information, system version, etc.)
+- **性能监控 (Performance Monitoring)** - CPU使用率、内存使用情况的实时更新 (Real-time updates of CPU usage, memory usage)
+- **电池监控 (Battery Monitoring)** - 电池电量、充电状态、电源状态的实时检测 (Real-time detection of battery level, charging status, power status)
+- **网络监控 (Network Monitoring)** - Wi-Fi和蜂窝网络连接状态检测 (Wi-Fi and cellular network connection status detection)
+- **屏幕信息 (Screen Information)** - 分辨率、尺寸、刷新率等屏幕规格检测 (Screen specification detection such as resolution, size, refresh rate)
+- **运行时长 (Uptime)** - 精确计算系统自启动以来的运行时间 (Precisely calculates system uptime since boot)
 
-#### 系统信息组件
-- **模块化设计** - 各类信息模块化设计，便于维护和扩展
-- **实时更新** - 使用计时器实现信息的定期更新
-- **可视化显示** - 使用进度条和图表直观显示资源使用情况
-- **错误处理** - 优雅处理系统信息获取失败的情况
+#### 系统信息组件 (System Information Components)
+- **模块化设计 (Modular Design)** - 各类信息模块化设计，便于维护和扩展 (Various information modular design, easy to maintain and expand)
+- **实时更新 (Real-time Updates)** - 使用计时器实现信息的定期更新 (Use timers to implement regular information updates)
+- **可视化显示 (Visual Display)** - 使用进度条和图表直观显示资源使用情况 (Use progress bars and charts to visually display resource usage)
+- **错误处理 (Error Handling)** - 优雅处理系统信息获取失败的情况 (Gracefully handle system information acquisition failures)
 
-### 📱 设备适配
-- **响应式布局** - 自适应iPhone/iPad不同屏幕尺寸
-- **横屏优化** - iPad横屏模式特别优化
-- **字体适配** - 基于设备类型的自适应字体系统
-- **输入优化** - 数字键盘和外部键盘双重支持
+### 📱 设备适配 (Device Adaptation)
+- **响应式布局 (Responsive Layout)** - 自适应iPhone/iPad不同屏幕尺寸 (Adapts to different iPhone/iPad screen sizes)
+- **横屏优化 (Landscape Optimization)** - iPad横屏模式特别优化 (iPad landscape mode specially optimized)
+- **字体适配 (Font Adaptation)** - 基于设备类型的自适应字体系统 (Adaptive font system based on device type)
+- **输入优化 (Input Optimization)** - 数字键盘和外部键盘双重支持 (Dual support for numeric keypad and external keyboard)
+- **UI优化 (UI Optimization)** - 支持深色模式和高对比度模式 (Supports dark mode and high contrast mode)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -590,6 +582,33 @@ Arithmetic/
     └── en.lproj/                          # 英文本地化
         └── Localizable.strings            # 英文本地化字符串
 ```
+
+## 🏗️ Core Data 集成 (Core Data Integration)
+
+### 🗄️ 数据模型设计 (Data Model Design)
+- **WrongQuestionEntity** - 存储错题信息（题目、答案、难度、解析、统计信息）(Stores wrong question information (question, answer, difficulty, analysis, statistics))
+- **GameProgressEntity** - 存储游戏进度（难度、分数、时间、题目进度）(Stores game progress (difficulty, score, time, question progress))
+- **自动迁移 (Auto Migration)** - 支持模型版本的自动迁移，确保数据向前兼容 (Supports automatic migration of model versions, ensuring data forward compatibility)
+
+### 🗄️ 数据管理器 (Data Managers)
+- **CoreDataManager** - Core Data栈的单例管理器，负责上下文管理 (Core Data stack singleton manager, responsible for context management)
+- **WrongQuestionManager** - 错题数据的CRUD操作管理器 (CRUD operations manager for wrong question data)
+- **GameProgressManager** - 游戏进度数据的CRUD操作管理器 (CRUD operations manager for game progress data)
+- **性能优化 (Performance Optimization)** - 使用合适的并发队列确保主线程响应性 (Uses appropriate concurrent queues to ensure main thread responsiveness)
+
+## 🎨 UI/UX 设计特点 (UI/UX Design Features)
+
+### 🎨 视觉设计 (Visual Design)
+- **适应性布局 (Adaptive Layout)** - 支持iPhone和iPad的自适应界面布局 (Supports adaptive interface layout for iPhone and iPad)
+- **深色模式 (Dark Mode)** - 支持iOS系统深色模式 (Supports iOS system dark mode)
+- **高对比度模式 (High Contrast Mode)** - 为视觉障碍用户提供高对比度支持 (Provides high contrast support for users with visual impairments)
+- **动态字体 (Dynamic Fonts)** - 支持系统字体大小调整，确保可访问性 (Supports system font size adjustments to ensure accessibility)
+
+### 🎯 用户体验 (User Experience)
+- **直观导航 (Intuitive Navigation)** - 简洁明了的导航结构，用户易于理解和操作 (Clear and simple navigation structure, easy for users to understand and operate)
+- **即时反馈 (Instant Feedback)** - 操作后立即提供视觉或听觉反馈 (Provides visual or auditory feedback immediately after operation)
+- **手势支持 (Gesture Support)** - 支持常用的手势操作（点击、滑动等）(Supports common gesture operations (tap, swipe, etc.))
+- **加载优化 (Loading Optimization)** - 优化加载时间，减少用户等待 (Optimizes loading time, reducing user wait)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -732,6 +751,11 @@ Arithmetic/
 - **🖼️ Image Loading Enhancement**: Updated `CachedAsyncImageView` to support loading state callbacks
 - **📱 User Experience Optimization**: `AboutMeView` now displays a loading overlay while images are loading
 - **🔄 Visual Feedback**: Progress indicators are displayed during image loading, providing better visual feedback
+
+### 🧮 题目生成系统优化 (Question Generation System Optimization)
+- **整数结果保证** - 所有运算结果均为整数，无小数或分数
+- **智能题目质量控制** - 避免过于简单的运算（如×1、÷1）
+- **三数运算优化** - 各难度等级的三数运算生成策略优化
 
 
 
@@ -927,61 +951,66 @@ Arithmetic/
 - **⚙️ Data Management**: Real-time data updates managed through SystemInfoManager class
 - **📱 Dedicated Page**: Navigate from About Me page to a dedicated system information viewing page
 
+### 🌟 2025-11-06 (最新更新和优化)
+- **🔄 README更新**: 基于项目最新状态和Qwen.md上下文信息更新README文档
+- **🔧 代码重构**: 某些组件进行了优化以提高性能和用户体验
+- **📚 文档完善**: 对项目架构和功能特性进行了更详细的说明
+
 [⬆️ 返回目录](#-目录-table-of-contents)
 
 ---
 
 ## 🤝 贡献指南 (Contributing Guidelines)
 
-我们欢迎所有形式的贡献！🎉
+我们欢迎所有形式的贡献！🎉 (We welcome all forms of contributions! 🎉)
 
-### 🌟 贡献方式
-- 🐛 报告问题和错误
-- 💡 提交功能请求  
-- 🔧 提交代码改进
-- 📝 改进文档
-- 🌐 协助翻译
+### 🌟 贡献方式 (Ways to Contribute)
+- 🐛 报告问题和错误 (Report issues and bugs)
+- 💡 提交功能请求 (Submit feature requests)
+- 🔧 提交代码改进 (Submit code improvements)
+- 📝 改进文档 (Improve documentation)
+- 🌐 协助翻译 (Help with translations)
 
-### 📋 贡献流程
+### 📋 贡献流程 (Contribution Process)
 
-1. **🍴 Fork 仓库**
+1. **🍴 Fork 仓库 (Fork Repository)**
    ```bash
    # Fork this repository to your GitHub account
    ```
 
-2. **🌿 创建特性分支**
+2. **🌿 创建特性分支 (Create Feature Branch)**
    ```bash
    git checkout -b feature/your-feature
    ```
 
-3. **💻 提交更改**
+3. **💻 提交更改 (Commit Changes)**
    ```bash
    git commit -m "feat: add your feature description"
    ```
 
-4. **🚀 推送分支**
+4. **🚀 推送分支 (Push Branch)**
    ```bash
    git push origin feature/your-feature
    ```
 
-5. **📬 创建 Pull Request**
-   - 详细描述你的更改
-   - 包含相关的测试用例
-   - 确保代码符合项目规范
+5. **📬 创建 Pull Request (Create Pull Request)**
+   - 详细描述你的更改 (Detailed description of your changes)
+   - 包含相关的测试用例 (Include relevant test cases)
+   - 确保代码符合项目规范 (Ensure code follows project standards)
 
-### 📏 代码规范
-- 遵循Swift官方编码规范
-- 使用有意义的变量和函数命名
-- 添加必要的注释和文档
-- 确保代码通过所有测试
+### 📏 代码规范 (Code Standards)
+- 遵循Swift官方编码规范 (Follow Swift official coding standards)
+- 使用有意义的变量和函数命名 (Use meaningful variable and function names)
+- 添加必要的注释和文档 (Add necessary comments and documentation)
+- 确保代码通过所有测试 (Ensure code passes all tests)
 
-### 🐛 问题报告
-使用GitHub Issues报告问题时，请包含：
-- 详细的问题描述
-- 重现步骤
-- 预期行为vs实际行为
-- 设备和系统版本信息
-- 相关截图或日志
+### 🐛 问题报告 (Issue Reporting)
+使用GitHub Issues报告问题时，请包含：(When reporting issues via GitHub Issues, please include:)
+- 详细的问题描述 (Detailed problem description)
+- 重现步骤 (Reproduction steps)
+- 预期行为vs实际行为 (Expected vs. actual behavior)
+- 设备和系统版本信息 (Device and system version information)
+- 相关截图或日志 (Relevant screenshots or logs)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -989,19 +1018,19 @@ Arithmetic/
 
 ## 📄 许可证 (License)
 
-本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件
+本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
 
 ### 📞 联系与支持 (Contact & Support)
 
 <div align="center">
 
-| 联系方式 | 信息 |
+| 联系方式 (Contact) | 信息 (Information) |
 |---------|------|
-| 📧 邮箱 | [tobecrazy@qq.com](mailto:tobecrazy@qq.com) |
-| 🐛 问题反馈 | [GitHub Issues](https://github.com/tobecrazy/Arithmetic/issues) |
-| 💡 功能建议 | [GitHub Discussions](https://github.com/tobecrazy/Arithmetic/discussions) |
+| 📧 邮箱 (Email) | [tobecrazy@qq.com](mailto:tobecrazy@qq.com) |
+| 🐛 问题反馈 (Issue Reports) | [GitHub Issues](https://github.com/tobecrazy/Arithmetic/issues) |
+| 💡 功能建议 (Feature Requests) | [GitHub Discussions](https://github.com/tobecrazy/Arithmetic/discussions) |
 
-**如有任何问题或建议，欢迎通过以上方式联系我们！**
+**如有任何问题或建议，欢迎通过以上方式联系我们！** (If you have any questions or suggestions, please feel free to contact us through the above methods!)
 
 </div>
 
@@ -1009,9 +1038,9 @@ Arithmetic/
 
 <div align="center">
 
-**⭐ 如果这个项目对你有帮助，请给我们一个星标！**
+**⭐ 如果这个项目对你有帮助，请给我们一个星标！** (⭐ If this project helps you, please give us a star!)
 
-**🎓 让我们一起帮助孩子们更好地学习数学！**
+**🎓 让我们一起帮助孩子们更好地学习数学！** (🎓 Let's help children learn math better together!)
 
 Made with ❤️ by [tobecrazy](https://github.com/tobecrazy)
 
