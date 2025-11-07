@@ -262,6 +262,8 @@
 - **自定义导航 (Custom Navigation)** - 在多个视图中添加自定义返回按钮功能 (Added custom back button functionality across multiple views)
 - **布局优化 (Layout Refinements)** - 调整选择器对齐和整体布局改进 (Adjusted picker alignment and overall layout improvements)
 - **视图简化 (View Simplification)** - 移除不必要的NavigationView包装器以获得更好的性能 (Removed unnecessary NavigationView wrappers for better performance)
+- **欢迎引导流程 (Onboarding Flow)** - 新增首次启动引导界面，提供4页交互式介绍 (Added first-launch onboarding interface with 4-page interactive introduction)
+- **AppStorage集成 (AppStorage Integration)** - 使用@AppStorage优化首启动状态管理，提升用户体验 (Utilized @AppStorage to optimize first launch state management, enhancing user experience)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -270,6 +272,14 @@
 ## 🚀 快速开始 (Quick Start)
 
 ### 📱 基本使用流程 (Basic Usage Flow)
+
+#### 🌟 首次使用体验 (First-Time Experience)
+1. **欢迎引导** - 首次启动应用时，将显示4页交互式引导界面
+   - 了解应用功能、难度体系、核心特性和使用方法
+   - 可随时点击"跳过"进入主界面，或滑动到最后一页点击"开始使用"
+2. **进入主界面** - 完成引导或跳过后进入主界面
+
+#### 🎮 日常使用流程 (Daily Usage Flow)
 1. **选择难度** - 在主页面选择适合的难度等级（1-6级）
 2. **设置时间** - 配置答题时间（3-30分钟）
 3. **选择语言** - 选择界面语言（中文或英文）
@@ -277,6 +287,13 @@
 5. **查看解析** - 答错题目后可立即查看详细解析
 6. **错题复习** - 通过错题集功能巩固薄弱环节
 
+#### 🌍 First-Time Experience
+1. **Welcome Onboarding** - When launching the app for the first time, a 4-page interactive onboarding interface will be displayed
+   - Learn about app features, difficulty system, core functions, and usage methods
+   - Click "Skip" at any time to enter the main interface, or swipe to the last page and click "Start Using"
+2. **Enter Main Interface** - Proceed to the main interface after completing or skipping the onboarding
+
+#### 🎮 Daily Usage Flow
 1. **Select Difficulty** - Choose appropriate difficulty level (Level 1-6) on the main page
 2. **Set Time** - Configure answering time (3-30 minutes)
 3. **Choose Language** - Select interface language (Chinese or English)
@@ -537,6 +554,7 @@ Arithmetic/
 ├── 🖼️ Assets.xcassets/                     # 资源资产
 │   └── AppIcon.appiconset/                # 应用图标
 ├── 🖼️ Views/                               # 视图层
+│   ├── WelcomeView.swift                  # 欢迎引导视图
 │   ├── ContentView.swift                   # 主视图
 │   ├── GameView.swift                      # 游戏视图
 │   ├── ResultView.swift                    # 结果视图
@@ -615,6 +633,24 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2025-11-07 (欢迎引导界面和用户体验优化)
+- **🆕 新增欢迎引导功能**: 全新的4页交互式引导界面，首次启动时自动显示
+  - **Page 1**: 应用介绍和主要功能概述 (App introduction and main features overview)
+  - **Page 2**: 6级难度体系详细介绍，带星级难度指示器 (Detailed 6-level difficulty system introduction with star-level indicators)
+  - **Page 3**: 核心功能展示，包括游戏、解题思路、错题集、九九乘法表 (Core features showcase including game, solution methods, wrong questions collection, multiplication table)
+  - **Page 4**: 使用方法指导，分步骤说明如何使用应用 (Usage guidance with step-by-step instructions)
+- **🎨 UI/UX 重大升级**:
+  - **增强组件设计**: 新增EnhancedFeatureRow和EnhancedHowToRow组件，提供更精美的卡片式布局 (Enhanced component design: Added EnhancedFeatureRow and EnhancedHowToRow components with more refined card-style layouts)
+  - **动画效果**: 添加页面切换动画和按钮缩放动画，提升交互体验 (Animation effects: Added page transition animations and button scaling animations for enhanced interaction experience)
+  - **颜色主题**: 每个页面使用不同主题色彩，提升视觉识别度 (Color themes: Each page uses different theme colors for better visual recognition)
+- **🔧 架构优化**:
+  - **@AppStorage集成**: 使用@AppStorage替代UserDefaults进行首启动状态管理 (AppStorage integration: Using @AppStorage instead of UserDefaults for first launch state management)
+  - **状态管理**: 优化ContentView中的显示逻辑，确保引导界面只显示一次 (State management: Optimized display logic in ContentView to ensure onboarding shows only once)
+  - **模块化设计**: WelcomeView采用模块化设计，便于维护和扩展 (Modular design: WelcomeView uses modular design for easy maintenance and extension)
+- **🌐 完整国际化**: 添加所有引导界面的中英文本地化支持
+  - 新增50+本地化字符串，包括标题、描述、按钮文本等 (Added 50+ localized strings including titles, descriptions, button texts, etc.)
+  - 支持中英文动态切换，确保所有文本正确显示 (Supports dynamic Chinese/English switching, ensuring all text displays correctly)
 
 ### 🎤 2025-09-30 (问题朗读功能重大增强)
 - **🔧 核心代码优化**: 重构了GameView中的TTS调用逻辑，从`speak(text:language:)`升级为`speakMathExpression(_:language:)`
