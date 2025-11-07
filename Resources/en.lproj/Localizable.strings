@@ -347,3 +347,7 @@
 "welcome.howto.step3.desc" = "View score and grade after completion. Tap 'Show Solution' to see detailed solving approach.";
 "welcome.start_button" = "Get Started";
 "welcome.skip" = "Skip";
+
+/* Enhanced UI Strings */
+"review.past.mistakes" = "Review your past mistakes";
+"explore.more.features" = "Explore additional features";

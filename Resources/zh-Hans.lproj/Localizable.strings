@@ -348,3 +348,7 @@
 "welcome.howto.step3.desc" = "完成练习后查看得分和等级，点击“查看解析”了解详细解题思路。";
 "welcome.start_button" = "开始使用";
 "welcome.skip" = "跳过";
+
+/* Enhanced UI Strings */
+"review.past.mistakes" = "复习过往错题";
+"explore.more.features" = "探索更多功能";
