@@ -6,12 +6,13 @@ struct ContentView: View {
     @State private var timeInMinutes: Int = 5
     @State private var navigationSelection: Int? = nil
     @State private var refreshTrigger = UUID()
-    @State private var showWelcome = false
 
-    init() {
-        // Check first launch status during initialization
-        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "HasLaunchedBefore")
-        _showWelcome = State(initialValue: !hasLaunchedBefore)
+    // Use @AppStorage for better SwiftUI integration
+    @AppStorage("HasLaunchedBefore") private var hasLaunchedBefore: Bool = false
+
+    // Computed property to determine if welcome should be shown
+    private var showWelcome: Bool {
+        return !hasLaunchedBefore
     }
     @EnvironmentObject var localizationManager: LocalizationManager
     
@@ -21,22 +22,20 @@ struct ContentView: View {
     var body: some View {
         Group {
             if showWelcome {
-                WelcomeView(showWelcome: $showWelcome)
-                    .onChange(of: showWelcome) { newValue in
-                        print("🔍 Debug: showWelcome changed to \(newValue)")
-                        if !newValue {
-                            print("🔍 Debug: Setting HasLaunchedBefore to true")
-                            UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
-                            refreshTrigger = UUID()
-                        }
-                    }
+                WelcomeView(onDismiss: {
+                    print("🔍 Debug: Welcome dismissed, setting HasLaunchedBefore to true")
+                    hasLaunchedBefore = true
+                    print("🔍 Debug: HasLaunchedBefore is now \(hasLaunchedBefore)")
+                    refreshTrigger = UUID()
+                })
             } else {
                 mainContentView
             }
         }
         .onAppear {
-            // Welcome screen logic is now handled in init()
-            // This ensures it only shows on first launch
+            print("🔍 Debug ContentView.onAppear:")
+            print("  - HasLaunchedBefore: \(hasLaunchedBefore)")
+            print("  - showWelcome: \(showWelcome)")
         }
     }
     

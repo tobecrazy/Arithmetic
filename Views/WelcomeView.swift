@@ -2,7 +2,7 @@ import SwiftUI
 
 struct WelcomeView: View {
     @State private var currentPage = 0
-    @Binding var showWelcome: Bool
+    let onDismiss: () -> Void
     
     var body: some View {
         NavigationView {
@@ -206,7 +206,7 @@ struct WelcomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        showWelcome = false
+                        onDismiss()
                     }) {
                         Text("welcome.skip".localized)
                             .fontWeight(.medium)
@@ -224,7 +224,7 @@ struct WelcomeView: View {
                     VStack {
                         Spacer()
                         Button(action: {
-                            showWelcome = false
+                            onDismiss()
                         }) {
                             HStack {
                                 Image(systemName: "play.fill")
@@ -434,8 +434,9 @@ extension DifficultyLevel {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        @State var showWelcome = true
-        return WelcomeView(showWelcome: $showWelcome)
-            .environmentObject(LocalizationManager())
+        WelcomeView(onDismiss: {
+            print("Preview: Welcome dismissed")
+        })
+        .environmentObject(LocalizationManager())
     }
 }
