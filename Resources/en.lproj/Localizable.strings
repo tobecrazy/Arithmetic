@@ -346,3 +346,4 @@
 "welcome.howto.step3.title" = "Check Results";
 "welcome.howto.step3.desc" = "View score and grade after completion. Tap 'Show Solution' to see detailed solving approach.";
 "welcome.start_button" = "Get Started";
+"welcome.skip" = "Skip";

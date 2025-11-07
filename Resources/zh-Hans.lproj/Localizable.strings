@@ -347,3 +347,4 @@
 "welcome.howto.step3.title" = "查看结果";
 "welcome.howto.step3.desc" = "完成练习后查看得分和等级，点击“查看解析”了解详细解题思路。";
 "welcome.start_button" = "开始使用";
+"welcome.skip" = "跳过";

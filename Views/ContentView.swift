@@ -7,6 +7,12 @@ struct ContentView: View {
     @State private var navigationSelection: Int? = nil
     @State private var refreshTrigger = UUID()
     @State private var showWelcome = false
+
+    init() {
+        // Check first launch status during initialization
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "HasLaunchedBefore")
+        _showWelcome = State(initialValue: !hasLaunchedBefore)
+    }
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -17,7 +23,9 @@ struct ContentView: View {
             if showWelcome {
                 WelcomeView(showWelcome: $showWelcome)
                     .onChange(of: showWelcome) { newValue in
+                        print("🔍 Debug: showWelcome changed to \(newValue)")
                         if !newValue {
+                            print("🔍 Debug: Setting HasLaunchedBefore to true")
                             UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
                             refreshTrigger = UUID()
                         }
@@ -27,10 +35,8 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            // Initialize welcome screen only on first launch
-            if !UserDefaults.standard.bool(forKey: "HasLaunchedBefore") {
-                showWelcome = true
-            }
+            // Welcome screen logic is now handled in init()
+            // This ensures it only shows on first launch
         }
     }
     
