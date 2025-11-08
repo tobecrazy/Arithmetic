@@ -994,6 +994,7 @@ Arithmetic/
 - **🗂️ 本地化优化**: 清理了未使用的本地化字符串，保持Localizable.strings文件的整洁
   - 移除了`button.start_new`, `welcome.skip`, `solution.title`, `wrong_questions.filter_by_level`, `game.saved_at`, `game.saved_game`等未引用的字符串
   - 确保所有本地化字符串都在代码中有对应的引用，提升应用性能和维护性
+  - 后续修正了意外删除仍在使用的字符串，如`welcome.levels.title`, `welcome.features.title`, `welcome.howto.title`
 
 ### 🌟 2025-11-08 (本地化文件清理)
 - **🗂️ 清理未使用字符串**: 检查并删除了Localizable.strings中的未使用字符串
@@ -1001,6 +1002,9 @@ Arithmetic/
   - 英文和中文本地化文件都进行了同步清理
   - 验证了所有剩余本地化字符串在代码中的正确引用
   - 确保项目构建和运行无任何编译错误
+- **🔧 纠正错误移除**: 发现在清理过程中错误地移除了仍在代码中使用的字符串
+  - 重新添加了`welcome.levels.title`, `welcome.features.title`, `welcome.howto.title`等仍被使用中的字符串
+  - 确保应用功能完整性，避免运行时错误
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
