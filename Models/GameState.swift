@@ -28,30 +28,76 @@ class GameState: ObservableObject {
     }
     
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
+        print("🔧 Initializing GameState for \(difficultyLevel) with \(timeInMinutes) minutes")
         self.difficultyLevel = difficultyLevel
         self.timeRemaining = timeInMinutes * 60
         self.totalTime = timeInMinutes * 60
-        
+
         // 使用难度等级的题目数量
         self.userAnswers = Array(repeating: nil, count: difficultyLevel.questionCount)
+
+        // 同步生成题目，但添加错误处理和超时保护
         generateQuestions()
+
+        // 验证题目生成是否成功
+        if questions.isEmpty {
+            print("⚠️ No questions generated, creating fallback questions")
+            questions = generateFallbackQuestions()
+        }
+
+        print("✅ GameState initialized with \(questions.count) questions for \(difficultyLevel)")
     }
     
-    // 生成题目
+    // 生成题目 - 简化版本，减少潜在的阻塞
     private func generateQuestions() {
-        // 获取错题集中的题目
-        let wrongQuestionManager = WrongQuestionManager()
-        let wrongQuestions = wrongQuestionManager.getWrongQuestionsForLevel(difficultyLevel, limit: Int(Double(totalQuestions) * 0.3))
-        
-        // 更新错题的显示次数
-        for wrongQuestion in wrongQuestions {
-            // 当错题被选中显示时，增加其显示次数
-            wrongQuestionManager.updateWrongQuestion(wrongQuestion, answeredCorrectly: nil)
-            print("Updated wrong question timesShown: \(wrongQuestion.questionText)")
+        print("🔄 Generating questions for difficulty \(difficultyLevel)...")
+
+        var wrongQuestions: [Question] = []
+
+        // 简化的错题获取，不使用复杂的异步操作
+        do {
+            let wrongQuestionManager = WrongQuestionManager()
+            wrongQuestions = wrongQuestionManager.getWrongQuestionsForLevel(difficultyLevel, limit: Int(Double(totalQuestions) * 0.3))
+            print("📚 Retrieved \(wrongQuestions.count) wrong questions from database")
+
+            // 更新错题的显示次数
+            for wrongQuestion in wrongQuestions {
+                wrongQuestionManager.updateWrongQuestion(wrongQuestion, answeredCorrectly: nil)
+            }
+        } catch {
+            print("⚠️ Warning: Could not retrieve wrong questions: \(error)")
+            wrongQuestions = []
         }
-        
+
         // 生成题目，确保包含错题
         questions = QuestionGenerator.generateQuestions(difficultyLevel: difficultyLevel, count: totalQuestions, wrongQuestions: wrongQuestions)
+
+        // 验证生成的题目数量
+        if questions.count < totalQuestions {
+            print("⚠️ Warning: Generated only \(questions.count) questions, expected \(totalQuestions)")
+            // 补充简单题目
+            let additionalQuestions = generateFallbackQuestions(count: totalQuestions - questions.count)
+            questions.append(contentsOf: additionalQuestions)
+        }
+
+        print("✅ Question generation completed: \(questions.count) total questions")
+    }
+
+    // 生成备用题目
+    private func generateFallbackQuestions(count: Int = 0) -> [Question] {
+        let questionsToGenerate = count > 0 ? count : totalQuestions
+        var fallbackQuestions: [Question] = []
+
+        print("🆘 Generating \(questionsToGenerate) fallback questions...")
+
+        for _ in 0..<questionsToGenerate {
+            let num1 = Int.random(in: 1...min(10, difficultyLevel.range.upperBound))
+            let num2 = Int.random(in: 1...min(10, difficultyLevel.range.upperBound))
+            let question = Question(number1: num1, number2: num2, operation: .addition)
+            fallbackQuestions.append(question)
+        }
+
+        return fallbackQuestions
     }
     
     // 检查答案

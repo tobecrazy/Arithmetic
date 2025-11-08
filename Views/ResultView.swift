@@ -4,9 +4,10 @@ import CoreData
 
 struct ResultView: View {
     let gameState: GameState
+    var onHomePressed: (() -> Void)? = nil
     @Environment(\.presentationMode) var presentationMode
     @State private var shouldPopToRoot = false
-    @State private var navigateToWrongQuestions = false
+    @State private var showWrongQuestionsView = false
     @EnvironmentObject var localizationManager: LocalizationManager
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -83,7 +84,7 @@ struct ResultView: View {
                 VStack(spacing: 15) {
                     // 查看错题集按钮
                     Button(action: {
-                        navigateToWrongQuestions = true
+                        showWrongQuestionsView = true
                     }) {
                         Text("button.wrong_questions".localized)
                             .font(.adaptiveHeadline())
@@ -95,13 +96,7 @@ struct ResultView: View {
                     }
                     .padding(.horizontal)
                     
-                    NavigationLink(
-                        destination: WrongQuestionsView()
-                            .environmentObject(localizationManager),
-                        isActive: $navigateToWrongQuestions
-                    ) {
-                        EmptyView()
-                    }
+                    // Removed NavigationLink - using sheet presentation instead
                     
                     HStack(spacing: 20) {
                         // 重新开始按钮
@@ -120,20 +115,25 @@ struct ResultView: View {
                         
                         // 返回主页按钮
                         Button(action: {
-                            // 使用UIKit方法直接返回到根视图
-                            let scenes = UIApplication.shared.connectedScenes
-                            let windowScene = scenes.first as? UIWindowScene
-                            let window = windowScene?.windows.first
-                            
-                            if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
-                                navigationController.popToRootViewController(animated: true)
+                            // Use the provided closure for clean navigation
+                            if let onHomePressed = onHomePressed {
+                                onHomePressed()
                             } else {
-                                // 如果找不到导航控制器，尝试关闭所有模态视图
-                                var currentVC = window?.rootViewController
-                                while let presentedVC = currentVC?.presentedViewController {
-                                    currentVC = presentedVC
+                                // Fallback to original UIKit method
+                                let scenes = UIApplication.shared.connectedScenes
+                                let windowScene = scenes.first as? UIWindowScene
+                                let window = windowScene?.windows.first
+
+                                if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
+                                    navigationController.popToRootViewController(animated: true)
+                                } else {
+                                    // 如果找不到导航控制器，尝试关闭所有模态视图
+                                    var currentVC = window?.rootViewController
+                                    while let presentedVC = currentVC?.presentedViewController {
+                                        currentVC = presentedVC
+                                    }
+                                    currentVC?.dismiss(animated: true)
                                 }
-                                currentVC?.dismiss(animated: true)
                             }
                         }) {
                             Text("button.home".localized)
@@ -151,8 +151,14 @@ struct ResultView: View {
             }
         }
         .navigationBarHidden(true)
+        .sheet(isPresented: $showWrongQuestionsView) {
+            NavigationView {
+                WrongQuestionsView()
+                    .environmentObject(localizationManager)
+            }
+        }
     }
-    
+
     // iPad横屏专用布局
     var iPadLandscapeLayout: some View {
         HStack(spacing: 0) {
@@ -232,7 +238,7 @@ struct ResultView: View {
                     VStack(spacing: 20) {
                         // 查看错题集按钮
                         Button(action: {
-                            navigateToWrongQuestions = true
+                            showWrongQuestionsView = true
                         }) {
                             Text("button.wrong_questions".localized)
                                 .font(.adaptiveHeadline())
@@ -243,13 +249,7 @@ struct ResultView: View {
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                         
-                        NavigationLink(
-                            destination: WrongQuestionsView()
-                                .environmentObject(localizationManager),
-                            isActive: $navigateToWrongQuestions
-                        ) {
-                            EmptyView()
-                        }
+                        // Removed NavigationLink - using sheet presentation instead
                         
                         // 重新开始按钮
                         Button(action: {
@@ -267,20 +267,25 @@ struct ResultView: View {
                         
                         // 返回主页按钮
                         Button(action: {
-                            // 使用UIKit方法直接返回到根视图
-                            let scenes = UIApplication.shared.connectedScenes
-                            let windowScene = scenes.first as? UIWindowScene
-                            let window = windowScene?.windows.first
-                            
-                            if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
-                                navigationController.popToRootViewController(animated: true)
+                            // Use the provided closure for clean navigation
+                            if let onHomePressed = onHomePressed {
+                                onHomePressed()
                             } else {
-                                // 如果找不到导航控制器，尝试关闭所有模态视图
-                                var currentVC = window?.rootViewController
-                                while let presentedVC = currentVC?.presentedViewController {
-                                    currentVC = presentedVC
+                                // Fallback to original UIKit method
+                                let scenes = UIApplication.shared.connectedScenes
+                                let windowScene = scenes.first as? UIWindowScene
+                                let window = windowScene?.windows.first
+
+                                if let navigationController = window?.rootViewController?.children.first as? UINavigationController {
+                                    navigationController.popToRootViewController(animated: true)
+                                } else {
+                                    // 如果找不到导航控制器，尝试关闭所有模态视图
+                                    var currentVC = window?.rootViewController
+                                    while let presentedVC = currentVC?.presentedViewController {
+                                        currentVC = presentedVC
+                                    }
+                                    currentVC?.dismiss(animated: true)
                                 }
-                                currentVC?.dismiss(animated: true)
                             }
                         }) {
                             Text("button.home".localized)
@@ -298,6 +303,12 @@ struct ResultView: View {
             .frame(width: UIScreen.main.bounds.width * 0.5)
         }
         .navigationBarHidden(true)
+        .sheet(isPresented: $showWrongQuestionsView) {
+            NavigationView {
+                WrongQuestionsView()
+                    .environmentObject(localizationManager)
+            }
+        }
     }
 }
 

@@ -43,9 +43,13 @@ extension LinearGradient {
 struct ContentView: View {
     @State private var selectedDifficulty: DifficultyLevel = .level1
     @State private var timeInMinutes: Int = 5
-    @State private var navigationSelection: Int? = nil
     @State private var refreshTrigger = UUID()
     @State private var isAnimating = false
+    @State private var isStartingGame = false
+    @State private var gameViewModel: GameViewModel? = nil
+    @State private var showGameView = false
+    @State private var showWrongQuestionsView = false
+    @State private var showOtherOptionsView = false
 
     @AppStorage("HasLaunchedBefore") private var hasLaunchedBefore: Bool = false
 
@@ -91,27 +95,21 @@ struct ContentView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
+            print("🔄 MainContentView appeared - resetting state")
+            // 每次回到主界面重置选择和状态，确保可以再次导航
+            isStartingGame = false
+            gameViewModel = nil
+            showGameView = false
+            showWrongQuestionsView = false
+            showOtherOptionsView = false
+
             withAnimation(.easeInOut(duration: 0.6)) {
                 isAnimating = true
             }
         }
     }
 
-    // MARK: - Navigation Destinations
-    private var gameDestination: some View {
-        GameView(viewModel: GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes))
-            .environmentObject(localizationManager)
-    }
-
-    private var wrongQuestionsDestination: some View {
-        WrongQuestionsView()
-            .environmentObject(localizationManager)
-    }
-
-    private var otherOptionsDestination: some View {
-        OtherOptionsView()
-            .environmentObject(localizationManager)
-    }
+    // MARK: - Navigation now handled by sheets and fullScreenCover modifiers
 
     // MARK: - Helper Functions
     private func levelNumber(for level: DifficultyLevel) -> Int {
@@ -330,17 +328,19 @@ struct ContentView: View {
                 Spacer()
 
                 VStack(spacing: 16) {
-                    enhancedActionButton(
-                        title: "button.start".localized,
-                        subtitle: "\(selectedDifficulty.localizedName) • \(timeInMinutes) \("settings.minutes".localized)",
-                        iconName: "play.fill",
+                     enhancedActionButton(
+                        title: isStartingGame ? "button.starting".localized : "button.start".localized,
+                        subtitle: isStartingGame ? "game.loading".localized : "\(selectedDifficulty.localizedName) • \(timeInMinutes) \("settings.minutes".localized)",
+                        iconName: isStartingGame ? "hourglass" : "play.fill",
                         gradient: .primaryGradient
                     ) {
-                        navigationSelection = 1
+                        startGame()
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
                     .animation(.easeInOut(duration: 0.6).delay(0.7), value: isAnimating)
+                    .disabled(isStartingGame)
+                    .accessibilityIdentifier("startGameButton")
 
                     enhancedActionButton(
                         title: "button.wrong_questions".localized,
@@ -348,7 +348,7 @@ struct ContentView: View {
                         iconName: "exclamationmark.triangle.fill",
                         gradient: .orangeGradient
                     ) {
-                        navigationSelection = 2
+                        showWrongQuestionsView = true
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
@@ -360,7 +360,7 @@ struct ContentView: View {
                         iconName: "ellipsis.circle.fill",
                         gradient: .greenGradient
                     ) {
-                        navigationSelection = 3
+                        showOtherOptionsView = true
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
@@ -372,10 +372,34 @@ struct ContentView: View {
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 30)
 
-            // Hidden Navigation Links
-            NavigationLink(destination: gameDestination, tag: 1, selection: $navigationSelection) { EmptyView() }
-            NavigationLink(destination: wrongQuestionsDestination, tag: 2, selection: $navigationSelection) { EmptyView() }
-            NavigationLink(destination: otherOptionsDestination, tag: 3, selection: $navigationSelection) { EmptyView() }
+            // Use sheet presentations for more reliable navigation
+            .fullScreenCover(isPresented: $showGameView, onDismiss: {
+                // Reset states when game view is dismissed
+                gameViewModel = nil
+                isStartingGame = false
+            }) {
+                if let vm = gameViewModel {
+                    GameView(viewModel: vm) {
+                        // This closure will be called when user wants to exit to home
+                        showGameView = false
+                    }
+                    .environmentObject(localizationManager)
+                } else {
+                    ProgressView("Loading...")
+                }
+            }
+            .sheet(isPresented: $showWrongQuestionsView) {
+                NavigationView {
+                    WrongQuestionsView()
+                        .environmentObject(localizationManager)
+                }
+            }
+            .sheet(isPresented: $showOtherOptionsView) {
+                NavigationView {
+                    OtherOptionsView()
+                        .environmentObject(localizationManager)
+                }
+            }
         }
         .navigationBarHidden(true)
     }
@@ -426,16 +450,18 @@ struct ContentView: View {
                 // Action Buttons Section
                 VStack(spacing: 16) {
                     enhancedActionButton(
-                        title: "button.start".localized,
-                        subtitle: "\(selectedDifficulty.localizedName) • \(timeInMinutes) \("settings.minutes".localized)",
-                        iconName: "play.fill",
+                        title: isStartingGame ? "button.starting".localized : "button.start".localized,
+                        subtitle: isStartingGame ? "game.loading".localized : "\(selectedDifficulty.localizedName) • \(timeInMinutes) \("settings.minutes".localized)",
+                        iconName: isStartingGame ? "hourglass" : "play.fill",
                         gradient: .primaryGradient
                     ) {
-                        navigationSelection = 1
+                        startGame()
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
                     .animation(.easeInOut(duration: 0.6).delay(0.7), value: isAnimating)
+                    .disabled(isStartingGame)
+                    .accessibilityIdentifier("startGameButton")
 
                     enhancedActionButton(
                         title: "button.wrong_questions".localized,
@@ -443,7 +469,7 @@ struct ContentView: View {
                         iconName: "exclamationmark.triangle.fill",
                         gradient: .orangeGradient
                     ) {
-                        navigationSelection = 2
+                        showWrongQuestionsView = true
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
@@ -455,7 +481,7 @@ struct ContentView: View {
                         iconName: "ellipsis.circle.fill",
                         gradient: .greenGradient
                     ) {
-                        navigationSelection = 3
+                        showOtherOptionsView = true
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
@@ -464,16 +490,71 @@ struct ContentView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 30)
 
-                // Hidden Navigation Links
-                NavigationLink(destination: gameDestination, tag: 1, selection: $navigationSelection) { EmptyView() }
-                NavigationLink(destination: wrongQuestionsDestination, tag: 2, selection: $navigationSelection) { EmptyView() }
-                NavigationLink(destination: otherOptionsDestination, tag: 3, selection: $navigationSelection) { EmptyView() }
+                // No navigation links needed - using direct state management
             }
         }
         .navigationBarHidden(true)
         .id(refreshTrigger)
+        .fullScreenCover(isPresented: $showGameView, onDismiss: {
+            // Reset states when game view is dismissed
+            gameViewModel = nil
+            isStartingGame = false
+        }) {
+            if let vm = gameViewModel {
+                GameView(viewModel: vm) {
+                    // This closure will be called when user wants to exit to home
+                    showGameView = false
+                }
+                .environmentObject(localizationManager)
+            } else {
+                ProgressView("Loading...")
+            }
+        }
+        .sheet(isPresented: $showWrongQuestionsView) {
+            NavigationView {
+                WrongQuestionsView()
+                    .environmentObject(localizationManager)
+            }
+        }
+        .sheet(isPresented: $showOtherOptionsView) {
+            NavigationView {
+                OtherOptionsView()
+                    .environmentObject(localizationManager)
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
             refreshTrigger = UUID()
+        }
+    }
+    private func startGame() {
+        guard !isStartingGame else {
+            print("🚫 Start game blocked - already starting")
+            return
+        }
+
+        print("🎮 Starting game with difficulty: \(selectedDifficulty), time: \(timeInMinutes) minutes")
+        isStartingGame = true
+
+        // 简化的同步方法 - 直接创建 GameViewModel
+        print("🔧 Creating GameViewModel...")
+        let viewModel = GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes)
+
+        // 验证 ViewModel 创建成功
+        guard viewModel.gameState.questions.count > 0 else {
+            print("❌ Failed to generate questions")
+            isStartingGame = false
+            return
+        }
+
+        print("✅ GameViewModel created successfully with \(viewModel.gameState.questions.count) questions")
+        gameViewModel = viewModel
+
+        // 直接触发导航
+        showGameView = true
+
+        // 重置加载状态
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isStartingGame = false
         }
     }
 }

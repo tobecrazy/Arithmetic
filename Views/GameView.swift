@@ -3,10 +3,11 @@ import Combine
 
 struct GameView: View {
     @ObservedObject var viewModel: GameViewModel
+    var onGameExit: (() -> Void)? = nil
     @State private var userInput: String = ""
     @State private var showingAlert = false
     @State private var showingPauseAlert = false
-    @State private var navigateToResults = false
+    @State private var showResultsView = false
     @State private var currentTime: Int = 0 // Local state to track time for UI updates
     @State private var hasAppeared = false // Track if view has appeared before
     @Environment(\.presentationMode) var presentationMode
@@ -344,14 +345,7 @@ struct GameView: View {
                 }
             }
             
-            // 导航到结果页面
-            NavigationLink(
-                destination: ResultView(gameState: viewModel.gameState)
-                    .environmentObject(localizationManager),
-                isActive: $navigateToResults
-            ) {
-                EmptyView()
-            }
+            // Results view presentation - removed NavigationLink
         }
         .navigationBarHidden(true)
         .onAppear {
@@ -369,7 +363,7 @@ struct GameView: View {
         }
         .onReceive(viewModel.gameState.$gameCompleted) { completed in
             if completed {
-                navigateToResults = true
+                showResultsView = true
             }
         }
         .onReceive(timer) { _ in
@@ -379,8 +373,15 @@ struct GameView: View {
                 currentTime = viewModel.gameState.timeRemaining
             }
         }
+        .fullScreenCover(isPresented: $showResultsView, onDismiss: {
+            // When ResultView is dismissed, check if we should go back to ContentView
+            // For now, we'll handle this through the ResultView's home button logic
+        }) {
+            ResultView(gameState: viewModel.gameState, onHomePressed: onGameExit)
+                .environmentObject(localizationManager)
+        }
     }
-    
+
     // iPad横屏专用布局
     var iPadLandscapeLayout: some View {
         ZStack {
@@ -727,14 +728,7 @@ struct GameView: View {
                 .background(Color.gray.opacity(0.05))
             }
             
-            // 导航到结果页面
-            NavigationLink(
-                destination: ResultView(gameState: viewModel.gameState)
-                    .environmentObject(localizationManager),
-                isActive: $navigateToResults
-            ) {
-                EmptyView()
-            }
+            // Results view presentation - removed NavigationLink
         }
         .navigationBarHidden(true)
         .onAppear {
@@ -752,7 +746,7 @@ struct GameView: View {
         }
         .onReceive(viewModel.gameState.$gameCompleted) { completed in
             if completed {
-                navigateToResults = true
+                showResultsView = true
             }
         }
         .onReceive(timer) { _ in
@@ -762,8 +756,15 @@ struct GameView: View {
                 currentTime = viewModel.gameState.timeRemaining
             }
         }
+        .fullScreenCover(isPresented: $showResultsView, onDismiss: {
+            // When ResultView is dismissed, check if we should go back to ContentView
+            // For now, we'll handle this through the ResultView's home button logic
+        }) {
+            ResultView(gameState: viewModel.gameState, onHomePressed: onGameExit)
+                .environmentObject(localizationManager)
+        }
     }
-    
+
     // 计算解析内容的动态高度（答题界面专用）
     private func calculateGameSolutionHeight() -> CGFloat {
         // 获取当前屏幕尺寸
