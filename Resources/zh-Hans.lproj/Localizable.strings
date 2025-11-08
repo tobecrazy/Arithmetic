@@ -7,7 +7,7 @@
 "difficulty.level6" = "等级6 (100以内混合运算)";
 "difficulty.level" = "难度等级";
 "button.start" = "开始游戏";
-"button.start_new" = "开始新游戏";
+
 "settings.time" = "时间设置";
 "settings.language" = "语言设置";
 "game.score" = "得分";
@@ -38,7 +38,7 @@
 /* Wrong Questions Collection */
 "button.wrong_questions" = "错题集";
 "wrong_questions.title" = "错题集";
-"wrong_questions.filter_by_level" = "按难度筛选";
+
 "wrong_questions.all_levels" = "所有难度";
 "wrong_questions.empty" = "暂无错题。继续练习吧！";
 "wrong_questions.answer" = "答案：%@";
@@ -53,8 +53,8 @@
 "alert.delete_confirm" = "删除";
 
 /* Game Progress */
-"game.saved_game" = "已保存的游戏";
-"game.saved_at" = "保存时间：%@";
+
+
 "game.save_success" = "游戏进度保存成功";
 "game.save_error" = "游戏进度保存失败";
 
@@ -70,7 +70,7 @@
 /* Solution Analysis */
 "button.show_solution" = "查看解析";
 "button.hide_solution" = "隐藏解析";
-"solution.title" = "解题思路";
+
 "solution.content" = "解析内容";
 "solution.breaking_ten" = "破十法";
 "solution.borrowing_ten" = "借十法";
@@ -314,14 +314,14 @@
 /* Welcome/Onboarding */
 "welcome.title" = "欢迎使用小学算术练习";
 "welcome.intro" = "通过互动练习帮助孩子们提高数学技能。应用提供多种难度等级并跟踪学习进度，让学习变得有趣且富有吸引力。";
-"welcome.levels.title" = "难度等级";
+
 "welcome.level1.desc" = "10以内加减法";
 "welcome.level2.desc" = "20以内加减法";
 "welcome.level3.desc" = "50以内加减法";
 "welcome.level4.desc" = "10以内乘除法";
 "welcome.level5.desc" = "20以内乘除法";
 "welcome.level6.desc" = "100以内混合运算";
-"welcome.features.title" = "主要功能";
+
 "welcome.feature.game.title" = "开始游戏";
 "welcome.feature.game.desc" = "选择难度等级开始练习，答对5题可以获得一颗星奖励。";
 "welcome.feature.solutions.title" = "解题思路";
@@ -330,7 +330,7 @@
 "welcome.feature.wrongquestions.desc" = "自动收集错题，便于重点复习和巩固薄弱环节。";
 "welcome.feature.multiplication.title" = "九九乘法表";
 "welcome.feature.multiplication.desc" = "完整乘法表展示，帮助记忆和掌握乘法运算。";
-"welcome.howto.title" = "使用方法";
+
 "welcome.howto.step1.title" = "选择难度";
 "welcome.howto.step1.desc" = "从6个难度等级中选择适合的级别开始练习。";
 "welcome.howto.step2.title" = "开始练习";
@@ -344,7 +344,7 @@
 "welcome.howto.step6.title" = "个性化学习";
 "welcome.howto.step6.desc" = "随时调整时间限制与语言设置，成绩页面点击“查看解析”掌握多种解题策略。";
 "welcome.start_button" = "开始使用";
-"welcome.skip" = "跳过";
+
 "welcome.prev" = "上一页";
 "welcome.next" = "下一页";
 "welcome.icon.tagline" = "趣味 · 自适应 · 双语数学";

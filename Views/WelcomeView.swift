@@ -68,7 +68,7 @@ struct WelcomeView: View {
                         .accessibilityIdentifier("welcomePrevButton")
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(Color.blue.opacity(0.08))
+                        .background(Color.green.opacity(0.08))
                         .clipShape(Capsule())
                     }
 

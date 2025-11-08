@@ -991,6 +991,16 @@ Arithmetic/
 - **🔄 README更新**: 基于项目最新状态和Qwen.md上下文信息更新README文档
 - **🔧 代码重构**: 某些组件进行了优化以提高性能和用户体验
 - **📚 文档完善**: 对项目架构和功能特性进行了更详细的说明
+- **🗂️ 本地化优化**: 清理了未使用的本地化字符串，保持Localizable.strings文件的整洁
+  - 移除了`button.start_new`, `welcome.skip`, `solution.title`, `wrong_questions.filter_by_level`, `game.saved_at`, `game.saved_game`等未引用的字符串
+  - 确保所有本地化字符串都在代码中有对应的引用，提升应用性能和维护性
+
+### 🌟 2025-11-08 (本地化文件清理)
+- **🗂️ 清理未使用字符串**: 检查并删除了Localizable.strings中的未使用字符串
+  - 识别并移除了在代码库中未引用的本地化字符串
+  - 英文和中文本地化文件都进行了同步清理
+  - 验证了所有剩余本地化字符串在代码中的正确引用
+  - 确保项目构建和运行无任何编译错误
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 

@@ -7,7 +7,7 @@
 "difficulty.level6" = "Level 6 (Mixed Operations 1-100)";
 "difficulty.level" = "Difficulty Level";
 "button.start" = "Start Game";
-"button.start_new" = "Start New Game";
+
 "settings.time" = "Time Setting";
 "settings.language" = "Language Setting";
 "game.score" = "Score";
@@ -38,7 +38,7 @@
 /* Wrong Questions Collection */
 "button.wrong_questions" = "Wrong Questions Collection";
 "wrong_questions.title" = "Wrong Questions Collection";
-"wrong_questions.filter_by_level" = "Filter by Level";
+
 "wrong_questions.all_levels" = "All Levels";
 "wrong_questions.empty" = "No wrong questions yet. Keep practicing!";
 "wrong_questions.answer" = "Answer: %@";
@@ -53,8 +53,8 @@
 "alert.delete_confirm" = "Delete";
 
 /* Game Progress */
-"game.saved_game" = "Saved Game";
-"game.saved_at" = "Saved at: %@";
+
+
 "game.save_success" = "Game progress saved successfully";
 "game.save_error" = "Failed to save game progress";
 
@@ -70,7 +70,7 @@
 /* Solution Analysis */
 "button.show_solution" = "Show Solution";
 "button.hide_solution" = "Hide Solution";
-"solution.title" = "Solution Strategy";
+
 "solution.content" = "Solution Content";
 "solution.breaking_ten" = "Break Apart Ten";
 "solution.borrowing_ten" = "Regrouping Method";
@@ -322,14 +322,14 @@
 /* Welcome/Onboarding */
 "welcome.title" = "Welcome to Elementary Arithmetic Practice";
 "welcome.intro" = "Help children improve math skills through interactive exercises. The app provides various difficulty levels and tracks progress to make learning fun and engaging.";
-"welcome.levels.title" = "Difficulty Levels";
+
 "welcome.level1.desc" = "Addition & Subtraction within 10";
 "welcome.level2.desc" = "Addition & Subtraction within 20";
 "welcome.level3.desc" = "Addition & Subtraction within 50";
 "welcome.level4.desc" = "Multiplication & Division within 10";
 "welcome.level5.desc" = "Multiplication & Division within 20";
 "welcome.level6.desc" = "Mixed Operations within 100";
-"welcome.features.title" = "Main Features";
+
 "welcome.feature.game.title" = "Start Game";
 "welcome.feature.game.desc" = "Select difficulty level to start practicing. You'll get a star reward for every 5 correct answers.";
 "welcome.feature.solutions.title" = "Solution Approach";
@@ -338,7 +338,7 @@
 "welcome.feature.wrongquestions.desc" = "Automatically collects wrong answers for focused review and reinforcing weak areas.";
 "welcome.feature.multiplication.title" = "Multiplication Table";
 "welcome.feature.multiplication.desc" = "Complete multiplication table display to help memorize and master multiplication operations.";
-"welcome.howto.title" = "How to Use";
+
 "welcome.howto.step1.title" = "Select Difficulty";
 "welcome.howto.step1.desc" = "Choose from 6 difficulty levels that suit your current ability to start practicing.";
 "welcome.howto.step2.title" = "Start Practicing";
@@ -352,7 +352,7 @@
 "welcome.howto.step6.title" = "Customize & Learn";
 "welcome.howto.step6.desc" = "Adjust time limits, switch language anytime, and tap 'Show Solution' on results to study multiple solving strategies.";
 "welcome.start_button" = "Get Started";
-"welcome.skip" = "Skip";
+
 "welcome.prev" = "Previous";
 "welcome.next" = "Next";
 "welcome.icon.tagline" = "Fun • Adaptive • Bilingual Math Practice";
