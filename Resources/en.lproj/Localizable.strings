@@ -345,8 +345,17 @@
 "welcome.howto.step2.desc" = "Input answer based on the question. The system will automatically check correctness and provide feedback.";
 "welcome.howto.step3.title" = "Check Results";
 "welcome.howto.step3.desc" = "View score and grade after completion. Tap 'Show Solution' to see detailed solving approach.";
+"welcome.howto.step4.title" = "Review Mistakes";
+"welcome.howto.step4.desc" = "Open 'Wrong Questions Collection' to re-practice incorrect answers. They appear in future sessions for targeted reinforcement.";
+"welcome.howto.step5.title" = "Use Learning Tools";
+"welcome.howto.step5.desc" = "Check the Multiplication Table and Formula Guide to strengthen foundational knowledge while practicing.";
+"welcome.howto.step6.title" = "Customize & Learn";
+"welcome.howto.step6.desc" = "Adjust time limits, switch language anytime, and tap 'Show Solution' on results to study multiple solving strategies.";
 "welcome.start_button" = "Get Started";
 "welcome.skip" = "Skip";
+"welcome.prev" = "Previous";
+"welcome.next" = "Next";
+"welcome.icon.tagline" = "Fun • Adaptive • Bilingual Math Practice";
 
 /* Enhanced UI Strings */
 "review.past.mistakes" = "Review your past mistakes";
