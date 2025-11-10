@@ -548,7 +548,10 @@ Arithmetic/
 ├── 📄 BATTERY_UPTIME_FIX_SUMMARY.md      # 电池和运行时长功能修复说明
 ├── 📄 CLAUDE.md                          # Claude开发助手对话记录
 ├── 📄 TTS_Implementation_Guide.md        # TTS功能实现指南
+├── 📁 .claude/                           # Claude开发助手配置
+├── 📁 .github/                           # GitHub工作流和配置
 ├── 📁 .qwen/                            # Qwen开发助手配置
+├── 📁 scripts/                           # 构建和工具脚本
 ├── 📱 App/
 │   └── ArithmeticApp.swift                 # 应用入口
 ├── 🖼️ Assets.xcassets/                     # 资源资产
