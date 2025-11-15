@@ -562,7 +562,6 @@ class Question: NSObject, NSCoding, Identifiable {
                 case .subtraction: firstPartResult = num1 - num2
                 case .multiplication: firstPartResult = num1 * num2
                 case .division: firstPartResult = num2 != 0 ? num1 / num2 : 0
-                default: firstPartResult = 0 // Should not happen
                 }
 
                 // Step 2: (result of firstPart) op2 num3
