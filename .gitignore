@@ -63,3 +63,4 @@ fastlane/test_output
 .DS_Store
 .qwen/settings.json
 QWEN.md
+GEMINI.md

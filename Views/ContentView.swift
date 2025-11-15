@@ -6,10 +6,10 @@ extension Color {
     static let primaryBlue = Color(red: 0.2, green: 0.6, blue: 1.0)
     static let secondaryOrange = Color(red: 1.0, green: 0.6, blue: 0.2)
     static let accentGreen = Color(red: 0.2, green: 0.8, blue: 0.4)
-    static let backgroundSecondary = Color(red: 0.95, green: 0.95, blue: 0.98)
+    static let backgroundSecondary = Color(UIColor.systemGray5)
     static let cardShadow = Color.black.opacity(0.05)
-    static let textPrimary = Color(red: 0.2, green: 0.2, blue: 0.3)
-    static let textSecondary = Color(red: 0.5, green: 0.5, blue: 0.6)
+    static let textPrimary = Color.primary
+    static let textSecondary = Color.secondary
 }
 
 // MARK: - Enhanced Gradients
@@ -33,7 +33,7 @@ extension LinearGradient {
     )
 
     static let backgroundGradient = LinearGradient(
-        colors: [Color(red: 0.9, green: 0.95, blue: 1.0), Color(red: 0.95, green: 0.98, blue: 1.0)],
+        colors: [Color(UIColor.systemGroupedBackground), Color(UIColor.systemGroupedBackground).opacity(0.8)],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
@@ -50,7 +50,9 @@ struct ContentView: View {
     @State private var showGameView = false
     @State private var showWrongQuestionsView = false
     @State private var showOtherOptionsView = false
+    @State private var showSettingsView = false
 
+    @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("HasLaunchedBefore") private var hasLaunchedBefore: Bool = false
 
     private var showWelcome: Bool {
@@ -60,6 +62,12 @@ struct ContentView: View {
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    static let purpleGradient = LinearGradient(
+        colors: [Color(red: 0.5, green: 0.2, blue: 0.8), Color(red: 0.4, green: 0.1, blue: 0.7)],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
 
     var body: some View {
         Group {
@@ -72,6 +80,7 @@ struct ContentView: View {
                 mainContentView
             }
         }
+        .preferredColorScheme(isDarkMode ? .dark : .light)
         .onAppear {
             print("🔍 Debug ContentView.onAppear:")
             print("  - HasLaunchedBefore: \(hasLaunchedBefore)")
@@ -89,7 +98,7 @@ struct ContentView: View {
                 }
             }
             .background(
-                LinearGradient.backgroundGradient
+                Color(UIColor.systemGroupedBackground)
                     .ignoresSafeArea()
             )
         }
@@ -102,6 +111,7 @@ struct ContentView: View {
             showGameView = false
             showWrongQuestionsView = false
             showOtherOptionsView = false
+            showSettingsView = false
 
             withAnimation(.easeInOut(duration: 0.6)) {
                 isAnimating = true
@@ -130,7 +140,7 @@ struct ContentView: View {
             .padding(.adaptivePadding)
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                    .fill(Color.white)
+                    .fill(Color(UIColor.systemBackground))
                     .shadow(color: Color.cardShadow, radius: 8, x: 0, y: 4)
             )
     }
@@ -353,6 +363,18 @@ struct ContentView: View {
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
                     .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
+                    
+                    enhancedActionButton(
+                        title: "button.settings".localized,
+                        subtitle: "settings.title".localized,
+                        iconName: "gear",
+                        gradient: ContentView.purpleGradient
+                    ) {
+                        showSettingsView = true
+                    }
+                    .opacity(isAnimating ? 1 : 0)
+                    .offset(x: isAnimating ? 0 : 50)
+                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
 
                     enhancedActionButton(
                         title: "button.other_options".localized,
@@ -364,7 +386,7 @@ struct ContentView: View {
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
-                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(1.0), value: isAnimating)
                 }
 
                 Spacer()
@@ -399,6 +421,10 @@ struct ContentView: View {
                     OtherOptionsView()
                         .environmentObject(localizationManager)
                 }
+            }
+            .sheet(isPresented: $showSettingsView) {
+                SettingsView()
+                    .environmentObject(localizationManager)
             }
         }
         .navigationBarHidden(true)
@@ -474,6 +500,18 @@ struct ContentView: View {
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
                     .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
+                    
+                    enhancedActionButton(
+                        title: "button.settings".localized,
+                        subtitle: "settings.title".localized,
+                        iconName: "gear",
+                        gradient: ContentView.purpleGradient
+                    ) {
+                        showSettingsView = true
+                    }
+                    .opacity(isAnimating ? 1 : 0)
+                    .offset(y: isAnimating ? 0 : 30)
+                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
 
                     enhancedActionButton(
                         title: "button.other_options".localized,
@@ -485,7 +523,7 @@ struct ContentView: View {
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(1.0), value: isAnimating)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 30)
@@ -521,6 +559,10 @@ struct ContentView: View {
                 OtherOptionsView()
                     .environmentObject(localizationManager)
             }
+        }
+        .sheet(isPresented: $showSettingsView) {
+            SettingsView()
+                .environmentObject(localizationManager)
         }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
             refreshTrigger = UUID()

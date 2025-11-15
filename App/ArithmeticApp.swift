@@ -7,6 +7,7 @@ import CoreData
 
 @main
 struct ArithmeticApp: App {
+    @AppStorage("isDarkMode") private var isDarkMode = false
     // 初始化CoreData管理器
     private let coreDataManager = CoreDataManager.shared
     

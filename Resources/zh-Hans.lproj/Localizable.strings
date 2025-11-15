@@ -352,3 +352,9 @@
 /* Enhanced UI Strings */
 "review.past.mistakes" = "复习过往错题";
 "explore.more.features" = "探索更多功能";
+
+/* Settings */
+"button.settings" = "设置";
+"settings.title" = "设置";
+"settings.display" = "显示";
+"settings.dark_mode" = "暗色模式";

@@ -359,3 +359,9 @@
 /* Enhanced UI Strings */
 "review.past.mistakes" = "Review your past mistakes";
 "explore.more.features" = "Explore additional features";
+
+/* Settings */
+"button.settings" = "Settings";
+"settings.title" = "Settings";
+"settings.display" = "Display";
+"settings.dark_mode" = "Dark Mode";
