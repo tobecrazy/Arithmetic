@@ -120,6 +120,11 @@ class TTSHelper: ObservableObject {
     
     /// Speaks the given text using the appropriate voice for the specified language
     func speak(text: String, language: LocalizationManager.Language, rate: Float = AVSpeechUtteranceDefaultSpeechRate) {
+        // Check if TTS is enabled
+        guard UserDefaults.standard.bool(forKey: "isTtsEnabled") else {
+            return
+        }
+
         // Stop any current speech
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)

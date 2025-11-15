@@ -365,3 +365,5 @@
 "settings.title" = "Settings";
 "settings.display" = "Display";
 "settings.dark_mode" = "Dark Mode";
+"settings.audio" = "Audio";
+"settings.auto_read" = "Auto-read questions";

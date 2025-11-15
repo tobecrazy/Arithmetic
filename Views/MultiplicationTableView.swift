@@ -71,6 +71,9 @@ struct MultiplicationTableView: View {
     // Create multiplication button view
     private func multiplicationButton(for item: (String, Color), at index: Int) -> some View {
         Button(action: {
+            guard UserDefaults.standard.bool(forKey: "isTtsEnabled") else {
+                return
+            }
             let mathExpression = extractMathExpression(from: item.0, at: index)
             ttsHelper.speakMathExpression(mathExpression, language: localizationManager.currentLanguage)
         }) {

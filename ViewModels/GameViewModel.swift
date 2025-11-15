@@ -267,6 +267,9 @@ func moveToNextQuestion() {
     
     // 读出当前题目
     func readCurrentQuestion() {
+        guard UserDefaults.standard.bool(forKey: "isTtsEnabled") else {
+            return
+        }
         guard gameState.currentQuestionIndex < gameState.questions.count else { return }
         
         let currentQuestion = gameState.questions[gameState.currentQuestionIndex]

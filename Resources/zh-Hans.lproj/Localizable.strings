@@ -358,3 +358,5 @@
 "settings.title" = "设置";
 "settings.display" = "显示";
 "settings.dark_mode" = "暗色模式";
+"settings.audio" = "音频";
+"settings.auto_read" = "自动朗读题目";
