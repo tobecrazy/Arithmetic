@@ -257,6 +257,10 @@
 - **特殊问题 (Special Problems)** - 涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题、利润问题等 (Covers sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, profit problems, etc.)
 - **便捷访问 (Convenient Access)** - 从"其他选项"页面可直接访问公式大全 (The formula guide can be accessed directly from the "Other Options" page)
 
+### ⚙️ 设置页面 (Settings Page)
+- **深色模式切换 (Dark Mode Toggle)** - 支持应用内切换深色模式和浅色模式 (Supports switching between dark and light mode within the app)
+- **TTS语音开关 (TTS Toggle)** - 全局控制题目和乘法表的自动朗读功能 (Globally control the automatic reading function of questions and multiplication tables)
+
 ### 🎨 UI界面优化 (UI Improvements)
 - **简洁选择器 (Cleaner Picker)** - 隐藏难度选择器标签，创建更清洁的界面 (Difficulty picker labels are now hidden to create a cleaner interface)
 - **自定义导航 (Custom Navigation)** - 在多个视图中添加自定义返回按钮功能 (Added custom back button functionality across multiple views)
@@ -286,6 +290,7 @@
 4. **开始练习** - 点击"开始游戏"按钮开始答题
 5. **查看解析** - 答错题目后可立即查看详细解析
 6. **错题复习** - 通过错题集功能巩固薄弱环节
+7. **个性化设置** - 在设置页面调整深色模式和TTS语音开关 (Adjust dark mode and TTS toggle in the settings page)
 
 #### 🌍 First-Time Experience
 1. **Welcome Onboarding** - When launching the app for the first time, a 4-page interactive onboarding interface will be displayed
@@ -300,6 +305,7 @@
 4. **Start Practice** - Click "Start Game" button to begin answering
 5. **View Analysis** - Check detailed analysis immediately after wrong answers
 6. **Review Wrong Questions** - Consolidate weak points through wrong questions collection
+7. **Personalize Settings** - Adjust dark mode and TTS toggle in the settings page
 
 ### 🎯 推荐学习路径 (Recommended Learning Path)
 ```mermaid
@@ -568,6 +574,7 @@ Arithmetic/
 │   ├── FormulaGuideView.swift             # 小学数学公式大全视图
 │   ├── OtherOptionsView.swift             # 其他选项视图
 │   ├── SystemInfoView.swift               # 系统信息视图
+│   ├── SettingsView.swift                 # 设置视图
 │   ├── SystemInfoComponents.swift         # 系统信息组件
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
 ├── 📊 Models/                              # 数据模型
@@ -636,6 +643,11 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2025-11-15 (新增设置页面和功能)
+- **🆕 新增设置页面**: 添加了独立的设置页面
+- **🎨 新增深色模式切换**: 在设置页面中，可以手动切换App的深色和浅色模式
+- **🔊 新增TTS语音开关**: 在设置页面中，可以全局控制题目和乘法表的自动朗读功能
 
 ### 🌟 2025-11-07 (欢迎引导界面和用户体验优化)
 - **🆕 新增欢迎引导功能**: 全新的4页交互式引导界面，首次启动时自动显示
