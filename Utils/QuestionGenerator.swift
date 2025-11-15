@@ -104,7 +104,10 @@ class QuestionGenerator {
         let supportedOperations = difficultyLevel.supportedOperations
         
         // 随机选择一个支持的运算类型
-        let operation = supportedOperations.randomElement()!
+        guard let operation = supportedOperations.randomElement() else {
+            // 如果没有支持的运算，返回一个默认运算
+            return Question(number1: 2, number2: 2, operation: .addition)
+        }
         
         var number1: Int
         var number2: Int
@@ -297,12 +300,12 @@ class QuestionGenerator {
         // 根据难度等级选择操作类型
         if difficultyLevel == .level6 {
             // 等级6：混合运算，随机选择任意支持的操作
-            operation1 = supportedOperations.randomElement()!
-            operation2 = supportedOperations.randomElement()!
+            operation1 = supportedOperations.randomElement() ?? .addition
+            operation2 = supportedOperations.randomElement() ?? .addition
         } else if difficultyLevel == .level4 || difficultyLevel == .level5 {
             // 等级4和5：只使用乘除法
-            operation1 = supportedOperations.randomElement()! // 从[multiplication, division]中选择
-            operation2 = supportedOperations.randomElement()! // 从[multiplication, division]中选择
+            operation1 = supportedOperations.randomElement() ?? .multiplication // 从[multiplication, division]中选择
+            operation2 = supportedOperations.randomElement() ?? .multiplication // 从[multiplication, division]中选择
         } else {
             // 等级2和3：只使用加减法
             operation1 = Double.random(in: 0...1) < 0.5 ? .addition : .subtraction
@@ -450,7 +453,7 @@ class QuestionGenerator {
                                 if absDividend % i == 0 { divisors.append(i) }
                             }
                             if !divisors.isEmpty {
-                                number3 = divisors.randomElement()!
+                                number3 = divisors.randomElement() ?? divisors.first ?? 2
                             } else {
                                 // If no suitable divisors found, change operation
                                 if dividendForOp2 > 1 { 
@@ -488,14 +491,12 @@ class QuestionGenerator {
                 case .subtraction: intermediateA_op1_B = num1_calc - num2_calc
                 case .multiplication: intermediateA_op1_B = num1_calc * num2_calc
                 case .division: intermediateA_op1_B = num2_calc != 0 ? num1_calc / num2_calc : 0
-                default: intermediateA_op1_B = 0 // Should not happen with defined operations
                 }
                 switch op2_calc {
                 case .addition: finalResult = intermediateA_op1_B + num3_calc
                 case .subtraction: finalResult = intermediateA_op1_B - num3_calc
                 case .multiplication: finalResult = intermediateA_op1_B * num3_calc
                 case .division: finalResult = num3_calc != 0 ? intermediateA_op1_B / num3_calc : 0
-                default: finalResult = 0 // Should not happen
                 }
             }
             
@@ -658,13 +659,11 @@ class QuestionGenerator {
         
         // 如果有两个相同数字，检查是否会产生过于简单的运算
         if uniqueNumbers.count == 2 {
-            // 找出重复的数字和它的位置
-            var duplicateNumber: Int = 0
+            // 找出重复数字的位置
             var duplicatePositions: [Int] = []
             
             for (index, number) in numbers.enumerated() {
                 if numbers.filter({ $0 == number }).count == 2 {
-                    duplicateNumber = number
                     duplicatePositions.append(index)
                 }
             }

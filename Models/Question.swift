@@ -538,9 +538,10 @@ class Question: NSObject, NSCoding, Identifiable {
                 // Higher precedence for op2 (e.g., A + B*C). Calculate num2 op2 num3 first.
                 var firstPartResult: Int
                 switch op2 {
+                case .addition: firstPartResult = num2 + num3
+                case .subtraction: firstPartResult = num2 - num3
                 case .multiplication: firstPartResult = num2 * num3
                 case .division: firstPartResult = num3 != 0 ? num2 / num3 : 0
-                default: firstPartResult = 0 // Should not happen
                 }
 
                 // Step 2: num1 op1 (result of firstPart)

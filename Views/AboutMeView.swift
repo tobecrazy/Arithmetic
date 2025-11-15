@@ -70,10 +70,12 @@ struct AboutMeView: View {
                         .foregroundColor(.primary.opacity(0.8))
                     
                     // GitHub Link
-                    Link("about.github_link".localized, destination: URL(string: "https://github.com/tobecrazy/Arithmetic")!)
-                        .font(.adaptiveBody())
-                        .foregroundColor(.blue)
-                        .padding(.top, 10)
+                    if let githubURL = URL(string: "https://github.com/tobecrazy/Arithmetic") {
+                        Link("about.github_link".localized, destination: githubURL)
+                            .font(.adaptiveBody())
+                            .foregroundColor(.blue)
+                            .padding(.top, 10)
+                    }
                 }
                 .padding(.vertical, 20)
                 

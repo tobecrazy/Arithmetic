@@ -2,8 +2,11 @@ import SwiftUI
 
 struct NavigationUtil {
     static func popToRootView() {
-        findNavigationController(viewController: UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.rootViewController)?
-            .popToRootViewController(animated: true)
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = scene.windows.first(where: { $0.isKeyWindow }),
+           let navigationController = findNavigationController(viewController: window.rootViewController) {
+            navigationController.popToRootViewController(animated: true)
+        }
     }
     
     static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {

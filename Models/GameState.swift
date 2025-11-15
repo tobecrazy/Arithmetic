@@ -54,19 +54,14 @@ class GameState: ObservableObject {
 
         var wrongQuestions: [Question] = []
 
-        // 简化的错题获取，不使用复杂的异步操作
-        do {
-            let wrongQuestionManager = WrongQuestionManager()
-            wrongQuestions = wrongQuestionManager.getWrongQuestionsForLevel(difficultyLevel, limit: Int(Double(totalQuestions) * 0.3))
-            print("📚 Retrieved \(wrongQuestions.count) wrong questions from database")
+        // 简化的错题获取
+        let wrongQuestionManager = WrongQuestionManager()
+        wrongQuestions = wrongQuestionManager.getWrongQuestionsForLevel(difficultyLevel, limit: Int(Double(totalQuestions) * 0.3))
+        print("📚 Retrieved \(wrongQuestions.count) wrong questions from database")
 
-            // 更新错题的显示次数
-            for wrongQuestion in wrongQuestions {
-                wrongQuestionManager.updateWrongQuestion(wrongQuestion, answeredCorrectly: nil)
-            }
-        } catch {
-            print("⚠️ Warning: Could not retrieve wrong questions: \(error)")
-            wrongQuestions = []
+        // 更新错题的显示次数
+        for wrongQuestion in wrongQuestions {
+            wrongQuestionManager.updateWrongQuestion(wrongQuestion, answeredCorrectly: nil)
         }
 
         // 生成题目，确保包含错题
@@ -194,11 +189,9 @@ class GameState: ObservableObject {
     }
     
     // 暂停游戏
-    func pauseGame() -> Bool {
+    func pauseGame() {
         // 如果已经使用过暂停，则不能再次暂停
-        if pauseUsed {
-            return false
-        }
+        guard !pauseUsed else { return }
         
         // 标记暂停状态
         isPaused = true
@@ -210,8 +203,6 @@ class GameState: ObservableObject {
         } else {
             score = 0
         }
-        
-        return true
     }
     
     // 恢复游戏

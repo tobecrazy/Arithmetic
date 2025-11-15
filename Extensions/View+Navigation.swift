@@ -17,6 +17,7 @@ struct DismissToRootViewModifier: ViewModifier {
     }
 }
 
-func dismissToRoot() {
+// This function can be used to trigger dismissal to root view
+func triggerGlobalDismiss() {
     NotificationCenter.default.post(name: Notification.Name("DismissToRootView"), object: nil)
 }

@@ -27,12 +27,10 @@ class CoreDataManager {
             
             // 为现有错题添加解析方法和步骤
             for question in existingQuestions {
-                // 尝试访问新属性，如果失败则添加默认值
-                do {
-                    // 尝试访问solutionMethod属性
-                    _ = question.solutionMethod
-                } catch {
-                    // 如果属性不存在，则添加默认值
+                // 尝试 accessing solutionMethod property - it should not throw an error
+                // So we don't need the do-catch block
+                // Ensure that each question has solutionMethod and solutionSteps
+                if question.solutionMethod.isEmpty {
                     if let questionObj = question.toQuestion() {
                         let level = DifficultyLevel(rawValue: question.level) ?? .level1
                         question.setValue(questionObj.getSolutionMethod(for: level).rawValue, forKey: "solutionMethod")

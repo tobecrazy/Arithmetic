@@ -38,11 +38,11 @@ extension GameProgressEntity {
         
         // Decode questions and user answers
         do {
-            if let questions = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(self.questions) as? [Question] {
+            if let questions = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: self.questions) as? [Question] {
                 gameState.questions = questions
             }
             
-            if let userAnswers = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(self.userAnswers) as? [Int?] {
+            if let userAnswers = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: self.userAnswers) as? [Int?] {
                 gameState.userAnswers = userAnswers
             }
         } catch {

@@ -21,8 +21,8 @@ class GameProgressManager {
         gameProgress.score = Int16(gameState.score)
         gameProgress.timeRemaining = Int16(gameState.timeRemaining)
         gameProgress.savedAt = Date()
-        gameProgress.isPaused = gameState.isPaused ?? false
-        gameProgress.pauseUsed = gameState.pauseUsed ?? false
+        gameProgress.isPaused = gameState.isPaused
+        gameProgress.pauseUsed = gameState.pauseUsed
         
         // Encode questions and user answers
         do {

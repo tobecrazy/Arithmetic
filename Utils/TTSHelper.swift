@@ -91,7 +91,14 @@ class TTSHelper: ObservableObject {
         }
         
         // 3. Convert numbers to spelled-out form
-        let numberRegex = try! NSRegularExpression(pattern: "\\d+(?:\\.\\d+)?", options: [])
+        let numberRegex: NSRegularExpression
+        do {
+            numberRegex = try NSRegularExpression(pattern: "\\d+(?:\\.\\d+)?", options: [])
+        } catch {
+            print("Error creating number regex: \(error.localizedDescription)")
+            return result // Return original string if regex creation fails
+        }
+        
         let range = NSRange(result.startIndex..<result.endIndex, in: result)
         let matches = numberRegex.matches(in: result, options: [], range: range)
         

@@ -129,12 +129,9 @@ func submitAnswer(_ answer: Int) {
 }
     
 // 暂停游戏
-func pauseGame() -> Bool {
-    if gameState.pauseGame() {
-        timerActive = false
-        return true
-    }
-    return false
+func pauseGame() {
+    gameState.pauseGame()
+    timerActive = false
 }
 
 // 恢复游戏

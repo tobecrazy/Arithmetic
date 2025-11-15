@@ -43,14 +43,15 @@ class WrongQuestionManager {
                 saveContext()
             } else {
                 // Question exists, update statistics
-                let existingQuestion = existingQuestions.first!
-                // Only increment timesWrong, not timesShown
-                // timesShown will be incremented when the question is actually shown to the user
-                existingQuestion.timesWrong += 1
-                existingQuestion.lastShownAt = Date()
-                
-                print("Updating existing wrong question: \(question.questionText), key: \(combinationKey)")
-                saveContext()
+                if let existingQuestion = existingQuestions.first {
+                    // Only increment timesWrong, not timesShown
+                    // timesShown will be incremented when the question is actually shown to the user
+                    existingQuestion.timesWrong += 1
+                    existingQuestion.lastShownAt = Date()
+                    
+                    print("Updating existing wrong question: \(question.questionText), key: \(combinationKey)")
+                    saveContext()
+                }
             }
         } catch {
             print("Error adding wrong question: \(error)")
