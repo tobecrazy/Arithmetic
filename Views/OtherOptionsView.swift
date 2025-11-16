@@ -10,6 +10,7 @@ struct OtherOptionsView: View {
     @State private var navigateToAboutMe = false
     @State private var navigateToFormulaGuide = false
     @State private var navigateToSystemInfo = false
+    @State private var navigateToMathBank = false
     
     // Computed properties for navigation destinations
     private var multiplicationTableDestination: some View {
@@ -29,6 +30,11 @@ struct OtherOptionsView: View {
 
     private var systemInfoDestination: some View {
         SystemInfoView()
+            .environmentObject(localizationManager)
+    }
+
+    private var mathBankDestination: some View {
+        MathBankView()
             .environmentObject(localizationManager)
     }
     
@@ -66,6 +72,38 @@ struct OtherOptionsView: View {
                     }
                     .padding()
                     .background(Color.green)
+                    .cornerRadius(.adaptiveCornerRadius)
+                }
+                .padding(.horizontal)
+
+                // 生成数学题库按钮
+                Button(action: {
+                    navigateToMathBank = true
+                }) {
+                    HStack {
+                        Image(systemName: "doc.text.fill")
+                            .font(.title2)
+                            .foregroundColor(.white)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("math_bank.button_title".localized)
+                                .font(.adaptiveHeadline())
+                                .foregroundColor(.white)
+
+                            Text("math_bank.button_description".localized)
+                                .font(.adaptiveBody())
+                                .foregroundColor(.white.opacity(0.8))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    .padding()
+                    .background(Color.orange)
                     .cornerRadius(.adaptiveCornerRadius)
                 }
                 .padding(.horizontal)
@@ -208,6 +246,13 @@ struct OtherOptionsView: View {
                 NavigationLink(
                     destination: systemInfoDestination,
                     isActive: $navigateToSystemInfo
+                ) {
+                    EmptyView()
+                }
+
+                NavigationLink(
+                    destination: mathBankDestination,
+                    isActive: $navigateToMathBank
                 ) {
                     EmptyView()
                 }

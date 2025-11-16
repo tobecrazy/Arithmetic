@@ -118,6 +118,82 @@
 "other_options.title" = "其他选项";
 "other_options.back" = "返回";
 
+/* Math Bank */
+"math_bank.button_title" = "生成数学题库";
+"math_bank.button_description" = "生成可打印的数学题库PDF文件";
+"math_bank.title" = "数学题库生成器";
+"math_bank.description" = "选择难度等级和题目数量，生成专属的数学题库PDF文件，优先选用错题集中的题目";
+"math_bank.select_difficulty" = "选择难度等级";
+"math_bank.select_count" = "选择题目数量";
+"math_bank.generate" = "生成题库";
+"math_bank.generating" = "生成中...";
+"math_bank.hint" = "生成的PDF包含题目和答案页，可保存到设备或打印使用";
+"math_bank.error" = "生成失败";
+"math_bank.save_options.title" = "保存选项";
+"math_bank.save_options.message" = "请选择保存方式";
+"math_bank.save_to_files" = "保存到文件";
+"math_bank.save_to_documents" = "保存到文档";
+"math_bank.share" = "分享";
+"math_bank.save_success" = "PDF保存成功";
+"math_bank.save_documents_success" = "PDF已保存到文档目录";
+"math_bank.save_failed" = "保存失败";
+
+/* PDF Generation */
+"math_bank.pdf.title" = "数学题库";
+"math_bank.pdf.answer_title" = "答案";
+"math_bank.pdf.header_info" = "共%@题 | 第%@页/共%@页";
+"math_bank.pdf.answer_header_info" = "答案页 | 第%@页/共%@页";
+"math_bank.pdf.generated_time" = "生成时间: %@";
+"math_bank.pdf.questions_suffix" = "题";
+"math_bank.pdf.filename_template" = "数学题库_%@_%@题_%@.pdf";
+
+/* PDF Generation Errors */
+"math_bank.pdf.error.no_questions" = "没有生成任何题目";
+"math_bank.pdf.error.empty_data" = "PDF数据为空";
+"math_bank.pdf.error.file_write" = "文件写入失败";
+"math_bank.pdf.error.data_empty" = "错误: PDF数据为空";
+"math_bank.pdf.error.prefix" = "错误: ";
+
+/* PDF Generation Logs */
+"math_bank.pdf.log.start_generating" = "开始生成PDF...";
+"math_bank.pdf.log.getting_wrong_questions" = "获取错题集...";
+"math_bank.pdf.log.got_wrong_questions" = "获取到 %@ 个错题";
+"math_bank.pdf.log.generating_questions" = "生成题目...";
+"math_bank.pdf.log.generated_questions" = "生成了 %@ 个题目";
+"math_bank.pdf.log.start_pdf_generation" = "开始生成PDF文档...";
+"math_bank.pdf.log.pdf_success" = "PDF生成成功，大小: %@ bytes";
+"math_bank.pdf.log.pdf_failed" = "PDF生成失败: %@";
+"math_bank.pdf.log.start_save_documents" = "开始保存到Documents目录，数据大小: %@ bytes";
+"math_bank.pdf.log.filename" = "文件名: %@";
+"math_bank.pdf.save_success_with_path" = "保存成功: %@";
+"math_bank.pdf.save_failed_generic" = "保存失败";
+"math_bank.pdf.error_data_not_exist" = "PDF数据不存在，请重新生成";
+"math_bank.pdf.activity_share_success" = "文件已成功保存或分享";
+"math_bank.pdf.activity_user_cancelled" = "用户取消分享";
+
+/* DocumentPicker Logs */
+"math_bank.pdf.log.document_picker_system_share" = "DocumentPicker: 使用系统分享功能";
+"math_bank.pdf.log.create_temp_file" = "DocumentPicker: 创建临时文件用于分享";
+"math_bank.pdf.log.temp_file_path" = "DocumentPicker: 临时文件路径: %@";
+"math_bank.pdf.log.temp_file_data_size" = "DocumentPicker: 数据大小: %@ bytes";
+"math_bank.pdf.log.temp_file_success" = "DocumentPicker: 临时文件创建成功";
+"math_bank.pdf.log.temp_file_failed" = "DocumentPicker: 创建临时文件失败: %@";
+
+/* FileSaveHelper Logs */
+"math_bank.pdf.log.file_save_start" = "FileSaveHelper: 开始保存文件";
+"math_bank.pdf.log.file_save_data_size" = "FileSaveHelper: 数据大小: %@ bytes";
+"math_bank.pdf.log.file_save_filename" = "FileSaveHelper: 文件名: %@";
+"math_bank.pdf.log.file_save_no_documents" = "FileSaveHelper: 无法获取Documents目录";
+"math_bank.pdf.log.file_save_documents_path" = "FileSaveHelper: Documents目录: %@";
+"math_bank.pdf.log.file_save_full_path" = "FileSaveHelper: 完整文件路径: %@";
+"math_bank.pdf.log.file_save_delete_existing" = "FileSaveHelper: 删除已存在的文件";
+"math_bank.pdf.log.file_save_write_success" = "FileSaveHelper: 文件保存成功";
+"math_bank.pdf.log.file_save_verify_success" = "FileSaveHelper: 文件验证成功，大小: %@ bytes";
+"math_bank.pdf.log.file_save_verify_failed" = "FileSaveHelper: 文件保存后不存在";
+"math_bank.pdf.log.file_save_failed" = "FileSaveHelper: 保存失败: %@";
+"math_bank.pdf.log.file_save_error_detail" = "FileSaveHelper: 错误详情: %@";
+"math_bank.pdf.log.documents_directory" = "FileSaveHelper: Documents目录: %@";
+
 /* Question Reading */
 "question.read_aloud" = "计算%@等于多少？";
 

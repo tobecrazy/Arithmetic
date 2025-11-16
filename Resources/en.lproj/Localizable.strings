@@ -125,6 +125,82 @@
 "other_options.title" = "Other Options";
 "other_options.back" = "Back to Main";
 
+/* Math Bank */
+"math_bank.button_title" = "Generate Math Bank";
+"math_bank.button_description" = "Generate printable math problem bank PDF";
+"math_bank.title" = "Math Problem Bank Generator";
+"math_bank.description" = "Select difficulty level and number of questions to generate your custom math problem bank PDF, prioritizing questions from wrong question collection";
+"math_bank.select_difficulty" = "Select Difficulty Level";
+"math_bank.select_count" = "Select Number of Questions";
+"math_bank.generate" = "Generate Bank";
+"math_bank.generating" = "Generating...";
+"math_bank.hint" = "Generated PDF includes both question and answer pages, can be saved to device or printed";
+"math_bank.error" = "Generation failed";
+"math_bank.save_options.title" = "Save Options";
+"math_bank.save_options.message" = "Please choose how to save";
+"math_bank.save_to_files" = "Save to Files";
+"math_bank.save_to_documents" = "Save to Documents";
+"math_bank.share" = "Share";
+"math_bank.save_success" = "PDF saved successfully";
+"math_bank.save_documents_success" = "PDF saved to Documents directory";
+"math_bank.save_failed" = "Save failed";
+
+/* PDF Generation */
+"math_bank.pdf.title" = "Math Problem Bank";
+"math_bank.pdf.answer_title" = "Answers";
+"math_bank.pdf.header_info" = "Total %@ Questions | Page %@ of %@";
+"math_bank.pdf.answer_header_info" = "Answer Page | Page %@ of %@";
+"math_bank.pdf.generated_time" = "Generated: %@";
+"math_bank.pdf.questions_suffix" = " Questions";
+"math_bank.pdf.filename_template" = "MathBank_%@_%@Questions_%@.pdf";
+
+/* PDF Generation Errors */
+"math_bank.pdf.error.no_questions" = "No questions generated";
+"math_bank.pdf.error.empty_data" = "PDF data is empty";
+"math_bank.pdf.error.file_write" = "File write failed";
+"math_bank.pdf.error.data_empty" = "Error: PDF data is empty";
+"math_bank.pdf.error.prefix" = "Error: ";
+
+/* PDF Generation Logs */
+"math_bank.pdf.log.start_generating" = "Starting PDF generation...";
+"math_bank.pdf.log.getting_wrong_questions" = "Getting wrong questions...";
+"math_bank.pdf.log.got_wrong_questions" = "Got %@ wrong questions";
+"math_bank.pdf.log.generating_questions" = "Generating questions...";
+"math_bank.pdf.log.generated_questions" = "Generated %@ questions";
+"math_bank.pdf.log.start_pdf_generation" = "Starting PDF document generation...";
+"math_bank.pdf.log.pdf_success" = "PDF generated successfully, size: %@ bytes";
+"math_bank.pdf.log.pdf_failed" = "PDF generation failed: %@";
+"math_bank.pdf.log.start_save_documents" = "Starting to save to Documents directory, data size: %@ bytes";
+"math_bank.pdf.log.filename" = "Filename: %@";
+"math_bank.pdf.save_success_with_path" = "Save successful: %@";
+"math_bank.pdf.save_failed_generic" = "Save failed";
+"math_bank.pdf.error_data_not_exist" = "PDF data does not exist, please regenerate";
+"math_bank.pdf.activity_share_success" = "File has been successfully saved or shared";
+"math_bank.pdf.activity_user_cancelled" = "User cancelled sharing";
+
+/* DocumentPicker Logs */
+"math_bank.pdf.log.document_picker_system_share" = "DocumentPicker: Using system sharing functionality";
+"math_bank.pdf.log.create_temp_file" = "DocumentPicker: Creating temporary file for sharing";
+"math_bank.pdf.log.temp_file_path" = "DocumentPicker: Temporary file path: %@";
+"math_bank.pdf.log.temp_file_data_size" = "DocumentPicker: Data size: %@ bytes";
+"math_bank.pdf.log.temp_file_success" = "DocumentPicker: Temporary file created successfully";
+"math_bank.pdf.log.temp_file_failed" = "DocumentPicker: Failed to create temporary file: %@";
+
+/* FileSaveHelper Logs */
+"math_bank.pdf.log.file_save_start" = "FileSaveHelper: Starting to save file";
+"math_bank.pdf.log.file_save_data_size" = "FileSaveHelper: Data size: %@ bytes";
+"math_bank.pdf.log.file_save_filename" = "FileSaveHelper: Filename: %@";
+"math_bank.pdf.log.file_save_no_documents" = "FileSaveHelper: Unable to get Documents directory";
+"math_bank.pdf.log.file_save_documents_path" = "FileSaveHelper: Documents directory: %@";
+"math_bank.pdf.log.file_save_full_path" = "FileSaveHelper: Full file path: %@";
+"math_bank.pdf.log.file_save_delete_existing" = "FileSaveHelper: Deleting existing file";
+"math_bank.pdf.log.file_save_write_success" = "FileSaveHelper: File saved successfully";
+"math_bank.pdf.log.file_save_verify_success" = "FileSaveHelper: File verification successful, size: %@ bytes";
+"math_bank.pdf.log.file_save_verify_failed" = "FileSaveHelper: File does not exist after saving";
+"math_bank.pdf.log.file_save_failed" = "FileSaveHelper: Save failed: %@";
+"math_bank.pdf.log.file_save_error_detail" = "FileSaveHelper: Error details: %@";
+"math_bank.pdf.log.documents_directory" = "FileSaveHelper: Documents directory: %@";
+
 /* Question Reading */
 "question.read_aloud" = "What is %@?";
 
