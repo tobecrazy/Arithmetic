@@ -143,50 +143,55 @@ class QuestionGenerator {
                 }
                 
             case .subtraction:
-                // 减法：确保结果为正数且有意义的差值
+                // 减法：确保结果为正数且有意义的差值，强化避免相同数字相减
                 if difficultyLevel == .level1 {
                     number1 = safeRandom(in: minNumber...range.upperBound)
                     number2 = safeRandom(in: minNumber...number1)
-                    
-                    // 避免相同数字相减，确保差值至少为1
-                    if number1 == number2 && number1 > minNumber {
-                        number2 = number1 - 1
+
+                    // 强化：避免相同数字相减，确保差值至少为2（减少结果为1的情况）
+                    if number1 == number2 {
+                        if number1 > minNumber + 1 {
+                            number2 = number1 - safeRandom(in: 2...min(3, number1 - minNumber))
+                        } else {
+                            number1 = max(minNumber + 2, number1)
+                            number2 = number1 - 2
+                        }
                     }
-                    // 进一步提高教学价值，避免差值过小
-                    if number1 - number2 < 2 && number1 > minNumber + 1 {
-                        number2 = max(minNumber, number1 - 2)
+                    // 进一步提高教学价值，避免差值过小（结果为1的情况）
+                    if number1 - number2 <= 1 && number1 > minNumber + 1 {
+                        number2 = max(minNumber, number1 - safeRandom(in: 2...min(4, number1 - minNumber)))
                     }
                 } else {
                     // 等级2及以上，确保被减数至少为10，差值有意义
                     number1 = safeRandom(in: max(10, minNumber)...range.upperBound)
-                    let maxSubtractor = number1 - 2 // 确保差值至少为2
+                    let maxSubtractor = number1 - 3 // 确保差值至少为3，减少结果为1或2的情况
                     number2 = safeRandom(in: minNumber...max(minNumber, maxSubtractor))
-                    
-                    // 避免相同数字相减
+
+                    // 强化：避免相同数字相减
                     if number1 == number2 {
-                        number2 = max(minNumber, number1 - 2)
+                        number2 = max(minNumber, number1 - safeRandom(in: 3...min(6, number1 - minNumber)))
                     }
-                    
-                    // 确保差值不会太小，提高计算挑战性
-                    if number1 - number2 < 2 {
-                        number2 = max(minNumber, number1 - safeRandom(in: 2...min(5, number1 - minNumber)))
+
+                    // 确保差值不会太小，进一步减少结果为0、1的情况
+                    if number1 - number2 <= 2 {
+                        number2 = max(minNumber, number1 - safeRandom(in: 3...min(7, number1 - minNumber)))
                     }
                 }
                 
             case .multiplication:
-                // 乘法：确保结果不超过范围上限，大幅减少×1题目
+                // 乘法：确保结果不超过范围上限，进一步减少×1题目和结果为1的情况
                 let maxFactor = min(range.upperBound, Int(sqrt(Double(range.upperBound))))
-                
-                // 大幅减少×1的题目，提高教学价值
-                if Double.random(in: 0...1) < 0.05 { // 降低到5%概率生成×1
+
+                // 进一步减少×1的题目，仅在level1且随机概率很低时允许
+                if difficultyLevel == .level1 && Double.random(in: 0...1) < 0.02 { // 进一步降低到2%概率生成×1
                     number1 = safeRandom(in: 2...maxFactor)
                     number2 = 1
                 } else {
-                    // 优先生成2-9的乘法，避免过于简单的×1
+                    // 优先生成2-9的乘法，完全避免×1（除了上述极低概率情况）
                     number1 = safeRandom(in: 2...maxFactor)
-                    let minSecondFactor = 2 // 确保第二个因数至少为2
+                    let minSecondFactor = 2 // 确保第二个因数至少为2，避免结果为原数
                     let maxSecondFactor = min(range.upperBound / number1, maxFactor)
-                    
+
                     if maxSecondFactor >= minSecondFactor {
                         number2 = safeRandom(in: minSecondFactor...maxSecondFactor)
                     } else {
@@ -195,7 +200,7 @@ class QuestionGenerator {
                         number2 = safeRandom(in: 2...min(range.upperBound / number1, maxFactor))
                     }
                 }
-                
+
                 // 确保结果不超过范围
                 if number1 * number2 > range.upperBound {
                     number2 = range.upperBound / number1
@@ -205,65 +210,109 @@ class QuestionGenerator {
                         number2 = safeRandom(in: 2...range.upperBound / number1)
                     }
                 }
+
+                // 额外检查：避免任何因数为1的情况（双重保险）
+                if number1 == 1 {
+                    number1 = 2
+                }
+                if number2 == 1 && difficultyLevel != .level1 {
+                    number2 = 2
+                    // 重新检查范围
+                    if number1 * number2 > range.upperBound {
+                        number1 = range.upperBound / number2
+                    }
+                }
                 
             case .division:
-                // 除法：确保整除，先选择除数和商，再计算被除数
+                // 除法：确保整除，先选择除数和商，再计算被除数，强化避免相同数字和结果为1
                 // 选择除数（2-10之间，避免÷1）
                 number2 = safeRandom(in: 2...min(10, range.upperBound))
-                
+
                 // 计算可能的最大商，确保被除数不超过范围
                 let maxPossibleQuotient = range.upperBound / number2
-                
-                // 选择商（至少为2，避免过于简单的除法）
-                let minQuotient = max(2, minNumber)
+
+                // 选择商（至少为3，大幅减少结果为1或2的情况）
+                let minQuotient = max(difficultyLevel == .level1 ? 2 : 3, minNumber)
+                let maxQuotient = max(minQuotient, maxPossibleQuotient)
                 let quotient: Int
-                
-                if maxPossibleQuotient >= minQuotient {
-                    quotient = safeRandom(in: minQuotient...maxPossibleQuotient)
+
+                if maxQuotient >= minQuotient {
+                    // 进一步减少生成结果为1的概率：优先选择较大的商
+                    if maxQuotient > minQuotient + 2 {
+                        // 70%概率选择较大的商范围
+                        let isLargerRange = Double.random(in: 0...1) < 0.7
+                        if isLargerRange {
+                            let midPoint = (minQuotient + maxQuotient) / 2
+                            quotient = safeRandom(in: midPoint...maxQuotient)
+                        } else {
+                            quotient = safeRandom(in: minQuotient...maxQuotient)
+                        }
+                    } else {
+                        quotient = minQuotient
+                    }
                 } else {
                     // 如果无法生成合适的商，调整除数
                     number2 = max(2, range.upperBound / minQuotient)
                     quotient = minQuotient
                 }
-                
+
                 // 计算被除数，确保整除
                 number1 = quotient * number2
-                
-                // 最终验证：确保被除数在范围内且不等于除数
+
+                // 最终验证：确保被除数在范围内
                 if number1 > range.upperBound {
-                    // 重新选择更小的除数
+                    // 重新选择更小的除数，但保持商至少为minQuotient
                     number2 = safeRandom(in: 2...min(5, range.upperBound / minQuotient))
                     number1 = minQuotient * number2
                 }
-                
-                // 避免被除数等于除数的情况（如6÷6=1）
+
+                // 强化：严格避免被除数等于除数的情况（如6÷6=1）
                 if number1 == number2 {
-                    if quotient < maxPossibleQuotient {
-                        number1 = (quotient + 1) * number2
-                    } else if number2 > 2 {
-                        number2 -= 1
-                        number1 = quotient * number2
+                    // 优先增加商，而不是减少除数
+                    let newQuotient = max(quotient + 1, 3) // 至少为3
+                    if newQuotient * number2 <= range.upperBound {
+                        number1 = newQuotient * number2
                     } else {
-                        // 最后的调整：确保不相等
-                        number1 = max(number1 + number2, minNumber * number2)
-                        if number1 > range.upperBound {
-                            number1 = quotient * number2 // 保持原值
+                        // 如果增加商会超出范围，则减少除数
+                        if number2 > 2 {
+                            number2 -= 1
+                            number1 = max(quotient, 3) * number2
+                        } else {
+                            // 最后的调整：确保不相等且商不为1
+                            number1 = max(3 * number2, minNumber * number2)
+                            if number1 > range.upperBound {
+                                // 如果仍然超出范围，重新生成更小的数字
+                                number2 = 2
+                                number1 = 3 * number2 // 确保结果不为1
+                            }
                         }
                     }
                 }
-                
+
+                // 额外检查：再次确保结果不为1
+                if number2 != 0 && number1 / number2 == 1 {
+                    // 如果结果为1，强制调整为至少为2
+                    number1 = max(2, minQuotient) * number2
+                    if number1 > range.upperBound {
+                        number2 = max(2, range.upperBound / max(2, minQuotient))
+                        number1 = max(2, minQuotient) * number2
+                    }
+                }
+
                 // 最终安全检查：确保整除
                 if number2 != 0 && number1 % number2 != 0 {
                     // 强制调整为整除
-                    let actualQuotient = number1 / number2
+                    let actualQuotient = max(2, number1 / number2) // 确保商至少为2
                     number1 = actualQuotient * number2
                 }
             }
             
             attempts += 1
-        } while (number1 <= 0 || number2 <= 0 || 
+        } while (number1 <= 0 || number2 <= 0 ||
                  (operation == .multiplication && number1 * number2 > range.upperBound) ||
-                 (operation == .division && number1 > range.upperBound)) && attempts < maxAttempts
+                 (operation == .division && number1 > range.upperBound) ||
+                 (operation == .subtraction && number1 - number2 <= 1) ||
+                 (operation == .division && number2 != 0 && number1 / number2 <= 1)) && attempts < maxAttempts
         
         // 最后的安全检查和调整
         if number1 <= 0 || number2 <= 0 {
@@ -351,37 +400,54 @@ class QuestionGenerator {
                     number2 = safeRandom(in: 2...min(range.upperBound / max(1, number1), maxFactor))
                 }
             case .division:
-                // 除法：确保整除，先选择除数和商，再计算被除数
+                // 除法：确保整除，先选择除数和商，再计算被除数，强化避免相同数字和结果为1
                 // 选择除数（2-10之间，避免÷1）
                 number2 = safeRandom(in: 2...min(10, range.upperBound / 2))
                 if number2 == 0 { number2 = 2 } // 安全检查
-                
+
                 // 计算可能的最大商，确保被除数不超过范围
                 let maxQuotient = range.upperBound / number2
-                let minQuotient = max(2, minNumber)
-                
+                let minQuotient = max(3, minNumber) // 提高最小商，减少结果为1或2的情况
+
                 let quotient: Int
                 if maxQuotient >= minQuotient {
-                    quotient = safeRandom(in: minQuotient...maxQuotient)
+                    // 优先选择较大的商，减少结果为1的概率
+                    if maxQuotient > minQuotient + 1 {
+                        let midPoint = (minQuotient + maxQuotient) / 2
+                        quotient = safeRandom(in: midPoint...maxQuotient)
+                    } else {
+                        quotient = minQuotient
+                    }
                 } else {
                     // 如果无法生成合适的商，调整除数
                     number2 = max(2, range.upperBound / minQuotient)
                     quotient = minQuotient
                 }
-                
+
                 // 计算被除数，确保整除
                 number1 = quotient * number2
-                
+
+                // 强化：避免被除数等于除数的情况（如6÷6=1）
+                if number1 == number2 {
+                    let newQuotient = max(quotient + 1, 3)
+                    if newQuotient * number2 <= range.upperBound {
+                        number1 = newQuotient * number2
+                    } else {
+                        number2 = max(2, number2 - 1)
+                        number1 = max(quotient, 3) * number2
+                    }
+                }
+
                 // 最终验证：确保被除数在范围内
                 if number1 > range.upperBound {
-                    let finalQuotient = range.upperBound / number2
+                    let finalQuotient = max(3, range.upperBound / number2)
                     number1 = finalQuotient * number2
                 }
-                
+
                 // 确保被除数至少为最小值
                 if number1 < minNumber {
                     number2 = 2
-                    number1 = max(minNumber, 2) * number2
+                    number1 = max(minNumber, 3) * number2
                     if number1 > range.upperBound {
                         // 如果仍然超出范围，改为加法操作
                         operation1 = .addition
@@ -389,11 +455,20 @@ class QuestionGenerator {
                         number2 = safeRandom(in: minNumber...min(maxNumberForAddition, range.upperBound))
                     }
                 }
-                
-                // 最终安全检查：确保整除
+
+                // 最终安全检查：确保整除且结果不为1
                 if number2 != 0 && number1 % number2 != 0 {
-                    let actualQuotient = number1 / number2
+                    let actualQuotient = max(3, number1 / number2) // 确保商至少为3
                     number1 = actualQuotient * number2
+                }
+
+                // 再次检查结果不为1
+                if number2 != 0 && number1 / number2 == 1 {
+                    number1 = max(3, minQuotient) * number2
+                    if number1 > range.upperBound {
+                        number2 = max(2, range.upperBound / max(3, minQuotient))
+                        number1 = max(3, minQuotient) * number2
+                    }
                 }
             }
             
@@ -560,11 +635,11 @@ class QuestionGenerator {
             }
             
             attempts += 1
-        } while (number1 == 0 || number2 == 0 || number3 == 0 || finalResult == 0 || 
+        } while (number1 == 0 || number2 == 0 || number3 == 0 || finalResult <= 1 ||
                  hasRepetitivePattern(num1: number1, num2: number2, num3: number3, op1: operation1, op2: operation2)) && attempts < maxAttempts
         
         // 如果尝试多次后仍不满足条件，进行最后的调整
-        if number1 == 0 || number2 == 0 || number3 == 0 || finalResult == 0 {
+        if number1 == 0 || number2 == 0 || number3 == 0 || finalResult <= 1 {
             // 确保所有数字不为0
             number1 = max(5, number1)
             number2 = max(6, number2)
@@ -646,18 +721,18 @@ class QuestionGenerator {
         return Question(number1: number1, number2: number2, number3: number3, operation1: operation1, operation2: operation2)
     }
     
-    // 检查是否存在重复数字模式，避免过于简单的题目
+    // 检查是否存在重复数字模式，避免过于简单的题目，强化避免相同数字运算
     private static func hasRepetitivePattern(num1: Int, num2: Int, num3: Int, op1: Question.Operation, op2: Question.Operation) -> Bool {
         // 检查是否有两个或三个相同的数字
         let numbers = [num1, num2, num3]
         let uniqueNumbers = Set(numbers)
-        
+
         // 如果三个数字都相同，直接拒绝
         if uniqueNumbers.count == 1 {
             return true
         }
-        
-        // 如果有两个相同数字，检查是否会产生过于简单的运算
+
+        // 强化：如果有两个相同数字，更严格地检查是否会产生过于简单的运算
         if uniqueNumbers.count == 2 {
             // 找出重复数字的位置
             var duplicatePositions: [Int] = []
