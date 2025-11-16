@@ -53,6 +53,7 @@ struct ContentView: View {
     @State private var showSettingsView = false
 
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("followSystem") private var followSystem = true
     @AppStorage("HasLaunchedBefore") private var hasLaunchedBefore: Bool = false
 
     private var showWelcome: Bool {
@@ -80,7 +81,7 @@ struct ContentView: View {
                 mainContentView
             }
         }
-        .preferredColorScheme(isDarkMode ? .dark : .light)
+        .preferredColorScheme(followSystem ? nil : (isDarkMode ? .dark : .light))
         .onAppear {
             print("🔍 Debug ContentView.onAppear:")
             print("  - HasLaunchedBefore: \(hasLaunchedBefore)")

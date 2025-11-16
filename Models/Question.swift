@@ -622,22 +622,23 @@ class Question: NSObject, NSCoding, Identifiable {
         case .groupingDivision:
             firstStepSolution = firstStepQuestion.generateGroupingDivisionSolution()
         case .standard:
-            if op1 == .addition {
+            switch op1 {
+            case .addition:
                 firstStepSolution = "solution.standard.addition".localizedFormat(
                     num1, num2, intermediateResult,
                     num1, num2, intermediateResult
                 )
-            } else if op1 == .subtraction {
+            case .subtraction:
                 firstStepSolution = "solution.standard.subtraction".localizedFormat(
                     num1, num2, intermediateResult,
                     num1, num2, intermediateResult
                 )
-            } else if op1 == .multiplication {
+            case .multiplication:
                 firstStepSolution = "solution.standard.multiplication".localizedFormat(
                     num1, num2, intermediateResult,
                     num1, num2, intermediateResult
                 )
-            } else if op1 == .division {
+            case .division:
                 firstStepSolution = "solution.standard.division".localizedFormat(
                     num1, num2, intermediateResult,
                     num1, num2, intermediateResult
@@ -665,22 +666,23 @@ class Question: NSObject, NSCoding, Identifiable {
         case .groupingDivision:
             secondStepSolution = secondStepQuestion.generateGroupingDivisionSolution()
         case .standard:
-            if op2 == .addition {
+            switch op2 {
+            case .addition:
                 secondStepSolution = "solution.standard.addition".localizedFormat(
                     intermediateResult, num3, correctAnswer,
                     intermediateResult, num3, correctAnswer
                 )
-            } else if op2 == .subtraction {
+            case .subtraction:
                 secondStepSolution = "solution.standard.subtraction".localizedFormat(
                     intermediateResult, num3, correctAnswer,
                     intermediateResult, num3, correctAnswer
                 )
-            } else if op2 == .multiplication {
+            case .multiplication:
                 secondStepSolution = "solution.standard.multiplication".localizedFormat(
                     intermediateResult, num3, correctAnswer,
                     intermediateResult, num3, correctAnswer
                 )
-            } else if op2 == .division {
+            case .division:
                 secondStepSolution = "solution.standard.division".localizedFormat(
                     intermediateResult, num3, correctAnswer,
                     intermediateResult, num3, correctAnswer

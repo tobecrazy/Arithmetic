@@ -4,13 +4,19 @@ struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("isTtsEnabled") private var isTtsEnabled = true
+    @AppStorage("followSystem") private var followSystem = true
 
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("settings.display".localized)) {
-                    Toggle(isOn: $isDarkMode) {
-                        Text("settings.dark_mode".localized)
+                    Toggle(isOn: $followSystem) {
+                        Text("settings.follow_system".localized)
+                    }
+                    if !followSystem {
+                        Toggle(isOn: $isDarkMode) {
+                            Text("settings.dark_mode".localized)
+                        }
                     }
                 }
                 Section(header: Text("settings.audio".localized)) {
