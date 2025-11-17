@@ -46,6 +46,7 @@
 | 四则运算练习 | 8种解题方法 | 设备自适应 |
 | 实时计分系统 | 进度自动保存 | 响应式设计 |
 | TTS语音朗读 | 九九乘法表 | 深色模式支持 |
+| PDF题库生成 | 系统信息监控 | 设置选项 |
 
 </div>
 
@@ -57,6 +58,21 @@
 - **灵活删除 (Flexible Deletion)** - 支持删除单个错题、所有错题或已掌握的错题 (Supports deleting individual, all, or mastered wrong questions)
 - **智能识别 (Smart Recognition)** - 自动识别已掌握的错题（正确率达到70%以上） (Automatically identifies mastered questions with 70%+ accuracy)
 - **优先练习 (Priority Practice)** - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点 (Questions appear with priority in subsequent practice to help consolidate weak points)
+
+### 📚 数学题库生成 (Math Bank PDF Generation)
+- **PDF生成 (PDF Generation)** - 生成可打印的数学题库PDF文件 (Generates printable math problem bank PDF files)
+- **自定义设置 (Custom Settings)** - 用户可选择难度等级和题目数量 (Users can select difficulty level and number of questions)
+- **错题优先 (Wrong Questions Priority)** - 优先选用错题集中的题目 (Prioritizes questions from the wrong question collection)
+- **答案页面 (Answer Pages)** - 生成包含题目和答案的完整PDF (Generates complete PDF with both question and answer pages)
+- **分享选项 (Sharing Options)** - 支持保存到文件或通过系统分享功能分享 (Supports saving to files or sharing via system share functionality)
+
+### 💻 系统信息监控 (System Information Monitoring)
+- **设备信息 (Device Information)** - 显示设备名称、CPU信息 (Shows device name and CPU information)
+- **实时监控 (Real-time Monitoring)** - CPU使用率、内存使用和磁盘空间实时更新 (Real-time updates for CPU usage, memory usage, and disk space)
+- **电池监控 (Battery Monitoring)** - 显示电池电量、充电状态、电源类型和系统运行时长 (Shows battery level, charging status, power source type, and system uptime)
+- **网络信息 (Network Information)** - 显示网络连接类型、WiFi名称和运营商信息 (Shows network connection type, WiFi name, and carrier information)
+- **屏幕信息 (Screen Information)** - 显示屏幕分辨率、尺寸和刷新率 (Shows screen resolution, size, and refresh rate)
+- **系统版本 (System Version)** - 显示当前iOS/iPadOS版本和实时时间 (Shows current iOS/iPadOS version and real-time clock)
 
 ### 🎯 智能解题方法 (Intelligent Solution Methods)
 - **加法方法 (Addition Method)** - 凑十法 (Making Ten Method)
@@ -116,6 +132,7 @@
 - **原生TTS引擎 (Native TTS Engine)** - 基于iOS原生AVSpeechSynthesizer，确保高质量语音输出 (Built on iOS native AVSpeechSynthesizer for high-quality voice output)
 - **自适应语言切换 (Adaptive Language Switching)** - 根据应用当前语言设置自动选择中文或英文发音 (Automatically selects Chinese or English pronunciation based on current app language settings)
 - **无缝交互体验 (Seamless Interactive Experience)** - 题目文本外观保持不变，点击即可触发朗读功能 (Question text appearance remains unchanged, tap to trigger read-aloud functionality)
+- **TTS控制开关 (TTS Control Toggle)** - 在设置页面可以全局启用或禁用自动朗读功能 (Globally enable or disable auto-read functionality in the settings page)
 
 ### 🧠 错题解析系统 (Wrong Question Analysis System)
 
@@ -246,6 +263,14 @@
 - **实时切换 (Real-time Switching)** - 可随时切换语言 (Language can be switched at any time)
 - **完整本地化 (Complete Localization)** - 包括解析内容的完整双语支持 (Full bilingual support including analysis content)
 
+### 🚀 欢迎引导流程 (Welcome Onboarding Flow)
+- **交互式介绍 (Interactive Introduction)** - 首次启动应用时提供4页交互式引导 (Provides 4-page interactive onboarding on first app launch)
+- **难度等级介绍 (Difficulty Level Introduction)** - 介绍6级难度体系 (Introduces the 6-level difficulty system)
+- **核心功能概览 (Core Features Overview)** - 介绍主要功能如解题思路、错题集、乘法表等 (Introduces main features like solving approaches, wrong questions collection, multiplication table, etc.)
+- **使用方法指导 (Usage Instructions)** - 提供详细的使用步骤指导 (Provides detailed usage step-by-step instructions)
+- **跳过选项 (Skip Option)** - 用户可随时跳过引导直接进入主界面 (Users can skip onboarding at any time to enter main interface directly)
+- **个性化体验 (Personalized Experience)** - 帮助用户快速了解应用功能 (Helps users quickly understand app features)
+
 ### 📐 新增小学数学公式大全 (New Elementary Math Formula Guide)
 - ** comprehensive Formula Guide ** - 新增全面的小学数学公式指南 (Added a comprehensive elementary math formula guide)
 - **几何形体计算 (Geometry Calculations)** - 包含平面图形和立体图形的周长、面积、体积公式 (Includes perimeter, area, and volume formulas for plane and solid figures)
@@ -260,6 +285,7 @@
 ### ⚙️ 设置页面 (Settings Page)
 - **深色模式切换 (Dark Mode Toggle)** - 支持应用内切换深色模式和浅色模式 (Supports switching between dark and light mode within the app)
 - **TTS语音开关 (TTS Toggle)** - 全局控制题目和乘法表的自动朗读功能 (Globally control the automatic reading function of questions and multiplication tables)
+- **系统偏好 (System Preference)** - 支持跟随系统设置 (Supports following system settings)
 
 ### 🎨 UI界面优化 (UI Improvements)
 - **简洁选择器 (Cleaner Picker)** - 隐藏难度选择器标签，创建更清洁的界面 (Difficulty picker labels are now hidden to create a cleaner interface)
