@@ -539,6 +539,14 @@ flowchart TB
 - **动态切换 (Dynamic Switching)** - 运行时语言切换支持 (Runtime language switching support)
 - **完整覆盖 (Complete Coverage)** - UI文本和解析内容全面本地化 (Comprehensive localization of UI text and analysis content)
 
+#### PDF题库生成系统 (PDF Problem Bank Generation System)
+- **PDF生成器 (PDF Generator)** - `MathBankPDFGenerator.swift` 负责生成数学题库PDF文件 (`MathBankPDFGenerator.swift` responsible for generating math problem bank PDF files)
+- **题目管理 (Question Management)** - 从错题集和随机生成的题目中创建题库 (Creates problem banks from wrong questions collection and randomly generated questions)
+- **页面布局 (Page Layout)** - A4尺寸优化布局，支持题目页和答案页 (A4 size optimized layout, supports question pages and answer pages)
+- **多语言支持 (Multilingual Support)** - 生成的PDF支持中英文双语 (Generated PDFs support bilingual Chinese/English)
+- **文件管理 (File Management)** - 支持保存到文档目录、文件分享和系统分享 (Supports saving to documents directory, file sharing, and system sharing)
+- **可定制性 (Customizability)** - 用户可选择题目数量和难度等级 (Users can select number of questions and difficulty levels)
+
 ### 🔋 系统信息监控功能 (System Information Monitoring Function)
 
 #### 实时监控模块 (Real-time Monitoring Module)
@@ -600,6 +608,7 @@ Arithmetic/
 │   ├── FormulaGuideView.swift             # 小学数学公式大全视图
 │   ├── OtherOptionsView.swift             # 其他选项视图
 │   ├── SystemInfoView.swift               # 系统信息视图
+│   ├── MathBankView.swift                 # 数学题库生成视图
 │   ├── SettingsView.swift                 # 设置视图
 │   ├── SystemInfoComponents.swift         # 系统信息组件
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
@@ -624,6 +633,7 @@ Arithmetic/
 │   ├── DeviceUtils.swift                  # 设备工具
 │   ├── SystemInfoManager.swift           # 系统信息管理器（含电池、网络、屏幕信息）
 │   ├── ProgressViewUtils.swift            # 进度视图工具
+│   ├── MathBankPDFGenerator.swift         # PDF题库生成器
 │   └── ImageCacheManager.swift            # 图片缓存管理器
 ├── 🔧 Extensions/                          # 扩展
 │   ├── String+Localized.swift             # 字符串本地化扩展
@@ -663,12 +673,27 @@ Arithmetic/
 - **即时反馈 (Instant Feedback)** - 操作后立即提供视觉或听觉反馈 (Provides visual or auditory feedback immediately after operation)
 - **手势支持 (Gesture Support)** - 支持常用的手势操作（点击、滑动等）(Supports common gesture operations (tap, swipe, etc.))
 - **加载优化 (Loading Optimization)** - 优化加载时间，减少用户等待 (Optimizes loading time, reducing user wait)
+- **PDF生成体验 (PDF Generation Experience)** - 便捷的数学题库生成和分享功能 (Convenient math problem bank generation and sharing functionality)
+- **系统信息查看 (System Information View)** - 一键查看设备详细信息 (One-tap access to detailed device information)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2025-11-16 (新增PDF题库生成和系统信息监控功能)
+- **🆕 新增PDF题库生成功能**: 全新的数学题库PDF生成器，支持自定义题目数量和难度等级
+  - **📚 MathBankView**: 专门的数学题库生成界面，用户可选择题目数量和难度等级 (Dedicated math problem bank generation interface, users can select number of questions and difficulty levels)
+  - **📄 PDF生成**: 支持生成包含题目页和答案页的完整PDF文档 (Supports generating complete PDF documents with both question and answer pages)
+  - **🔄 优先错题**: 优先从错题集中提取题目，帮助用户重点复习 (Prioritizes questions from the wrong question collection to help users focus on review)
+  - **📤 多种分享方式**: 支持保存到文档目录、系统分享和文件分享 (Multiple sharing options: supports saving to documents directory, system sharing, and file sharing)
+- **💻 新增系统信息监控**: 实时显示设备信息、性能数据、电池状态和网络状况
+  - **📱 设备信息**: 显示设备名称、CPU信息、系统版本和屏幕规格 (Shows device name, CPU information, system version and screen specifications)
+  - **📊 性能监控**: 实时监控CPU使用率、内存使用情况和磁盘空间 (Real-time monitoring of CPU usage, memory usage and disk space)
+  - **🔋 电池监控**: 显示电池电量、充电状态、电源类型和系统运行时长 (Shows battery level, charging status, power source type and system uptime)
+  - **🌐 网络信息**: 显示网络连接类型、WiFi名称和运营商信息 (Shows network connection type, WiFi name and carrier information)
+  - **⏱️ 系统运行时长**: 精确计算系统自启动以来的运行时间 (Precisely calculates system uptime since boot)
 
 ### 🌟 2025-11-15 (新增设置页面和功能)
 - **🆕 新增设置页面**: 添加了独立的设置页面
