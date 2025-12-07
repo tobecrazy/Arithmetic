@@ -14,7 +14,7 @@
 
 *An intelligent arithmetic learning application built with SwiftUI to help elementary students master basic mathematical operations*
 
-[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation)
+[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring)
 
 </div>
 
@@ -29,6 +29,7 @@
 - [📥 安装说明 (Installation)](#-安装说明-installation)
 - [📖 使用说明 (Usage)](#-使用说明-usage)
 - [🏗️ 技术实现 (Technical Implementation)](#️-技术实现-technical-implementation)
+- [📊 系统信息监控 (System Information Monitoring)](#️-系统信息监控-system-information-monitoring)
 - [📁 项目结构 (Project Structure)](#-项目结构-project-structure)
 - [🔄 最近更新 (Recent Updates)](#-最近更新-recent-updates)
 - [🤝 贡献指南 (Contributing)](#-贡献指南-contributing)
@@ -47,6 +48,8 @@
 | 实时计分系统 | 进度自动保存 | 响应式设计 |
 | TTS语音朗读 | 九九乘法表 | 深色模式支持 |
 | PDF题库生成 | 系统信息监控 | 设置选项 |
+| 欢迎引导流程 | 数学公式大全 | 电池监控 |
+| 网络状态检测 | 单位换算 | 运行时长计算 |
 
 </div>
 
@@ -60,19 +63,15 @@
 - **优先练习 (Priority Practice)** - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点 (Questions appear with priority in subsequent practice to help consolidate weak points)
 
 ### 📚 数学题库生成 (Math Bank PDF Generation)
-- **PDF生成 (PDF Generation)** - 生成可打印的数学题库PDF文件 (Generates printable math problem bank PDF files)
-- **自定义设置 (Custom Settings)** - 用户可选择难度等级和题目数量 (Users can select difficulty level and number of questions)
-- **错题优先 (Wrong Questions Priority)** - 优先选用错题集中的题目 (Prioritizes questions from the wrong question collection)
-- **答案页面 (Answer Pages)** - 生成包含题目和答案的完整PDF (Generates complete PDF with both question and answer pages)
-- **分享选项 (Sharing Options)** - 支持保存到文件或通过系统分享功能分享 (Supports saving to files or sharing via system share functionality)
+- **📄 PDF生成 (PDF Generation)** - 生成可打印的数学题库PDF文件，支持题目页和答案页分离 (Generates printable math problem bank PDF files with separate question and answer pages)
+- **⚙️ 自定义设置 (Custom Settings)** - 用户可选择难度等级和题目数量，支持10-100题范围配置 (Users can select difficulty level and number of questions, supporting 10-100 question range configuration)
+- **🔄 错题优先 (Wrong Questions Priority)** - 优先选用错题集中的题目，帮助巩固薄弱点 (Prioritizes questions from the wrong question collection to help consolidate weak points)
+- **📋 答案页面 (Answer Pages)** - 生成包含题目和答案的完整PDF，便于自我检测和评分 (Generates complete PDF with both question and answer pages for self-assessment)
+- **📤 分享选项 (Sharing Options)** - 支持保存到文件、文档目录或通过系统分享功能分享 (Supports saving to files, document directory, or sharing via system share functionality)
+- **🖨️ 打印友好 (Print-Friendly)** - A4格式优化布局，确保打印效果清晰 (A4 format optimized layout to ensure clear printing results)
+- **🌐 双语支持 (Bilingual Support)** - 生成的PDF支持中英文双语，适应不同语言环境 (Generated PDFs support bilingual Chinese/English for different language environments)
+- **💾 本地存储 (Local Storage)** - 题库PDF自动保存至应用文档目录，方便随时访问 (Problem bank PDFs automatically saved to app document directory for easy access)
 
-### 💻 系统信息监控 (System Information Monitoring)
-- **设备信息 (Device Information)** - 显示设备名称、CPU信息 (Shows device name and CPU information)
-- **实时监控 (Real-time Monitoring)** - CPU使用率、内存使用和磁盘空间实时更新 (Real-time updates for CPU usage, memory usage, and disk space)
-- **电池监控 (Battery Monitoring)** - 显示电池电量、充电状态、电源类型和系统运行时长 (Shows battery level, charging status, power source type, and system uptime)
-- **网络信息 (Network Information)** - 显示网络连接类型、WiFi名称和运营商信息 (Shows network connection type, WiFi name, and carrier information)
-- **屏幕信息 (Screen Information)** - 显示屏幕分辨率、尺寸和刷新率 (Shows screen resolution, size, and refresh rate)
-- **系统版本 (System Version)** - 显示当前iOS/iPadOS版本和实时时间 (Shows current iOS/iPadOS version and real-time clock)
 
 ### 🎯 智能解题方法 (Intelligent Solution Methods)
 - **加法方法 (Addition Method)** - 凑十法 (Making Ten Method)
@@ -232,6 +231,15 @@
 - **便捷访问 (Convenient Access)** - 在"关于我"页面新增GitHub仓库链接 (Added GitHub repository link to the "About Me" page)
 - **开源支持 (Open Source Support)** - 用户可直接访问项目开源地址，了解开发进展 (Users can directly access the project's open source repository to understand development progress)
 - **中英双语 (Bilingual Support)** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本 (Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository")
+
+### 📐 小学数学公式大全 (Elementary Math Formula Guide)
+- **📚 全面公式库 (Comprehensive Formula Library)** - 涵盖几何图形、单位换算、数量关系、运算定律等小学数学核心公式 (Covers core elementary math formulas including geometric shapes, unit conversions, quantity relations, arithmetic laws, etc.)
+- **📐 几何公式 (Geometry Formulas)** - 包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式 (Includes perimeter, area, and volume formulas for plane figures like rectangle, square, triangle and solid figures like cuboid, cube, cylinder)
+- **📏 单位换算 (Unit Conversions)** - 涵盖长度、面积、体积、质量、时间等常用单位换算 (Covers common unit conversions for length, area, volume, mass, time, etc.)
+- **🔍 运算定律 (Arithmetic Laws)** - 包括加法、乘法交换律和结合律、乘法分配律等 (Includes commutative, associative laws of addition and multiplication, distributive law, etc.)
+- **🧮 特殊问题 (Special Problems)** - 涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题等解题公式 (Covers solution formulas for sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, etc.)
+- **📍 便捷访问 (Convenient Access)** - 从"其他选项"页面可直接访问公式大全 (Directly accessible from the "Other Options" page)
+- **🌐 双语支持 (Bilingual Support)** - 完整的中英文公式解释和说明 (Complete Chinese/English formula explanations and descriptions)
 
 ### 🔋 电池监控与运行时长功能 (Battery Monitoring and Uptime Calculation)
 - **实时电池状态 (Real-time Battery Status)** - 实时监控设备电池电量、充电状态和电源类型 (Real-time monitoring of device battery level, charging status, and power source type)
@@ -575,6 +583,44 @@ flowchart TB
 
 ---
 
+## 📊 系统信息监控 (System Information Monitoring)
+
+在"关于我"页面中，应用提供了全面的系统信息监控功能，用户可以查看设备的详细规格和实时性能数据。
+
+In the "About Me" page, the app provides comprehensive system information monitoring, allowing users to view detailed device specifications and real-time performance data.
+
+### 📱 设备信息 (Device Information)
+- **设备型号 (Device Model)** - 显示具体的设备型号和名称 (Shows specific device model and name)
+- **CPU信息 (CPU Information)** - 显示处理器型号和核心数 (Displays processor model and core count)
+- **系统版本 (System Version)** - 显示当前iOS/iPadOS版本 (Shows current iOS/iPadOS version)
+- **屏幕信息 (Screen Information)** - 显示屏幕分辨率、物理尺寸和刷新率 (Displays screen resolution, physical size, and refresh rate)
+
+### 📊 性能监控 (Performance Monitoring)
+- **CPU使用率 (CPU Usage)** - 实时监控CPU占用率 (Real-time monitoring of CPU usage)
+- **内存使用 (Memory Usage)** - 显示已使用、总内存、可用内存和使用百分比 (Shows used, total, available memory and usage percentage)
+- **磁盘空间 (Disk Space)** - 显示已使用、总磁盘空间、可用磁盘空间和使用百分比 (Shows used, total disk space, available disk space and usage percentage)
+- **可视化显示 (Visual Display)** - 使用进度条直观显示资源使用情况 (Uses progress bars to visually display resource usage)
+
+### 🔋 电池监控 (Battery Monitoring)
+- **电池电量 (Battery Level)** - 显示当前电池百分比 (Shows current battery percentage)
+- **充电状态 (Charging Status)** - 显示当前充电状态（充电中、已充满、未充电）(Shows current charging status (charging, fully charged, not charging))
+- **电源类型 (Power Source Type)** - 显示电源类型（电池、充电器、外部电源）(Shows power source type (battery, charger, external power))
+- **系统运行时长 (System Uptime)** - 精确计算并实时更新系统自启动以来的运行时长 (Precisely calculates and updates the system uptime since boot in real-time)
+
+### 🌐 网络状态监控 (Network Status Monitoring)
+- **网络连接类型 (Network Connection Type)** - 实时检测网络连接类型（Wi-Fi/蜂窝网络）(Real-time detection of network connection type (Wi-Fi/cellular))
+- **Wi-Fi信息 (Wi-Fi Information)** - 显示Wi-Fi连接名称（SSID）(Displays Wi-Fi connection name (SSID))
+- **蜂窝网络信息 (Cellular Information)** - 显示运营商信息（如适用）(Displays carrier information (where applicable))
+- **连接状态指示 (Connection Status Indicator)** - 提供网络连接状态的实时反馈 (Provides real-time feedback on network connection status)
+
+### 🕐 实时时间 (Real-time Clock)
+- **当前时间 (Current Time)** - 实时显示当前时间，每秒更新 (Real-time display of current time, updated every second)
+- **时间格式 (Time Format)** - 根据系统设置显示12小时或24小时制 (Displays 12-hour or 24-hour format based on system settings)
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
 ## 📁 项目结构 (Project Structure)
 
 ```
@@ -587,6 +633,7 @@ Arithmetic/
 ├── 📄 README.md
 ├── 📄 BATTERY_UPTIME_FIX_SUMMARY.md      # 电池和运行时长功能修复说明
 ├── 📄 CLAUDE.md                          # Claude开发助手对话记录
+├── 📄 QWEN.md                           # Qwen开发助手对话记录
 ├── 📄 TTS_Implementation_Guide.md        # TTS功能实现指南
 ├── 📁 .claude/                           # Claude开发助手配置
 ├── 📁 .github/                           # GitHub工作流和配置
@@ -1052,6 +1099,11 @@ Arithmetic/
 - **🎨 UI Components**: Added SystemInfoComponents for displaying system info
 - **⚙️ Data Management**: Real-time data updates managed through SystemInfoManager class
 - **📱 Dedicated Page**: Navigate from About Me page to a dedicated system information viewing page
+
+### 🌟 2025-12-07 (README更新)
+- **🔄 README更新**: 基于项目最新状态更新README文档
+- **🔧 项目结构更新**: 添加QWEN.md至项目结构说明
+- **📚 功能列表扩展**: 更新功能特点表格，包含所有最新功能
 
 ### 🌟 2025-11-06 (最新更新和优化)
 - **🔄 README更新**: 基于项目最新状态和Qwen.md上下文信息更新README文档
