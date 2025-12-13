@@ -7,9 +7,7 @@ struct OtherOptionsView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     @State private var navigateToMultiplicationTable = false
-    @State private var navigateToAboutMe = false
     @State private var navigateToFormulaGuide = false
-    @State private var navigateToSystemInfo = false
     @State private var navigateToMathBank = false
     
     // Computed properties for navigation destinations
@@ -18,18 +16,8 @@ struct OtherOptionsView: View {
             .environmentObject(localizationManager)
     }
     
-    private var aboutMeDestination: some View {
-        AboutMeView()
-            .environmentObject(localizationManager)
-    }
-
     private var formulaGuideDestination: some View {
         FormulaGuideView()
-            .environmentObject(localizationManager)
-    }
-
-    private var systemInfoDestination: some View {
-        SystemInfoView()
             .environmentObject(localizationManager)
     }
 
@@ -140,70 +128,6 @@ struct OtherOptionsView: View {
                 }
                 .padding(.horizontal)
 
-                // 关于我按钮
-                Button(action: {
-                    navigateToAboutMe = true
-                }) {
-                    HStack {
-                        Image(systemName: "person.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(.white)
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("button.about_me".localized)
-                                .font(.adaptiveHeadline())
-                                .foregroundColor(.white)
-                            
-                            Text("about.content".localized)
-                                .font(.adaptiveBody())
-                                .foregroundColor(.white.opacity(0.8))
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(2)
-                        }
-                        
-                        Spacer()
-                        
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-                    .padding()
-                    .background(Color.purple)
-                    .cornerRadius(.adaptiveCornerRadius)
-                }
-                .padding(.horizontal)
-
-                // 系统信息按钮
-                Button(action: {
-                    navigateToSystemInfo = true
-                }) {
-                    HStack {
-                        Image(systemName: "info.circle")
-                            .font(.title2)
-                            .foregroundColor(.white)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("system.info.title".localized)
-                                .font(.adaptiveHeadline())
-                                .foregroundColor(.white)
-
-                            Text("system.info.description".localized)
-                                .font(.adaptiveBody())
-                                .foregroundColor(.white.opacity(0.8))
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(2)
-                        }
-
-                        Spacer()
-
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-                    .padding()
-                    .background(Color.red.opacity(0.6))
-                    .cornerRadius(.adaptiveCornerRadius)
-                }
-                .padding(.horizontal)
-
                 Spacer(minLength: 50)
                 
                 // 返回主页按钮
@@ -228,24 +152,10 @@ struct OtherOptionsView: View {
                 ) {
                     EmptyView()
                 }
-                
-                NavigationLink(
-                    destination: aboutMeDestination,
-                    isActive: $navigateToAboutMe
-                ) {
-                    EmptyView()
-                }
 
                 NavigationLink(
                     destination: formulaGuideDestination,
                     isActive: $navigateToFormulaGuide
-                ) {
-                    EmptyView()
-                }
-
-                NavigationLink(
-                    destination: systemInfoDestination,
-                    isActive: $navigateToSystemInfo
                 ) {
                     EmptyView()
                 }

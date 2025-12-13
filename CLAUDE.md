@@ -19,11 +19,14 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
 # Build and run in simulator
 xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' build
 
-# Run tests (requires test target setup - see TESTING_INSTRUCTIONS.md)
+# Run all tests (requires test target setup - see TESTING_INSTRUCTIONS.md)
 xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15'
 
 # Run single test class
 xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing ArithmeticTests/QuestionGeneratorTests
+
+# Run specific test method
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing ArithmeticTests/QuestionGeneratorTests/testGenerateNonRepetitiveQuestions
 
 # Clean build
 xcodebuild clean -project Arithmetic.xcodeproj -scheme Arithmetic
@@ -42,8 +45,24 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build -verbose
 ```
 
 ### Code Review
-- Use the swift-code-reviewer agent for Swift standards compliance (see .claude/agents/swift-code-reviewer.md)
-- Review SwiftUI patterns, state management, and project-specific guidelines before committing
+Use the **swift-code-reviewer agent** after writing or modifying Swift code. Launch it with:
+```bash
+Task: swift-code-reviewer (use this for Swift/SwiftUI code reviews)
+```
+
+**When to use the swift-code-reviewer agent:**
+- After implementing new SwiftUI views or ViewModels
+- Before committing changes to core logic (GameViewModel, question generation)
+- When refactoring to ensure patterns align with project standards
+- For critical business logic (division operations, CoreData access, state management)
+
+**Review focuses on:**
+- Swift naming conventions and API design guidelines
+- SwiftUI state management (`@State`, `@StateObject`, `@ObservedObject`)
+- CoreData integration using `CoreDataManager.shared` singleton
+- Mathematical correctness (especially division operations)
+- Memory management (weak self in closures, retain cycles)
+- Localization using `String+Localized` extension
 
 ## Development Environment Setup
 
@@ -76,7 +95,9 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build -verbose
 ## Architecture Overview
 
 ### MVVM Pattern with Core Data Integration
-The app follows the Model-View-ViewModel pattern with sophisticated CoreData integration:
+The app follows the **Model-View-ViewModel (MVVM)** pattern with sophisticated CoreData integration. This architecture ensures clear separation of concerns, testability, and maintainability:
+
+**Layer Responsibilities:**
 
 - **Models**: `Question`, `GameState`, `DifficultyLevel` - Core data structures with complex solution methods
 - **Views**: SwiftUI views in `/Views` directory (e.g., `GameView`, `WrongQuestionsView`, `MultiplicationTableView`)
@@ -240,8 +261,38 @@ Arithmetic/
    - Verify TTS works in both languages
 5. **Performance**: Profile question generation and TTS operations
 
-### Before Committing Changes
-1. Run tests: `xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic`
-2. Check localization: `./scripts/check_localizations.sh`
-3. Review code using swift-code-reviewer agent for Swift standards compliance
-4. Verify builds successfully: `xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build`
+### Pre-commit Checklist
+Before committing changes, complete this checklist to maintain code quality:
+
+1. **Run all tests**
+   ```bash
+   xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15'
+   ```
+   - All tests must pass
+   - Add new tests for any new utility functions
+
+2. **Verify build succeeds**
+   ```bash
+   xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
+   ```
+   - No compilation errors or warnings
+   - Check for any deprecation warnings
+
+3. **Check localization consistency**
+   ```bash
+   ./scripts/check_localizations.sh
+   ```
+   - All new user-facing strings must be added to both `en.lproj` and `zh-Hans.lproj`
+   - Run this script to verify consistency
+
+4. **Review code with swift-code-reviewer agent**
+   - For Swift/SwiftUI code changes, use the swift-code-reviewer agent
+   - Focus on: naming conventions, state management, CoreData patterns, localization usage
+   - Verify mathematical correctness for question generation changes
+
+5. **Verify project-specific requirements**
+   - **Division Operations**: All division results must be integers (use `Question.isValid()`)
+   - **Localization**: Use `"key".localized` or `"key".localizedFormat()` for all user text
+   - **CoreData**: Use `CoreDataManager.shared` singleton, never create contexts directly
+   - **Difficulty Levels**: Use `DifficultyLevel` properties instead of hardcoded values
+   - **TTS Usage**: All mathematical expressions should use `speakMathExpression()` method

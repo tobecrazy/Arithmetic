@@ -294,6 +294,8 @@
 - **深色模式切换 (Dark Mode Toggle)** - 支持应用内切换深色模式和浅色模式 (Supports switching between dark and light mode within the app)
 - **TTS语音开关 (TTS Toggle)** - 全局控制题目和乘法表的自动朗读功能 (Globally control the automatic reading function of questions and multiplication tables)
 - **系统偏好 (System Preference)** - 支持跟随系统设置 (Supports following system settings)
+- **关于我 (About Me)** - 查看开发者信息和GitHub仓库链接 (View developer information and GitHub repository link)
+- **系统信息 (System Information)** - 实时查看设备信息、性能数据和系统状态 (Real-time view of device info, performance data and system status)
 
 ### 🎨 UI界面优化 (UI Improvements)
 - **简洁选择器 (Cleaner Picker)** - 隐藏难度选择器标签，创建更清洁的界面 (Difficulty picker labels are now hidden to create a cleaner interface)
@@ -324,7 +326,7 @@
 4. **开始练习** - 点击"开始游戏"按钮开始答题
 5. **查看解析** - 答错题目后可立即查看详细解析
 6. **错题复习** - 通过错题集功能巩固薄弱环节
-7. **个性化设置** - 在设置页面调整深色模式和TTS语音开关 (Adjust dark mode and TTS toggle in the settings page)
+7. **个性化设置** - 在设置页面调整深色模式、TTS语音开关，以及查看关于我和系统信息 (Adjust dark mode, TTS toggle, view About Me, and System Information in the settings page)
 
 #### 🌍 First-Time Experience
 1. **Welcome Onboarding** - When launching the app for the first time, a 4-page interactive onboarding interface will be displayed
@@ -339,7 +341,7 @@
 4. **Start Practice** - Click "Start Game" button to begin answering
 5. **View Analysis** - Check detailed analysis immediately after wrong answers
 6. **Review Wrong Questions** - Consolidate weak points through wrong questions collection
-7. **Personalize Settings** - Adjust dark mode and TTS toggle in the settings page
+7. **Personalize Settings** - Adjust dark mode, TTS toggle, view About Me, and System Information in the settings page
 
 ### 🎯 推荐学习路径 (Recommended Learning Path)
 ```mermaid
@@ -728,6 +730,14 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2025-12-14 (UI重构 - 移动设置相关功能)
+- **🎯 UI结构优化**: 将"关于我"和"系统信息"功能从"其他选项"页面移到设置页面
+  - **📍 关于我**: 在设置页面添加"关于我"导航链接，保留开发者信息和GitHub仓库链接
+  - **📍 系统信息**: 在设置页面添加"系统信息"导航链接，方便用户查看设备详细信息
+  - **🔧 代码优化**: 简化OtherOptionsView，移除冗余的导航状态和目标定义
+  - **📱 用户体验**: 设置页面更加专注，提供了一个集中的配置和信息中心
+  - **🌐 本地化**: 新增"settings.info"本地化键，支持中英文双语
 
 ### 🌟 2025-11-16 (新增PDF题库生成和系统信息监控功能)
 - **🆕 新增PDF题库生成功能**: 全新的数学题库PDF生成器，支持自定义题目数量和难度等级
