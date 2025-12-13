@@ -16,8 +16,14 @@ open Arithmetic.xcodeproj
 # Build from command line
 xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
 
+# Build and run in simulator
+xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' build
+
 # Run tests (requires test target setup - see TESTING_INSTRUCTIONS.md)
 xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15'
+
+# Run single test class
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing ArithmeticTests/QuestionGeneratorTests
 
 # Clean build
 xcodebuild clean -project Arithmetic.xcodeproj -scheme Arithmetic
@@ -34,6 +40,38 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build -verbose
 # Check consistency between Chinese and English localization files
 ./scripts/check_localizations.sh
 ```
+
+### Code Review
+- Use the swift-code-reviewer agent for Swift standards compliance (see .claude/agents/swift-code-reviewer.md)
+- Review SwiftUI patterns, state management, and project-specific guidelines before committing
+
+## Development Environment Setup
+
+### Prerequisites
+- **macOS**: 12.0+ (Monterey or later)
+- **Xcode**: 13.0+ (with Swift 5.5+)
+- **iOS Deployment Target**: 15.0+
+- **Git**: For version control
+
+### Initial Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/tobecrazy/Arithmetic.git
+   cd Arithmetic
+   ```
+2. Open the project in Xcode:
+   ```bash
+   open Arithmetic.xcodeproj
+   ```
+3. Select target device (iPhone or iPad simulator, or physical device)
+4. Build the project (Cmd+B)
+5. Set up test target if needed (see TESTING_INSTRUCTIONS.md)
+
+### Important Configuration Notes
+- **Localization**: Project supports Chinese (Simplified) and English
+- **CoreData**: Model is created programmatically with automatic migration
+- **SwiftUI**: Uses SwiftUI 3.0+ for all UI components
+- **Assets**: AppIcon configured in AppIcon.appiconset folder
 
 ## Architecture Overview
 
@@ -70,72 +108,6 @@ The app follows the Model-View-ViewModel pattern with sophisticated CoreData int
 - **ImageCacheManager**: Two-level caching (memory + disk) for UI assets
 - **NavigationUtil**: Custom navigation management
 
-## Development Guidelines
-
-### Working with Questions
-- **Integer Results**: All division must result in whole numbers - validated via `Question.isValid()`
-- **Operation Order**: Three-number operations follow PEMDAS precedence rules
-- **Wrong Question Tracking**: Automatically tracked and resurface in future sessions (30% priority)
-- **Quality Control**: Avoids trivial operations (×1 reduced to 5%, ÷1 completely avoided)
-
-### CoreData Considerations
-- **Programmatic Model**: CoreData model created in `CoreDataManager.createManagedObjectModel()`
-- **Automatic Migration**: Schema changes handled gracefully via automatic migration
-- **Testing**: Always test persistence operations across different difficulty levels
-
-### Localization Workflow
-1. **Add Strings**: Use `"key".localized` or `"key".localizedFormat(...)` for formatting
-2. **Run Checks**: `./scripts/check_localizations.sh` to verify key consistency
-3. **Update Files**: Add translations to both `Resources/en.lproj/Localizable.strings` and `Resources/zh-Hans.lproj/Localizable.strings`
-
-### Game State Management
-- **Single Pause**: Games can be paused once per session (with score penalty)
-- **Auto-save**: Progress auto-saves to CoreData for session recovery
-- **Timer Integration**: Timer management tied to game state changes via Combine publishers
-
-### Testing Strategy
-- **Unit Tests**: Comprehensive tests for `/Utils/` directory (see TESTING_INSTRUCTIONS.md)
-- **Question Validation**: Test generation across all 6 difficulty levels
-- **Mathematical Correctness**: Verify solution methods produce accurate results
-- **CoreData**: Test migration scenarios and persistence operations
-- **TTS**: Validate functionality across supported languages
-
-## Code Patterns
-
-### Difficulty-Based Logic
-Each `DifficultyLevel` defines:
-- Question count and time limits
-- Number ranges for operands
-- Available mathematical operations (`supportedOperations`)
-- Specialized solution methods applicable
-
-### Observable State Management
-- `GameState` and `GameViewModel` use `@Published` properties
-- UI updates automatically via SwiftUI bindings
-- Complex state changes managed through Combine publishers
-
-### Error Handling Philosophy
-- **CoreData**: Fallback and migration strategies for persistence failures
-- **Question Validation**: Prevents mathematical errors before generation
-- **TTS Failures**: Gracefully degrade without crashing gameplay
-- **Network/System Info**: Handle unavailable data gracefully
-
-## Project Structure Insights
-
-```
-Arithmetic/
-├── App/ArithmeticApp.swift              # App entry with CoreData context injection
-├── Views/                               # 18+ SwiftUI views for all screens
-├── ViewModels/GameViewModel.swift       # Central business logic controller
-├── Models/                              # Question, GameState, DifficultyLevel
-├── CoreData/                            # Complete persistence layer
-├── Utils/                               # 10+ utility classes (generators, managers, helpers)
-├── Extensions/                          # Swift extensions for localization, fonts, etc.
-├── Resources/                           # Localization files (en.lproj, zh-Hans.lproj)
-├── Tests/                               # Unit tests for all Utils classes
-└── scripts/check_localizations.sh       # Localization consistency checker
-```
-
 ## Critical Implementation Details
 
 ### Question Generation Algorithm
@@ -159,28 +131,117 @@ Arithmetic/
 - **Bilingual Support**: Generated PDFs include both Chinese and English content
 - **A4 Optimization**: Print-friendly layout with separate question/answer pages
 
+## Critical Anti-Patterns to Avoid
+1. **Division without validation**: All division must result in integers
+   - ❌ `Bad`: Generating "9 ÷ 2" which results in 4.5
+   - ✅ `Good`: Using reverse generation "quotient × divisor = dividend"
+2. **Force unwrapping**: Use optional binding instead
+   - ❌ `Bad`: `let value = optionalValue!`
+   - ✅ `Good`: `guard let value = optionalValue else { return }`
+3. **Hardcoded operand ranges**: Use `DifficultyLevel` properties
+   - ❌ `Bad`: `if level == "hard" { maxNum = 100 }`
+   - ✅ `Good`: `maxNum = difficulty.maxOperand`
+4. **String literals for UI text**: Use localization extension
+   - ❌ `Bad`: `Text("Score: \(score)")`
+   - ✅ `Good`: `Text("score_label".localizedFormat(score))`
+5. **Direct CoreData context usage**: Use singleton manager
+   - ❌ `Bad`: `NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)`
+   - ✅ `Good`: `CoreDataManager.shared.persistentContainer.viewContext`
+
+### Singleton Pattern (Used for Shared Resources)
+Applied to:
+- `CoreDataManager` - Manages CoreData persistence stack
+- `LocalizationManager` - Handles runtime language switching
+- `ImageCacheManager` - Manages two-level image caching
+- `TTSHelper` - Manages text-to-speech synthesis
+
+Usage pattern:
+```swift
+class SomeManager {
+    static let shared = SomeManager()
+    private init() { }
+}
+```
+
+### PEMDAS Compliance for Multi-Number Operations
+For three-number operations, always respect precedence:
+- Multiplication and Division before Addition and Subtraction
+- Apply operations left-to-right within same precedence level
+- Validate intermediate results are integers when division is involved
+
+## Project Structure Insights
+
+```
+Arithmetic/
+├── App/ArithmeticApp.swift              # App entry with CoreData context injection
+├── Views/                               # 18+ SwiftUI views for all screens
+├── ViewModels/GameViewModel.swift       # Central business logic controller
+├── Models/                              # Question, GameState, DifficultyLevel
+├── CoreData/                            # Complete persistence layer
+├── Utils/                               # 10+ utility classes (generators, managers, helpers)
+├── Extensions/                          # Swift extensions for localization, fonts, etc.
+├── Resources/                           # Localization files (en.lproj, zh-Hans.lproj)
+├── Tests/                               # Unit tests for all Utils classes
+└── scripts/check_localizations.sh       # Localization consistency checker
+```
+
 ## Common Development Tasks
 
 ### Adding New Features
 1. **UI Components**: Add to `/Views/` with SwiftUI
+   - Extract complex UI logic into separate, reusable views
+   - Use `@State` for local state, `@StateObject` for owned view models
+   - Follow project naming conventions (e.g., `SomeFeatureView.swift`)
 2. **Business Logic**: Extend `GameViewModel` or create new ViewModel
+   - Keep view models focused on single responsibility
+   - Use `@Published` for observable properties
 3. **Data Models**: Add to `/Models/` or extend CoreData entities
+   - Ensure all models follow MVVM pattern
+   - Add validation methods to models
 4. **Utilities**: Add to `/Utils/` with comprehensive unit tests
+   - Each utility should have corresponding unit tests
+   - Follow singleton pattern for shared resources (see `CoreDataManager`, `LocalizationManager`)
 
 ### Modifying Question Logic
 1. **Generation**: Modify `QuestionGenerator.swift` algorithms
+   - Always verify questions pass `Question.isValid()` before returning
+   - Test generation across all 6 difficulty levels
+   - Ensure mathematical correctness (especially for division operations)
 2. **Validation**: Update `Question.isValid()` for new constraints
+   - Validate that division operations result in whole numbers
+   - Check PEMDAS precedence for multi-number operations
 3. **Solution Methods**: Add new methods to `Question.SolutionMethod` enum
+   - Provide solution text for both Chinese and English
+   - Ensure pedagogically sound approaches
 4. **Difficulty Settings**: Update `DifficultyLevel` properties
+   - Verify operand ranges are appropriate
+   - Test with `supportedOperations` property
 
 ### Localization Updates
 1. **Add Key**: Use `"key".localized` in code
-2. **Translate**: Add to both language files
-3. **Verify**: Run `./scripts/check_localizations.sh`
-4. **Test**: Verify in both language modes
+2. **Translate**: Add to both language files (`en.lproj` and `zh-Hans.lproj`)
+3. **Verify**: Run `./scripts/check_localizations.sh` to check consistency
+4. **Test**: Verify in both language modes by changing language in Settings
+5. **Format Strings**: Use `"key".localizedFormat(...)` for variables
 
 ### Testing
 1. **Unit Tests**: Follow patterns in `/Tests/` directory
-2. **Integration**: Test CoreData persistence with different scenarios
-3. **UI Testing**: Manually verify all views in both languages
-4. **Performance**: Profile question generation and TTS operations
+   - Add tests for new utilities in `/Tests/`
+   - Use XCTest framework following existing test patterns
+2. **Question Generation**: Test with `QuestionGeneratorTests.swift`
+   - Verify uniqueness across multiple generations
+   - Test all 6 difficulty levels
+   - Validate mathematical correctness
+3. **CoreData**: Test persistence across different scenarios
+   - Test migration between model versions
+   - Verify CRUD operations work correctly
+4. **UI Testing**: Manually verify all views in both languages
+   - Test iPad landscape mode for responsive layouts
+   - Verify TTS works in both languages
+5. **Performance**: Profile question generation and TTS operations
+
+### Before Committing Changes
+1. Run tests: `xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic`
+2. Check localization: `./scripts/check_localizations.sh`
+3. Review code using swift-code-reviewer agent for Swift standards compliance
+4. Verify builds successfully: `xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build`
