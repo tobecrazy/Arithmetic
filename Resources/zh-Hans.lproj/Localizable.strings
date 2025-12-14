@@ -438,3 +438,18 @@
 "settings.auto_read" = "自动朗读题目";
 "settings.follow_system" = "跟随系统";
 "settings.info" = "信息";
+
+/* QR Code Tool */
+"qr_code.tool.title" = "二维码工具";
+"qr_code.tool.description" = "扫描或生成二维码";
+"qr_code.scan_button" = "扫描二维码";
+"qr_code.scan_result" = "扫描结果";
+"qr_code.text_input_label" = "输入文本";
+"qr_code.generate_button" = "生成二维码";
+"qr_code.generated_qr" = "生成的二维码";
+"qr_code.close_camera" = "关闭";
+"qr_code.error_title" = "错误";
+"qr_code.generation_error" = "生成二维码失败";
+"qr_code.permission_error_title" = "相机权限";
+"qr_code.permission_error_message" = "请在设置中开启相机权限以使用扫描功能";
+"qr_code.open_settings" = "打开设置";

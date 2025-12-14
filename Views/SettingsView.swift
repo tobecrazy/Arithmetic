@@ -9,6 +9,7 @@ struct SettingsView: View {
 
     @State private var navigateToAboutMe = false
     @State private var navigateToSystemInfo = false
+    @State private var navigateToQrCodeTool = false
 
     private var aboutMeDestination: some View {
         AboutMeView()
@@ -17,6 +18,11 @@ struct SettingsView: View {
 
     private var systemInfoDestination: some View {
         SystemInfoView()
+            .environmentObject(localizationManager)
+    }
+
+    private var qrCodeToolDestination: some View {
+        QrCodeToolView()
             .environmentObject(localizationManager)
     }
 
@@ -59,6 +65,17 @@ struct SettingsView: View {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.red)
                             Text("system.info.title".localized)
+                        }
+                    }
+
+                    NavigationLink(
+                        destination: qrCodeToolDestination,
+                        isActive: $navigateToQrCodeTool
+                    ) {
+                        HStack {
+                            Image(systemName: "qrcode")
+                                .foregroundColor(.blue)
+                            Text("qr_code.tool.title".localized)
                         }
                     }
                 }

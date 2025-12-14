@@ -48,6 +48,7 @@
 		8AF3ABB32E05AE3600F67CDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AF3AB8B2E05AE3600F67CDE /* Assets.xcassets */; };
 		8AF3ABB42E05AE3600F67CDE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8AF3AB972E05AE3600F67CDE /* Localizable.strings */; };
 		8AF3EA7D2E75A6B700E0F439 /* TTSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3EA7C2E75A6B700E0F439 /* TTSHelper.swift */; };
+		8AFF11782EEE7AC300CA7987 /* QrCodeToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		8AF3ABA12E05AE3600F67CDE /* LanguageSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSelectorView.swift; sourceTree = "<group>"; };
 		8AF3ABA22E05AE3600F67CDE /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		8AF3EA7C2E75A6B700E0F439 /* TTSHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTSHelper.swift; sourceTree = "<group>"; };
+		8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrCodeToolView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -205,6 +207,7 @@
 		8AF3ABA32E05AE3600F67CDE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */,
 				8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */,
 				8A0C5AE02EC8D88E0020200A /* SettingsView.swift */,
 				8A8AEBC72EBB7FDE008D53E6 /* WelcomeView.swift */,
@@ -304,6 +307,7 @@
 				8A2AE9142E06A88A00A99591 /* WrongQuestionEntity.swift in Sources */,
 				8A2AE9152E06A88A00A99591 /* GameProgressEntity.swift in Sources */,
 				8A2AE9162E06A88A00A99591 /* WrongQuestionManager.swift in Sources */,
+				8AFF11782EEE7AC300CA7987 /* QrCodeToolView.swift in Sources */,
 				8A0C5AE12EC8D88E0020200A /* SettingsView.swift in Sources */,
 				8AF3EA7D2E75A6B700E0F439 /* TTSHelper.swift in Sources */,
 				8A2AE9172E06A88A00A99591 /* CoreDataManager.swift in Sources */,

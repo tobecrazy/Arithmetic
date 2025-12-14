@@ -445,3 +445,18 @@
 "settings.auto_read" = "Auto-read questions";
 "settings.follow_system" = "Follow System";
 "settings.info" = "Information";
+
+/* QR Code Tool */
+"qr_code.tool.title" = "QR Code Tool";
+"qr_code.tool.description" = "Scan or generate QR codes";
+"qr_code.scan_button" = "Scan QR Code";
+"qr_code.scan_result" = "Scan Result";
+"qr_code.text_input_label" = "Enter Text";
+"qr_code.generate_button" = "Generate QR Code";
+"qr_code.generated_qr" = "Generated QR Code";
+"qr_code.close_camera" = "Close";
+"qr_code.error_title" = "Error";
+"qr_code.generation_error" = "Failed to generate QR code";
+"qr_code.permission_error_title" = "Camera Permission";
+"qr_code.permission_error_message" = "Please enable camera permission in Settings to use the scanning feature";
+"qr_code.open_settings" = "Open Settings";
