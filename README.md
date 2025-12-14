@@ -48,8 +48,9 @@
 | 实时计分系统 | 进度自动保存 | 响应式设计 |
 | TTS语音朗读 | 九九乘法表 | 深色模式支持 |
 | PDF题库生成 | 系统信息监控 | 设置选项 |
-| 欢迎引导流程 | 数学公式大全 | 电池监控 |
-| 网络状态检测 | 单位换算 | 运行时长计算 |
+| 欢迎引导流程 | 数学公式大全 | QR码扫描工具 |
+| 网络状态检测 | 单位换算 | 电池监控 |
+| | | 运行时长计算 |
 
 </div>
 
@@ -658,71 +659,72 @@ In the "About Me" page, the app provides comprehensive system information monito
 Arithmetic/
 ├── 🗂️ .gitignore
 ├── 🖼️ Arithmetic.gif
+├── 📄 CLAUDE.md
 ├── ⚙️ Info.plist
 ├── 📄 LICENSE
 ├── 📝 Prompt.md
 ├── 📄 README.md
-├── 📄 BATTERY_UPTIME_FIX_SUMMARY.md      # 电池和运行时长功能修复说明
-├── 📄 CLAUDE.md                          # Claude开发助手对话记录
-├── 📄 QWEN.md                           # Qwen开发助手对话记录
-├── 📄 TTS_Implementation_Guide.md        # TTS功能实现指南
+├── 📄 TEST_COVERAGE_SUMMARY.md
+├── 📄 TESTING_INSTRUCTIONS.md
+├── 📄 TTS_Implementation_Guide.md
 ├── 📁 .claude/                           # Claude开发助手配置
 ├── 📁 .github/                           # GitHub工作流和配置
 ├── 📁 .qwen/                            # Qwen开发助手配置
-├── 📁 scripts/                           # 构建和工具脚本
-├── 📱 App/
+├── 📁 App/                               # 应用入口
 │   └── ArithmeticApp.swift                 # 应用入口
-├── 🖼️ Assets.xcassets/                     # 资源资产
+├── 📁 Assets.xcassets/                     # 资源资产
 │   └── AppIcon.appiconset/                # 应用图标
-├── 🖼️ Views/                               # 视图层
-│   ├── WelcomeView.swift                  # 欢迎引导视图
-│   ├── ContentView.swift                   # 主视图
-│   ├── GameView.swift                      # 游戏视图
-│   ├── ResultView.swift                    # 结果视图
-│   ├── WrongQuestionsView.swift           # 错题集视图
-│   ├── MultiplicationTableView.swift      # 九九乘法表视图
-│   ├── LanguageSelectorView.swift         # 语言选择视图
-│   ├── AboutMeView.swift                  # 关于我视图
-│   ├── FormulaGuideView.swift             # 小学数学公式大全视图
-│   ├── OtherOptionsView.swift             # 其他选项视图
-│   ├── SystemInfoView.swift               # 系统信息视图
-│   ├── MathBankView.swift                 # 数学题库生成视图
-│   ├── SettingsView.swift                 # 设置视图
-│   ├── SystemInfoComponents.swift         # 系统信息组件
-│   └── CachedAsyncImageView.swift         # 图片缓存视图
-├── 📊 Models/                              # 数据模型
-│   ├── Question.swift                      # 题目模型（包含解析方法）
-│   ├── DifficultyLevel.swift              # 难度等级模型
-│   └── GameState.swift                     # 游戏状态模型
-├── 🧠 ViewModels/                          # 视图模型
-│   └── GameViewModel.swift                 # 游戏逻辑控制器
-├── 💾 CoreData/                            # 数据持久化
+├── 📁 CoreData/                           # 数据持久化
 │   ├── ArithmeticModel.swift              # Core Data模型
 │   ├── CoreDataManager.swift              # 数据管理器
 │   ├── WrongQuestionEntity.swift          # 错题实体
 │   ├── WrongQuestionManager.swift         # 错题管理器
 │   ├── GameProgressEntity.swift           # 进度实体
 │   └── GameProgressManager.swift          # 进度管理器
-├── 🛠️ Utils/                               # 工具类
+├── 📁 Extensions/                         # 扩展
+│   ├── String+Localized.swift             # 字符串本地化扩展
+│   ├── Font+Adaptive.swift                # 字体适配扩展
+│   ├── View+Navigation.swift              # 视图导航扩展
+│   └── CGFloat+Adaptive.swift             # 尺寸适配扩展
+├── 📁 Models/                             # 数据模型
+│   ├── Question.swift                     # 题目模型（包含解析方法）
+│   ├── DifficultyLevel.swift              # 难度等级模型
+│   └── GameState.swift                    # 游戏状态模型
+├── 📁 Resources/                          # 资源文件
+│   ├── zh-Hans.lproj/                     # 中文本地化
+│   └── en.lproj/                          # 英文本地化
+├── 📁 Utils/                              # 工具类
 │   ├── LocalizationManager.swift          # 本地化管理
 │   ├── QuestionGenerator.swift            # 题目生成器
 │   ├── NavigationUtil.swift               # 导航工具
 │   ├── TTSHelper.swift                    # TTS辅助类
 │   ├── DeviceUtils.swift                  # 设备工具
-│   ├── SystemInfoManager.swift           # 系统信息管理器（含电池、网络、屏幕信息）
+│   ├── SystemInfoManager.swift            # 系统信息管理器（含电池、网络、屏幕信息）
 │   ├── ProgressViewUtils.swift            # 进度视图工具
 │   ├── MathBankPDFGenerator.swift         # PDF题库生成器
 │   └── ImageCacheManager.swift            # 图片缓存管理器
-├── 🔧 Extensions/                          # 扩展
-│   ├── String+Localized.swift             # 字符串本地化扩展
-│   ├── Font+Adaptive.swift                # 字体适配扩展
-│   ├── View+Navigation.swift              # 视图导航扩展
-│   └── CGFloat+Adaptive.swift             # 尺寸适配扩展
-└── 🌐 Resources/                           # 资源文件
-    ├── zh-Hans.lproj/                     # 中文本地化
-    │   └── Localizable.strings            # 中文本地化字符串
-    └── en.lproj/                          # 英文本地化
-        └── Localizable.strings            # 英文本地化字符串
+├── 📁 ViewModels/                         # 视图模型
+│   └── GameViewModel.swift                # 游戏逻辑控制器
+├── 📁 Views/                              # 视图层
+│   ├── WelcomeView.swift                  # 欢迎引导视图
+│   ├── ContentView.swift                  # 主视图
+│   ├── GameView.swift                     # 游戏视图
+│   ├── ResultView.swift                   # 结果视图
+│   ├── WrongQuestionsView.swift           # 错题集视图
+│   ├── MultiplicationTableView.swift      # 九九乘法表视图
+│   ├── LanguageSelectorView.swift         # 语言选择视图
+│   ├── AboutMeView.swift                  # 关于我视图
+│   ├── FormulaGuideView.swift             # 小学数学公式大全视图
+│   ├── OtherOptionsView.swift             # 其他选项视图
+│   ├── SettingsView.swift                 # 设置视图
+│   ├── SystemInfoComponents.swift         # 系统信息组件
+│   ├── SystemInfoView.swift               # 系统信息视图
+│   ├── MathBankView.swift                 # 数学题库生成视图
+│   ├── QrCodeToolView.swift               # QR码工具视图
+│   └── CachedAsyncImageView.swift         # 图片缓存视图
+├── 📁 scripts/                            # 构建和工具脚本
+│   └── check_localizations.sh             # 本地化检查脚本
+└── 📁 Tests/                              # 测试文件
 ```
 
 ## 🏗️ Core Data 集成 (Core Data Integration)
