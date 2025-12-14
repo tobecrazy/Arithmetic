@@ -460,3 +460,6 @@
 "qr_code.permission_error_title" = "Camera Permission";
 "qr_code.permission_error_message" = "Please enable camera permission in Settings to use the scanning feature";
 "qr_code.open_settings" = "Open Settings";
+"qr_code.placeholder_text" = "Enter text to generate QR code...";
+"qr_code.scanned_image_label" = "QR Code Image";
+"button.ok" = "OK";

@@ -453,3 +453,6 @@
 "qr_code.permission_error_title" = "相机权限";
 "qr_code.permission_error_message" = "请在设置中开启相机权限以使用扫描功能";
 "qr_code.open_settings" = "打开设置";
+"qr_code.placeholder_text" = "输入文本生成二维码...";
+"qr_code.scanned_image_label" = "二维码图像";
+"button.ok" = "确定";

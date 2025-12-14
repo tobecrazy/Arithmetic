@@ -44,17 +44,28 @@ struct QrCodeToolView: View {
                     Button(action: {
                         checkCameraPermission()
                     }) {
-                        HStack {
+                        HStack(spacing: 12) {
                             Image(systemName: "viewfinder")
-                                .foregroundColor(.blue)
+                                .font(.system(size: 18, weight: .semibold))
                             Text("qr_code.scan_button".localized)
                                 .font(.headline)
-                                .foregroundColor(.blue)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .opacity(0.6)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(12)
+                        .padding(.vertical, 14)
+                        .padding(.horizontal, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.blue.opacity(0.1))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                                )
+                        )
+                        .foregroundColor(.blue)
                     }
                     .padding(.horizontal, 20)
                     .sheet(isPresented: $shouldShowCamera) {
@@ -66,47 +77,73 @@ struct QrCodeToolView: View {
                     
                     // Scan Result Display
                     if !scanResult.isEmpty {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("qr_code.scan_result".localized)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 14))
+                                Text("qr_code.scan_result".localized)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                            }
 
                             Text(scanResult)
                                 .font(.body)
-                                .padding()
+                                .padding(12)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(8)
+                                .background(Color.gray.opacity(0.08))
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.green.opacity(0.2), lineWidth: 1)
+                                )
                                 .multilineTextAlignment(.leading)
+                                .lineLimit(nil)
                         }
                         .padding(.horizontal, 20)
+                        .padding(.vertical, 4)
 
                         if let scannedImage = scannedQRCodeImage {
-                            scannedImage
-                                .resizable()
-                                .frame(width: 200, height: 200)
-                                .scaledToFit()
-                                .cornerRadius(8)
-                                .padding(.horizontal, 20)
+                            VStack(spacing: 8) {
+                                Text("qr_code.scanned_image_label".localized)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                scannedImage
+                                    .resizable()
+                                    .frame(width: 180, height: 180)
+                                    .scaledToFit()
+                                    .cornerRadius(10)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.horizontal, 20)
                         }
                     }
 
                     // Text Input for QR Generation
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 10) {
                         Text("qr_code.text_input_label".localized)
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.primary)
 
-                        ZStack {
+                        ZStack(alignment: .topLeading) {
+                            if textInput.isEmpty {
+                                Text("qr_code.placeholder_text".localized)
+                                    .foregroundColor(.gray)
+                                    .padding(12)
+                            }
+
                             TextEditor(text: $textInput)
                                 .frame(height: 100)
                                 .padding(8)
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(8)
+                                .background(Color.gray.opacity(0.08))
+                                .cornerRadius(10)
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1.5)
                                 )
+                                .font(.body)
                         }
                         .padding(.horizontal, 20)
                     }
@@ -115,35 +152,56 @@ struct QrCodeToolView: View {
                     Button(action: {
                         generateQRCode(from: textInput)
                     }) {
-                        HStack {
+                        HStack(spacing: 12) {
                             Image(systemName: "qrcode")
-                                .foregroundColor(.green)
+                                .font(.system(size: 18, weight: .semibold))
                             Text("qr_code.generate_button".localized)
                                 .font(.headline)
-                                .foregroundColor(.green)
+                            Spacer()
+                            Image(systemName: "arrow.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .opacity(0.6)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green.opacity(0.1))
-                        .cornerRadius(12)
+                        .padding(.vertical, 14)
+                        .padding(.horizontal, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(textInput.isEmpty ? Color.gray.opacity(0.1) : Color.green.opacity(0.1))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(textInput.isEmpty ? Color.gray.opacity(0.2) : Color.green.opacity(0.3), lineWidth: 1)
+                                )
+                        )
+                        .foregroundColor(textInput.isEmpty ? .gray : .green)
                     }
                     .padding(.horizontal, 20)
                     .disabled(textInput.isEmpty)
 
                     // Generated QR Code Display
                     if let qrCodeImage = qrCodeImage {
-                        VStack(alignment: .center, spacing: 10) {
-                            Text("qr_code.generated_qr".localized)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+                        VStack(alignment: .center, spacing: 12) {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 14))
+                                Text("qr_code.generated_qr".localized)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }
 
                             qrCodeImage
                                 .resizable()
                                 .frame(width: 200, height: 200)
                                 .scaledToFit()
-                                .cornerRadius(8)
+                                .cornerRadius(10)
+                                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
                                 .padding(.horizontal, 20)
                         }
+                        .padding(.vertical, 4)
                     }
                     
                     Spacer(minLength: 50)
@@ -171,7 +229,7 @@ struct QrCodeToolView: View {
             Alert(
                 title: Text(alertItem.title.localized),
                 message: Text(alertItem.message.localized),
-                dismissButton: .default(Text("OK"))
+                dismissButton: .default(Text("button.ok".localized))
             )
         }
     }
@@ -209,6 +267,7 @@ struct QrCodeToolView: View {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             // Permission already granted, show the camera
+            cameraPermissionGranted = true
             shouldShowCamera = true
         case .notDetermined:
             // Request permission
@@ -217,6 +276,7 @@ struct QrCodeToolView: View {
                     let granted = try await AVCaptureDevice.requestAccess(for: .video)
                     await MainActor.run {
                         if granted {
+                            cameraPermissionGranted = true
                             shouldShowCamera = true
                         } else {
                             alertItem = AlertItem(
@@ -267,20 +327,20 @@ struct QrCodeScannerView: UIViewControllerRepresentable {
     @Binding var scanResult: String
     @Binding var scannedQRCodeImage: Image?
     @Environment(\.presentationMode) var presentationMode
-    
-    func makeUIViewController(context: Context) -> AVCaptureViewController {
-        return AVCaptureViewController(
+
+    func makeUIViewController(context: Context) -> QRCodeScannerViewController {
+        return QRCodeScannerViewController(
             scanResult: $scanResult,
             scannedQRCodeImage: $scannedQRCodeImage,
             presentationMode: presentationMode
         )
     }
-    
-    func updateUIViewController(_ uiViewController: AVCaptureViewController, context: Context) {}
+
+    func updateUIViewController(_ uiViewController: QRCodeScannerViewController, context: Context) {}
 }
 
-// AVCapture View Controller
-class AVCaptureViewController: UIViewController {
+// QR Code Scanner View Controller
+class QRCodeScannerViewController: UIViewController {
     private let captureSession = AVCaptureSession()
     private let videoPreviewLayer = AVCaptureVideoPreviewLayer()
     private let qrCodeFrameView = UIView()
@@ -306,7 +366,13 @@ class AVCaptureViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else {
+            print("No camera device available")
+            DispatchQueue.main.async {
+                self.showPermissionDeniedAlert()
+            }
+            return
+        }
 
         // Set up the session directly since permission is handled in SwiftUI view
         setupSession(captureDevice: captureDevice)
@@ -315,46 +381,74 @@ class AVCaptureViewController: UIViewController {
     private func setupSession(captureDevice: AVCaptureDevice) {
         do {
             let input = try AVCaptureDeviceInput(device: captureDevice)
-            captureSession.addInput(input)
+
+            // Configure capture session on background queue to prevent blocking
+            captureSession.beginConfiguration()
+
+            if captureSession.canAddInput(input) {
+                captureSession.addInput(input)
+            } else {
+                print("Cannot add camera input to capture session")
+                captureSession.commitConfiguration()
+                showPermissionDeniedAlert()
+                return
+            }
+
+            let metadataOutput = AVCaptureMetadataOutput()
+            if captureSession.canAddOutput(metadataOutput) {
+                captureSession.addOutput(metadataOutput)
+                metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                metadataOutput.metadataObjectTypes = [.qr]
+            } else {
+                print("Cannot add metadata output to capture session")
+                captureSession.commitConfiguration()
+                showPermissionDeniedAlert()
+                return
+            }
+
+            captureSession.commitConfiguration()
         } catch {
             print("Error setting up capture session: \(error)")
+            DispatchQueue.main.async {
+                self.showPermissionDeniedAlert()
+            }
             return
         }
 
-        let metadataOutput = AVCaptureMetadataOutput()
-        captureSession.addOutput(metadataOutput)
-        metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-        metadataOutput.metadataObjectTypes = [.qr]
+        DispatchQueue.main.async {
+            self.videoPreviewLayer.session = self.captureSession
+            self.videoPreviewLayer.videoGravity = .resizeAspectFill
+            self.videoPreviewLayer.frame = self.view.layer.bounds
+            self.view.layer.addSublayer(self.videoPreviewLayer)
 
-        videoPreviewLayer.session = captureSession
-        videoPreviewLayer.videoGravity = .resizeAspectFill
-        videoPreviewLayer.frame = view.layer.bounds
-        view.layer.addSublayer(videoPreviewLayer)
+            self.qrCodeFrameView.layer.borderColor = UIColor.systemGreen.cgColor
+            self.qrCodeFrameView.layer.borderWidth = 3
+            self.view.addSubview(self.qrCodeFrameView)
 
-        qrCodeFrameView.layer.borderColor = UIColor.green.cgColor
-        qrCodeFrameView.layer.borderWidth = 2
-        view.addSubview(qrCodeFrameView)
+            // Add close button with improved styling
+            let closeButton = UIButton(type: .system)
+            closeButton.setTitle("qr_code.close_camera".localized, for: .normal)
+            closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+            closeButton.setTitleColor(.white, for: .normal)
+            closeButton.layer.cornerRadius = 12
+            closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            closeButton.addTarget(self, action: #selector(self.closeButtonTapped), for: .touchUpInside)
+            self.view.addSubview(closeButton)
 
-        // Add close button
-        let closeButton = UIButton(type: .system)
-        closeButton.setTitle(NSLocalizedString("qr_code.close_camera", comment: ""), for: .normal)
-        closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        closeButton.setTitleColor(.white, for: .normal)
-        closeButton.layer.cornerRadius = 8
-        closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-        view.addSubview(closeButton)
+            // Setup constraints with improved positioning
+            closeButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                closeButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
+                closeButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                closeButton.heightAnchor.constraint(equalToConstant: 44),
+                closeButton.widthAnchor.constraint(equalToConstant: 100)
+            ])
+        }
 
-        // Setup constraints
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            closeButton.heightAnchor.constraint(equalToConstant: 44),
-            closeButton.widthAnchor.constraint(equalToConstant: 120)
-        ])
-
-        captureSession.startRunning()
+        // Start capture session on background queue
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.captureSession.startRunning()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -368,16 +462,20 @@ class AVCaptureViewController: UIViewController {
 
     private func showPermissionDeniedAlert() {
         DispatchQueue.main.async {
+            let alertTitle = "qr_code.permission_error_title".localized
+            let alertMessage = "qr_code.permission_error_message".localized
+            let settingsTitle = "qr_code.open_settings".localized
+
             let alert = UIAlertController(
-                title: NSLocalizedString("qr_code.permission_error_title", comment: ""),
-                message: NSLocalizedString("qr_code.permission_error_message", comment: ""),
+                title: alertTitle,
+                message: alertMessage,
                 preferredStyle: .alert
             )
 
             // Add settings action if permission was denied
             if AVCaptureDevice.authorizationStatus(for: .video) == .denied {
                 alert.addAction(UIAlertAction(
-                    title: NSLocalizedString("qr_code.open_settings", comment: "Open Settings"),
+                    title: settingsTitle,
                     style: .default
                 ) { _ in
                     if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
@@ -387,7 +485,7 @@ class AVCaptureViewController: UIViewController {
             }
 
             alert.addAction(UIAlertAction(
-                title: "OK",
+                title: "button.ok".localized,
                 style: .default
             ) { _ in
                 self.presentationMode.wrappedValue.dismiss()

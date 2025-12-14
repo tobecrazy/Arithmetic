@@ -233,10 +233,33 @@
 - **中英双语 (Bilingual Support)** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本 (Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository")
 
 ### 📷 QR码扫描工具 (QR Code Scanning Tool)
-- **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描功能，用于扫描二维码 (Integrated camera scanning functionality for scanning QR codes)
-- **🔐 权限管理 (Permission Management)** - 智能权限处理，首次使用询问权限，已授权直接使用，拒绝后提供设置引导 (Intelligent permission handling - asks permission on first use, uses directly if already authorized, provides setting guidance if denied)
-- **🔄 便捷生成 (Convenient Generation)** - 支持将文本内容生成二维码 (Supports generating QR codes from text content)
-- **🎯 导航入口 (Navigation Entry)** - 从设置页面可直接访问QR码扫描工具 (Directly accessible from the settings page)
+- **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描功能，用于扫描二维码
+  - 实时相机预览，带绿色扫描框指示
+  - 自动识别QR码，立即显示扫描结果
+  - 扫描成功时播放系统音效反馈
+  (Integrated camera scanning functionality with real-time preview and green frame indication)
+
+- **🔐 权限管理 (Permission Management)** - 智能权限处理
+  - 首次使用自动询问相机权限
+  - 已授权时直接启动摄像头
+  - 拒绝权限时提供设置引导链接
+  (Intelligent permission handling with first-use request and settings navigation)
+
+- **🔄 生成功能 (Generation Functionality)** - 支持将文本内容生成二维码
+  - 实时文本输入与占位符提示
+  - 按需生成高质量二维码
+  - 支持多行文本输入
+  (Generate high-quality QR codes from text with support for multi-line input)
+
+- **🎨 UI/UX优化 (UI/UX Enhancement)** - 专业级用户界面设计
+  - 清晰的操作按钮，配合icon指示
+  - 卡片式结果展示，视觉层次感强
+  - 成功状态指示图标（checkmarks）
+  - 响应式设计，适配各种屏幕尺寸
+  (Professional interface with clear buttons, card-style results display, and success indicators)
+
+- **🎯 导航入口 (Navigation Entry)** - 从设置页面可直接访问QR码扫描工具
+  (Directly accessible from the settings page)
 
 ### 📐 小学数学公式大全 (Elementary Math Formula Guide)
 - **📚 全面公式库 (Comprehensive Formula Library)** - 涵盖几何图形、单位换算、数量关系、运算定律等小学数学核心公式 (Covers core elementary math formulas including geometric shapes, unit conversions, quantity relations, arithmetic laws, etc.)
@@ -737,13 +760,31 @@ Arithmetic/
 
 ## 🔄 最近更新 (Recent Updates)
 
-### 🌟 2025-12-15 (新增QR码扫描工具)
-- **📱 全新功能**: 新增QR码扫描工具，集成相机扫描和二维码生成功能
-  - **🔐 权限管理**: 智能处理相机权限，首次使用询问权限，已授权直接使用，拒绝后提供设置引导
-  - **🔄 扫描与生成**: 支持扫描二维码和将文本转换为二维码
-  - **🎯 导航入口**: 在设置页面添加QR码工具导航链接
-  - **🌐 双语支持**: 完整的中英文界面和提示信息支持
-  - **🔧 技术实现**: 使用AVFoundation框架实现相机扫描功能，Core Image生成二维码
+### 🌟 2025-12-15 (QR码扫描工具 - UI优化和功能完善)
+- **📱 功能增强**: 全面优化QR码扫描工具的用户体验和功能稳定性
+  - **🎨 UI/UX完全重设计**:
+    - 按钮设计升级：添加图标指示（chevron/arrow icons），提供更清晰的视觉反馈
+    - 文本输入优化：增加占位符文本提示，改进输入框样式和边框设计
+    - 结果显示增强：添加成功状态指示图标（checkmark circles），改进结果容器样式
+    - 响应式设计：更好的间距、圆角和颜色一致性
+
+  - **🐛 摄像头bug修复**:
+    - 修复了摄像头初始化失败时的错误处理
+    - 改进了AVCaptureSession配置，添加了canAddInput/canAddOutput的验证检查
+    - 优化了后台任务处理：使用beginConfiguration/commitConfiguration确保线程安全
+    - 添加了详细的错误日志和异常处理机制
+    - 改进了权限检查流程，设置cameraPermissionGranted状态以跟踪权限状态
+
+  - **💅 视觉改进**:
+    - 更新了摄像头预览边框颜色为systemGreen，边框宽度升级为3pt
+    - 关闭按钮样式优化：更大的圆角(12pt)、改进的字体权重(semibold)、更好的背景透明度
+    - 扫描结果和生成结果采用统一的卡片式设计
+    - 生成的二维码添加了阴影效果，提升了视觉层次感
+
+  - **🔧 代码改进**:
+    - 使用项目的localization extension替代NSLocalizedString
+    - 改进了后台线程处理：使用DispatchQueue.global(qos: .userInitiated)启动摄像头
+    - 优化了主线程UI更新：确保所有UI操作在主线程执行
 
 ### 🌟 2025-12-14 (UI重构 - 移动设置相关功能)
 - **🎯 UI结构优化**: 将"关于我"和"系统信息"功能从"其他选项"页面移到设置页面
