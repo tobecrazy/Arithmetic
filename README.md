@@ -232,6 +232,12 @@
 - **开源支持 (Open Source Support)** - 用户可直接访问项目开源地址，了解开发进展 (Users can directly access the project's open source repository to understand development progress)
 - **中英双语 (Bilingual Support)** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本 (Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository")
 
+### 📷 QR码扫描工具 (QR Code Scanning Tool)
+- **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描功能，用于扫描二维码 (Integrated camera scanning functionality for scanning QR codes)
+- **🔐 权限管理 (Permission Management)** - 智能权限处理，首次使用询问权限，已授权直接使用，拒绝后提供设置引导 (Intelligent permission handling - asks permission on first use, uses directly if already authorized, provides setting guidance if denied)
+- **🔄 便捷生成 (Convenient Generation)** - 支持将文本内容生成二维码 (Supports generating QR codes from text content)
+- **🎯 导航入口 (Navigation Entry)** - 从设置页面可直接访问QR码扫描工具 (Directly accessible from the settings page)
+
 ### 📐 小学数学公式大全 (Elementary Math Formula Guide)
 - **📚 全面公式库 (Comprehensive Formula Library)** - 涵盖几何图形、单位换算、数量关系、运算定律等小学数学核心公式 (Covers core elementary math formulas including geometric shapes, unit conversions, quantity relations, arithmetic laws, etc.)
 - **📐 几何公式 (Geometry Formulas)** - 包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式 (Includes perimeter, area, and volume formulas for plane figures like rectangle, square, triangle and solid figures like cuboid, cube, cylinder)
@@ -730,6 +736,14 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2025-12-15 (新增QR码扫描工具)
+- **📱 全新功能**: 新增QR码扫描工具，集成相机扫描和二维码生成功能
+  - **🔐 权限管理**: 智能处理相机权限，首次使用询问权限，已授权直接使用，拒绝后提供设置引导
+  - **🔄 扫描与生成**: 支持扫描二维码和将文本转换为二维码
+  - **🎯 导航入口**: 在设置页面添加QR码工具导航链接
+  - **🌐 双语支持**: 完整的中英文界面和提示信息支持
+  - **🔧 技术实现**: 使用AVFoundation框架实现相机扫描功能，Core Image生成二维码
 
 ### 🌟 2025-12-14 (UI重构 - 移动设置相关功能)
 - **🎯 UI结构优化**: 将"关于我"和"系统信息"功能从"其他选项"页面移到设置页面
