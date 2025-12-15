@@ -11,6 +11,7 @@ import CoreImage.CIFilter
 struct QrCodeToolView: View {
     @EnvironmentObject var localizationManager: LocalizationManager
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var isScanning = false
     @State private var scanResult = ""
     @State private var textInput = ""
@@ -19,7 +20,12 @@ struct QrCodeToolView: View {
     @State private var alertItem: AlertItem?
     @State private var cameraPermissionGranted = false
     @State private var shouldShowCamera = false
-    
+
+    // Calculate adaptive QR code size
+    var qrCodeSize: CGFloat {
+        horizontalSizeClass == .regular ? 300 : 240
+    }
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -111,7 +117,7 @@ struct QrCodeToolView: View {
                                     .foregroundColor(.secondary)
                                 scannedImage
                                     .resizable()
-                                    .frame(width: 180, height: 180)
+                                    .frame(width: qrCodeSize - 40, height: qrCodeSize - 40)
                                     .scaledToFit()
                                     .cornerRadius(10)
                             }
@@ -195,7 +201,7 @@ struct QrCodeToolView: View {
 
                             qrCodeImage
                                 .resizable()
-                                .frame(width: 200, height: 200)
+                                .frame(width: qrCodeSize, height: qrCodeSize)
                                 .scaledToFit()
                                 .cornerRadius(10)
                                 .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
@@ -243,18 +249,27 @@ struct QrCodeToolView: View {
             )
             return
         }
+
         let data = Data(string.utf8)
         filter.setValue(data, forKey: "inputMessage")
+        // Set error correction level to maximum for better reliability
+        filter.setValue("H", forKey: "inputCorrectionLevel")
 
-        if let outputImage = filter.outputImage {
-            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
-                qrCodeImage = Image(uiImage: UIImage(cgImage: cgImage))
-            } else {
-                alertItem = AlertItem(
-                    title: "qr_code.error_title".localized,
-                    message: "qr_code.generation_error".localized
-                )
-            }
+        guard var outputImage = filter.outputImage else {
+            alertItem = AlertItem(
+                title: "qr_code.error_title".localized,
+                message: "qr_code.generation_error".localized
+            )
+            return
+        }
+
+        // Scale up the QR code for better resolution (10x upsampling)
+        let scaleFactor: CGFloat = 10.0
+        let scaleTransform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+        outputImage = outputImage.transformed(by: scaleTransform)
+
+        if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
+            qrCodeImage = Image(uiImage: UIImage(cgImage: cgImage))
         } else {
             alertItem = AlertItem(
                 title: "qr_code.error_title".localized,
@@ -496,7 +511,7 @@ class QRCodeScannerViewController: UIViewController {
 }
 
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
-extension AVCaptureViewController: AVCaptureMetadataOutputObjectsDelegate {
+extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(
         _ output: AVCaptureMetadataOutput,
         didOutput metadataObjects: [AVMetadataObject],
@@ -509,6 +524,11 @@ extension AVCaptureViewController: AVCaptureMetadataOutputObjectsDelegate {
             AudioServicesPlaySystemSound(SystemSoundID(1005))
             scanResult.wrappedValue = stringValue
 
+            // Capture the QR code image
+            if let capturedImage = captureQRCodeImage() {
+                scannedQRCodeImage.wrappedValue = Image(uiImage: capturedImage)
+            }
+
             // Stop capture session after successful scan
             captureSession.stopRunning()
 
@@ -516,5 +536,21 @@ extension AVCaptureViewController: AVCaptureMetadataOutputObjectsDelegate {
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
+    }
+
+    private func captureQRCodeImage() -> UIImage? {
+        let scale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(view.layer.frame.size, false, scale)
+
+        guard let context = UIGraphicsGetCurrentContext() else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+
+        view.layer.render(in: context)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return image
     }
 }
