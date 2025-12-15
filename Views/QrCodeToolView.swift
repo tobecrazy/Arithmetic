@@ -12,13 +12,11 @@ struct QrCodeToolView: View {
     @EnvironmentObject var localizationManager: LocalizationManager
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var isScanning = false
     @State private var scanResult = ""
     @State private var textInput = ""
     @State private var qrCodeImage: Image?
     @State private var scannedQRCodeImage: Image?
     @State private var alertItem: AlertItem?
-    @State private var cameraPermissionGranted = false
     @State private var shouldShowCamera = false
 
     // Calculate adaptive QR code size
@@ -281,30 +279,18 @@ struct QrCodeToolView: View {
     private func checkCameraPermission() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            // Permission already granted, show the camera
-            cameraPermissionGranted = true
             shouldShowCamera = true
         case .notDetermined:
             // Request permission
             Task {
-                do {
-                    let granted = try await AVCaptureDevice.requestAccess(for: .video)
-                    await MainActor.run {
-                        if granted {
-                            cameraPermissionGranted = true
-                            shouldShowCamera = true
-                        } else {
-                            alertItem = AlertItem(
-                                title: "qr_code.permission_error_title".localized,
-                                message: "qr_code.permission_error_message".localized
-                            )
-                        }
-                    }
-                } catch {
-                    await MainActor.run {
+                let granted = await AVCaptureDevice.requestAccess(for: .video)
+                await MainActor.run {
+                    if granted {
+                        shouldShowCamera = true
+                    } else {
                         alertItem = AlertItem(
-                            title: "qr_code.error_title".localized,
-                            message: error.localizedDescription
+                            title: "qr_code.permission_error_title".localized,
+                            message: "qr_code.permission_error_message".localized
                         )
                     }
                 }
@@ -376,6 +362,10 @@ class QRCodeScannerViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        captureSession.stopRunning()
     }
 
     override func viewDidLoad() {
@@ -521,19 +511,23 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
 
-            AudioServicesPlaySystemSound(SystemSoundID(1005))
-            scanResult.wrappedValue = stringValue
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
 
-            // Capture the QR code image
-            if let capturedImage = captureQRCodeImage() {
-                scannedQRCodeImage.wrappedValue = Image(uiImage: capturedImage)
-            }
+                AudioServicesPlaySystemSound(SystemSoundID(1005))
+                self.scanResult.wrappedValue = stringValue
 
-            // Stop capture session after successful scan
-            captureSession.stopRunning()
+                // Capture the QR code image
+                if let capturedImage = self.captureQRCodeImage() {
+                    self.scannedQRCodeImage.wrappedValue = Image(uiImage: capturedImage)
+                }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.presentationMode.wrappedValue.dismiss()
+                // Stop capture session after successful scan
+                self.captureSession.stopRunning()
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
             }
         }
     }
