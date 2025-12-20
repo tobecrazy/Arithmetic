@@ -44,6 +44,13 @@ struct SettingsView: View {
                         Text("settings.auto_read".localized)
                     }
                 }
+                
+                //add section button
+                Section(header: Text("Crash Test".localized)) {
+                    Button("Top Crash") {
+                      fatalError("Crash was triggered")
+                    }
+                }
 
                 Section(header: Text("settings.info".localized)) {
                     NavigationLink(

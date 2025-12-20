@@ -4,11 +4,21 @@
 //
 import SwiftUI
 import CoreData
+import FirebaseCore
+
+//initialize Firebase
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
+    return true
+  }
+}
 
 @main
 struct ArithmeticApp: App {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    // 初始化CoreData管理器
+    // initialize core data manager
     private let coreDataManager = CoreDataManager.shared
     
     var body: some Scene {

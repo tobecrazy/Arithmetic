@@ -64,3 +64,5 @@ fastlane/test_output
 .qwen/settings.json
 QWEN.md
 GEMINI.md
+firebase-debug.log
+GoogleService-Info.plist
