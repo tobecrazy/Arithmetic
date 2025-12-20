@@ -50,7 +50,7 @@
 | PDF题库生成 | 系统信息监控 | 设置选项 |
 | 欢迎引导流程 | 数学公式大全 | QR码扫描工具 |
 | 网络状态检测 | 单位换算 | 电池监控 |
-| | | 运行时长计算 |
+| Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | |
 
 </div>
 
@@ -295,6 +295,12 @@
 - **当前时间 (Current Time)** - 实时显示当前时间，每秒更新 (Real-time display of current time, updated every second)
 - **双语支持 (Bilingual Support)** - 完整的中英文本地化支持 (Complete Chinese and English localization support)
 - **可视化展示 (Visual Display)** - 使用进度条和图标直观显示系统状态 (Uses progress bars and icons to intuitively show system status)
+
+### 🛠️ Firebase崩溃监控 (Firebase Crash Monitoring)
+- **实时崩溃监控 (Real-time Crash Monitoring)** - 集成Firebase Crashlytics，实时监控和报告应用崩溃 (Integrated with Firebase Crashlytics for real-time monitoring and reporting of app crashes)
+- **详细崩溃报告 (Detailed Crash Reports)** - 提供包含设备信息、系统版本、堆栈跟踪的详细崩溃报告 (Provides detailed crash reports with device information, system version, and stack traces)
+- **错误分析 (Error Analysis)** - 帮助开发者快速识别和修复问题，提高应用稳定性 (Helps developers quickly identify and fix issues, improving app stability)
+- **测试功能 (Testing Feature)** - 在设置页面提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality in settings for verifying error monitoring system)
 
 ### 🌐 多语言支持 (Language Settings)
 - **双语界面 (Bilingual Interface)** - 支持中文和英文界面 (Supports both Chinese and English interfaces)
@@ -761,6 +767,17 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2025-12-20 (Firebase Crashlytics 集成 / Firebase Crashlytics Integration)
+- **🛠️ 错误监控 (Error Monitoring)**: 集成 Firebase Crashlytics 以实时监控和报告应用崩溃 (Integrated Firebase Crashlytics for real-time monitoring and reporting of app crashes)
+  - 自动捕获崩溃信息，帮助快速识别和修复问题 (Automatically captures crash information to help quickly identify and fix issues)
+  - 提供详细的崩溃报告，包括设备信息、系统版本和堆栈跟踪 (Provides detailed crash reports including device information, system version, and stack traces)
+  - 支持实时错误监控，提升应用稳定性和用户体验 (Supports real-time error monitoring to improve app stability and user experience)
+- **🔧 技术实现 (Technical Implementation)**:
+  - 添加 FirebaseCore、FirebaseAnalytics 和 FirebaseCrashlytics 依赖 (Added FirebaseCore, FirebaseAnalytics, and FirebaseCrashlytics dependencies)
+  - 在 App delegate 中初始化 Firebase (Initialized Firebase in the App delegate)
+  - 通过 Swift Package Manager 管理依赖关系 (Managed dependencies via Swift Package Manager)
+- **🎯 测试功能 (Testing Feature)**: 在设置页面添加崩溃测试按钮，便于验证错误监控功能 (Added crash test button in settings to verify error monitoring functionality)
 
 ### 🌟 2025-12-15 (QR码扫描工具 - UI优化和功能完善)
 - **📱 功能增强**: 全面优化QR码扫描工具的用户体验和功能稳定性

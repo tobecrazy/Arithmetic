@@ -47,7 +47,7 @@ struct SettingsView: View {
                 
                 //add section button
                 Section(header: Text("Crash Test".localized)) {
-                    Button("Top Crash") {
+                    Button("Genrate App Crash") {
                       fatalError("Crash was triggered")
                     }
                 }
