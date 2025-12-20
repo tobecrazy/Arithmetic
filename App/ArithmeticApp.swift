@@ -5,11 +5,13 @@
 import SwiftUI
 import CoreData
 import FirebaseCore
+import Firebase
 
 //initialize Firebase
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    // Use the Firebase library to configure APIs.
     FirebaseApp.configure()
     return true
   }
