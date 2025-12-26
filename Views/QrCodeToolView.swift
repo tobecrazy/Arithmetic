@@ -7,6 +7,7 @@ import AVFoundation
 import CoreImage
 import UIKit
 import CoreImage.CIFilter
+import PhotosUI
 
 struct QrCodeToolView: View {
     @EnvironmentObject var localizationManager: LocalizationManager
@@ -18,6 +19,8 @@ struct QrCodeToolView: View {
     @State private var scannedQRCodeImage: Image?
     @State private var alertItem: AlertItem?
     @State private var shouldShowCamera = false
+    @State private var shouldShowPhotoPicker = false
+    @State private var selectedPhoto: PhotosPickerItem?
 
     // Calculate adaptive QR code size
     var qrCodeSize: CGFloat {
@@ -44,40 +47,46 @@ struct QrCodeToolView: View {
                     }
                     .padding(.top, 20)
                     
-                    // Scan QR Code Button
-                    Button(action: {
-                        checkCameraPermission()
-                    }) {
-                        HStack(spacing: 12) {
-                            Image(systemName: "viewfinder")
-                                .font(.system(size: 18, weight: .semibold))
-                            Text("qr_code.scan_button".localized)
-                                .font(.headline)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 14, weight: .semibold))
-                                .opacity(0.6)
+                    // Action Buttons
+                    HStack(spacing: 15) {
+                        // Scan from Camera
+                        Button(action: {
+                            checkCameraPermission()
+                        }) {
+                            HStack {
+                                Image(systemName: "camera.fill")
+                                Text("qr_code.scan_camera_button".localized)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .background(Color.accentColor.opacity(0.15))
+                            .foregroundColor(Color.accentColor)
+                            .cornerRadius(12)
+                            .font(.headline)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .padding(.horizontal, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.blue.opacity(0.1))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.blue.opacity(0.3), lineWidth: 1)
-                                )
-                        )
-                        .foregroundColor(.blue)
+                        .sheet(isPresented: $shouldShowCamera) {
+                            QrCodeScannerView(
+                                scanResult: $scanResult,
+                                scannedQRCodeImage: $scannedQRCodeImage
+                            )
+                        }
+
+                        // Scan from Photos
+                        Button(action: {
+                            shouldShowPhotoPicker = true
+                        }) {
+                            HStack {
+                                Image(systemName: "photo.on.rectangle")
+                                Text("qr_code.scan_photos_button".localized)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .background(Color.accentColor.opacity(0.15))
+                            .foregroundColor(Color.accentColor)
+                            .cornerRadius(12)
+                            .font(.headline)
+                        }
+                        .photosPicker(isPresented: $shouldShowPhotoPicker, selection: $selectedPhoto, matching: .images)
                     }
                     .padding(.horizontal, 20)
-                    .sheet(isPresented: $shouldShowCamera) {
-                        QrCodeScannerView(
-                            scanResult: $scanResult,
-                            scannedQRCodeImage: $scannedQRCodeImage
-                        )
-                    }
                     
                     // Scan Result Display
                     if !scanResult.isEmpty {
@@ -236,44 +245,86 @@ struct QrCodeToolView: View {
                 dismissButton: .default(Text("button.ok".localized))
             )
         }
+        .onChange(of: selectedPhoto) {
+            Task {
+                if let data = try? await selectedPhoto?.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data) {
+                    processQRCode(from: uiImage)
+                }
+            }
+        }
     }
 
-    private func generateQRCode(from string: String) {
-        let context = CIContext()
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
-            alertItem = AlertItem(
-                title: "qr_code.error_title".localized,
-                message: "qr_code.generation_error".localized
-            )
-            return
-        }
+    private func processQRCode(from uiImage: UIImage) {
+        guard let ciImage = CIImage(image: uiImage) else { return }
 
-        let data = Data(string.utf8)
-        filter.setValue(data, forKey: "inputMessage")
-        // Set error correction level to maximum for better reliability
-        filter.setValue("H", forKey: "inputCorrectionLevel")
+        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+        let features = detector?.features(in: ciImage)
 
-        guard var outputImage = filter.outputImage else {
-            alertItem = AlertItem(
-                title: "qr_code.error_title".localized,
-                message: "qr_code.generation_error".localized
-            )
-            return
-        }
-
-        // Scale up the QR code for better resolution (10x upsampling)
-        let scaleFactor: CGFloat = 10.0
-        let scaleTransform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
-        outputImage = outputImage.transformed(by: scaleTransform)
-
-        if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
-            qrCodeImage = Image(uiImage: UIImage(cgImage: cgImage))
+        if let feature = features?.first as? CIQRCodeFeature, let message = feature.messageString {
+            scanResult = message
+            scannedQRCodeImage = Image(uiImage: uiImage)
         } else {
             alertItem = AlertItem(
                 title: "qr_code.error_title".localized,
-                message: "qr_code.generation_error".localized
+                message: "qr_code.no_qr_code_found".localized
             )
         }
+    }
+
+    private func generateQRCode(from string: String) {
+        guard !string.isEmpty else {
+            // Clear the QR code if the input is empty
+            qrCodeImage = nil
+            return
+        }
+
+        let context = CIContext()
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
+            showQRCodeGenerationError()
+            return
+        }
+
+        // Configure the QR code generator
+        configureQRCodeFilter(filter, with: string)
+
+        // Generate the CIImage from the filter
+        guard let outputImage = filter.outputImage else {
+            showQRCodeGenerationError()
+            return
+        }
+
+        // Scale the QR code to improve resolution
+        let scaledImage = scaleQRCode(outputImage)
+
+        // Convert the CIImage to a CGImage and then to a an Image
+        if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
+            qrCodeImage = Image(uiImage: UIImage(cgImage: cgImage))
+        } else {
+            showQRCodeGenerationError()
+        }
+    }
+
+    /// Configures the CIQRCodeGenerator filter with the input string and error correction level.
+    private func configureQRCodeFilter(_ filter: CIFilter, with string: String) {
+        let data = Data(string.utf8)
+        filter.setValue(data, forKey: "inputMessage")
+        filter.setValue("H", forKey: "inputCorrectionLevel") // High error correction
+    }
+
+    /// Scales the QR code image to a larger size for better resolution.
+    private func scaleQRCode(_ image: CIImage) -> CIImage {
+        let scaleFactor: CGFloat = 12.0 // Upsampling for clarity
+        let transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+        return image.transformed(by: transform)
+    }
+
+    /// Displays an alert for a QR code generation error.
+    private func showQRCodeGenerationError() {
+        alertItem = AlertItem(
+            title: "qr_code.error_title".localized,
+            message: "qr_code.generation_error".localized
+        )
     }
 
     private func checkCameraPermission() {
@@ -430,23 +481,23 @@ class QRCodeScannerViewController: UIViewController {
             self.qrCodeFrameView.layer.borderWidth = 3
             self.view.addSubview(self.qrCodeFrameView)
 
-            // Add close button with improved styling
-            let closeButton = UIButton(type: .system)
-            closeButton.setTitle("qr_code.close_camera".localized, for: .normal)
-            closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-            closeButton.setTitleColor(.white, for: .normal)
-            closeButton.layer.cornerRadius = 12
-            closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-            closeButton.addTarget(self, action: #selector(self.closeButtonTapped), for: .touchUpInside)
-            self.view.addSubview(closeButton)
+            // Add cancel button
+            let cancelButton = UIButton(type: .system)
+            cancelButton.setTitle("button.cancel".localized, for: .normal)
+            cancelButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+            cancelButton.setTitleColor(.white, for: .normal)
+            cancelButton.layer.cornerRadius = 12
+            cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            cancelButton.addTarget(self, action: #selector(self.cancelButtonTapped), for: .touchUpInside)
+            self.view.addSubview(cancelButton)
 
-            // Setup constraints with improved positioning
-            closeButton.translatesAutoresizingMaskIntoConstraints = false
+            // Setup constraints for cancel button
+            cancelButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                closeButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
-                closeButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                closeButton.heightAnchor.constraint(equalToConstant: 44),
-                closeButton.widthAnchor.constraint(equalToConstant: 100)
+                cancelButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
+                cancelButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                cancelButton.heightAnchor.constraint(equalToConstant: 44),
+                cancelButton.widthAnchor.constraint(equalToConstant: 120)
             ])
         }
 
@@ -461,7 +512,7 @@ class QRCodeScannerViewController: UIViewController {
         videoPreviewLayer.frame = view.bounds
     }
 
-    @objc private func closeButtonTapped() {
+    @objc private func cancelButtonTapped() {
         presentationMode.wrappedValue.dismiss()
     }
 

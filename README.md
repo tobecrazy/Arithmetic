@@ -234,11 +234,12 @@
 - **中英双语 (Bilingual Support)** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本 (Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository")
 
 ### 📷 QR码扫描工具 (QR Code Scanning Tool)
-- **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描功能，用于扫描二维码
+- **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描和相册扫描功能，用于扫描二维码
   - 实时相机预览，带绿色扫描框指示
+  - 支持从相册选择图片进行扫描
   - 自动识别QR码，立即显示扫描结果
   - 扫描成功时播放系统音效反馈
-  (Integrated camera scanning functionality with real-time preview and green frame indication)
+  (Integrated camera and photo library scanning functionality with real-time preview and green frame indication)
 
 - **🔐 权限管理 (Permission Management)** - 智能权限处理
   - 首次使用自动询问相机权限

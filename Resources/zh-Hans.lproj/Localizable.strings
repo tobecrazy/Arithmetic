@@ -442,7 +442,8 @@
 /* QR Code Tool */
 "qr_code.tool.title" = "二维码工具";
 "qr_code.tool.description" = "扫描或生成二维码";
-"qr_code.scan_button" = "扫描二维码";
+"qr_code.scan_camera_button" = "相机扫描";
+"qr_code.scan_photos_button" = "相册扫码";
 "qr_code.scan_result" = "扫描结果";
 "qr_code.text_input_label" = "输入文本";
 "qr_code.generate_button" = "生成二维码";
@@ -455,4 +456,5 @@
 "qr_code.open_settings" = "打开设置";
 "qr_code.placeholder_text" = "输入文本生成二维码...";
 "qr_code.scanned_image_label" = "二维码图像";
+"qr_code.no_qr_code_found" = "在图片中未检测到二维码";
 "button.ok" = "确定";
