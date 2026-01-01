@@ -8,6 +8,7 @@ import CoreImage
 import UIKit
 import CoreImage.CIFilter
 import PhotosUI
+import Arithmetic
 
 struct QrCodeToolView: View {
     @EnvironmentObject var localizationManager: LocalizationManager
