@@ -32,6 +32,8 @@
 "alert.exit_message" = "确定要退出答题吗？当前进度将不会保存。";
 "alert.exit_confirm" = "确认退出";
 "alert.cancel" = "取消";
+"alert.title" = "通知";
+"alert.error_title" = "错误";
 "button.next_question" = "下一题";
 "settings.minutes" = "分钟";
 
@@ -137,6 +139,7 @@
 "math_bank.save_success" = "PDF保存成功";
 "math_bank.save_documents_success" = "PDF已保存到文档目录";
 "math_bank.save_failed" = "保存失败";
+"math_bank.save_success_title" = "保存成功";
 
 /* PDF Generation */
 "math_bank.pdf.title" = "数学题库";
