@@ -145,26 +145,22 @@ struct OtherOptionsView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 30)
                 
-                // Navigation Links
-                NavigationLink(
-                    destination: multiplicationTableDestination,
-                    isActive: $navigateToMultiplicationTable
-                ) {
-                    EmptyView()
-                }
 
-                NavigationLink(
-                    destination: formulaGuideDestination,
-                    isActive: $navigateToFormulaGuide
-                ) {
-                    EmptyView()
+                // Navigation Links via sheets
+            }
+            .sheet(isPresented: $navigateToMultiplicationTable) {
+                NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
+                    multiplicationTableDestination
                 }
-
-                NavigationLink(
-                    destination: mathBankDestination,
-                    isActive: $navigateToMathBank
-                ) {
-                    EmptyView()
+            }
+            .sheet(isPresented: $navigateToFormulaGuide) {
+                NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
+                    formulaGuideDestination
+                }
+            }
+            .sheet(isPresented: $navigateToMathBank) {
+                NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
+                    mathBankDestination
                 }
             }
         }

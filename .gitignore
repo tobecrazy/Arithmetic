@@ -62,7 +62,5 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 .DS_Store
 .qwen/settings.json
-QWEN.md
-GEMINI.md
 firebase-debug.log
 GoogleService-Info.plist

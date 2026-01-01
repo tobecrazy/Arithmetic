@@ -667,6 +667,9 @@ Arithmetic/
 ├── 🗂️ .gitignore
 ├── 🖼️ Arithmetic.gif
 ├── 📄 CLAUDE.md
+├── 📄 GEMINI.md
+├── 📄 QWEN.md
+├── ⚙️ GoogleService-Info.plist
 ├── ⚙️ Info.plist
 ├── 📄 LICENSE
 ├── 📝 Prompt.md
@@ -768,6 +771,11 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2026-01-01 (README and .gitignore Updates)
+- **🔄 README Update**: Updated the README file to reflect the current project status.
+- **🛠️ Deprecation Fix**: Replaced deprecated `NavigationLink(destination:isActive:label:)` with `.sheet` modifiers in `OtherOptionsView.swift` for improved navigation handling.
+- **🛠️ .gitignore Update**: Removed GEMINI.md and QWEN.md from .gitignore to allow them to be tracked by git.
 
 ### 🌟 2025-12-20 (Firebase Crashlytics 集成 / Firebase Crashlytics Integration)
 - **🛠️ 错误监控 (Error Monitoring)**: 集成 Firebase Crashlytics 以实时监控和报告应用崩溃 (Integrated Firebase Crashlytics for real-time monitoring and reporting of app crashes)
