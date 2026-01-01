@@ -368,11 +368,6 @@ struct QrCodeToolView_Previews: PreviewProvider {
 }
 
 // Supporting structures
-struct AlertItem: Identifiable {
-    let id = UUID()
-    let title: String
-    let message: String
-}
 
 // QR Code Scanner View
 struct QrCodeScannerView: UIViewControllerRepresentable {

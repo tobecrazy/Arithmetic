@@ -19,13 +19,6 @@ enum PDFGenerationError: LocalizedError {
         }
     }
 }
-
-struct AlertItem: Identifiable {
-    let id = UUID()
-    let title: String
-    let message: String
-}
-
 struct MathBankView: View {
     @EnvironmentObject var localizationManager: LocalizationManager
     @Environment(\.presentationMode) var presentationMode
