@@ -68,7 +68,7 @@ struct MathBankView: View {
         .alert(isPresented: $showingAlert) {
             Alert(
                 title: Text(alertTitle),
-                message: Text(self.alertMessage),
+                message: Text(alertMessage),
                 dismissButton: .default(Text("button.ok".localized))
             )
         }
