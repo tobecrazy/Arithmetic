@@ -32,6 +32,8 @@
 "alert.exit_message" = "Are you sure you want to exit? Your progress will not be saved.";
 "alert.exit_confirm" = "Exit";
 "alert.cancel" = "Cancel";
+"alert.title" = "Notice";
+"alert.error_title" = "Error";
 "button.next_question" = "Next Question";
 "settings.minutes" = "Minutes";
 
@@ -144,6 +146,7 @@
 "math_bank.save_success" = "PDF saved successfully";
 "math_bank.save_documents_success" = "PDF saved to Documents directory";
 "math_bank.save_failed" = "Save failed";
+"math_bank.save_success_title" = "Save Successful";
 
 /* PDF Generation */
 "math_bank.pdf.title" = "Math Problem Bank";

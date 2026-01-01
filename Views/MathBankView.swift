@@ -28,7 +28,7 @@ struct MathBankView: View {
     @State private var selectedQuestionCount: Int = 20
     @State private var isGenerating = false
     @State private var showingAlert = false
-    @State private var alertMessage = ""
+    @State private var alertTitle = ""
     @State private var showingShareSheet = false
     @State private var showingDocumentPicker = false
     @State private var showingSaveOptions = false
@@ -66,7 +66,7 @@ struct MathBankView: View {
         }
         .alert(isPresented: $showingAlert) {
             Alert(
-                title: Text("alert.title".localized),
+                title: Text(alertTitle),
                 message: Text(alertMessage),
                 dismissButton: .default(Text("button.ok".localized))
             )
@@ -102,6 +102,7 @@ struct MathBankView: View {
                     onSave: { success, pathOrError in
                         DispatchQueue.main.async {
                             if success {
+                                self.alertTitle = "math_bank.save_success_title".localized
                                 let message = "math_bank.save_success".localized
                                 if let path = pathOrError {
                                     self.alertMessage = message + "\n" + path
@@ -109,6 +110,7 @@ struct MathBankView: View {
                                     self.alertMessage = message
                                 }
                             } else {
+                                self.alertTitle = "alert.error_title".localized
                                 var message = "math_bank.save_failed".localized
                                 if let error = pathOrError {
                                     message += "\n" + "math_bank.pdf.error.prefix".localized + error
@@ -277,6 +279,7 @@ struct MathBankView: View {
                 print(String(format: "math_bank.pdf.log.pdf_failed".localized, "\(error)"))
                 DispatchQueue.main.async {
                     self.isGenerating = false
+                    self.alertTitle = "alert.error_title".localized
                     self.alertMessage = "math_bank.error".localized + ": \(error.localizedDescription)"
                     self.showingAlert = true
                 }
@@ -294,6 +297,7 @@ struct MathBankView: View {
     private func saveToDocuments() {
         guard let pdfData = generatedPDFData else {
             print("math_bank.pdf.error.data_empty".localized)
+            self.alertTitle = "alert.error_title".localized
             alertMessage = "math_bank.pdf.error.data_empty".localized
             showingAlert = true
             return
@@ -307,12 +311,14 @@ struct MathBankView: View {
 
         if result.success {
             print(String(format: "math_bank.pdf.save_success_with_path".localized, result.path ?? "Unknown path"))
+            self.alertTitle = "math_bank.save_success_title".localized
             alertMessage = "math_bank.save_documents_success".localized
             if let path = result.path {
                 alertMessage += "\n\(path)"
             }
         } else {
             print("math_bank.pdf.save_failed_generic".localized)
+            self.alertTitle = "alert.error_title".localized
             alertMessage = "math_bank.save_failed".localized
         }
         showingAlert = true
