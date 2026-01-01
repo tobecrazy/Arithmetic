@@ -17,7 +17,7 @@ struct QrCodeToolView: View {
     @State private var textInput = ""
     @State private var qrCodeImage: Image?
     @State private var scannedQRCodeImage: Image?
-    @State private var alertItem: Arithmetic.AlertItem?
+    @State private var alertItem: AlertItem?
     @State private var shouldShowCamera = false
     @State private var shouldShowPhotoPicker = false
     @State private var selectedPhoto: PhotosPickerItem?
@@ -368,6 +368,11 @@ struct QrCodeToolView_Previews: PreviewProvider {
 }
 
 // Supporting structures
+private struct AlertItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let message: String
+}
 
 // QR Code Scanner View
 struct QrCodeScannerView: UIViewControllerRepresentable {
