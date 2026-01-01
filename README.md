@@ -772,6 +772,11 @@ Arithmetic/
 
 ## 🔄 最近更新 (Recent Updates)
 
+### 🌟 2026-01-01 (Bug Fixes and Refactoring)
+- **🛠️ Deprecation Fix**: Replaced deprecated `NavigationLink(destination:isActive:label:)` with `.sheet` modifiers in `SettingsView.swift` for improved navigation handling.
+- **🐞 i18n Fix**: Fixed an internationalization issue with the file save alert title by using a dedicated localized string.
+- **refactor**: Reverted the consolidation of `AlertItem` to a single file to resolve build errors, and instead used private local definitions in `QrCodeToolView.swift` and `MathBankView.swift`.
+
 ### 🌟 2026-01-01 (README and .gitignore Updates)
 - **🔄 README Update**: Updated the README file to reflect the current project status.
 - **🛠️ Deprecation Fix**: Replaced deprecated `NavigationLink(destination:isActive:label:)` with `.sheet` modifiers in `OtherOptionsView.swift` for improved navigation handling.
