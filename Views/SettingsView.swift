@@ -53,44 +53,53 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("settings.info".localized)) {
-                    NavigationLink(
-                        destination: aboutMeDestination,
-                        isActive: $navigateToAboutMe
-                    ) {
+                    Button(action: { navigateToAboutMe = true }) {
                         HStack {
                             Image(systemName: "person.circle.fill")
                                 .foregroundColor(.purple)
                             Text("button.about_me".localized)
                         }
                     }
+                    .buttonStyle(PlainButtonStyle()) // To make the button behave like a NavigationLink visualy
 
-                    NavigationLink(
-                        destination: systemInfoDestination,
-                        isActive: $navigateToSystemInfo
-                    ) {
+                    Button(action: { navigateToSystemInfo = true }) {
                         HStack {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.red)
                             Text("system.info.title".localized)
                         }
                     }
+                    .buttonStyle(PlainButtonStyle())
 
-                    NavigationLink(
-                        destination: qrCodeToolDestination,
-                        isActive: $navigateToQrCodeTool
-                    ) {
+                    Button(action: { navigateToQrCodeTool = true }) {
                         HStack {
                             Image(systemName: "qrcode")
                                 .foregroundColor(.blue)
                             Text("qr_code.tool.title".localized)
                         }
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .navigationTitle("settings.title".localized)
             .navigationBarItems(trailing: Button("Done") {
                 presentationMode.wrappedValue.dismiss()
             })
+            .sheet(isPresented: $navigateToAboutMe) {
+                NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
+                    aboutMeDestination
+                }
+            }
+            .sheet(isPresented: $navigateToSystemInfo) {
+                NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
+                    systemInfoDestination
+                }
+            }
+            .sheet(isPresented: $navigateToQrCodeTool) {
+                NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
+                    qrCodeToolDestination
+                }
+            }
         }
     }
 }
