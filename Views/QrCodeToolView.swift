@@ -17,7 +17,7 @@ struct QrCodeToolView: View {
     @State private var textInput = ""
     @State private var qrCodeImage: Image?
     @State private var scannedQRCodeImage: Image?
-    @State private var alertItem: AlertItem?
+    @State private var alertItem: Arithmetic.AlertItem?
     @State private var shouldShowCamera = false
     @State private var shouldShowPhotoPicker = false
     @State private var selectedPhoto: PhotosPickerItem?

@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 import PDFKit
 import UniformTypeIdentifiers
+import Arithmetic
 
 enum PDFGenerationError: LocalizedError {
     case noQuestions
