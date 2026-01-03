@@ -52,10 +52,12 @@
 		8AF3ABB42E05AE3600F67CDE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8AF3AB972E05AE3600F67CDE /* Localizable.strings */; };
 		8AF3EA7D2E75A6B700E0F439 /* TTSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3EA7C2E75A6B700E0F439 /* TTSHelper.swift */; };
 		8AFF11782EEE7AC300CA7987 /* QrCodeToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */; };
+		8A0000000000000000000003 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000004 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A2B3C4D5E6F7892 /* Arithmetic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arithmetic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A0000000000000000000004 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A0C5AE02EC8D88E0020200A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathBankView.swift; sourceTree = "<group>"; };
 		8A0C5AEE2EC9C9510020200A /* MathBankPDFGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathBankPDFGenerator.swift; sourceTree = "<group>"; };
@@ -243,6 +245,9 @@
 				1A2B3C4D5E6F789A /* Sources */,
 				1A2B3C4D5E6F7894 /* Frameworks */,
 				1A2B3C4D5E6F789B /* Resources */,
+
+		8A0000000000000000000001 /* Crashlytics */,
+		8A0000000000000000000002 /* Check Localizations */,
 			);
 			buildRules = (
 			);
@@ -297,6 +302,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0000000000000000000003 /* GoogleService-Info.plist in Resources */,
 				8AF3ABB22E05AE3600F67CDE /* README.md in Resources */,
 				8AF3ABB32E05AE3600F67CDE /* Assets.xcassets in Resources */,
 				8AF3ABB42E05AE3600F67CDE /* Localizable.strings in Resources */,
@@ -304,6 +310,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8A0000000000000000000001 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/GoogleService-Info.plist",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytics;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh \"${SRCROOT}/../firebase-ios-sdk/Crashlytics/run\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8A0000000000000000000002 /* Check Localizations */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Localizations";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh \"${SRCROOT}/scripts/check_localizations.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1A2B3C4D5E6F789A /* Sources */ = {

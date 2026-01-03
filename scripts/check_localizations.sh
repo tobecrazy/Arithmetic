@@ -27,16 +27,23 @@ extract_keys() {
   sort -u
 }
 
-mapfile -t EN_KEYS < <(extract_keys "$EN_FILE")
-mapfile -t ZH_KEYS < <(extract_keys "$ZH_FILE")
+en_tmp_keys=$(mktemp)
+zh_tmp_keys=$(mktemp)
+extract_keys "$EN_FILE" > "$en_tmp_keys"
+extract_keys "$ZH_FILE" > "$zh_tmp_keys"
+
+EN_KEYS=()
+while IFS= read -r line; do EN_KEYS+=("$line"); done < "$en_tmp_keys"
+ZH_KEYS=()
+while IFS= read -r line; do ZH_KEYS+=("$line"); done < "$zh_tmp_keys"
 
 en_tmp=$(mktemp)
 zh_tmp=$(mktemp)
 printf '%s\n' "${EN_KEYS[@]}" > "$en_tmp"
 printf '%s\n' "${ZH_KEYS[@]}" > "$zh_tmp"
 
-missing_in_zh=$(comm -23 <(sort "$en_tmp") <(sort "$zh_tmp") || true)
-missing_in_en=$(comm -13 <(sort "$en_tmp") <(sort "$zh_tmp") || true)
+missing_in_zh=$(grep -F -x -v -f "$zh_tmp" "$en_tmp" || true)
+missing_in_en=$(grep -F -x -v -f "$en_tmp" "$zh_tmp" || true)
 
 status=0
 if [[ -n "$missing_in_zh" ]]; then
@@ -56,5 +63,5 @@ else
   echo "Total en keys: ${#EN_KEYS[@]}, zh-Hans keys: ${#ZH_KEYS[@]}" >&2
 fi
 
-rm -f "$en_tmp" "$zh_tmp"
+rm -f "$en_tmp" "$zh_tmp" "$en_tmp_keys" "$zh_tmp_keys"
 exit $status

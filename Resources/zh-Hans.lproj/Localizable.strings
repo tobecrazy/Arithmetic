@@ -461,3 +461,8 @@
 "qr_code.scanned_image_label" = "二维码图像";
 "qr_code.no_qr_code_found" = "在图片中未检测到二维码";
 "button.ok" = "确定";
+
+/* Crash Test */
+"crash.test.title" = "崩溃测试";
+"crash.test.button" = "生成应用崩溃";
+

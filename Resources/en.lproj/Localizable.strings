@@ -468,3 +468,8 @@
 "qr_code.scanned_image_label" = "QR Code Image";
 "button.ok" = "OK";
 "qr_code.no_qr_code_found" = "No QR code found in the image";
+
+/* Crash Test */
+"crash.test.title" = "Crash Test";
+"crash.test.button" = "Generate App Crash";
+
