@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Updated: January 3, 2026*
+*Updated: January 4, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -735,8 +735,11 @@ Arithmetic/
 │   ├── QrCodeToolView.swift               # QR码工具视图
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
 ├── 📁 scripts/                            # 构建和工具脚本
-│   └── check_localizations.sh             # 本地化检查脚本
+│   ├── check_localizations.sh             # 本地化检查脚本
+│   ├── upload_dsyms.sh                    # dSYM上传脚本
+│   └── upload-symbols                     # dSYM上传工具
 └── 📁 Tests/                              # 测试文件
+    └── UtilsTests.swift                   # 工具类测试
 ```
 
 ## 🏗️ Core Data 集成 (Core Data Integration)
