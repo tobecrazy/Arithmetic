@@ -35,14 +35,8 @@ class LocalizationTests: XCTestCase {
     
     // Additional test to ensure existing localization works as expected (sanity check)
     func testExistingLocalizedStringReturnsCorrectValue() {
-        // Assuming "Welcome" key exists in en.lproj/Localizable.strings and its value is "Welcome"
-        // If not, this test might fail or need adjustment based on actual string file content.
-        let welcomeKey = "Welcome"
+        let welcomeKey = "welcome.title"
         let localizedString = welcomeKey.localized
-        // This assertion relies on the actual content of Localizable.strings
-        // For 'en', if "Welcome" -> "Welcome", this passes.
-        // If "Welcome" -> "Welcome to the App", this test needs to change to "Welcome to the App"
-        // I will assume for now that "Welcome" localized in English is "Welcome"
-        XCTAssertEqual(localizedString, "Welcome", "Existing localization should return the correct value")
+        XCTAssertEqual(localizedString, "Welcome to Elementary Arithmetic Practice", "Existing localization should return the correct value")
     }
 }
