@@ -3,6 +3,8 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
+*Updated: January 3, 2026*
+
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
 [![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)](https://developer.apple.com/ios/)
@@ -771,6 +773,15 @@ Arithmetic/
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2026-01-03 (Crash Test and Localization Improvements)
+- **🛠️ Crash Test Feature**: Added Crash Test section in SettingsView to help verify error monitoring functionality
+- **🔍 Localization Checks**: Enhanced localization verification script with more robust key comparison using temporary files and grep
+- **🔧 Firebase Integration**: Updated Firebase Crashlytics initialization in app launch sequence
+- **⚙️ Build Configuration**: Added GoogleService-Info.plist and Crashlytics build phase to Xcode project
+
+### 🌟 2026-01-03 (dSYM Upload Script)
+- **🛠️ New Utility**: Created upload_dsyms.sh script to handle dSYM file uploads for crash reporting
 
 ### 🌟 2026-01-01 (Bug Fixes and Refactoring)
 - **🛠️ Deprecation Fix**: Replaced deprecated `NavigationLink(destination:isActive:label:)` with `.sheet` modifiers in `SettingsView.swift` for improved navigation handling.
