@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Configuration
-FIREBASE_CRASHLYTICS_PATH="${SRCROOT}/../firebase-ios-sdk/Crashlytics"
-GOOGLE_SERVICE_INFO_PLIST="${SRCROOT}/GoogleService-Info.plist"
+GOOGLE_SERVICE_INFO_PLIST="./GoogleService-Info.plist"
 
 # Find the latest .xcarchive
 echo "Finding latest .xcarchive..."
@@ -34,15 +33,12 @@ fi
 echo "GoogleService-Info.plist found: $GOOGLE_SERVICE_INFO_PLIST"
 
 # Locate the upload-symbols tool
-UPLOAD_SYMBOLS_TOOL="$FIREBASE_CRASHLYTICS_PATH/upload-symbols"
+UPLOAD_SYMBOLS_TOOL="./scripts/upload-symbols"
 
 if [ ! -f "$UPLOAD_SYMBOLS_TOOL" ]; then
     echo "Error: upload-symbols tool not found at $UPLOAD_SYMBOLS_TOOL"
-    echo "Please ensure firebase-ios-sdk is correctly installed and accessible relative to SRCROOT."
     exit 1
 fi
-
-echo "upload-symbols tool found: $UPLOAD_SYMBOLS_TOOL"
 
 # Upload dSYMs
 echo "Uploading dSYMs to Firebase Crashlytics..."
