@@ -14,8 +14,12 @@ struct WelcomeView: View {
                     .tag(1)
                 FeaturesPage()
                     .tag(2)
-                HowToPage()
+                FeaturesPage2()
                     .tag(3)
+                HowToPage()
+                    .tag(4)
+                HowToPage2()
+                    .tag(5)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .automatic))
@@ -74,7 +78,7 @@ struct WelcomeView: View {
 
                     Spacer()
 
-                    if currentPage < 3 {
+                    if currentPage < 5 {
                         Button(action: {
                             withAnimation(.easeInOut) { currentPage += 1 }
                         }) {
@@ -311,6 +315,17 @@ private struct FeaturesPage: View {
     }
 }
 
+private struct FeaturesPage2: View {
+    var body: some View {
+        PageContainer(icon: "sparkles", iconColor: .yellow, gradient: [.yellow, .orange], titleKey: "welcome.features.title2") {
+            VStack(spacing: 18) {
+                FeatureCard(icon: "qrcode", iconColor: .gray, title: "welcome.feature.qrcode.title".localized, description: "welcome.feature.qrcode.desc".localized)
+                FeatureCard(icon: "doc.text", iconColor: .brown, title: "welcome.feature.pdf.title".localized, description: "welcome.feature.pdf.desc".localized)
+            }
+        }
+    }
+}
+
 private struct HowToPage: View {
     var body: some View {
         PageContainer(icon: "hand.tap.fill", iconColor: .purple, gradient: [.purple, .blue], titleKey: "welcome.howto.title") {
@@ -319,8 +334,19 @@ private struct HowToPage: View {
                 HowToStep(number: 2, title: "welcome.howto.step2.title".localized, description: "welcome.howto.step2.desc".localized, color: .green)
                 HowToStep(number: 3, title: "welcome.howto.step3.title".localized, description: "welcome.howto.step3.desc".localized, color: .orange)
                 HowToStep(number: 4, title: "welcome.howto.step4.title".localized, description: "welcome.howto.step4.desc".localized, color: .red)
+            }
+        }
+    }
+}
+
+private struct HowToPage2: View {
+    var body: some View {
+        PageContainer(icon: "hand.draw.fill", iconColor: .pink, gradient: [.pink, .red], titleKey: "welcome.howto.title") {
+            VStack(spacing: 18) {
                 HowToStep(number: 5, title: "welcome.howto.step5.title".localized, description: "welcome.howto.step5.desc".localized, color: .purple)
                 HowToStep(number: 6, title: "welcome.howto.step6.title".localized, description: "welcome.howto.step6.desc".localized, color: .pink)
+                HowToStep(number: 7, title: "welcome.howto.step7.title".localized, description: "welcome.howto.step7.desc".localized, color: .gray)
+                HowToStep(number: 8, title: "welcome.howto.step8.title".localized, description: "welcome.howto.step8.desc".localized, color: .brown)
             }
         }
     }
