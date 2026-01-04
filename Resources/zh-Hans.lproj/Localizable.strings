@@ -401,6 +401,7 @@
 "welcome.level5.desc" = "20以内乘除法";
 "welcome.level6.desc" = "100以内混合运算";
 "welcome.features.title" = "主要功能";
+"welcome.features.title2" = "更多功能";
 "welcome.feature.game.title" = "开始游戏";
 "welcome.feature.game.desc" = "选择难度等级开始练习，答对5题可以获得一颗星奖励。";
 "welcome.feature.solutions.title" = "解题思路";
@@ -409,6 +410,10 @@
 "welcome.feature.wrongquestions.desc" = "自动收集错题，便于重点复习和巩固薄弱环节。";
 "welcome.feature.multiplication.title" = "九九乘法表";
 "welcome.feature.multiplication.desc" = "完整乘法表展示，帮助记忆和掌握乘法运算。";
+"welcome.feature.qrcode.title" = "二维码工具";
+"welcome.feature.qrcode.desc" = "扫描和生成二维码，支持相机和相册扫描。";
+"welcome.feature.pdf.title" = "生成PDF";
+"welcome.feature.pdf.desc" = "生成可打印的数学题库PDF，包含题目和答案。";
 "welcome.howto.title" = "使用方法";
 "welcome.howto.step1.title" = "选择难度";
 "welcome.howto.step1.desc" = "从6个难度等级中选择适合的级别开始练习。";
@@ -422,6 +427,10 @@
 "welcome.howto.step5.desc" = "查看九九乘法表和公式大全，在练习过程中同步巩固基础知识。";
 "welcome.howto.step6.title" = "个性化学习";
 "welcome.howto.step6.desc" = "随时调整时间限制与语言设置，成绩页面点击“查看解析”掌握多种解题策略。";
+"welcome.howto.step7.title" = "生成二维码";
+"welcome.howto.step7.desc" = "使用二维码工具从文本生成二维码，或使用相机、相册扫描二维码。";
+"welcome.howto.step8.title" = "生成PDF";
+"welcome.howto.step8.desc" = "创建可打印的数学题库PDF，包含答案页，方便离线练习。";
 "welcome.start_button" = "开始使用";
 
 "welcome.prev" = "上一页";

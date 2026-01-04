@@ -409,6 +409,7 @@
 "welcome.level5.desc" = "Multiplication & Division within 20";
 "welcome.level6.desc" = "Mixed Operations within 100";
 "welcome.features.title" = "Main Features";
+"welcome.features.title2" = "More Features";
 "welcome.feature.game.title" = "Start Game";
 "welcome.feature.game.desc" = "Select difficulty level to start practicing. You'll get a star reward for every 5 correct answers.";
 "welcome.feature.solutions.title" = "Solution Approach";
@@ -417,6 +418,10 @@
 "welcome.feature.wrongquestions.desc" = "Automatically collects wrong answers for focused review and reinforcing weak areas.";
 "welcome.feature.multiplication.title" = "Multiplication Table";
 "welcome.feature.multiplication.desc" = "Complete multiplication table display to help memorize and master multiplication operations.";
+"welcome.feature.qrcode.title" = "QR Code Tool";
+"welcome.feature.qrcode.desc" = "Scan and generate QR codes, supports camera and album scanning.";
+"welcome.feature.pdf.title" = "Generate PDF";
+"welcome.feature.pdf.desc" = "Generate printable math problem bank PDF, with questions and answers.";
 "welcome.howto.title" = "How to Use";
 "welcome.howto.step1.title" = "Select Difficulty";
 "welcome.howto.step1.desc" = "Choose from 6 difficulty levels that suit your current ability to start practicing.";
@@ -430,6 +435,10 @@
 "welcome.howto.step5.desc" = "Check the Multiplication Table and Formula Guide to strengthen foundational knowledge while practicing.";
 "welcome.howto.step6.title" = "Customize & Learn";
 "welcome.howto.step6.desc" = "Adjust time limits, switch language anytime, and tap 'Show Solution' on results to study multiple solving strategies.";
+"welcome.howto.step7.title" = "Generate QR Code";
+"welcome.howto.step7.desc" = "Use the QR code tool to generate QR codes from text, or scan QR codes using the camera or from your photo library.";
+"welcome.howto.step8.title" = "Generate PDF";
+"welcome.howto.step8.desc" = "Create a printable PDF of math problems, including an answer key, for offline practice.";
 "welcome.start_button" = "Get Started";
 "welcome.prev" = "Previous";
 "welcome.next" = "Next";
