@@ -52,7 +52,8 @@
 | PDF题库生成 | 系统信息监控 | 设置选项 |
 | 欢迎引导流程 | 数学公式大全 | QR码扫描工具 |
 | 网络状态检测 | 单位换算 | 电池监控 |
-| Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | |
+| Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | 关于页面 (About Page) |
+| Git信息嵌入 (Git Info Embedding) | | |
 
 </div>
 
