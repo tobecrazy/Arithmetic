@@ -135,7 +135,6 @@ struct AboutAppView: View {
     }
     
     var gitCommitHash: String {
-        // This information should be injected at build time.
         if let gitCommitURL = Bundle.main.url(forResource: "git_commit", withExtension: "txt"),
            let gitCommit = try? String(contentsOf: gitCommitURL, encoding: .utf8) {
             return gitCommit.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -152,41 +151,67 @@ struct AboutAppView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Spacer()
-                VStack {
-                    Image("logo")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .cornerRadius(20)
-                    Text("Arithmetic")
-                        .font(.largeTitle)
+        NavigationView {
+            Form {
+                Section {
+                    HStack {
+                        Spacer()
+                        VStack(spacing: 10) {
+                            Image("logo")
+                                .resizable()
+                                .frame(width: 80, height: 80)
+                                .cornerRadius(16)
+                                .shadow(radius: 3)
+                            Text("Arithmetic")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            Text("Version \(appVersion) (\(buildNumber))")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical)
                 }
-                Spacer()
-            }
+                
+                Section(header: Text("Git Commit Details")) {
+                    InfoRow(label: "Hash", value: gitCommitHash)
+                    InfoRow(label: "Message", value: gitCommitMessage)
+                }
+                
+                Section(header: Text("About the App")) {
+                    Text("This app is designed to help elementary school students practice their arithmetic skills in a fun and engaging way.")
+                        .font(.body)
+                        .padding(.vertical, 5)
+                }
 
-            Text("Version: \(appVersion) (\(buildNumber))")
-                .font(.headline)
-            
-            VStack(alignment: .leading) {
-                Text("Latest Commit:")
-                    .font(.headline)
-                Text("Hash: \(gitCommitHash)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Text("Message: \(gitCommitMessage)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                Section(header: Text("Acknowledgements")) {
+                    Link("Firebase", destination: URL(string: "https://firebase.google.com")!)
+                    Link("SwiftUI", destination: URL(string: "https://developer.apple.com/xcode/swiftui/")!)
+                }
             }
-            
-            Spacer()
+            .navigationTitle("About Arithmetic")
+            .navigationBarItems(trailing: Button("Done") {
+                presentationMode.wrappedValue.dismiss()
+            })
         }
-        .padding()
-        .navigationTitle("about.arithmetic.title".localized)
-        .navigationBarItems(trailing: Button("Done") {
-            presentationMode.wrappedValue.dismiss()
-        })
+    }
+}
+
+struct InfoRow: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Text(value)
+                .font(.body)
+                .lineLimit(3)
+        }
+        .padding(.vertical, 4)
     }
 }
 
