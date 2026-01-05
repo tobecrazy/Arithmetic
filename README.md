@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Updated: January 4, 2026*
+*Version: 1.0.1* | *Updated: January 5, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
