@@ -63,5 +63,24 @@ else
   echo "Total en keys: ${#EN_KEYS[@]}, zh-Hans keys: ${#ZH_KEYS[@]}" >&2
 fi
 
+# --- Embed Git Info ---
+echo "---"
+echo "Embedding Git info into app bundle..."
+
+# Set the path for the output file
+APPVERSION_FILE_PATH="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/appversion.txt"
+
+# Get the latest git commit hash (short version)
+COMMIT_HASH=$(git rev-parse --short HEAD)
+
+# Get the latest git commit message
+COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+
+# Write the commit hash and message to the file, separated by a delimiter
+echo "${COMMIT_HASH}_||_${COMMIT_MESSAGE}" > "${APPVERSION_FILE_PATH}"
+
+echo "✅ Git info set in appversion.txt"
+echo "---"
+
 rm -f "$en_tmp" "$zh_tmp" "$en_tmp_keys" "$zh_tmp_keys"
 exit $status
