@@ -477,3 +477,12 @@
 
 "about.arithmetic.title" = "关于 Arithmetic";
 
+/* About App View */
+"about.app.section.git_details" = "Git 提交详情";
+"about.app.section.about_app" = "关于应用";
+"about.app.section.acknowledgements" = "鸣谢";
+"about.app.label.hash" = "哈希值";
+"about.app.label.message" = "提交信息";
+"about.app.description" = "本应用旨在帮助小学生以有趣和引人入胜的方式练习算术技能。";
+
+

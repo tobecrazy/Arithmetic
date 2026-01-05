@@ -174,23 +174,23 @@ struct AboutAppView: View {
                     .padding(.vertical)
                 }
                 
-                Section(header: Text("Git Commit Details")) {
-                    InfoRow(label: "Hash", value: gitCommitHash)
-                    InfoRow(label: "Message", value: gitCommitMessage)
+                Section(header: Text("about.app.section.git_details".localized)) {
+                    InfoRow(label: "about.app.label.hash".localized, value: gitCommitHash)
+                    InfoRow(label: "about.app.label.message".localized, value: gitCommitMessage)
                 }
                 
-                Section(header: Text("About the App")) {
-                    Text("This app is designed to help elementary school students practice their arithmetic skills in a fun and engaging way.")
+                Section(header: Text("about.app.section.about_app".localized)) {
+                    Text("about.app.description".localized)
                         .font(.body)
                         .padding(.vertical, 5)
                 }
 
-                Section(header: Text("Acknowledgements")) {
+                Section(header: Text("about.app.section.acknowledgements".localized)) {
                     Link("Firebase", destination: URL(string: "https://firebase.google.com")!)
                     Link("SwiftUI", destination: URL(string: "https://developer.apple.com/xcode/swiftui/")!)
                 }
             }
-            .navigationTitle("About Arithmetic")
+            .navigationTitle("about.arithmetic.title".localized)
             .navigationBarItems(trailing: Button("Done") {
                 presentationMode.wrappedValue.dismiss()
             })
