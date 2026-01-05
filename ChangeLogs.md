@@ -1,5 +1,14 @@
 # Change Log
 
+### 🌟 2026-01-05 (About App & UI Improvements)
+- **新增“关于应用”页面 (Added "About App" Page)**：
+  - 在设置页面新增“关于 Arithmetic”按钮，点击后可查看应用版本、构建号、Git提交哈希和提交信息。
+  - 界面优化，采用更清晰的表单布局，并添加了致谢列表。
+  - **Git信息嵌入**：通过Xcode构建脚本将最新的Git提交信息（哈希和消息）嵌入到应用中，解决了Git信息显示“N/A”的问题。
+  - **国际化支持**：所有“关于应用”页面的文本都已进行完整的中英文本地化。
+- **主界面按钮位置调整 (Main Screen Button Reordering)**：
+  - 将主页面的“设置”按钮移动到“其他选项”按钮下方，优化了界面布局。
+
 ## 🔄 最近更新 (Recent Updates)
 
 ### 🌟 2026-01-03 (Crash Test and Localization Improvements)

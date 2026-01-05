@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Updated: January 4, 2026*
+*Version: 1.0.1* | *Updated: January 5, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -52,7 +52,8 @@
 | PDF题库生成 | 系统信息监控 | 设置选项 |
 | 欢迎引导流程 | 数学公式大全 | QR码扫描工具 |
 | 网络状态检测 | 单位换算 | 电池监控 |
-| Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | |
+| Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | 关于页面 (About Page) |
+| Git信息嵌入 (Git Info Embedding) | | |
 
 </div>
 
@@ -304,6 +305,11 @@
 - **详细崩溃报告 (Detailed Crash Reports)** - 提供包含设备信息、系统版本、堆栈跟踪的详细崩溃报告 (Provides detailed crash reports with device information, system version, and stack traces)
 - **错误分析 (Error Analysis)** - 帮助开发者快速识别和修复问题，提高应用稳定性 (Helps developers quickly identify and fix issues, improving app stability)
 - **测试功能 (Testing Feature)** - 在设置页面提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality in settings for verifying error monitoring system)
+
+### ℹ️ 关于应用页面 (About App Page)
+- **版本信息 (Version Information)** - 在设置中新增“关于应用”页面，显示应用版本、构建号。 (Adds an "About App" page in Settings to display app version and build number.)
+- **自动Git信息 (Automatic Git Info)** - 通过构建脚本自动嵌入最新的Git提交哈希和信息。 (Automatically embeds the latest Git commit hash and message via a build script.)
+- **国际化 (Internationalized)** - 页面内容完全支持中英文。 (The page content is fully localized in Chinese and English.)
 
 ### 🌐 多语言支持 (Language Settings)
 - **双语界面 (Bilingual Interface)** - 支持中文和英文界面 (Supports both Chinese and English interfaces)
@@ -744,7 +750,7 @@ Arithmetic/
 │   ├── QrCodeToolView.swift               # QR码工具视图
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
 ├── 📁 scripts/                            # 构建和工具脚本
-│   ├── check_localizations.sh             # 本地化检查脚本
+│   ├── check_localizations.sh             # 本地化检查并嵌入Git信息 (Checks localization and embeds Git info)
 │   ├── upload_dsyms.sh                    # dSYM上传脚本
 │   └── upload-symbols                     # dSYM上传工具
 └── 📁 Tests/                              # 测试文件

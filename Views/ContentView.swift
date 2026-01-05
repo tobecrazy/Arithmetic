@@ -366,24 +366,24 @@ struct ContentView: View {
                     .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
                     
                     enhancedActionButton(
-                        title: "button.settings".localized,
-                        subtitle: "settings.title".localized,
-                        iconName: "gear",
-                        gradient: ContentView.purpleGradient
-                    ) {
-                        showSettingsView = true
-                    }
-                    .opacity(isAnimating ? 1 : 0)
-                    .offset(x: isAnimating ? 0 : 50)
-                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
-
-                    enhancedActionButton(
                         title: "button.other_options".localized,
                         subtitle: "explore.more.features".localized,
                         iconName: "ellipsis.circle.fill",
                         gradient: .greenGradient
                     ) {
                         showOtherOptionsView = true
+                    }
+                    .opacity(isAnimating ? 1 : 0)
+                    .offset(x: isAnimating ? 0 : 50)
+                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
+
+                    enhancedActionButton(
+                        title: "button.settings".localized,
+                        subtitle: "settings.title".localized,
+                        iconName: "gear",
+                        gradient: ContentView.purpleGradient
+                    ) {
+                        showSettingsView = true
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
@@ -503,24 +503,24 @@ struct ContentView: View {
                     .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
                     
                     enhancedActionButton(
-                        title: "button.settings".localized,
-                        subtitle: "settings.title".localized,
-                        iconName: "gear",
-                        gradient: ContentView.purpleGradient
-                    ) {
-                        showSettingsView = true
-                    }
-                    .opacity(isAnimating ? 1 : 0)
-                    .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
-
-                    enhancedActionButton(
                         title: "button.other_options".localized,
                         subtitle: "explore.more.features".localized,
                         iconName: "ellipsis.circle.fill",
                         gradient: .greenGradient
                     ) {
                         showOtherOptionsView = true
+                    }
+                    .opacity(isAnimating ? 1 : 0)
+                    .offset(y: isAnimating ? 0 : 30)
+                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
+
+                    enhancedActionButton(
+                        title: "button.settings".localized,
+                        subtitle: "settings.title".localized,
+                        iconName: "gear",
+                        gradient: ContentView.purpleGradient
+                    ) {
+                        showSettingsView = true
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)

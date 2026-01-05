@@ -10,6 +10,7 @@ struct SettingsView: View {
     @State private var navigateToAboutMe = false
     @State private var navigateToSystemInfo = false
     @State private var navigateToQrCodeTool = false
+    @State private var navigateToAboutApp = false
 
     private var aboutMeDestination: some View {
         AboutMeView()
@@ -23,6 +24,11 @@ struct SettingsView: View {
 
     private var qrCodeToolDestination: some View {
         QrCodeToolView()
+            .environmentObject(localizationManager)
+    }
+
+    private var aboutAppDestination: some View {
+        AboutAppView()
             .environmentObject(localizationManager)
     }
 
@@ -78,6 +84,15 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
+
+                    Button(action: { navigateToAboutApp = true }) {
+                        HStack {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.green)
+                            Text("about.arithmetic.title".localized)
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .navigationTitle("settings.title".localized)
@@ -99,7 +114,109 @@ struct SettingsView: View {
                     qrCodeToolDestination
                 }
             }
+            .sheet(isPresented: $navigateToAboutApp) {
+                NavigationView {
+                    aboutAppDestination
+                }
+            }
         }
+    }
+}
+
+struct AboutAppView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A"
+    }
+    
+    var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "N/A"
+    }
+    
+    var gitCommitHash: String {
+        gitInfo.hash
+    }
+
+    var gitCommitMessage: String {
+        gitInfo.message
+    }
+    
+    private var gitInfo: (hash: String, message: String) {
+        if let appVersionURL = Bundle.main.url(forResource: "appversion", withExtension: "txt"),
+           let content = try? String(contentsOf: appVersionURL, encoding: .utf8) {
+            let components = content.components(separatedBy: "_||_")
+            if components.count == 2 {
+                let hash = components[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                let message = components[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                return (hash, message)
+            }
+        }
+        return ("N/A", "N/A")
+    }
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section {
+                    HStack {
+                        Spacer()
+                        VStack(spacing: 10) {
+                            Image("logo")
+                                .resizable()
+                                .frame(width: 80, height: 80)
+                                .cornerRadius(16)
+                                .shadow(radius: 3)
+                            Text("Arithmetic")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            Text("Version \(appVersion) (\(buildNumber))")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical)
+                }
+                
+                Section(header: Text("about.app.section.git_details".localized)) {
+                    InfoRow(label: "about.app.label.hash".localized, value: gitCommitHash)
+                    InfoRow(label: "about.app.label.message".localized, value: gitCommitMessage)
+                }
+                
+                Section(header: Text("about.app.section.about_app".localized)) {
+                    Text("about.app.description".localized)
+                        .font(.body)
+                        .padding(.vertical, 5)
+                }
+
+                Section(header: Text("about.app.section.acknowledgements".localized)) {
+                    Link("Firebase", destination: URL(string: "https://firebase.google.com")!)
+                    Link("SwiftUI", destination: URL(string: "https://developer.apple.com/xcode/swiftui/")!)
+                }
+            }
+            .navigationTitle("about.arithmetic.title".localized)
+            .navigationBarItems(trailing: Button("Done") {
+                presentationMode.wrappedValue.dismiss()
+            })
+        }
+    }
+}
+
+struct InfoRow: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Text(value)
+                .font(.body)
+                .lineLimit(3)
+        }
+        .padding(.vertical, 4)
     }
 }
 

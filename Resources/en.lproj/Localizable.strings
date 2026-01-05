@@ -482,3 +482,14 @@
 "crash.test.title" = "Crash Test";
 "crash.test.button" = "Generate App Crash";
 
+"about.arithmetic.title" = "About Arithmetic";
+
+/* About App View */
+"about.app.section.git_details" = "Git Commit Details";
+"about.app.section.about_app" = "About the App";
+"about.app.section.acknowledgements" = "Acknowledgements";
+"about.app.label.hash" = "Hash";
+"about.app.label.message" = "Message";
+"about.app.description" = "This app is designed to help elementary school students practice their arithmetic skills in a fun and engaging way.";
+
+
