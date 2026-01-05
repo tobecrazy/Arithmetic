@@ -16,7 +16,7 @@
 
 *An intelligent arithmetic learning application built with SwiftUI to help elementary students master basic mathematical operations*
 
-[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring)
+[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring) • [🔄 更新日志](#-最近更新-recent-updates)
 
 </div>
 
@@ -33,7 +33,7 @@
 - [🏗️ 技术实现 (Technical Implementation)](#️-技术实现-technical-implementation)
 - [📊 系统信息监控 (System Information Monitoring)](#️-系统信息监控-system-information-monitoring)
 - [📁 项目结构 (Project Structure)](#-项目结构-project-structure)
-- [🔄 最近更新 (Recent Updates)](ChangeLogs.md)
+- [🔄 最近更新 (Recent Updates)](#-最近更新-recent-updates)
 - [🤝 贡献指南 (Contributing)](#-贡献指南-contributing)
 - [📄 许可证 (License)](#-许可证-license)
 
@@ -556,6 +556,15 @@ flowchart TB
 - 乘除法优化：避免÷1运算，除数范围2-10，确保有意义的计算题目 (Multiplication/division optimization: Avoid ÷1 operations, divisor range 2-10, ensure meaningful calculation questions)
 ```
 
+#### 🧪 测试与质量保证 (Testing and Quality Assurance)
+- **全面验证系统** - 所有生成的题目都经过`isValid()`方法验证，确保结果为正整数 (All generated questions are validated through `isValid()` method to ensure positive integer results)
+- **运算优先级测试** - 考虑运算优先级的完整验证逻辑 (Complete validation logic considering operation precedence)
+- **防无限循环机制** - 添加防无限循环机制和降级策略 (Added anti-infinite loop mechanisms and fallback strategies)
+- **边界条件测试** - 针对各难度等级的边界条件进行全面测试 (Comprehensive testing of boundary conditions for each difficulty level)
+- **本地化测试** - 确保中英文界面和解析内容的正确显示 (Ensuring correct display of Chinese/English interface and analysis content)
+- **设备兼容性测试** - 在多种iOS设备和版本上进行兼容性验证 (Compatibility verification on multiple iOS devices and versions)
+- **TTS功能测试** - 验证题目朗读和乘法表发音功能的准确性 (Verifying accuracy of question read-aloud and multiplication table pronunciation features)
+
 #### 🔍 解题方法选择 (Problem-Solving Method Selection)
 ```swift
 // 解题方法智能选择 (Intelligent problem-solving method selection)
@@ -777,7 +786,9 @@ Arithmetic/
 
 ## 🔄 最近更新 (Recent Updates)
 
-See [ChangeLogs.md](ChangeLogs.md) for a detailed history of updates.
+For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
+
+[⬆️ 返回目录](#-目录-table-of-contents)
 
 ---
 
@@ -791,6 +802,7 @@ See [ChangeLogs.md](ChangeLogs.md) for a detailed history of updates.
 - 🔧 提交代码改进 (Submit code improvements)
 - 📝 改进文档 (Improve documentation)
 - 🌐 协助翻译 (Help with translations)
+- 📊 查看更新历史 (Review update history in [ChangeLogs.md](ChangeLogs.md))
 
 ### 📋 贡献流程 (Contribution Process)
 
@@ -841,6 +853,21 @@ See [ChangeLogs.md](ChangeLogs.md) for a detailed history of updates.
 
 本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
 
+### 🧪 测试说明 (Testing Instructions)
+
+详细的测试说明请查看 [TESTING_INSTRUCTIONS.md](TESTING_INSTRUCTIONS.md) 文件，包括：
+- 单元测试设置和执行方法 (Unit test setup and execution methods)
+- UI测试流程 (UI testing procedures)
+- 集成测试指南 (Integration testing guidelines)
+- 覆盖率报告说明 (Coverage report instructions)
+
+### 📊 测试覆盖率 (Test Coverage)
+
+测试覆盖率摘要请查看 [TEST_COVERAGE_SUMMARY.md](TEST_COVERAGE_SUMMARY.md) 文件，包含：
+- 各模块的测试覆盖率统计 (Test coverage statistics for each module)
+- 代码覆盖率指标 (Code coverage metrics)
+- 测试质量评估 (Test quality assessment)
+
 ### 📞 联系与支持 (Contact & Support)
 
 <div align="center">
@@ -850,12 +877,18 @@ See [ChangeLogs.md](ChangeLogs.md) for a detailed history of updates.
 | 📧 邮箱 (Email) | [tobecrazy@qq.com](mailto:tobecrazy@qq.com) |
 | 🐛 问题反馈 (Issue Reports) | [GitHub Issues](https://github.com/tobecrazy/Arithmetic/issues) |
 | 💡 功能建议 (Feature Requests) | [GitHub Discussions](https://github.com/tobecrazy/Arithmetic/discussions) |
+| 📊 更新日志 (Change Log) | [ChangeLogs.md](ChangeLogs.md) |
+| 🧪 测试说明 (Testing Instructions) | [TESTING_INSTRUCTIONS.md](TESTING_INSTRUCTIONS.md) |
+| 📊 测试覆盖率 (Test Coverage) | [TEST_COVERAGE_SUMMARY.md](TEST_COVERAGE_SUMMARY.md) |
+| 🤖 Claude 开发助手 | [CLAUDE.md](CLAUDE.md) |
+| 🤖 Qwen 开发助手 | [QWEN.md](QWEN.md) |
+| 🤖 Gemini 开发助手 | [GEMINI.md](GEMINI.md) |
 
 **如有任何问题或建议，欢迎通过以上方式联系我们！** (If you have any questions or suggestions, please feel free to contact us through the above methods!)
 
 </div>
 
----
+[⬆️ 返回顶部](#-小学生算术学习应用)
 
 <div align="center">
 
