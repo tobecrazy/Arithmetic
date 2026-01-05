@@ -10,7 +10,6 @@ struct SettingsView: View {
     @State private var navigateToAboutMe = false
     @State private var navigateToSystemInfo = false
     @State private var navigateToQrCodeTool = false
-    @State private var navigateToAboutApp = false
 
     private var aboutMeDestination: some View {
         AboutMeView()
@@ -24,11 +23,6 @@ struct SettingsView: View {
 
     private var qrCodeToolDestination: some View {
         QrCodeToolView()
-            .environmentObject(localizationManager)
-    }
-
-    private var aboutAppDestination: some View {
-        AboutAppView()
             .environmentObject(localizationManager)
     }
 
@@ -84,15 +78,6 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-
-                    Button(action: { navigateToAboutApp = true }) {
-                        HStack {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(.green)
-                            Text("about.arithmetic.title".localized)
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .navigationTitle("settings.title".localized)
@@ -112,11 +97,6 @@ struct SettingsView: View {
             .sheet(isPresented: $navigateToQrCodeTool) {
                 NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
                     qrCodeToolDestination
-                }
-            }
-            .sheet(isPresented: $navigateToAboutApp) {
-                NavigationView {
-                    aboutAppDestination
                 }
             }
         }
