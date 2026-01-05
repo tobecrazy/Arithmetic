@@ -135,19 +135,24 @@ struct AboutAppView: View {
     }
     
     var gitCommitHash: String {
-        if let gitCommitURL = Bundle.main.url(forResource: "git_commit", withExtension: "txt"),
-           let gitCommit = try? String(contentsOf: gitCommitURL, encoding: .utf8) {
-            return gitCommit.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        return "N/A"
+        gitInfo.hash
     }
 
     var gitCommitMessage: String {
-        if let gitMessageURL = Bundle.main.url(forResource: "git_message", withExtension: "txt"),
-           let gitMessage = try? String(contentsOf: gitMessageURL, encoding: .utf8) {
-            return gitMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+        gitInfo.message
+    }
+    
+    private var gitInfo: (hash: String, message: String) {
+        if let appVersionURL = Bundle.main.url(forResource: "appversion", withExtension: "txt"),
+           let content = try? String(contentsOf: appVersionURL, encoding: .utf8) {
+            let components = content.components(separatedBy: "_||_")
+            if components.count == 2 {
+                let hash = components[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                let message = components[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                return (hash, message)
+            }
         }
-        return "N/A"
+        return ("N/A", "N/A")
     }
 
     var body: some View {
