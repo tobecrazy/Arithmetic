@@ -306,6 +306,11 @@
 - **错误分析 (Error Analysis)** - 帮助开发者快速识别和修复问题，提高应用稳定性 (Helps developers quickly identify and fix issues, improving app stability)
 - **测试功能 (Testing Feature)** - 在设置页面提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality in settings for verifying error monitoring system)
 
+### ℹ️ 关于应用页面 (About App Page)
+- **版本信息 (Version Information)** - 在设置中新增“关于应用”页面，显示应用版本、构建号。 (Adds an "About App" page in Settings to display app version and build number.)
+- **自动Git信息 (Automatic Git Info)** - 通过构建脚本自动嵌入最新的Git提交哈希和信息。 (Automatically embeds the latest Git commit hash and message via a build script.)
+- **国际化 (Internationalized)** - 页面内容完全支持中英文。 (The page content is fully localized in Chinese and English.)
+
 ### 🌐 多语言支持 (Language Settings)
 - **双语界面 (Bilingual Interface)** - 支持中文和英文界面 (Supports both Chinese and English interfaces)
 - **实时切换 (Real-time Switching)** - 可随时切换语言 (Language can be switched at any time)
