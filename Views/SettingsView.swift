@@ -10,6 +10,7 @@ struct SettingsView: View {
     @State private var navigateToAboutMe = false
     @State private var navigateToSystemInfo = false
     @State private var navigateToQrCodeTool = false
+    @State private var navigateToAboutApp = false
 
     private var aboutMeDestination: some View {
         AboutMeView()
@@ -23,6 +24,11 @@ struct SettingsView: View {
 
     private var qrCodeToolDestination: some View {
         QrCodeToolView()
+            .environmentObject(localizationManager)
+    }
+
+    private var aboutAppDestination: some View {
+        AboutAppView()
             .environmentObject(localizationManager)
     }
 
@@ -78,6 +84,15 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
+
+                    Button(action: { navigateToAboutApp = true }) {
+                        HStack {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.green)
+                            Text("about.arithmetic.title".localized)
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .navigationTitle("settings.title".localized)
@@ -99,7 +114,79 @@ struct SettingsView: View {
                     qrCodeToolDestination
                 }
             }
+            .sheet(isPresented: $navigateToAboutApp) {
+                NavigationView {
+                    aboutAppDestination
+                }
+            }
         }
+    }
+}
+
+struct AboutAppView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A"
+    }
+    
+    var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "N/A"
+    }
+    
+    var gitCommitHash: String {
+        // This information should be injected at build time.
+        if let gitCommitURL = Bundle.main.url(forResource: "git_commit", withExtension: "txt"),
+           let gitCommit = try? String(contentsOf: gitCommitURL, encoding: .utf8) {
+            return gitCommit.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return "N/A"
+    }
+
+    var gitCommitMessage: String {
+        if let gitMessageURL = Bundle.main.url(forResource: "git_message", withExtension: "txt"),
+           let gitMessage = try? String(contentsOf: gitMessageURL, encoding: .utf8) {
+            return gitMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return "N/A"
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                Spacer()
+                VStack {
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(20)
+                    Text("Arithmetic")
+                        .font(.largeTitle)
+                }
+                Spacer()
+            }
+
+            Text("Version: \(appVersion) (\(buildNumber))")
+                .font(.headline)
+            
+            VStack(alignment: .leading) {
+                Text("Latest Commit:")
+                    .font(.headline)
+                Text("Hash: \(gitCommitHash)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Text("Message: \(gitCommitMessage)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .navigationTitle("about.arithmetic.title".localized)
+        .navigationBarItems(trailing: Button("Done") {
+            presentationMode.wrappedValue.dismiss()
+        })
     }
 }
 
