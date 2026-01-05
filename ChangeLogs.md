@@ -461,83 +461,18 @@
   - 重新添加了`welcome.levels.title`, `welcome.features.title`, `welcome.howto.title`等仍被使用中的字符串
   - 确保应用功能完整性，避免运行时错误
 
-[⬆️ 返回目录](#-目录-table-of-contents)
-
----
-
-## 🤝 贡献指南 (Contributing Guidelines)
-
-我们欢迎所有形式的贡献！🎉 (We welcome all forms of contributions! 🎉)
-
-### 🌟 贡献方式 (Ways to Contribute)
-- 🐛 报告问题和错误 (Report issues and bugs)
-- 💡 提交功能请求 (Submit feature requests)
-- 🔧 提交代码改进 (Submit code improvements)
-- 📝 改进文档 (Improve documentation)
-- 🌐 协助翻译 (Help with translations)
-
-### 📋 贡献流程 (Contribution Process)
-
-1. **🍴 Fork 仓库 (Fork Repository)**
-   ```bash
-   # Fork this repository to your GitHub account
-   ```
-
-2. **🌿 创建特性分支 (Create Feature Branch)**
-   ```bash
-   git checkout -b feature/your-feature
-   ```
-
-3. **💻 提交更改 (Commit Changes)**
-   ```bash
-   git commit -m "feat: add your feature description"
-   ```
-
-4. **🚀 推送分支 (Push Branch)**
-   ```bash
-   git push origin feature/your-feature
-   ```
-
-5. **📬 创建 Pull Request (Create Pull Request)**
-   - 详细描述你的更改 (Detailed description of your changes)
-   - 包含相关的测试用例 (Include relevant test cases)
-   - 确保代码符合项目规范 (Ensure code follows project standards)
-
-### 📏 代码规范 (Code Standards)
-- 遵循Swift官方编码规范 (Follow Swift official coding standards)
-- 使用有意义的变量和函数命名 (Use meaningful variable and function names)
-- 添加必要的注释和文档 (Add necessary comments and documentation)
-- 确保代码通过所有测试 (Ensure code passes all tests)
-
-### 🐛 问题报告 (Issue Reporting)
-使用GitHub Issues报告问题时，请包含：(When reporting issues via GitHub Issues, please include:)
-- 详细的问题描述 (Detailed problem description)
-- 重现步骤 (Reproduction steps)
-- 预期行为vs实际行为 (Expected vs. actual behavior)
-- 设备和系统版本信息 (Device and system version information)
-- 相关截图或日志 (Relevant screenshots or logs)
+### 🌟 2026-01-04 (最新功能更新)
+- **PDF题库生成功能** - 新增数学题库PDF生成功能，支持题目页和答案页分离 (Added math problem bank PDF generation with separate question and answer pages)
+- **系统信息监控** - 新增全面的系统信息监控功能，包括设备信息、性能数据、电池状态等 (Added comprehensive system information monitoring including device info, performance data, battery status, etc.)
+- **QR码扫描工具** - 集成QR码扫描和生成功能 (Integrated QR code scanning and generation functionality)
+- **小学数学公式大全** - 新增全面的小学数学公式指南 (Added comprehensive elementary math formula guide)
+- **Firebase崩溃监控** - 集成Firebase Crashlytics进行崩溃监控 (Integrated Firebase Crashlytics for crash monitoring)
+- **欢迎引导流程** - 新增首次启动引导界面 (Added first-launch onboarding interface)
+- **UI界面优化** - 优化多个界面的用户体验 (Optimized user experience across multiple interfaces)
+- **TTS功能增强** - 增强了题目朗读功能，支持数学符号智能转换 (Enhanced question read-aloud functionality with intelligent math symbol conversion)
+- **测试与质量保证** - 添加了全面的验证系统和防无限循环机制 (Added comprehensive validation system and anti-infinite loop mechanisms)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
-
----
-
-## 📄 许可证 (License)
-
-本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
-
-### 📞 联系与支持 (Contact & Support)
-
-<div align="center">
-
-| 联系方式 (Contact) | 信息 (Information) |
-|---------|------|
-| 📧 邮箱 (Email) | [tobecrazy@qq.com](mailto:tobecrazy@qq.com) |
-| 🐛 问题反馈 (Issue Reports) | [GitHub Issues](https://github.com/tobecrazy/Arithmetic/issues) |
-| 💡 功能建议 (Feature Requests) | [GitHub Discussions](https://github.com/tobecrazy/Arithmetic/discussions) |
-
-**如有任何问题或建议，欢迎通过以上方式联系我们！** (If you have any questions or suggestions, please feel free to contact us through the above methods!)
-
-</div>
 
 ---
 
