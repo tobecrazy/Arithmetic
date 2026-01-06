@@ -485,4 +485,8 @@
 "about.app.label.message" = "提交信息";
 "about.app.description" = "本应用旨在帮助小学生以有趣和引人入胜的方式练习算术技能。";
 
+/* Copyable Info Row */
+"copy_button" = "复制";
+"copied_status" = "已复制";
+
 

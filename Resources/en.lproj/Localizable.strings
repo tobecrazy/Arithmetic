@@ -492,4 +492,8 @@
 "about.app.label.message" = "Message";
 "about.app.description" = "This app is designed to help elementary school students practice their arithmetic skills in a fun and engaging way.";
 
+/* Copyable Info Row */
+"copy_button" = "Copy";
+"copied_status" = "Copied";
+
 

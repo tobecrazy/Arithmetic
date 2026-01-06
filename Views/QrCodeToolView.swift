@@ -22,6 +22,7 @@ struct QrCodeToolView: View {
     @State private var shouldShowCamera = false
     @State private var shouldShowPhotoPicker = false
     @State private var selectedPhoto: PhotosPickerItem?
+    @State private var isScanResultCopied = false
 
     // Calculate adaptive QR code size
     var qrCodeSize: CGFloat {
@@ -102,18 +103,11 @@ struct QrCodeToolView: View {
                                     .foregroundColor(.primary)
                             }
 
-                            Text(scanResult)
-                                .font(.body)
-                                .padding(12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.gray.opacity(0.08))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.green.opacity(0.2), lineWidth: 1)
-                                )
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(nil)
+                            CopyableInfoRow(
+                                label: "qr_code.scan_result".localized,
+                                value: scanResult,
+                                isCopied: $isScanResultCopied
+                            )
                         }
                         .padding(.horizontal, 20)
                         .padding(.vertical, 4)
@@ -357,6 +351,76 @@ struct QrCodeToolView: View {
                 title: "qr_code.error_title".localized,
                 message: "qr_code.permission_error_message".localized
             )
+        }
+    }
+}
+
+// MARK: - Copyable Info Row Component
+private struct CopyableInfoRow: View {
+    let label: String
+    let value: String
+    @Binding var isCopied: Bool
+    @State private var showToast = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Text(label)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .fontWeight(.medium)
+
+                Spacer()
+
+                Button(action: copyToClipboard) {
+                    HStack(spacing: 6) {
+                        Image(systemName: isCopied ? "checkmark" : "doc.on.doc")
+                            .font(.system(size: 12, weight: .semibold))
+                        Text(isCopied ? "copied_status".localized : "copy_button".localized)
+                            .font(.caption2)
+                            .fontWeight(.medium)
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(isCopied ? Color.green : Color.blue)
+                    .cornerRadius(6)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+
+            Text(value)
+                .font(.system(.body, design: .monospaced))
+                .lineLimit(2)
+                .truncationMode(.middle)
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.gray.opacity(0.08))
+                .cornerRadius(.adaptiveCornerRadius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                )
+        }
+        .padding(14)
+        .background(Color(.systemBackground))
+        .cornerRadius(.adaptiveCornerRadius * 1.5)
+        .overlay(
+            RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
+                .stroke(Color.gray.opacity(0.15), lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
+    }
+
+    private func copyToClipboard() {
+        UIPasteboard.general.string = value
+        isCopied = true
+
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            isCopied = false
         }
     }
 }
