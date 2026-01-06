@@ -90,7 +90,7 @@ struct MathBankView: View {
                     .default(Text("math_bank.share".localized)) {
                         showingShareSheet = true
                     },
-                    .cancel(Text("button.cancel".localized))
+                    .cancel(Text("alert.cancel".localized))
                 ]
             )
         }
