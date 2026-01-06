@@ -53,7 +53,7 @@
 | 欢迎引导流程 | 数学公式大全 | QR码扫描工具 |
 | 网络状态检测 | 单位换算 | 电池监控 |
 | Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | 关于页面 (About Page) |
-| Git信息嵌入 (Git Info Embedding) | | |
+| Git信息嵌入 (Git Info Embedding) | 崩溃测试功能 | |
 
 </div>
 
@@ -75,6 +75,15 @@
 - **🖨️ 打印友好 (Print-Friendly)** - A4格式优化布局，确保打印效果清晰 (A4 format optimized layout to ensure clear printing results)
 - **🌐 双语支持 (Bilingual Support)** - 生成的PDF支持中英文双语，适应不同语言环境 (Generated PDFs support bilingual Chinese/English for different language environments)
 - **💾 本地存储 (Local Storage)** - 题库PDF自动保存至应用文档目录，方便随时访问 (Problem bank PDFs automatically saved to app document directory for easy access)
+
+### 📋 新增设置页面 (New Settings Page)
+- **🎨 深色模式切换 (Dark Mode Toggle)** - 支持应用内切换深色模式和浅色模式 (Supports switching between dark and light mode within the app)
+- **🔊 TTS语音开关 (TTS Toggle)** - 全局控制题目和乘法表的自动朗读功能 (Globally control the automatic reading function of questions and multiplication tables)
+- **🌐 系统偏好 (System Preference)** - 支持跟随系统设置 (Supports following system settings)
+- **ℹ️ 关于应用 (About App)** - 查看应用版本、构建号、Git提交信息 (View app version, build number, Git commit information)
+- **ℹ️ 关于我 (About Me)** - 查看开发者信息和GitHub仓库链接 (View developer information and GitHub repository link)
+- **💻 系统信息 (System Information)** - 实时查看设备信息、性能数据和系统状态 (Real-time view of device info, performance data and system status)
+- **🛠️ 崩溃测试 (Crash Test)** - 提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality for verifying error monitoring system)
 
 
 ### 🎯 智能解题方法 (Intelligent Solution Methods)
@@ -266,6 +275,12 @@
 - **🎯 导航入口 (Navigation Entry)** - 从设置页面可直接访问QR码扫描工具
   (Directly accessible from the settings page)
 
+- **🔧 技术改进 (Technical Improvements)** - 修复摄像头初始化失败问题，优化后台处理和线程安全
+  - 改进了AVCaptureSession配置，添加了canAddInput/canAddOutput的验证检查
+  - 优化了后台任务处理：使用beginConfiguration/commitConfiguration确保线程安全
+  - 添加了详细的错误日志和异常处理机制
+  (Improved AVCaptureSession configuration, optimized background processing and thread safety)
+
 ### 📐 小学数学公式大全 (Elementary Math Formula Guide)
 - **📚 全面公式库 (Comprehensive Formula Library)** - 涵盖几何图形、单位换算、数量关系、运算定律等小学数学核心公式 (Covers core elementary math formulas including geometric shapes, unit conversions, quantity relations, arithmetic laws, etc.)
 - **📐 几何公式 (Geometry Formulas)** - 包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式 (Includes perimeter, area, and volume formulas for plane figures like rectangle, square, triangle and solid figures like cuboid, cube, cylinder)
@@ -307,8 +322,9 @@
 - **测试功能 (Testing Feature)** - 在设置页面提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality in settings for verifying error monitoring system)
 
 ### ℹ️ 关于应用页面 (About App Page)
-- **版本信息 (Version Information)** - 在设置中新增“关于应用”页面，显示应用版本、构建号。 (Adds an "About App" page in Settings to display app version and build number.)
+- **版本信息 (Version Information)** - 在设置中新增"关于应用"页面，显示应用版本、构建号。 (Adds an "About App" page in Settings to display app version and build number.)
 - **自动Git信息 (Automatic Git Info)** - 通过构建脚本自动嵌入最新的Git提交哈希和信息。 (Automatically embeds the latest Git commit hash and message via a build script.)
+- **致谢列表 (Acknowledgments)** - 包含致谢列表，感谢对项目有贡献的个人和工具。 (Includes an acknowledgments list, thanking individuals and tools that contributed to the project.)
 - **国际化 (Internationalized)** - 页面内容完全支持中英文。 (The page content is fully localized in Chinese and English.)
 
 ### 🌐 多语言支持 (Language Settings)
@@ -339,8 +355,10 @@
 - **深色模式切换 (Dark Mode Toggle)** - 支持应用内切换深色模式和浅色模式 (Supports switching between dark and light mode within the app)
 - **TTS语音开关 (TTS Toggle)** - 全局控制题目和乘法表的自动朗读功能 (Globally control the automatic reading function of questions and multiplication tables)
 - **系统偏好 (System Preference)** - 支持跟随系统设置 (Supports following system settings)
+- **关于应用 (About App)** - 查看应用版本、构建号、Git提交信息和致谢列表 (View app version, build number, Git commit information and acknowledgments list)
 - **关于我 (About Me)** - 查看开发者信息和GitHub仓库链接 (View developer information and GitHub repository link)
 - **系统信息 (System Information)** - 实时查看设备信息、性能数据和系统状态 (Real-time view of device info, performance data and system status)
+- **崩溃测试 (Crash Test)** - 提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality for verifying error monitoring system)
 
 ### 🎨 UI界面优化 (UI Improvements)
 - **简洁选择器 (Cleaner Picker)** - 隐藏难度选择器标签，创建更清洁的界面 (Difficulty picker labels are now hidden to create a cleaner interface)
@@ -729,7 +747,8 @@ Arithmetic/
 │   ├── SystemInfoManager.swift            # 系统信息管理器（含电池、网络、屏幕信息）
 │   ├── ProgressViewUtils.swift            # 进度视图工具
 │   ├── MathBankPDFGenerator.swift         # PDF题库生成器
-│   └── ImageCacheManager.swift            # 图片缓存管理器
+│   ├── ImageCacheManager.swift            # 图片缓存管理器
+│   └── QRCodeHelper.swift                 # QR码扫描工具辅助类
 ├── 📁 ViewModels/                         # 视图模型
 │   └── GameViewModel.swift                # 游戏逻辑控制器
 ├── 📁 Views/                              # 视图层
@@ -748,11 +767,12 @@ Arithmetic/
 │   ├── SystemInfoView.swift               # 系统信息视图
 │   ├── MathBankView.swift                 # 数学题库生成视图
 │   ├── QrCodeToolView.swift               # QR码工具视图
+│   ├── AboutAppView.swift                 # 关于应用视图
 │   └── CachedAsyncImageView.swift         # 图片缓存视图
 ├── 📁 scripts/                            # 构建和工具脚本
 │   ├── check_localizations.sh             # 本地化检查并嵌入Git信息 (Checks localization and embeds Git info)
 │   ├── upload_dsyms.sh                    # dSYM上传脚本
-│   └── upload-symbols                     # dSYM上传工具
+│   └── embed_git_info.sh                  # Git信息嵌入脚本
 └── 📁 Tests/                              # 测试文件
     └── UtilsTests.swift                   # 工具类测试
 ```
