@@ -484,7 +484,7 @@ class QRCodeScannerViewController: UIViewController {
 
             // Add cancel button
             let cancelButton = UIButton(type: .system)
-            cancelButton.setTitle("button.cancel".localized, for: .normal)
+            cancelButton.setTitle("alert.cancel".localized, for: .normal)
             cancelButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
             cancelButton.setTitleColor(.white, for: .normal)
             cancelButton.layer.cornerRadius = 12
