@@ -19,14 +19,17 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
 # Build and run in simulator
 xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' build
 
-# Run all tests (requires test target setup - see TESTING_INSTRUCTIONS.md)
+# Run all tests
 xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15'
 
-# Run single test class
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing ArithmeticTests/QuestionGeneratorTests
+# Run specific test file
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:ArithmeticTests/UtilsTests
+
+# Run specific test class within a file
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:ArithmeticTests/UtilsTests/QuestionGeneratorTests
 
 # Run specific test method
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing ArithmeticTests/QuestionGeneratorTests/testGenerateNonRepetitiveQuestions
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:ArithmeticTests/UtilsTests/QuestionGeneratorTests/testGenerateNonRepetitiveQuestions
 
 # Clean build
 xcodebuild clean -project Arithmetic.xcodeproj -scheme Arithmetic
@@ -92,6 +95,10 @@ Task: swift-code-reviewer (use this for Swift/SwiftUI code reviews)
 - **CoreData**: Model is created programmatically with automatic migration
 - **SwiftUI**: Uses SwiftUI 3.0+ for all UI components
 - **Assets**: AppIcon configured in AppIcon.appiconset folder
+- **Firebase Integration**: Project integrates Firebase for Crashlytics and Analytics
+  - `GoogleService-Info.plist` contains Firebase configuration
+  - Crashlytics provides crash reporting
+  - Do NOT modify `GoogleService-Info.plist` unless setting up a new Firebase project
 
 ## Architecture Overview
 
@@ -169,6 +176,9 @@ The app follows the **Model-View-ViewModel (MVVM)** pattern with sophisticated C
 5. **Direct CoreData context usage**: Use singleton manager
    - ❌ `Bad`: `NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)`
    - ✅ `Good`: `CoreDataManager.shared.persistentContainer.viewContext`
+6. **Modifying Firebase configuration**: Never commit changes to `GoogleService-Info.plist`
+   - ❌ `Bad`: Modifying Firebase config for local development
+   - ✅ `Good`: Use your own Firebase project for testing, never commit config changes
 
 ### Singleton Pattern (Used for Shared Resources)
 Applied to:
@@ -203,8 +213,12 @@ Arithmetic/
 ├── Utils/                               # 10+ utility classes (generators, managers, helpers)
 ├── Extensions/                          # Swift extensions for localization, fonts, etc.
 ├── Resources/                           # Localization files (en.lproj, zh-Hans.lproj)
-├── Tests/                               # Unit tests for all Utils classes
-└── scripts/check_localizations.sh       # Localization consistency checker
+├── Tests/                               # Unit and UI tests
+│   ├── UtilsTests.swift                 # Tests for utility classes (QuestionGenerator, TTSHelper, etc.)
+│   ├── GameViewModelTests.swift         # Tests for GameViewModel business logic
+│   ├── ArithmeticUITests.swift          # UI tests for user flows
+│   └── LocalizationTests.swift          # Localization validation tests
+└── scripts/check_localizations.sh       # Localization consistency checker + Git info embedding
 ```
 
 ## Common Development Tasks
@@ -248,19 +262,23 @@ Arithmetic/
 
 ### Testing
 1. **Unit Tests**: Follow patterns in `/Tests/` directory
-   - Add tests for new utilities in `/Tests/`
+   - Add tests for new utilities in `Tests/UtilsTests.swift`
+   - Add ViewModel tests in `Tests/GameViewModelTests.swift`
    - Use XCTest framework following existing test patterns
-2. **Question Generation**: Test with `QuestionGeneratorTests.swift`
+2. **Question Generation**: Test with `QuestionGeneratorTests` in `UtilsTests.swift`
    - Verify uniqueness across multiple generations
    - Test all 6 difficulty levels
    - Validate mathematical correctness
 3. **CoreData**: Test persistence across different scenarios
    - Test migration between model versions
    - Verify CRUD operations work correctly
-4. **UI Testing**: Manually verify all views in both languages
+4. **UI Testing**: Use `Tests/ArithmeticUITests.swift`
    - Test iPad landscape mode for responsive layouts
    - Verify TTS works in both languages
-5. **Performance**: Profile question generation and TTS operations
+5. **Localization**: Use `Tests/LocalizationTests.swift`
+   - Ensure all keys exist in both languages
+   - Verify localized strings display correctly
+6. **Performance**: Profile question generation and TTS operations
 
 ### Pre-commit Checklist
 Before committing changes, complete this checklist to maintain code quality:
