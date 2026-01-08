@@ -957,11 +957,7 @@ For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 
 ---
 
-## 📄 许可证 (License)
-
-本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
-
-### 🧪 测试说明 (Testing Instructions)
+## 🧪 测试说明 (Testing Instructions)
 
 详细的测试说明请查看 [TESTING_INSTRUCTIONS.md](TESTING_INSTRUCTIONS.md) 文件，包括：
 - 单元测试设置和执行方法 (Unit test setup and execution methods)
@@ -975,6 +971,10 @@ For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 - 各模块的测试覆盖率统计 (Test coverage statistics for each module)
 - 代码覆盖率指标 (Code coverage metrics)
 - 测试质量评估 (Test quality assessment)
+
+### 📄 许可证 (License)
+
+本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
 
 ### 📞 联系与支持 (Contact & Support)
 

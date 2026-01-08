@@ -40,9 +40,10 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build -verbose
 
 ### Localization Checks
 ```bash
-# Check consistency between Chinese and English localization files
+# Check consistency between Chinese and English localization files and embed Git info
 ./scripts/check_localizations.sh
 ```
+**Note**: This script validates that both `en.lproj` and `zh-Hans.lproj` contain identical keys, and also embeds Git commit information into the app bundle.
 
 ### Code Review
 Use the **swift-code-reviewer agent** after writing or modifying Swift code. Launch it with:
