@@ -186,3 +186,4 @@ Arithmetic/
 - Regular updates include new features and bug fixes
 - The app has been optimized for educational use in elementary arithmetic learning
 - The project follows modern SwiftUI and iOS development best practices
+- **New Rule**: Always put Recent Updates content in ChangeLogs.md, not in README.md. The README.md should only contain a link to ChangeLogs.md for update history.

@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.1* | *Updated: January 5, 2026*
+*Version: 1.0.1* | *Updated: January 8, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -84,6 +84,88 @@
 - **ℹ️ 关于我 (About Me)** - 查看开发者信息和GitHub仓库链接 (View developer information and GitHub repository link)
 - **💻 系统信息 (System Information)** - 实时查看设备信息、性能数据和系统状态 (Real-time view of device info, performance data and system status)
 - **🛠️ 崩溃测试 (Crash Test)** - 提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality for verifying error monitoring system)
+
+### 📷 QR码扫描工具 (QR Code Scanning Tool)
+- **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描和相册扫描功能，用于扫描二维码
+  - 实时相机预览，带绿色扫描框指示
+  - 支持从相册选择图片进行扫描
+  - 自动识别QR码，立即显示扫描结果
+  - 扫描成功时播放系统音效反馈
+  (Integrated camera and photo library scanning functionality with real-time preview and green frame indication)
+
+- **🔐 权限管理 (Permission Management)** - 智能权限处理
+  - 首次使用自动询问相机权限
+  - 已授权时直接启动摄像头
+  - 拒绝权限时提供设置引导链接
+  (Intelligent permission handling with first-use request and settings navigation)
+
+- **🔄 生成功能 (Generation Functionality)** - 支持将文本内容生成二维码
+  - 实时文本输入与占位符提示
+  - 按需生成高质量二维码
+  - 支持多行文本输入
+  (Generate high-quality QR codes from text with support for multi-line input)
+
+- **🎨 UI/UX优化 (UI/UX Enhancement)** - 专业级用户界面设计
+  - 清晰的操作按钮，配合icon指示
+  - 卡片式结果展示，视觉层次感强
+  - 成功状态指示图标（checkmarks）
+  - 响应式设计，适配各种屏幕尺寸
+  (Professional interface with clear buttons, card-style results display, and success indicators)
+
+- **🎯 导航入口 (Navigation Entry)** - 从设置页面可直接访问QR码扫描工具
+  (Directly accessible from the settings page)
+
+- **🔧 技术改进 (Technical Improvements)** - 修复摄像头初始化失败问题，优化后台处理和线程安全
+  - 改进了AVCaptureSession配置，添加了canAddInput/canAddOutput的验证检查
+  - 优化了后台任务处理：使用beginConfiguration/commitConfiguration确保线程安全
+  - 添加了详细的错误日志和异常处理机制
+  (Improved AVCaptureSession configuration, optimized background processing and thread safety)
+
+### 📐 小学数学公式大全 (Elementary Math Formula Guide)
+- **📚 全面公式库 (Comprehensive Formula Library)** - 涵盖几何图形、单位换算、数量关系、运算定律等小学数学核心公式 (Covers core elementary math formulas including geometric shapes, unit conversions, quantity relations, arithmetic laws, etc.)
+- **📐 几何公式 (Geometry Formulas)** - 包含平面图形（长方形、正方形、三角形等）和立体图形（长方体、正方体、圆柱等）的周长、面积、体积公式 (Includes perimeter, area, and volume formulas for plane figures like rectangle, square, triangle and solid figures like cuboid, cube, cylinder)
+- **📏 单位换算 (Unit Conversions)** - 涵盖长度、面积、体积、质量、时间等常用单位换算 (Covers common unit conversions for length, area, volume, mass, time, etc.)
+- **🔍 运算定律 (Arithmetic Laws)** - 包括加法、乘法交换律和结合律、乘法分配律等 (Includes commutative, associative laws of addition and multiplication, distributive law, etc.)
+- **🧮 特殊问题 (Special Problems)** - 涵盖和差问题、和倍问题、植树问题、相遇问题、追及问题等解题公式 (Covers solution formulas for sum-difference problems, sum-multiple problems, tree planting problems, meeting problems, chase problems, etc.)
+- **📍 便捷访问 (Convenient Access)** - 从"其他选项"页面可直接访问公式大全 (Directly accessible from the "Other Options" page)
+- **🌐 双语支持 (Bilingual Support)** - 完整的中英文公式解释和说明 (Complete Chinese/English formula explanations and descriptions)
+
+### 🔋 电池监控与运行时长功能 (Battery Monitoring and Uptime Calculation)
+- **实时电池状态 (Real-time Battery Status)** - 实时监控设备电池电量、充电状态和电源类型 (Real-time monitoring of device battery level, charging status, and power source type)
+- **智能状态检测 (Smart Status Detection)** - 解决模拟器中电池状态显示"Unknown"的问题，提供智能状态推断 (Resolves the issue of battery status showing "Unknown" in simulator, provides intelligent status inference)
+- **运行时长计算 (Uptime Calculation)** - 精确计算并实时更新系统自启动以来的运行时长 (Precisely calculates and updates the system uptime since boot in real-time)
+- **智能格式化显示 (Smart Formatting Display)** - 根据运行时长自动选择合适的显示格式（天数、时:分:秒或分:秒） (Automatically selects appropriate display format based on uptime (days, HH:MM:SS, or MM:SS))
+- **多场景支持 (Multi-scenario Support)** - 支持iOS模拟器和真实设备的电池状态检测 (Supports battery status detection for both iOS simulator and real devices)
+- **国际化支持 (Internationalization Support)** - 完整的中英文本地化支持 (Complete Chinese and English localization support)
+
+### 🌐 网络连接监控 (Network Connection Monitoring)
+- **实时网络状态 (Real-time Network Status)** - 检测当前网络连接类型（Wi-Fi/蜂窝网络） (Detects current network connection type (Wi-Fi/cellular))
+- **Wi-Fi信息 (Wi-Fi Information)** - 显示Wi-Fi连接名称（SSID） (Displays Wi-Fi connection name (SSID))
+- **蜂窝网络信息 (Cellular Information)** - 显示运营商信息（如适用） (Displays carrier information (where applicable))
+- **连接状态指示 (Connection Status Indicator)** - 提供网络连接状态的实时反馈 (Provides real-time feedback on network connection status)
+
+### 💻 系统信息显示 (System Information Display)
+- **设备信息 (Device Information)** - 显示当前设备名称和CPU信息 (Displays current device name and CPU information)
+- **实时监控 (Real-time Monitoring)** - CPU占用率、内存使用情况和磁盘空间实时更新 (CPU usage, memory usage, and disk space update in real-time)
+- **内存详情 (Memory Details)** - 显示已使用、总内存、可用内存和使用百分比 (Shows used, total, available memory and usage percentage)
+- **磁盘空间 (Disk Space)** - 显示已使用、总磁盘空间、可用磁盘空间和使用百分比 (Shows used, total disk space, available disk space and usage percentage)
+- **屏幕信息 (Screen Information)** - 显示屏幕分辨率、尺寸和刷新率 (Displays screen resolution, size, and refresh rate)
+- **系统版本 (System Version)** - 显示当前iOS/iPadOS系统版本 (Displays current iOS/iPadOS system version)
+- **当前时间 (Current Time)** - 实时显示当前时间，每秒更新 (Real-time display of current time, updated every second)
+- **双语支持 (Bilingual Support)** - 完整的中英文本地化支持 (Complete Chinese and English localization support)
+- **可视化展示 (Visual Display)** - 使用进度条和图标直观显示系统状态 (Uses progress bars and icons to intuitively show system status)
+
+### 🛠️ Firebase崩溃监控 (Firebase Crash Monitoring)
+- **实时崩溃监控 (Real-time Crash Monitoring)** - 集成Firebase Crashlytics，实时监控和报告应用崩溃 (Integrated with Firebase Crashlytics for real-time monitoring and reporting of app crashes)
+- **详细崩溃报告 (Detailed Crash Reports)** - 提供包含设备信息、系统版本、堆栈跟踪的详细崩溃报告 (Provides detailed crash reports with device information, system version, and stack traces)
+- **错误分析 (Error Analysis)** - 帮助开发者快速识别和修复问题，提高应用稳定性 (Helps developers quickly identify and fix issues, improving app stability)
+- **测试功能 (Testing Feature)** - 在设置页面提供崩溃测试功能，便于验证错误监控系统 (Provides crash testing functionality in settings for verifying error monitoring system)
+
+### ℹ️ 关于应用页面 (About App Page)
+- **版本信息 (Version Information)** - 在设置中新增"关于应用"页面，显示应用版本、构建号。 (Adds an "About App" page in Settings to display app version and build number.)
+- **自动Git信息 (Automatic Git Info)** - 通过构建脚本自动嵌入最新的Git提交哈希和信息。 (Automatically embeds the latest Git commit hash and message via a build script.)
+- **致谢列表 (Acknowledgments)** - 包含致谢列表，感谢对项目有贡献的个人和工具。 (Includes an acknowledgments list, thanking individuals and tools that contributed to the project.)
+- **国际化 (Internationalized)** - 页面内容完全支持中英文。 (The page content is fully localized in Chinese and English.)
 
 
 ### 🎯 智能解题方法 (Intelligent Solution Methods)
