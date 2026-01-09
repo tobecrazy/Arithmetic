@@ -149,6 +149,8 @@
 "math_bank.pdf.generated_time" = "生成时间: %@";
 "math_bank.pdf.questions_suffix" = "题";
 "math_bank.pdf.filename_template" = "数学题库_%@_%@题_%@.pdf";
+"math_bank.pdf.total" = "总数";
+"math_bank.pdf.page" = "页";
 
 /* PDF Generation Errors */
 "math_bank.pdf.error.no_questions" = "没有生成任何题目";

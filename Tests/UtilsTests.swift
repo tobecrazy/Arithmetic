@@ -693,3 +693,24 @@ class TTSHelperTests: XCTestCase {
         XCTAssertTrue(spoken.contains("equals"))
     }
 }
+
+// MARK: - ViewModel and UI Tests Placeholder
+// The following test suites have been moved to separate files:
+// - GameViewModelTests: Comprehensive tests for GameViewModel functionality
+// - ArithmeticUITests: UI tests for the entire application
+//
+// These tests cover:
+// - ViewModel state management
+// - Game logic and progression
+// - UI interactions
+// - Navigation flows
+// - Accessibility features
+// - Timer functionality
+// - Answer submission
+// - Difficulty level selection
+// - Settings and preferences
+// - Language switching
+// - Dark mode toggling
+// - Multiplication table access
+// - Wrong questions management
+// - Game completion scenarios

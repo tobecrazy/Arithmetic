@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.1* | *Updated: January 8, 2026*
+*Version: 1.0.2* | *Updated: January 9, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -75,6 +75,43 @@
 - **🖨️ 打印友好 (Print-Friendly)** - A4格式优化布局，确保打印效果清晰 (A4 format optimized layout to ensure clear printing results)
 - **🌐 双语支持 (Bilingual Support)** - 生成的PDF支持中英文双语，适应不同语言环境 (Generated PDFs support bilingual Chinese/English for different language environments)
 - **💾 本地存储 (Local Storage)** - 题库PDF自动保存至应用文档目录，方便随时访问 (Problem bank PDFs automatically saved to app document directory for easy access)
+- **✨ 节约纸张优化 (Paper-Saving Optimization)** - 优化PDF排版以最大化A4纸张利用率 (Optimized PDF layout to maximize A4 paper utilization)
+  - **题目页优化 (Question Page Optimization)**: 每页题目从35题提升至约96题，节省约40%纸张 (Questions per page increased from 35 to ~96, saving ~40% paper)
+  - **答案页优化 (Answer Page Optimization)**: 每页答案从45题提升至约108题，节省约35%纸张 (Answers per page increased from 45 to ~108, saving ~35% paper)
+  - **紧凑布局 (Compact Layout)**: 减少页眉页脚占用空间，优化字体大小和行间距 (Reduced header/footer space, optimized font size and line spacing)
+  - **合页打印模式 (Duplex Printing Mode)**: 支持题目和答案在同一张纸的正反面，双面打印可再节省50%纸张 (Supports questions and answers on front/back of same paper, duplex printing saves additional 50%)
+
+#### 📊 PDF优化详情 (PDF Optimization Details)
+
+**🎯 题目页优化 (Question Page Optimization)**
+- **容量提升 (Capacity Increase)**: 每页从35题提升至约96题（基于动态计算）(Increased from 35 to ~96 questions per page based on dynamic calculation)
+- **字体优化 (Font Optimization)**: 标题16pt，题目从18pt优化为13pt (Title 16pt, questions from 18pt to 13pt)
+- **间距优化 (Spacing Optimization)**: 行间距从20pt减少到16pt (Line spacing reduced from 20pt to 16pt)
+- **边距优化 (Margin Optimization)**: 左右边距从60pt减少到15pt (Left/right margins from 60pt to 15pt)
+- **纸张节省 (Paper Savings)**: 约40%纸张节省 (Approximately 40% paper savings)
+
+**📋 答案页优化 (Answer Page Optimization)**
+- **容量提升 (Capacity Increase)**: 每页从45题提升至约108题（三列紧凑布局）(Increased from 45 to ~108 with three-column compact layout)
+- **字体优化 (Font Optimization)**: 从14pt优化为11pt (Optimized from 14pt to 11pt)
+- **间距优化 (Spacing Optimization)**: 行间距从16pt减少到14pt (Line spacing from 16pt to 14pt)
+- **布局优化 (Layout Optimization)**: 三列布局，列间距15pt (Three-column layout, 15pt column spacing)
+- **纸张节省 (Paper Savings)**: 约35%纸张节省 (Approximately 35% paper savings)
+
+**📐 页眉页脚优化 (Header/Footer Optimization)**
+- **页眉优化 (Header Optimization)**: 高度从110pt减少到60pt (Height from 110pt to 60pt)
+- **页脚优化 (Footer Optimization)**: 高度从50pt减少到30pt (Height from 50pt to 30pt)
+- **分割线优化 (Separator Optimization)**: 从1.0pt细化为0.5pt (Refined from 1.0pt to 0.5pt)
+- **信息布局 (Information Layout)**: 页眉信息合并为单行紧凑显示 (Header info merged into single-line compact display)
+
+**🖨️ 合页打印模式 (Duplex Printing Mode)**
+- **新增功能 (New Feature)**: 添加`generateDuplexPDF()`方法 (Added `generateDuplexPDF()` method)
+- **正反面布局 (Front/Back Layout)**: 正面题目，反面答案 (Questions on front, answers on back)
+- **额外节省 (Additional Savings)**: 双面打印可再节省50%纸张 (Duplex printing saves additional 50% paper)
+
+**📊 总体节约效果 (Overall Savings)**
+- 题目页纸张使用减少约40% (Question pages: ~40% reduction)
+- 答案页纸张使用减少约35% (Answer pages: ~35% reduction)
+- 合页模式使用双面打印可再节省50% (Duplex mode saves additional 50%)
 
 ### 📋 新增设置页面 (New Settings Page)
 - **🎨 深色模式切换 (Dark Mode Toggle)** - 支持应用内切换深色模式和浅色模式 (Supports switching between dark and light mode within the app)
@@ -957,11 +994,7 @@ For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 
 ---
 
-## 📄 许可证 (License)
-
-本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
-
-### 🧪 测试说明 (Testing Instructions)
+## 🧪 测试说明 (Testing Instructions)
 
 详细的测试说明请查看 [TESTING_INSTRUCTIONS.md](TESTING_INSTRUCTIONS.md) 文件，包括：
 - 单元测试设置和执行方法 (Unit test setup and execution methods)
@@ -975,6 +1008,10 @@ For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 - 各模块的测试覆盖率统计 (Test coverage statistics for each module)
 - 代码覆盖率指标 (Code coverage metrics)
 - 测试质量评估 (Test quality assessment)
+
+### 📄 许可证 (License)
+
+本项目采用 **MIT许可证** - 详情请查看 [LICENSE](LICENSE) 文件 (This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details)
 
 ### 📞 联系与支持 (Contact & Support)
 

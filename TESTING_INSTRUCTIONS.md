@@ -1,63 +1,68 @@
-# Instructions for Adding Unit Tests to Arithmetic Project
+# Arithmetic App - Test Suite Documentation
 
-## Overview
-I have created comprehensive unit tests for all functions in the `/Utils/` directory. The tests are located in the `/Tests/` directory and cover:
+This document describes the test suite for the Arithmetic app, which includes unit tests for view models and UI tests for the application.
 
-1. DeviceUtilsTests.swift
-2. ImageCacheManagerTests.swift 
-3. LocalizationManagerTests.swift
-4. NavigationUtilTests.swift
-5. ProgressViewUtilsTests.swift
-6. QuestionGeneratorTests.swift
-7. SystemInfoManagerTests.swift
-8. TTSHelperTests.swift
-9. UtilsTests.swift (a consolidated file with all tests)
+## Test Organization
 
-## How to Add Tests to Your Xcode Project
+The test suite is organized into multiple files:
 
-1. Open your Arithmetic.xcodeproj in Xcode.
+### 1. UtilsTests.swift
+Contains unit tests for utility classes:
+- DeviceUtilsTests: Tests for device detection utilities
+- ImageCacheManagerTests: Tests for image caching functionality
+- LocalizationManagerTests: Tests for language switching
+- NavigationUtilTests: Tests for navigation utilities
+- ProgressViewUtilsTests: Tests for progress view components
+- ViewExtensionTests: Tests for view modifier extensions
+- QuestionGeneratorTests: Tests for question generation logic
+- SystemInfoManagerTests: Tests for system information management
+- TTSHelperTests: Tests for text-to-speech functionality
 
-2. In the Project Navigator (left panel), right-click on the "Arithmetic" project (not a folder/group) and select "New Target".
+### 2. GameViewModelTests.swift
+Comprehensive tests for GameViewModel functionality:
+- Initialization and state management
+- Game start, pause, resume, and reset functionality
+- Answer submission (correct and incorrect)
+- Timer functionality
+- Question progression
+- Solution display
+- Progress saving and loading
 
-3. Select "iOS" under the "Platform" tab, then select "Unit Testing Bundle" under "Test" section.
-
-4. Name your test target "ArithmeticTests" (or any name you prefer).
-
-5. Make sure the "Arithmetic" app target is selected as the "Host Application".
-
-6. In the newly created test target, you'll see a default test file. You can delete it if you want.
-
-7. Now, add our test files to this test target:
-   - Select all the test files in the `/Tests/` folder
-   - Drag them to Xcode under the test target
-   - Make sure "Add to target" is checked and select your test target (e.g., "ArithmeticTests")
-
-8. In your test target's Build Settings, make sure:
-   - "Test Host" is set to your app
-   - "Bundle Loader" is set to your app
-
-9. Now you can run the tests by:
-   - Pressing Cmd+U, or
-   - Going to Product > Test
-
-## Coverage Summary
-
-The test files provide comprehensive coverage for:
-
-- **DeviceUtils**: Tests for device type detection and orientation checks
-- **ImageCacheManager**: Tests for caching, retrieval, download and clear operations
-- **LocalizationManager**: Tests for language switching and localization functionality
-- **NavigationUtil**: Tests for navigation controller utilities
-- **ProgressViewUtils**: Tests for progress bar views, modifiers, and progress manager
-- **QuestionGenerator**: Tests for question generation, validation, and utility functions
-- **SystemInfoManager**: Tests for system information gathering and formatting
-- **TTSHelper**: Tests for text-to-speech conversion, speaking, and language support
+### 3. ArithmeticUITests.swift
+UI tests for the entire application:
+- App launch and basic functionality
+- Difficulty selection and game start
+- Answer submission workflow
+- Navigation between screens
+- Settings access and configuration
+- Language switching
+- Accessibility features
+- Timer functionality
+- Result view verification
 
 ## Running Tests
 
-After adding the test files to your Xcode test target, you can run them by:
-1. Selecting the test target
-2. Using the keyboard shortcut Cmd+U
-3. Or choosing Product > Test from the menu
+To run the tests:
 
-The tests will validate that all utility functions operate as expected and handle both normal and edge cases appropriately.
+1. Open the project in Xcode
+2. Press Cmd+U or select Product > Test from the menu
+3. Alternatively, use the test navigator to run specific test classes or individual tests
+
+## Test Coverage
+
+The test suite aims to provide comprehensive coverage of:
+- Business logic in utility classes
+- Game state management
+- User interactions
+- UI flows
+- Edge cases and error conditions
+- Accessibility features
+- Localization
+
+## Adding New Tests
+
+When adding new functionality to the app, please ensure that appropriate tests are added to maintain high test coverage:
+1. Add unit tests for new utility classes in UtilsTests.swift
+2. Add ViewModel tests in GameViewModelTests.swift
+3. Add UI tests in ArithmeticUITests.swift
+4. Update this documentation as needed

@@ -156,6 +156,8 @@
 "math_bank.pdf.generated_time" = "Generated: %@";
 "math_bank.pdf.questions_suffix" = " Questions";
 "math_bank.pdf.filename_template" = "MathBank_%@_%@Questions_%@.pdf";
+"math_bank.pdf.total" = "Total";
+"math_bank.pdf.page" = "Page";
 
 /* PDF Generation Errors */
 "math_bank.pdf.error.no_questions" = "No questions generated";
