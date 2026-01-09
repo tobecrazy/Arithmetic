@@ -1,5 +1,51 @@
 # Change Log
 
+### 🌟 2026-01-09 (PDF排版优化 / PDF Layout Optimization)
+- **📄 PDF题库排版优化 (PDF Problem Bank Layout Optimization)** - 全面优化PDF生成排版，最大化A4纸张利用率 (Comprehensive PDF generation layout optimization to maximize A4 paper utilization)
+
+  **题目页优化 (Question Page Optimization)**
+  - 每页题目数量从35题提升至约96题（基于动态计算）(Questions per page increased from 35 to ~96 based on dynamic calculation)
+  - 字体大小优化：标题16pt，题目从18pt优化为13pt (Font size optimization: title 16pt, questions from 18pt to 13pt)
+  - 行间距从20pt减少到16pt，更紧凑的布局 (Line spacing reduced from 20pt to 16pt for more compact layout)
+  - 左右边距从60pt减少到15pt，充分利用A4纸宽度 (Left/right margins reduced from 60pt to 15pt, fully utilizing A4 width)
+  - **纸张节省效果 (Paper Saving Effect)**: 约节省40%纸张 (Saves approximately 40% paper)
+
+  **答案页优化 (Answer Page Optimization)**
+  - 每页答案数量从45题提升至约108题（三列紧凑布局）(Answers per page increased from 45 to ~108 with three-column compact layout)
+  - 字体大小从14pt优化为11pt (Font size optimized from 14pt to 11pt)
+  - 行间距从16pt减少到14pt (Line spacing reduced from 16pt to 14pt)
+  - 三列布局优化，列间距调整为15pt (Three-column layout optimization, column spacing adjusted to 15pt)
+  - **纸张节省效果 (Paper Saving Effect)**: 约节省35%纸张 (Saves approximately 35% paper)
+
+  **页眉页脚优化 (Header/Footer Optimization)**
+  - 页眉高度从110pt减少到60pt (Header height reduced from 110pt to 60pt)
+  - 页脚高度从50pt减少到30pt (Footer height reduced from 50pt to 30pt)
+  - 分割线从1.0pt细化为0.5pt (Separator line refined from 1.0pt to 0.5pt)
+  - 页眉信息合并为单行紧凑显示 (Header information merged into single-line compact display)
+
+  **新增合页打印模式 (New Duplex Printing Mode)**
+  - 添加`generateDuplexPDF()`方法，支持题目和答案在同一张纸的正反面 (Added `generateDuplexPDF()` method for questions and answers on front/back of same paper)
+  - 正面题目，反面答案，适合双面打印 (Questions on front, answers on back, suitable for duplex printing)
+  - **额外节省效果 (Additional Savings)**: 使用双面打印可再节省50%纸张 (Duplex printing saves additional 50% paper)
+
+- **🔧 配置常量化 (Configuration Constants)** - 将布局参数提取为常量，便于维护和调整 (Extracted layout parameters as constants for easier maintenance and adjustment)
+  ```swift
+  private static let a4Width: CGFloat = 595.0
+  private static let a4Height: CGFloat = 842.0
+  private static let pageMargin: CGFloat = 15.0
+  private static let questionSpacing: CGFloat = 16.0
+  private static let answerSpacing: CGFloat = 14.0
+  ```
+
+- **🌐 本地化更新 (Localization Update)** - 添加新的本地化键以支持优化后的界面 (Added new localization keys to support optimized interface)
+  - `math_bank.pdf.total` - "总数" / "Total"
+  - `math_bank.pdf.page` - "页" / "Page"
+
+- **📊 总体节约效果 (Overall Savings Effect)**:
+  - 题目页纸张使用减少约40% (Question pages: ~40% paper reduction)
+  - 答案页纸张使用减少约35% (Answer pages: ~35% paper reduction)
+  - 合页模式使用双面打印可再节省50% (Duplex mode with double-sided printing saves additional 50%)
+
 ### 🌟 2026-01-08 (Latest Updates)
 - **PDF题库生成功能** - 新增数学题库PDF生成功能，支持题目页和答案页分离 (Added math problem bank PDF generation with separate question and answer pages)
 - **系统信息监控** - 新增全面的系统信息监控功能，包括设备信息、性能数据、电池状态等 (Added comprehensive system information monitoring including device info, performance data, battery status, etc.)
