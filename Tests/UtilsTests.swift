@@ -714,3 +714,192 @@ class TTSHelperTests: XCTestCase {
 // - Multiplication table access
 // - Wrong questions management
 // - Game completion scenarios
+// MARK: - New Utility Classes Tests
+
+// Test suite for HapticFeedbackHelper
+class HapticFeedbackHelperTests: XCTestCase {
+
+    let haptics = HapticFeedbackHelper.shared
+
+    func testSharedInstanceExists() {
+        XCTAssertNotNil(HapticFeedbackHelper.shared)
+    }
+
+    func testLightHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.light())
+    }
+
+    func testMediumHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.medium())
+    }
+
+    func testHeavyHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.heavy())
+    }
+
+    func testSuccessHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.success())
+    }
+
+    func testWarningHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.warning())
+    }
+
+    func testErrorHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.error())
+    }
+
+    func testSelectionChangedDoesNotCrash() {
+        XCTAssertNoThrow(haptics.selectionChanged())
+    }
+
+    func testCustomHapticDoesNotCrash() {
+        XCTAssertNoThrow(haptics.custom(intensity: 0.5, duration: 0.1))
+    }
+
+    func testCelebrateDoesNotCrash() {
+        XCTAssertNoThrow(haptics.celebrate(count: 3, interval: 0.15))
+    }
+
+    func testWrongAnswerDoesNotCrash() {
+        XCTAssertNoThrow(haptics.wrongAnswer())
+    }
+
+    func testCorrectAnswerDoesNotCrash() {
+        XCTAssertNoThrow(haptics.correctAnswer())
+    }
+
+    func testProgressDoesNotCrash() {
+        XCTAssertNoThrow(haptics.progress())
+    }
+
+    func testSequentialHapticCalls() {
+        XCTAssertNoThrow {
+            haptics.light()
+            usleep(50000)
+            haptics.medium()
+            usleep(50000)
+            haptics.success()
+        }
+    }
+}
+
+// Test suite for SoundEffectsHelper
+class SoundEffectsHelperTests: XCTestCase {
+
+    let sounds = SoundEffectsHelper.shared
+
+    func testSharedInstanceExists() {
+        XCTAssertNotNil(SoundEffectsHelper.shared)
+    }
+
+    func testIsSoundEnabledCanBeToggled() {
+        let initialState = sounds.isSoundEnabled
+        sounds.isSoundEnabled.toggle()
+        let newState = sounds.isSoundEnabled
+
+        XCTAssertNotEqual(initialState, newState)
+
+        sounds.isSoundEnabled = initialState
+    }
+
+    func testPlayCorrectAnswerDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playCorrectAnswer())
+    }
+
+    func testPlayWrongAnswerDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playWrongAnswer())
+    }
+
+    func testPlayButtonTapDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playButtonTap())
+    }
+
+    func testPlaySuccessDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playSuccess())
+    }
+
+    func testPlayLevelUpDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playLevelUp())
+    }
+
+    func testPlayAchievementDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playAchievement())
+    }
+
+    func testPlayTimeWarningDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playTimeWarning())
+    }
+
+    func testPlayPauseDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playPause())
+    }
+
+    func testPlayResumeDoesNotCrash() {
+        XCTAssertNoThrow(sounds.playResume())
+    }
+
+    func testSoundEffectsRespectEnabledState() {
+        sounds.isSoundEnabled = false
+        XCTAssertFalse(sounds.isSoundEnabled)
+
+        XCTAssertNoThrow(sounds.playCorrectAnswer())
+
+        sounds.isSoundEnabled = true
+    }
+
+    func testMultipleSoundEffectsInSequence() {
+        XCTAssertNoThrow {
+            sounds.playButtonTap()
+            usleep(50000)
+            sounds.playCorrectAnswer()
+            usleep(50000)
+            sounds.playSuccess()
+        }
+    }
+}
+
+// Test suite for ConfettiCelebrationView
+class ConfettiCelebrationViewTests: XCTestCase {
+
+    func testConfettiCelebrationViewCanBeCreated() {
+        let celebrationView = ConfettiCelebrationView(duration: 2.0) {}
+
+        XCTAssertNotNil(celebrationView)
+    }
+
+    func testStreakCelebrationViewCanBeCreated() {
+        let streakView = StreakCelebrationView(streakCount: 5)
+
+        XCTAssertNotNil(streakView)
+    }
+
+    func testConfettiParticleProperties() {
+        let particle = ConfettiParticle(
+            id: UUID(),
+            position: CGPoint(x: 0, y: 0),
+            color: .blue,
+            velocity: CGVector(dx: 100, dy: -200),
+            rotation: 45,
+            rotationSpeed: 90,
+            scale: 1.0,
+            opacity: 1.0
+        )
+
+        XCTAssertEqual(particle.position.x, 0)
+        XCTAssertEqual(particle.position.y, 0)
+        XCTAssertEqual(particle.rotation, 45)
+        XCTAssertEqual(particle.scale, 1.0)
+        XCTAssertEqual(particle.opacity, 1.0)
+    }
+
+    func testStreakCelebrationViewWithDifferentStreakCounts() {
+        let streak3 = StreakCelebrationView(streakCount: 3)
+        let streak5 = StreakCelebrationView(streakCount: 5)
+        let streak10 = StreakCelebrationView(streakCount: 10)
+
+        XCTAssertNotNil(streak3)
+        XCTAssertNotNil(streak5)
+        XCTAssertNotNil(streak10)
+    }
+}

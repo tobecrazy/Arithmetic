@@ -20,12 +20,25 @@
 "result.final_score" = "Final Score";
 "result.correct_count" = "%@ correct out of %@";
 "result.time_used" = "Time Used";
+"result.longest_streak" = "Longest Streak";
 "result.excellent" = "Excellent ⭐⭐⭐";
 "result.good" = "Good ⭐⭐";
 "result.pass" = "Pass ⭐";
 "result.needimprove" = "Need Practice 💪";
 "button.restart" = "Restart";
 "button.home" = "Home";
+
+/* Streak Achievements */
+"streak.title" = "Amazing Streak!";
+"streak.3" = "On Fire!";
+"streak.4" = "Hot Streak!";
+"streak.5" = "Unstoppable!";
+"streak.6" = "Incredible!";
+"streak.7" = "Math Wizard!";
+"streak.8" = "Legendary!";
+"streak.9" = "Phenomenal!";
+"streak.10" = "Godlike!";
+
 "button.exit" = "Exit";
 "button.finish" = "Finish";
 "alert.exit_title" = "Confirm Exit";

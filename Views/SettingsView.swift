@@ -96,9 +96,13 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("settings.title".localized)
-            .navigationBarItems(trailing: Button("Done") {
-                presentationMode.wrappedValue.dismiss()
-            })
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
             .sheet(isPresented: $navigateToAboutMe) {
                 NavigationView { // Wrap in NavigationView if the destination view needs a navigation bar
                     aboutMeDestination
@@ -252,9 +256,13 @@ struct AboutAppView: View {
             }
             .navigationTitle("about.arithmetic.title".localized)
             .navigationBarTitleDisplayMode(.large)
-            .navigationBarItems(trailing: Button("Done") {
-                presentationMode.wrappedValue.dismiss()
-            })
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
             .onAppear {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                     animateHero = true

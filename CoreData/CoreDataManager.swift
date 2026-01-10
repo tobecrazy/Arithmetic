@@ -3,32 +3,59 @@ import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
-    
+
+    private var isInitialized = false
+    private var initializationError: Error?
+
     private init() {
         // 确保CoreData模型在初始化时创建
         setupCoreDataStack()
-        
-        // 迁移现有数据
-        migrateExistingData()
+
+        // Only migrate if initialization succeeded
+        if isInitialized {
+            // 迁移现有数据
+            migrateExistingData()
+        }
     }
-    
+
     private func setupCoreDataStack() {
         // 初始化CoreData堆栈
         _ = persistentContainer
+
+        // If initialization failed, attempt recovery
+        if initializationError != nil, let storeURL = getStoreURL() {
+            print("Core Data initialization had error, attempting recovery...")
+            resetStore(at: storeURL)
+        }
     }
-    
+
+    private func getStoreURL() -> URL? {
+        let storeURL = persistentContainer.persistentStoreCoordinator.persistentStores.first?.url
+
+        // If no store exists yet, compute the default URL
+        if storeURL == nil {
+            let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            return directory?.appendingPathComponent("ArithmeticModel.sqlite")
+        }
+
+        return storeURL
+    }
+
     // 迁移现有数据以适应模型更改
     private func migrateExistingData() {
+        guard isInitialized else {
+            print("Cannot migrate: Core Data not initialized")
+            return
+        }
+
         // 检查是否有需要迁移的错题
         let fetchRequest: NSFetchRequest<WrongQuestionEntity> = WrongQuestionEntity.fetchRequest()
-        
+
         do {
             let existingQuestions = try context.fetch(fetchRequest)
-            
+
             // 为现有错题添加解析方法和步骤
             for question in existingQuestions {
-                // 尝试 accessing solutionMethod property - it should not throw an error
-                // So we don't need the do-catch block
                 // Ensure that each question has solutionMethod and solutionSteps
                 if question.solutionMethod.isEmpty {
                     if let questionObj = question.toQuestion() {
@@ -41,7 +68,7 @@ class CoreDataManager {
                     }
                 }
             }
-            
+
             // 保存更改
             if context.hasChanges {
                 try context.save()
@@ -49,39 +76,45 @@ class CoreDataManager {
             }
         } catch {
             print("迁移数据时出错: \(error)")
-            
+
             // 如果迁移失败，尝试重置数据库
-            resetCoreDataStore()
+            if let storeURL = getStoreURL() {
+                resetStore(at: storeURL)
+            }
         }
     }
-    
+
     // 重置Core Data存储（如果迁移失败）
-    private func resetCoreDataStore() {
+    private func resetStore(at storeURL: URL) {
         print("尝试重置Core Data存储...")
-        
-        // 获取持久化存储的URL
-        guard let storeURL = persistentContainer.persistentStoreCoordinator.persistentStores.first?.url else {
-            print("无法获取持久化存储URL")
-            return
-        }
-        
+
         do {
             // 删除所有持久化存储
             for store in persistentContainer.persistentStoreCoordinator.persistentStores {
                 try persistentContainer.persistentStoreCoordinator.remove(store)
             }
-            
-            // 删除存储文件
+
+            // 删除存储文件 and related files
             try FileManager.default.removeItem(at: storeURL)
-            
+
+            // Remove WAL and SHM files if they exist
+            let walURL = storeURL.deletingLastPathComponent().appendingPathComponent(storeURL.lastPathComponent + "-wal")
+            let shmURL = storeURL.deletingLastPathComponent().appendingPathComponent(storeURL.lastPathComponent + "-shm")
+
+            try? FileManager.default.removeItem(at: walURL)
+            try? FileManager.default.removeItem(at: shmURL)
+
             // 重新加载持久化存储
             try persistentContainer.persistentStoreCoordinator.addPersistentStore(
                 ofType: NSSQLiteStoreType,
                 configurationName: nil,
                 at: storeURL,
-                options: nil
+                options: [
+                    NSMigratePersistentStoresAutomaticallyOption: true,
+                    NSInferMappingModelAutomaticallyOption: true
+                ]
             )
-            
+
             print("Core Data存储已重置")
         } catch {
             print("重置Core Data存储失败: \(error)")
@@ -267,14 +300,31 @@ class CoreDataManager {
     lazy var persistentContainer: NSPersistentContainer = {
         // 创建内存中的模型
         let model = createManagedObjectModel()
-        
+
         // 创建持久化容器
         let container = NSPersistentContainer(name: "ArithmeticModel", managedObjectModel: model)
+
+        // Configure persistent store descriptions with migration options
+        let storeDescription = NSPersistentStoreDescription()
+        storeDescription.type = NSSQLiteStoreType
+        storeDescription.shouldInferMappingModelAutomatically = true
+        storeDescription.shouldMigrateStoreAutomatically = true
+
+        container.persistentStoreDescriptions = [storeDescription]
+
+        // Load persistent stores with proper error handling
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                print("Core Data store loading failed: \(error), \(error.userInfo)")
+                // Don't use fatalError - instead set the error for later handling
+                self.initializationError = error
+                self.isInitialized = false
+            } else {
+                self.isInitialized = true
+                print("Core Data store loaded successfully at: \(storeDescription.url?.absoluteString ?? "unknown")")
             }
         }
+
         return container
     }()
     
@@ -283,12 +333,23 @@ class CoreDataManager {
     }
     
     func saveContext() {
+        guard isInitialized else {
+            print("Cannot save: Core Data not initialized")
+            return
+        }
+
         if context.hasChanges {
             do {
                 try context.save()
+                print("Context saved successfully")
             } catch {
                 let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                print("Failed to save context: \(nserror), \(nserror.userInfo)")
+
+                // Attempt recovery by resetting the store
+                if let storeURL = getStoreURL() {
+                    resetStore(at: storeURL)
+                }
             }
         }
     }

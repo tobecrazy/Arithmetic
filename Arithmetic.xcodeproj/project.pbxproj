@@ -21,6 +21,10 @@
 		8A2AE91B2E06FFC900A99591 /* MultiplicationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */; };
 		8A2AE91D2E06FFC900A99591 /* AboutMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */; };
 		8A2AE91F2E06FFC900A99591 /* OtherOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE9202E06FFC900A99591 /* OtherOptionsView.swift */; };
+		8A600A332F10930500B4AAD0 /* SoundEffectsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A322F10930500B4AAD0 /* SoundEffectsHelper.swift */; };
+		8A600A342F10930500B4AAD0 /* HapticFeedbackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A312F10930500B4AAD0 /* HapticFeedbackHelper.swift */; };
+		8A600A362F10931C00B4AAD0 /* ConfettiCelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */; };
+		8A600A382F10932400B4AAD0 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A372F10932400B4AAD0 /* Color+Theme.swift */; };
 		8A87B6212EF67C5800366D4D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8A87B6202EF67C5800366D4D /* FirebaseAnalytics */; };
 		8A87B6232EF67C5800366D4D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8A87B6222EF67C5800366D4D /* FirebaseCore */; };
 		8A87B6252EF67C5800366D4D /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8A87B6242EF67C5800366D4D /* FirebaseCrashlytics */; };
@@ -71,6 +75,10 @@
 		8A2AE91C2E06FFC900A99591 /* MultiplicationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationTableView.swift; sourceTree = "<group>"; };
 		8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeView.swift; sourceTree = "<group>"; };
 		8A2AE9202E06FFC900A99591 /* OtherOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherOptionsView.swift; sourceTree = "<group>"; };
+		8A600A312F10930500B4AAD0 /* HapticFeedbackHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackHelper.swift; sourceTree = "<group>"; };
+		8A600A322F10930500B4AAD0 /* SoundEffectsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffectsHelper.swift; sourceTree = "<group>"; };
+		8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiCelebrationView.swift; sourceTree = "<group>"; };
+		8A600A372F10932400B4AAD0 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
 		8A8AEBC72EBB7FDE008D53E6 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		8A8FA9B02EA36B730075A3D1 /* SystemInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoManager.swift; sourceTree = "<group>"; };
 		8A8FA9B22EA36BA90075A3D1 /* SystemInfoComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoComponents.swift; sourceTree = "<group>"; };
@@ -171,6 +179,7 @@
 		8AF3AB8F2E05AE3600F67CDE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8A600A372F10932400B4AAD0 /* Color+Theme.swift */,
 				8AD2D9502E77175B004603C4 /* View+Navigation.swift */,
 				8AF3AB8C2E05AE3600F67CDE /* CGFloat+Adaptive.swift */,
 				8AF3AB8D2E05AE3600F67CDE /* Font+Adaptive.swift */,
@@ -200,6 +209,8 @@
 		8AF3AB9C2E05AE3600F67CDE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8A600A312F10930500B4AAD0 /* HapticFeedbackHelper.swift */,
+				8A600A322F10930500B4AAD0 /* SoundEffectsHelper.swift */,
 				8A0C5AEE2EC9C9510020200A /* MathBankPDFGenerator.swift */,
 				8A8FA9B02EA36B730075A3D1 /* SystemInfoManager.swift */,
 				8AF18A482E8BB16A007B05D0 /* ProgressViewUtils.swift */,
@@ -224,6 +235,7 @@
 		8AF3ABA32E05AE3600F67CDE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */,
 				8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */,
 				8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */,
 				8A0C5AE02EC8D88E0020200A /* SettingsView.swift */,
@@ -357,6 +369,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A600A332F10930500B4AAD0 /* SoundEffectsHelper.swift in Sources */,
+				8A600A342F10930500B4AAD0 /* HapticFeedbackHelper.swift in Sources */,
 				8AF3ABA42E05AE3600F67CDE /* ContentView.swift in Sources */,
 				8A2AE9132E06A88A00A99591 /* GameProgressManager.swift in Sources */,
 				8A8FA9B32EA36BA90075A3D1 /* SystemInfoComponents.swift in Sources */,
@@ -378,6 +392,8 @@
 				8AF3ABAB2E05AE3600F67CDE /* LanguageSelectorView.swift in Sources */,
 				8A0C5AED2EC9C92D0020200A /* MathBankView.swift in Sources */,
 				8AF3ABAC2E05AE3600F67CDE /* CGFloat+Adaptive.swift in Sources */,
+				8A600A362F10931C00B4AAD0 /* ConfettiCelebrationView.swift in Sources */,
+				8A600A382F10932400B4AAD0 /* Color+Theme.swift in Sources */,
 				8ABE41362EA0778E007EC146 /* FormulaGuideView.swift in Sources */,
 				8AF3ABAD2E05AE3600F67CDE /* Font+Adaptive.swift in Sources */,
 				8AD2D94F2E77174C004603C4 /* CachedAsyncImageView.swift in Sources */,

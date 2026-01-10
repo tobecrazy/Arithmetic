@@ -31,11 +31,13 @@ struct FormulaGuideView: View {
                 .padding(.bottom, 20)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                leading: Button("back".localized) {
-                    presentationMode.wrappedValue.dismiss()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("back".localized) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
-            )
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

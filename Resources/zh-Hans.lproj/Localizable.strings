@@ -20,12 +20,25 @@
 "result.final_score" = "最终得分";
 "result.correct_count" = "答对 %@ 题/共 %@ 题";
 "result.time_used" = "用时";
+"result.longest_streak" = "最长连对";
 "result.excellent" = "优秀 ⭐⭐⭐";
 "result.good" = "良好 ⭐⭐";
 "result.pass" = "及格 ⭐";
 "result.needimprove" = "菜就要多练💪";
 "button.restart" = "重新开始";
 "button.home" = "返回主页";
+
+/* Streak Achievements */
+"streak.title" = "连对太棒了！";
+"streak.3" = "火力全开！";
+"streak.4" = "状态火热！";
+"streak.5" = "势不可挡！";
+"streak.6" = "太厉害了！";
+"streak.7" = "数学天才！";
+"streak.8" = "传说级！";
+"streak.9" = "神乎其技！";
+"streak.10" = "超神了！";
+
 "button.exit" = "退出";
 "button.finish" = "完成答题";
 "alert.exit_title" = "确认退出";
