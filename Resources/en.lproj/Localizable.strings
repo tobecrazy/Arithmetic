@@ -55,7 +55,10 @@
 "wrong_questions.title" = "Wrong Questions Collection";
 
 "wrong_questions.all_levels" = "All Levels";
-"wrong_questions.empty" = "No wrong questions yet. Keep practicing!";
+"wrong_questions.empty" = "No wrong questions yet!";
+"wrong_questions.empty_subtitle" = "Keep practicing and you'll see your mistakes here for review.";
+"wrong_questions.total" = "Total";
+"wrong_questions.mastered" = "Mastered";
 "wrong_questions.answer" = "Answer: %@";
 "wrong_questions.level" = "Level: %@";
 "wrong_questions.stats" = "Attempted %@ times, Wrong %@ times";

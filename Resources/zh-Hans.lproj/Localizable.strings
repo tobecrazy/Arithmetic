@@ -55,7 +55,10 @@
 "wrong_questions.title" = "错题集";
 
 "wrong_questions.all_levels" = "所有难度";
-"wrong_questions.empty" = "暂无错题。继续练习吧！";
+"wrong_questions.empty" = "暂无错题！";
+"wrong_questions.empty_subtitle" = "继续练习，你的错题会出现在这里供复习。";
+"wrong_questions.total" = "错题总数";
+"wrong_questions.mastered" = "已掌握";
 "wrong_questions.answer" = "答案：%@";
 "wrong_questions.level" = "难度：%@";
 "wrong_questions.stats" = "尝试 %@ 次，错误 %@ 次";
