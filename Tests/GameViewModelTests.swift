@@ -198,4 +198,110 @@ class GameViewModelTests: XCTestCase {
         let savedInfo = GameViewModel.getSavedGameInfo()
         XCTAssertNil(savedInfo) // Initially should be nil
     }
+
+    // MARK: - Streak Tracking Tests
+
+    func testStreakCountIncrementsOnCorrectAnswer() {
+        gameViewModel.startGame()
+        let initialStreak = gameViewModel.gameState.streakCount
+
+        // Submit a correct answer
+        let correctAnswer = gameViewModel.gameState.questions[0].correctAnswer
+        gameViewModel.submitAnswer(correctAnswer)
+
+        XCTAssertEqual(gameViewModel.gameState.streakCount, initialStreak + 1)
+    }
+
+    func testStreakResetsOnWrongAnswer() {
+        gameViewModel.startGame()
+
+        // Build up a streak by answering correctly
+        let correctAnswer = gameViewModel.gameState.questions[0].correctAnswer
+        gameViewModel.submitAnswer(correctAnswer)
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 1)
+
+        // Submit wrong answer
+        gameViewModel.submitAnswer(-1)
+
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 0)
+    }
+
+    func testLongestStreakUpdatesCorrectly() {
+        gameViewModel.startGame()
+        let initialLongestStreak = gameViewModel.gameState.longestStreak
+
+        // Build up a streak
+        var streakCount = 0
+        for index in 0..<min(5, gameViewModel.gameState.questions.count) {
+            let correctAnswer = gameViewModel.gameState.questions[index].correctAnswer
+            gameViewModel.submitAnswer(correctAnswer)
+            streakCount += 1
+        }
+
+        XCTAssertEqual(gameViewModel.gameState.longestStreak, max(initialLongestStreak, streakCount))
+    }
+
+    func testLongestStreakPersistsAfterStreakReset() {
+        gameViewModel.startGame()
+
+        // Build up a streak
+        let correctAnswer = gameViewModel.gameState.questions[0].correctAnswer
+        gameViewModel.submitAnswer(correctAnswer)
+        let streakAfterCorrect = gameViewModel.gameState.streakCount
+        let longestStreak = gameViewModel.gameState.longestStreak
+
+        // Reset the streak with wrong answer
+        gameViewModel.submitAnswer(-1)
+
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 0)
+        XCTAssertEqual(gameViewModel.gameState.longestStreak, max(streakAfterCorrect, longestStreak))
+    }
+
+    func testStreakCelebrationTrigger() {
+        gameViewModel.startGame()
+
+        // Answer correctly 3 times to trigger celebration
+        for index in 0..<min(3, gameViewModel.gameState.questions.count) {
+            let correctAnswer = gameViewModel.gameState.questions[index].correctAnswer
+            gameViewModel.submitAnswer(correctAnswer)
+        }
+
+        // After 3 correct answers, streak should be 3
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 3)
+
+        // Streak celebration would trigger in UI (tested separately in UI tests)
+    }
+
+    func testMultipleStreakCelebrations() {
+        gameViewModel.startGame()
+
+        // Answer correctly 6 times to trigger multiple celebrations
+        for index in 0..<min(6, gameViewModel.gameState.questions.count) {
+            let correctAnswer = gameViewModel.gameState.questions[index].correctAnswer
+            gameViewModel.submitAnswer(correctAnswer)
+        }
+
+        // After 6 correct answers, streak should be 6
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 6)
+        XCTAssertEqual(gameViewModel.gameState.longestStreak, 6)
+    }
+
+    func testStreakTrackingAcrossMultipleGames() {
+        // Complete a game with some streak
+        gameViewModel.startGame()
+        let correctAnswer = gameViewModel.gameState.questions[0].correctAnswer
+        gameViewModel.submitAnswer(correctAnswer)
+
+        let firstGameStreak = gameViewModel.gameState.streakCount
+
+        // Reset and start new game
+        gameViewModel.resetGame()
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 0)
+
+        // Build a new streak
+        let newCorrectAnswer = gameViewModel.gameState.questions[0].correctAnswer
+        gameViewModel.submitAnswer(newCorrectAnswer)
+
+        XCTAssertEqual(gameViewModel.gameState.streakCount, 1)
+    }
 }

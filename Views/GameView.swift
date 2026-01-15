@@ -10,6 +10,12 @@ struct GameView: View {
     @State private var showResultsView = false
     @State private var currentTime: Int = 0 // Local state to track time for UI updates
     @State private var hasAppeared = false // Track if view has appeared before
+    @State private var buttonScale: CGFloat = 1.0
+    @State private var feedbackOpacity: Double = 0.0
+    @State private var feedbackOffset: CGFloat = 0
+    @State private var isShaking = false
+    @State private var showStreakCelebration = false
+    @State private var showConfetti = false
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var localizationManager: LocalizationManager
 
@@ -18,6 +24,10 @@ struct GameView: View {
 
     // TTS Helper for question read-aloud
     private let ttsHelper = TTSHelper.shared
+    // Haptic feedback helper
+    private let haptics = HapticFeedbackHelper.shared
+    // Sound effects helper
+    private let sounds = SoundEffectsHelper.shared
     
     // 创建一个每秒触发一次的计时器发布者
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -34,6 +44,32 @@ struct GameView: View {
     // 默认布局（iPhone和iPad竖屏）
     var defaultLayout: some View {
         ZStack {
+            // Confetti celebration overlay
+            if showConfetti {
+                ConfettiCelebrationView(duration: 2.0) {
+                    showConfetti = false
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .allowsHitTesting(false)
+                .zIndex(1000)
+            }
+
+            // Streak celebration overlay
+            if showStreakCelebration {
+                VStack {
+                    Spacer()
+                    StreakCelebrationView(streakCount: viewModel.gameState.streakCount)
+                        .padding(.bottom, 100)
+                    Spacer()
+                }
+                .allowsHitTesting(false)
+                .zIndex(999)
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                        showStreakCelebration = false
+                    }
+                }
+            }
             VStack {
                 // 顶部信息栏
                 VStack(spacing: 0) {
@@ -51,20 +87,63 @@ struct GameView: View {
                         Spacer()
                         
                         // 当前进度
-                        VStack {
+                        VStack(spacing: 4) {
+                            // Enhanced progress bar
+                            GeometryReader { geometry in
+                                ZStack(alignment: .leading) {
+                                    // Background
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(Color.gray.opacity(0.2))
+                                        .frame(height: 8)
+
+                                    // Progress fill with gradient
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(
+                                            LinearGradient(
+                                                gradient: Gradient(colors: [.blue, .purple]),
+                                                startPoint: .leading,
+                                                endPoint: .trailing
+                                            )
+                                        )
+                                        .frame(width: geometry.size.width * CGFloat(viewModel.gameState.currentQuestionIndex + 1) / CGFloat(viewModel.gameState.totalQuestions), height: 8)
+                                        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: viewModel.gameState.currentQuestionIndex)
+                                }
+                            }
+                            .frame(height: 8)
+
                             Text(viewModel.gameState.progressText)
-                                .font(.adaptiveBody())
+                                .font(.adaptiveCaption())
+                                .foregroundColor(.secondary)
                         }
+                        .frame(width: 100)
                         
                         Spacer()
                         
                         // 当前得分
-                        VStack(alignment: .trailing) {
-                            Text("game.score".localized)
-                                .font(.footnote)
+                        VStack(alignment: .trailing, spacing: 4) {
+                            // Animated score badge
+                            HStack(spacing: 4) {
+                                if viewModel.gameState.streakCount >= 3 {
+                                    Image(systemName: "flame.fill")
+                                        .foregroundColor(.orange)
+                                        .font(.caption)
+                                        .scaleEffect(buttonScale)
+                                        .animation(.spring(response: 0.3, dampingFraction: 0.5).repeatCount(3), value: buttonScale)
+                                }
+                                Text("game.score".localized)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                             Text("\(viewModel.gameState.score)")
-                                .font(.adaptiveHeadline())
+                                .font(.adaptiveTitle2())
+                                .fontWeight(.bold)
                                 .foregroundColor(.green)
+                                .contentTransition(.numericText())
+                            if viewModel.gameState.streakCount >= 2 {
+                                Text("🔥 ×\(viewModel.gameState.streakCount)")
+                                    .font(.caption2)
+                                    .foregroundColor(.orange)
+                            }
                         }
                     }
                     .padding()
@@ -131,39 +210,59 @@ struct GameView: View {
                         // Read the question aloud using speakMathExpression for proper operator pronunciation
                         let questionToRead = "question.read_aloud".localizedFormat(currentQuestion.questionText)
                         ttsHelper.speakMathExpression(questionToRead, language: localizationManager.currentLanguage)
+                        haptics.light()
                     }) {
                         Text(currentQuestion.questionText)
                             .font(.system(size: 40, weight: .bold))
                             .foregroundColor(.primary)
+                            .scaleEffect(viewModel.gameState.isCorrect ? 1.1 : 1.0)
+                            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.gameState.isCorrect)
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding()
-                    
+
                     // 答案反馈
                     if viewModel.gameState.showingCorrectAnswer {
                         VStack {
-                            Text("game.wrong".localized)
-                                .foregroundColor(.red)
-                                .font(.adaptiveHeadline())
-                            
+                            HStack(spacing: 8) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title)
+                                    .foregroundColor(.red)
+                                    .scaleEffect(isShaking ? 1.2 : 1.0)
+                                    .animation(.spring(response: 0.3, dampingFraction: 0.4).repeatCount(3), value: isShaking)
+                                Text("game.wrong".localized)
+                                    .foregroundColor(.red)
+                                    .font(.adaptiveHeadline())
+                            }
+                            .offset(x: isShaking ? -5 : 5)
+                            .animation(.spring(response: 0.2, dampingFraction: 0.3).repeatCount(3), value: isShaking)
+
                             Text("game.correct_answer".localizedFormat(String(currentQuestion.correctAnswer)))
                                 .foregroundColor(.blue)
                                 .font(.adaptiveBody())
-                            
+                                .padding(.vertical, 5)
+
                             // 添加解析按钮
                             Button(action: {
-                                viewModel.showSolutionSteps.toggle()
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                                    viewModel.showSolutionSteps.toggle()
+                                }
+                                haptics.light()
                             }) {
-                                Text(viewModel.showSolutionSteps ? "button.hide_solution".localized : "button.show_solution".localized)
-                                    .font(.adaptiveBody())
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 5)
-                                    .background(Color.green)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(.adaptiveCornerRadius)
+                                HStack(spacing: 8) {
+                                    Image(systemName: viewModel.showSolutionSteps ? "eye.slash.fill" : "eye.fill")
+                                    Text(viewModel.showSolutionSteps ? "button.hide_solution".localized : "button.show_solution".localized)
+                                        .font(.adaptiveBody())
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(.adaptiveCornerRadius)
+                                .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
                             }
-                            .padding(.top, 5)
-                            
+                            .padding(.top, 8)
+
                             // 显示解析内容
                             if viewModel.showSolutionSteps {
                                 VStack(spacing: 0) {
@@ -180,7 +279,7 @@ struct GameView: View {
                                     }
                                     .padding(.horizontal, 10)
                                     .padding(.top, 8)
-                                    
+
                                     // 解析内容区域
                                     ScrollView(.vertical, showsIndicators: true) {
                                         Text(currentQuestion.getSolutionSteps(for: viewModel.gameState.difficultyLevel))
@@ -204,29 +303,58 @@ struct GameView: View {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                                 )
                                 .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
+                                .transition(.opacity.combined(with: .scale))
                             }
-                            
+
                             // Next Question button
                             Button(action: {
-                                viewModel.moveToNextQuestion()
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                                    viewModel.moveToNextQuestion()
+                                }
+                                haptics.medium()
                             }) {
-                                Text("button.next_question".localized)
-                                    .font(.adaptiveHeadline())
-                                    .padding()
-                                    .frame(width: 200)
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(.adaptiveCornerRadius)
+                                HStack(spacing: 8) {
+                                    Image(systemName: "arrow.right.circle.fill")
+                                    Text("button.next_question".localized)
+                                        .font(.adaptiveHeadline())
+                                }
+                                .padding()
+                                .frame(width: 220)
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(.adaptiveCornerRadius)
+                                .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
                             }
                             .id(UUID()) // Force view refresh
-                            .padding(.top, 10)
+                            .padding(.top, 12)
                         }
                         .padding()
+                        .transition(.asymmetric(
+                            insertion: .scale.combined(with: .opacity),
+                            removal: .opacity
+                        ))
                     } else if viewModel.gameState.isCorrect {
-                        Text("game.correct".localized)
-                            .foregroundColor(.green)
-                            .font(.adaptiveHeadline())
-                            .padding()
+                        HStack(spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.title)
+                                .foregroundColor(.green)
+                                .scaleEffect(buttonScale)
+                            Text("game.correct".localized)
+                                .foregroundColor(.green)
+                                .font(.adaptiveHeadline())
+                        }
+                        .padding()
+                        .scaleEffect(buttonScale)
+                        .onAppear {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
+                                buttonScale = 1.1
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
+                                    buttonScale = 1.0
+                                }
+                            }
+                        }
                     }
                     
                     // 答案输入框
@@ -258,9 +386,19 @@ struct GameView: View {
                             .background(userInput.isEmpty ? Color.gray : Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(.adaptiveCornerRadius)
+                            .scaleEffect(buttonScale)
+                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: buttonScale)
                     }
                     .disabled(userInput.isEmpty || viewModel.gameState.showingCorrectAnswer)
                     .padding()
+                    .onLongPressGesture(minimumDuration: 0, pressing: { isPressing in
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                            buttonScale = isPressing ? 0.95 : 1.0
+                        }
+                        if isPressing {
+                            haptics.light()
+                        }
+                    }, perform: {})
                 }
                 
                 Spacer()
@@ -823,8 +961,53 @@ struct GameView: View {
     // 提交答案
     private func submitAnswer() {
         guard let answer = Int(userInput) else { return }
+
+        // Trigger immediate feedback
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+            buttonScale = 0.9
+        }
+
+        // Check answer and provide feedback
+        if viewModel.gameState.questions.count > viewModel.gameState.currentQuestionIndex {
+            let currentQuestion = viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex]
+            let isCorrect = answer == currentQuestion.correctAnswer
+
+            if isCorrect {
+                haptics.correctAnswer()
+                sounds.playCorrectAnswer()
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
+                    buttonScale = 1.05
+                }
+                // Check for streak celebration
+                if viewModel.gameState.streakCount >= 3 && viewModel.gameState.streakCount % 3 == 0 {
+                    haptics.celebrate(count: 2)
+                    sounds.playAchievement()
+                    showStreakCelebration = true
+                    showConfetti = true
+                }
+            } else {
+                haptics.wrongAnswer()
+                sounds.playWrongAnswer()
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.4)) {
+                    isShaking.toggle()
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.4)) {
+                        isShaking = false
+                    }
+                }
+            }
+        }
+
         viewModel.submitAnswer(answer)
         userInput = ""
+
+        // Reset button scale
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                buttonScale = 1.0
+            }
+        }
     }
 }
 

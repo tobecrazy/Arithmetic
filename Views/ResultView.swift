@@ -52,31 +52,50 @@ struct ResultView: View {
                     HStack {
                         Text("result.correct_count".localizedFormat(String(gameState.correctAnswersCount), String(gameState.totalQuestions)))
                             .font(.adaptiveBody())
+                            .foregroundColor(.primary)
                         Spacer()
                     }
-                    
+
                     // 用时
                     HStack {
                         Text("result.time_used".localized)
                             .font(.adaptiveBody())
+                            .foregroundColor(.primary)
                         Spacer()
                         Text(gameState.timeUsedText)
                             .font(.adaptiveBody())
                             .foregroundColor(.blue)
                     }
-                    
+
                     // 难度
                     HStack {
                         Text("difficulty.level".localized)
                             .font(.adaptiveBody())
+                            .foregroundColor(.primary)
                         Spacer()
                         Text(gameState.difficultyLevel.localizedName)
                             .font(.adaptiveBody())
                             .foregroundColor(.blue)
                     }
+
+                    // 最长连续答对
+                    if gameState.longestStreak > 0 {
+                        HStack {
+                            Text("result.longest_streak".localized)
+                                .font(.adaptiveBody())
+                                .foregroundColor(.primary)
+                            Spacer()
+                            HStack(spacing: 4) {
+                                Text("🔥")
+                                Text("\(gameState.longestStreak)")
+                            }
+                            .font(.adaptiveBody())
+                            .foregroundColor(.orange)
+                        }
+                    }
                 }
                 .padding()
-                .background(Color.gray.opacity(0.1))
+                .background(Color(.secondarySystemBackground))
                 .cornerRadius(.adaptiveCornerRadius)
                 .padding(.horizontal)
                 

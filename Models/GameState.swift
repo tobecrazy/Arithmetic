@@ -12,6 +12,8 @@ class GameState: ObservableObject {
     @Published var isCorrect: Bool = false
     @Published var isPaused: Bool = false
     @Published var pauseUsed: Bool = false
+    @Published var streakCount: Int = 0
+    @Published var longestStreak: Int = 0
     
     // 游戏设置
     let difficultyLevel: DifficultyLevel
@@ -99,12 +101,16 @@ class GameState: ObservableObject {
     func checkAnswer(_ answer: Int) -> Bool {
         let currentQuestion = questions[currentQuestionIndex]
         let isCorrect = answer == currentQuestion.correctAnswer
-        
+
         userAnswers[currentQuestionIndex] = answer
-        
+
         if isCorrect {
             score += pointsPerQuestion
-            
+            streakCount += 1
+            if streakCount > longestStreak {
+                longestStreak = streakCount
+            }
+
             // 如果是错题集中的题目，更新统计信息
             let wrongQuestionManager = WrongQuestionManager()
             if wrongQuestionManager.isWrongQuestion(currentQuestion) {
@@ -116,11 +122,13 @@ class GameState: ObservableObject {
             let wrongQuestionManager = WrongQuestionManager()
             wrongQuestionManager.addWrongQuestion(currentQuestion, for: difficultyLevel)
             print("Added to wrong questions collection: \(currentQuestion.questionText)")
+            // Reset streak on wrong answer
+            streakCount = 0
         }
-        
+
         self.isCorrect = isCorrect
         self.showingCorrectAnswer = !isCorrect
-        
+
         return isCorrect
     }
     

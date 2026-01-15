@@ -20,12 +20,25 @@
 "result.final_score" = "最终得分";
 "result.correct_count" = "答对 %@ 题/共 %@ 题";
 "result.time_used" = "用时";
+"result.longest_streak" = "最长连对";
 "result.excellent" = "优秀 ⭐⭐⭐";
 "result.good" = "良好 ⭐⭐";
 "result.pass" = "及格 ⭐";
 "result.needimprove" = "菜就要多练💪";
 "button.restart" = "重新开始";
 "button.home" = "返回主页";
+
+/* Streak Achievements */
+"streak.title" = "连对太棒了！";
+"streak.3" = "火力全开！";
+"streak.4" = "状态火热！";
+"streak.5" = "势不可挡！";
+"streak.6" = "太厉害了！";
+"streak.7" = "数学天才！";
+"streak.8" = "传说级！";
+"streak.9" = "神乎其技！";
+"streak.10" = "超神了！";
+
 "button.exit" = "退出";
 "button.finish" = "完成答题";
 "alert.exit_title" = "确认退出";
@@ -42,7 +55,10 @@
 "wrong_questions.title" = "错题集";
 
 "wrong_questions.all_levels" = "所有难度";
-"wrong_questions.empty" = "暂无错题。继续练习吧！";
+"wrong_questions.empty" = "暂无错题！";
+"wrong_questions.empty_subtitle" = "继续练习，你的错题会出现在这里供复习。";
+"wrong_questions.total" = "错题总数";
+"wrong_questions.mastered" = "已掌握";
 "wrong_questions.answer" = "答案：%@";
 "wrong_questions.level" = "难度：%@";
 "wrong_questions.stats" = "尝试 %@ 次，错误 %@ 次";
