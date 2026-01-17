@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.2* | *Updated: January 9, 2026*
+*Version: 1.0.2* | *Updated: January 17, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -16,7 +16,7 @@
 
 *An intelligent arithmetic learning application built with SwiftUI to help elementary students master basic mathematical operations*
 
-[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring) • [🔄 更新日志](#-最近更新-recent-updates)
+[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring) • [🔄 更新日志](#-最近更新-recent-updates) • [📖 详细更新日志](ChangeLogs.md)
 
 </div>
 
@@ -363,6 +363,75 @@
 - **便捷访问 (Convenient Access)** - 在"关于我"页面新增GitHub仓库链接 (Added GitHub repository link to the "About Me" page)
 - **开源支持 (Open Source Support)** - 用户可直接访问项目开源地址，了解开发进展 (Users can directly access the project's open source repository to understand development progress)
 - **中英双语 (Bilingual Support)** - 支持中文"点击访问我的Github仓库"和英文"Visit GitHub Repository"本地化文本 (Supports localized text in Chinese "点击访问我的Github仓库" and English "Visit GitHub Repository")
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 🔄 最近更新 (Recent Updates)
+
+For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
+
+## 🤝 贡献指南 (Contributing Guidelines)
+
+We welcome all forms of contributions! 🎉
+
+### 🌟 贡献方式 (Ways to Contribute)
+- 🐛 报告问题和错误 (Report issues and bugs)
+- 💡 提交功能请求 (Submit feature requests)
+- 🔧 提交代码改进 (Submit code improvements)
+- 📝 改进文档 (Improve documentation)
+- 🌐 协助翻译 (Help with translations)
+- 📊 查看更新历史 (Review update history in [ChangeLogs.md](ChangeLogs.md))
+
+### 📋 贡献流程 (Contribution Process)
+
+1. **フォーク (Fork Repository)**
+   ```bash
+   # Fork this repository to your GitHub account
+   ```
+
+2. **🌿 创建特性分支 (Create Feature Branch)**
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+
+3. **💻 提交更改 (Commit Changes)**
+   ```bash
+   git commit -m "feat: add your feature description"
+   ```
+
+4. **🚀 推送分支 (Push Branch)**
+   ```bash
+   git push origin feature/your-feature
+   ```
+
+5. **📬 创建 Pull Request (Create Pull Request)**
+   - 详细描述你的更改 (Detailed description of your changes)
+   - 包含相关的测试用例 (Include relevant test cases)
+   - 确保代码符合项目规范 (Ensure code follows project standards)
+
+### 📏 代码规范 (Code Standards)
+- 遵循Swift官方编码规范 (Follow Swift official coding standards)
+- 使用有意义的变量和函数命名 (Use meaningful variable and function names)
+- 添加必要的注释和文档 (Add necessary comments and documentation)
+- 确保代码通过所有测试 (Ensure code passes all tests)
+
+### 🐛 问题报告 (Issue Reporting)
+使用GitHub Issues报告问题时，请包含：(When reporting issues via GitHub Issues, please include:)
+- 详细的问题描述 (Detailed problem description)
+- 重现步骤 (Reproduction steps)
+- 预期行为vs实际行为 (Expected vs. actual behavior)
+- 设备和系统版本信息 (Device and system version information)
+- 相关截图或日志 (Relevant screenshots or logs)
+
+[⬆️ 返回目录](#-目录-table-of-contents)
+
+---
 
 ### 📷 QR码扫描工具 (QR Code Scanning Tool)
 - **📱 扫描功能 (Scanning Functionality)** - 集成相机扫描和相册扫描功能，用于扫描二维码

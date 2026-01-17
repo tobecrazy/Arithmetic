@@ -1,5 +1,9 @@
 # Change Log
 
+### 🌟 2026-01-17 (项目文档更新 / Project Documentation Update)
+- **📄 README更新 (README Update)** - 更新README.md文件，确保包含最新的功能特性和项目信息 (Updated README.md file to include latest features and project information)
+- **🔄 ChangeLog更新 (ChangeLog Update)** - 更新ChangeLogs.md文件，同步最新项目变更 (Updated ChangeLogs.md file to sync latest project changes)
+
 ### 🌟 2026-01-09 (PDF排版优化 / PDF Layout Optimization)
 - **📄 PDF题库排版优化 (PDF Problem Bank Layout Optimization)** - 全面优化PDF生成排版，最大化A4纸张利用率 (Comprehensive PDF generation layout optimization to maximize A4 paper utilization)
 

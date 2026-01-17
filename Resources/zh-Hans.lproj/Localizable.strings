@@ -129,6 +129,15 @@
 "multiplication_table.title" = "九九乘法表";
 "multiplication_table.instructions" = "这是完整的九九乘法表，包含1至9的所有乘法运算。不同颜色代表不同难度级别。";
 "multiplication_table.formula" = "%@ × %@ = %@";
+"multiplication_table.legend" = "难度说明";
+"multiplication_table.perfect_square" = "平方数";
+"multiplication_table.easy" = "简单";
+"multiplication_table.medium" = "中等";
+"multiplication_table.hard" = "较难";
+"multiplication_table.total_facts" = "算式总数";
+"multiplication_table.perfect_squares" = "平方数";
+"multiplication_table.range" = "结果范围";
+"multiplication_table.tap_hint" = "点击任意格子可朗读算式";
 "button.back" = "返回";
 
 /* Other Options */
@@ -402,6 +411,11 @@
 "system.info.scale_factor" = "缩放因子";
 "system.info.refresh_rate" = "刷新率";
 "system.info.physical_size" = "物理尺寸";
+"system.info.realtime_monitoring" = "实时监控";
+"system.info.live" = "实时";
+"system.info.date" = "日期";
+"system.info.time" = "时间";
+"system.info.realtime" = "实时更新";
 "profit" = "利润";
 "selling_price" = "售出价";
 "cost" = "成本";

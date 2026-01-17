@@ -136,6 +136,15 @@
 "multiplication_table.title" = "Multiplication Table";
 "multiplication_table.instructions" = "This is the complete 9×9 multiplication table, containing all multiplication operations from 1 to 9. Different colors represent different difficulty levels.";
 "multiplication_table.formula" = "%@ × %@ = %@";
+"multiplication_table.legend" = "Difficulty Legend";
+"multiplication_table.perfect_square" = "Square";
+"multiplication_table.easy" = "Easy";
+"multiplication_table.medium" = "Medium";
+"multiplication_table.hard" = "Hard";
+"multiplication_table.total_facts" = "Total Facts";
+"multiplication_table.perfect_squares" = "Squares";
+"multiplication_table.range" = "Range";
+"multiplication_table.tap_hint" = "Tap any cell to hear it spoken aloud";
 "button.back" = "Back";
 
 /* Other Options */
@@ -410,6 +419,11 @@
 "system.info.scale_factor" = "Scale Factor";
 "system.info.refresh_rate" = "Refresh Rate";
 "system.info.physical_size" = "Physical Size";
+"system.info.realtime_monitoring" = "Real-time monitoring";
+"system.info.live" = "LIVE";
+"system.info.date" = "Date";
+"system.info.time" = "Time";
+"system.info.realtime" = "Real-time";
 "profit" = "Profit";
 "selling_price" = "Selling Price";
 "cost" = "Cost";
