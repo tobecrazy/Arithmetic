@@ -9,415 +9,119 @@ struct SystemInfoView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.colorScheme) var colorScheme
     @StateObject private var systemInfoManager = SystemInfoManager()
-    
+
+    // Tech color palette
+    private let deviceColor: Color = .cyan
+    private let cpuColor: Color = .orange
+    private let memoryColor: Color = .green
+    private let diskColor: Color = .purple
+    private let networkColor: Color = .blue
+    private let batteryColor: Color = .mint
+    private let screenColor: Color = .indigo
+    private let timeColor: Color = .pink
+
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // System Information Title
-                VStack(spacing: 15) {
-                    Text("system.info.title".localized)
-                        .font(.adaptiveTitle())
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                    
-                    Text("system.info.description".localized)
-                        .font(.adaptiveBody())
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal, 20)
+        ZStack {
+            // Animated background
+            TechBackground(colorScheme: colorScheme)
+                .ignoresSafeArea()
+
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Header Section
+                    TechSectionHeader(
+                        title: "system.info.title".localized,
+                        subtitle: "system.info.description".localized
+                    )
+                    .padding(.top, 20)
+
+                    // System Info Content
+                    VStack(spacing: 16) {
+                        // Device Name
+                        SystemInfoRow(
+                            title: "system.info.device_name".localized,
+                            value: systemInfoManager.deviceName,
+                            icon: "iphone",
+                            accentColor: deviceColor
+                        )
+
+                        // CPU Info
+                        SystemInfoRow(
+                            title: "system.info.cpu_info".localized,
+                            value: systemInfoManager.cpuInfo,
+                            icon: "cpu",
+                            accentColor: cpuColor
+                        )
+
+                        // CPU Usage (Real-time)
+                        SystemInfoProgressRow(
+                            title: "system.info.cpu_usage".localized,
+                            value: systemInfoManager.cpuUsage,
+                            unit: "%",
+                            icon: "speedometer",
+                            color: cpuColor
+                        )
+
+                        // Memory Usage Section
+                        DetailInfoSection(
+                            title: "system.info.memory_usage".localized,
+                            icon: "memorychip",
+                            color: memoryColor,
+                            items: [
+                                ("system.info.memory_used".localized, systemInfoManager.memoryUsage.usedMemoryMB),
+                                ("system.info.memory_total".localized, systemInfoManager.memoryUsage.totalMemoryMB),
+                                ("system.info.memory_available".localized, systemInfoManager.memoryUsage.availableMemoryMB)
+                            ],
+                            showProgressBar: true,
+                            progressValue: systemInfoManager.memoryUsage.usagePercentage
+                        )
+
+                        // Disk Usage Section
+                        DetailInfoSection(
+                            title: "system.info.disk_usage".localized,
+                            icon: "internaldrive",
+                            color: diskColor,
+                            items: [
+                                ("system.info.disk_used".localized, systemInfoManager.diskUsage.usedDiskGB),
+                                ("system.info.disk_total".localized, systemInfoManager.diskUsage.totalDiskGB),
+                                ("system.info.disk_available".localized, systemInfoManager.diskUsage.availableDiskGB)
+                            ],
+                            showProgressBar: true,
+                            progressValue: systemInfoManager.diskUsage.usagePercentage
+                        )
+
+                        // System Version
+                        SystemInfoRow(
+                            title: "system.info.system_version".localized,
+                            value: systemInfoManager.systemVersion,
+                            icon: "gear",
+                            accentColor: .gray
+                        )
+
+                        // Network Information
+                        networkInfoSection
+
+                        // Battery Information
+                        batteryInfoSection
+
+                        // Screen Information
+                        screenInfoSection
+
+                        // Current Date and Time (Real-time)
+                        RealtimeClockDisplay(
+                            date: systemInfoManager.currentDate,
+                            time: systemInfoManager.currentTime,
+                            color: timeColor
+                        )
+                    }
+                    .padding(.horizontal, 20)
+
+                    Spacer(minLength: 50)
                 }
-                .padding(.top, 20)
-                
-                // System Info Content
-                VStack(spacing: 15) {
-                    // Device Name
-                    SystemInfoRow(
-                        title: "system.info.device_name".localized,
-                        value: systemInfoManager.deviceName,
-                        icon: "iphone"
-                    )
-                    
-                    // CPU Info
-                    SystemInfoRow(
-                        title: "system.info.cpu_info".localized,
-                        value: systemInfoManager.cpuInfo,
-                        icon: "cpu"
-                    )
-                    
-                    // CPU Usage (Real-time)
-                    SystemInfoProgressRow(
-                        title: "system.info.cpu_usage".localized,
-                        value: systemInfoManager.cpuUsage,
-                        unit: "%",
-                        icon: "speedometer",
-                        color: .orange
-                    )
-                    
-                    // Memory Usage (Real-time)
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "memorychip")
-                                .foregroundColor(.green)
-                                .frame(width: 20)
-                            Text("system.info.memory_usage".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text("system.info.memory_used".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.memoryUsage.usedMemoryMB)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                            
-                            HStack {
-                                Text("system.info.memory_total".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.memoryUsage.totalMemoryMB)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                            
-                            HStack {
-                                Text("system.info.memory_available".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.memoryUsage.availableMemoryMB)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                            
-                            // Memory Usage Progress Bar
-                            ProgressView(value: systemInfoManager.memoryUsage.usagePercentage, total: 100)
-                                .progressViewStyle(LinearProgressViewStyle(tint: .green))
-                                .scaleEffect(x: 1, y: 0.8, anchor: .center)
-                            
-                            HStack {
-                                Spacer()
-                                Text(String(format: "%.1f%%", systemInfoManager.memoryUsage.usagePercentage))
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.green)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
-                    .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(8)
-                    
-                    // Disk Usage (Real-time)
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "internaldrive")
-                                .foregroundColor(.purple)
-                                .frame(width: 20)
-                            Text("system.info.disk_usage".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text("system.info.disk_used".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.diskUsage.usedDiskGB)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                            
-                            HStack {
-                                Text("system.info.disk_total".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.diskUsage.totalDiskGB)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                            
-                            HStack {
-                                Text("system.info.disk_available".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.diskUsage.availableDiskGB)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                            
-                            // Disk Usage Progress Bar
-                            ProgressView(value: systemInfoManager.diskUsage.usagePercentage, total: 100)
-                                .progressViewStyle(LinearProgressViewStyle(tint: .purple))
-                                .scaleEffect(x: 1, y: 0.8, anchor: .center)
-                            
-                            HStack {
-                                Spacer()
-                                Text(String(format: "%.1f%%", systemInfoManager.diskUsage.usagePercentage))
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.purple)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
-                    .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(8)
-                    
-                    // System Version
-                    SystemInfoRow(
-                        title: "system.info.system_version".localized,
-                        value: systemInfoManager.systemVersion,
-                        icon: "gear"
-                    )
-
-                    // Network Information
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "wifi")
-                                .foregroundColor(.cyan)
-                                .frame(width: 20)
-                            Text("system.info.network_info".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text("system.info.connection_type".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.networkInfo.connectionType)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            if !systemInfoManager.networkInfo.wifiSSID.isEmpty {
-                                HStack {
-                                    Text("system.info.wifi_ssid".localized + ":")
-                                        .font(.adaptiveCaption())
-                                        .foregroundColor(.secondary)
-                                    Spacer()
-                                    Text(systemInfoManager.networkInfo.wifiSSID)
-                                        .font(.adaptiveCaption())
-                                        .fontWeight(.medium)
-                                }
-                            }
-
-                            if !systemInfoManager.networkInfo.cellularCarrier.isEmpty && systemInfoManager.networkInfo.cellularCarrier != "Unknown" {
-                                HStack {
-                                    Text("system.info.cellular_carrier".localized + ":")
-                                        .font(.adaptiveCaption())
-                                        .foregroundColor(.secondary)
-                                    Spacer()
-                                    Text(systemInfoManager.networkInfo.cellularCarrier)
-                                        .font(.adaptiveCaption())
-                                        .fontWeight(.medium)
-                                }
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
-                    .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(8)
-
-                    // Battery Information
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "battery.100")
-                                .foregroundColor(.green)
-                                .frame(width: 20)
-                            Text("system.info.battery_info".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text("system.info.battery_level".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(String(format: "%.0f%%", systemInfoManager.batteryInfo.level * 100))
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.battery_state".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.batteryInfo.state)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.power_source".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.batteryInfo.powerSourceState)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.boot_time".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.batteryInfo.bootTimeString)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.uptime".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.batteryInfo.uptimeString)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.green)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
-                    .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(8)
-
-                    // Screen Information
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "display")
-                                .foregroundColor(.purple)
-                                .frame(width: 20)
-                            Text("system.info.screen_info".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text("system.info.screen_resolution".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.screenInfo.screenResolution)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.screen_size".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(String(format: "%.0f × %.0f", systemInfoManager.screenInfo.screenSize.width, systemInfoManager.screenInfo.screenSize.height))
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.scale_factor".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(String(format: "%.0fx", systemInfoManager.screenInfo.scaleFactor))
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.refresh_rate".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(String(format: "%.0f Hz", systemInfoManager.screenInfo.refreshRate))
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-
-                            HStack {
-                                Text("system.info.physical_size".localized + ":")
-                                    .font(.adaptiveCaption())
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                Text(systemInfoManager.screenInfo.physicalSize)
-                                    .font(.adaptiveCaption())
-                                    .fontWeight(.medium)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
-                    .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(8)
-                    
-                    // Current Date and Time (Real-time)
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "clock")
-                                .foregroundColor(.blue)
-                                .frame(width: 20)
-                            Text("system.info.current_time".localized)
-                                .font(.adaptiveBody())
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-                        
-                        VStack(alignment: .trailing, spacing: 4) {
-                            HStack {
-                                Spacer()
-                                Text(systemInfoManager.currentDate)
-                                    .font(.adaptiveBody())
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.blue)
-                            }
-                            
-                            HStack {
-                                Spacer()
-                                Text(systemInfoManager.currentTime)
-                                    .font(.adaptiveBody())
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.blue)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
-                    .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(8)
-                }
-                .padding(.horizontal, 20)
-                
-                Spacer(minLength: 50)
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("system.info.title".localized)
         .navigationBarTitleDisplayMode(.large)
@@ -427,13 +131,194 @@ struct SystemInfoView: View {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    HStack {
+                    HStack(spacing: 6) {
                         Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.blue)
+                    .foregroundColor(.cyan)
                 }
             }
+        }
+    }
+
+    // MARK: - Network Info Section
+    private var networkInfoSection: some View {
+        var networkItems: [(String, String)] = [
+            ("system.info.connection_type".localized, systemInfoManager.networkInfo.connectionType)
+        ]
+
+        if !systemInfoManager.networkInfo.wifiSSID.isEmpty {
+            networkItems.append(("system.info.wifi_ssid".localized, systemInfoManager.networkInfo.wifiSSID))
+        }
+
+        if !systemInfoManager.networkInfo.cellularCarrier.isEmpty && systemInfoManager.networkInfo.cellularCarrier != "Unknown" {
+            networkItems.append(("system.info.cellular_carrier".localized, systemInfoManager.networkInfo.cellularCarrier))
+        }
+
+        return DetailInfoSection(
+            title: "system.info.network_info".localized,
+            icon: "wifi",
+            color: networkColor,
+            items: networkItems
+        )
+    }
+
+    // MARK: - Battery Info Section
+    private var batteryInfoSection: some View {
+        DetailInfoSection(
+            title: "system.info.battery_info".localized,
+            icon: batteryIconName,
+            color: batteryColor,
+            items: [
+                ("system.info.battery_level".localized, String(format: "%.0f%%", systemInfoManager.batteryInfo.level * 100)),
+                ("system.info.battery_state".localized, systemInfoManager.batteryInfo.state),
+                ("system.info.power_source".localized, systemInfoManager.batteryInfo.powerSourceState),
+                ("system.info.boot_time".localized, systemInfoManager.batteryInfo.bootTimeString),
+                ("system.info.uptime".localized, systemInfoManager.batteryInfo.uptimeString)
+            ],
+            showProgressBar: true,
+            progressValue: Double(systemInfoManager.batteryInfo.level * 100)
+        )
+    }
+
+    private var batteryIconName: String {
+        let level = systemInfoManager.batteryInfo.level
+        if level >= 0.75 {
+            return "battery.100"
+        } else if level >= 0.5 {
+            return "battery.75"
+        } else if level >= 0.25 {
+            return "battery.50"
+        } else {
+            return "battery.25"
+        }
+    }
+
+    // MARK: - Screen Info Section
+    private var screenInfoSection: some View {
+        DetailInfoSection(
+            title: "system.info.screen_info".localized,
+            icon: "display",
+            color: screenColor,
+            items: [
+                ("system.info.screen_resolution".localized, systemInfoManager.screenInfo.screenResolution),
+                ("system.info.screen_size".localized, String(format: "%.0f × %.0f", systemInfoManager.screenInfo.screenSize.width, systemInfoManager.screenInfo.screenSize.height)),
+                ("system.info.scale_factor".localized, String(format: "%.0fx", systemInfoManager.screenInfo.scaleFactor)),
+                ("system.info.refresh_rate".localized, String(format: "%.0f Hz", systemInfoManager.screenInfo.refreshRate)),
+                ("system.info.physical_size".localized, systemInfoManager.screenInfo.physicalSize)
+            ]
+        )
+    }
+}
+
+// MARK: - Tech Background
+struct TechBackground: View {
+    let colorScheme: ColorScheme
+    @State private var animateGradient = false
+
+    var body: some View {
+        ZStack {
+            // Base gradient
+            LinearGradient(
+                colors: colorScheme == .dark
+                    ? [Color(red: 0.05, green: 0.05, blue: 0.15), Color(red: 0.1, green: 0.1, blue: 0.2)]
+                    : [Color(red: 0.95, green: 0.97, blue: 1.0), Color(red: 0.9, green: 0.95, blue: 1.0)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+
+            // Animated orbs
+            GeometryReader { geometry in
+                ZStack {
+                    // Cyan orb
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [Color.cyan.opacity(0.3), Color.cyan.opacity(0)],
+                                center: .center,
+                                startRadius: 0,
+                                endRadius: 150
+                            )
+                        )
+                        .frame(width: 300, height: 300)
+                        .offset(
+                            x: animateGradient ? geometry.size.width * 0.2 : geometry.size.width * 0.1,
+                            y: animateGradient ? geometry.size.height * 0.1 : geometry.size.height * 0.2
+                        )
+
+                    // Purple orb
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [Color.purple.opacity(0.2), Color.purple.opacity(0)],
+                                center: .center,
+                                startRadius: 0,
+                                endRadius: 120
+                            )
+                        )
+                        .frame(width: 240, height: 240)
+                        .offset(
+                            x: animateGradient ? geometry.size.width * 0.6 : geometry.size.width * 0.7,
+                            y: animateGradient ? geometry.size.height * 0.6 : geometry.size.height * 0.5
+                        )
+
+                    // Blue orb
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [Color.blue.opacity(0.15), Color.blue.opacity(0)],
+                                center: .center,
+                                startRadius: 0,
+                                endRadius: 100
+                            )
+                        )
+                        .frame(width: 200, height: 200)
+                        .offset(
+                            x: animateGradient ? geometry.size.width * 0.3 : geometry.size.width * 0.4,
+                            y: animateGradient ? geometry.size.height * 0.8 : geometry.size.height * 0.7
+                        )
+                }
+            }
+
+            // Grid pattern overlay
+            GridPatternView()
+                .opacity(colorScheme == .dark ? 0.1 : 0.05)
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 8).repeatForever(autoreverses: true)) {
+                animateGradient.toggle()
+            }
+        }
+    }
+}
+
+// MARK: - Grid Pattern
+struct GridPatternView: View {
+    var body: some View {
+        GeometryReader { geometry in
+            Path { path in
+                let spacing: CGFloat = 30
+                let width = geometry.size.width
+                let height = geometry.size.height
+
+                // Vertical lines
+                var x: CGFloat = 0
+                while x <= width {
+                    path.move(to: CGPoint(x: x, y: 0))
+                    path.addLine(to: CGPoint(x: x, y: height))
+                    x += spacing
+                }
+
+                // Horizontal lines
+                var y: CGFloat = 0
+                while y <= height {
+                    path.move(to: CGPoint(x: 0, y: y))
+                    path.addLine(to: CGPoint(x: width, y: y))
+                    y += spacing
+                }
+            }
+            .stroke(Color.cyan, lineWidth: 0.5)
         }
     }
 }
