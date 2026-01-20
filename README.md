@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.2* | *Updated: January 17, 2026*
+*Version: 1.0.3* | *Updated: January 20, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -527,6 +527,8 @@ We welcome all forms of contributions! 🎉
 - **使用方法指导 (Usage Instructions)** - 提供详细的使用步骤指导 (Provides detailed usage step-by-step instructions)
 - **跳过选项 (Skip Option)** - 用户可随时跳过引导直接进入主界面 (Users can skip onboarding at any time to enter main interface directly)
 - **个性化体验 (Personalized Experience)** - 帮助用户快速了解应用功能 (Helps users quickly understand app features)
+- **🌐 自动语言检测 (Automatic Language Detection)** - 引导页根据设备系统语言自动显示中文或英文 (The onboarding screen automatically displays in Chinese or English based on the device's system language)
+- **🎨 全面深色模式支持 (Full Dark Mode Support)** - 引导页的所有组件和颜色均已优化，可完美适配系统的深色模式 (All components and colors on the onboarding screen are optimized to perfectly adapt to the system's dark mode)
 
 ### 📐 新增小学数学公式大全 (New Elementary Math Formula Guide)
 - ** comprehensive Formula Guide ** - 新增全面的小学数学公式指南 (Added a comprehensive elementary math formula guide)
@@ -555,6 +557,7 @@ We welcome all forms of contributions! 🎉
 - **视图简化 (View Simplification)** - 移除不必要的NavigationView包装器以获得更好的性能 (Removed unnecessary NavigationView wrappers for better performance)
 - **欢迎引导流程 (Onboarding Flow)** - 新增首次启动引导界面，提供4页交互式介绍 (Added first-launch onboarding interface with 4-page interactive introduction)
 - **AppStorage集成 (AppStorage Integration)** - 使用@AppStorage优化首启动状态管理，提升用户体验 (Utilized @AppStorage to optimize first launch state management, enhancing user experience)
+- **🎨 颜色自适应优化 (Adaptive Color Optimization)** - 在欢迎引导页中使用了一系列自适应颜色，确保在浅色和深色模式下都有一致的视觉体验 (A range of adaptive colors has been used in the welcome onboarding screen to ensure a consistent visual experience in both light and dark modes)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
