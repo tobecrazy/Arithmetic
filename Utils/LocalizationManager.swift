@@ -40,9 +40,18 @@ class LocalizationManager: ObservableObject {
     }
     
     init() {
-        // 从UserDefaults读取已保存的语言设置，默认为中文
-        let savedLanguage = UserDefaults.standard.string(forKey: "app_language") ?? Language.chinese.rawValue
-        self.currentLanguage = Language(rawValue: savedLanguage) ?? .chinese
+        if let savedLanguageValue = UserDefaults.standard.string(forKey: "app_language"),
+           let savedLanguage = Language(rawValue: savedLanguageValue) {
+            self.currentLanguage = savedLanguage
+        } else {
+            // 如果没有保存的语言，则根据系统语言设置默认值
+            let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
+            if preferredLanguage.starts(with: "zh") {
+                self.currentLanguage = .chinese
+            } else {
+                self.currentLanguage = .english
+            }
+        }
     }
     
     func switchLanguage(to language: Language) {

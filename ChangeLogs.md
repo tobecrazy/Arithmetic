@@ -1,5 +1,9 @@
 # Change Log
 
+### 🌟 2026-01-20 (欢迎引导页优化 / Onboarding Screen Enhancements)
+- **🌐 本地化增强 (Localization Enhancement)**: 欢迎引导页现在会根据设备的系统语言自动显示中文或英文，不再默认显示为中文 (The welcome onboarding screen now automatically displays in Chinese or English based on the device's system language, instead of defaulting to Chinese.)
+- **🎨 深色模式支持 (Dark Mode Support)**: 全面优化了欢迎引导页的深色模式显示，所有颜色和组件现在都能自适应系统的外观设置 (Fully optimized the dark mode display for the welcome onboarding screen; all colors and components now adapt to the system's appearance settings.)
+
 ### 🌟 2026-01-17 (项目文档更新 / Project Documentation Update)
 - **📄 README更新 (README Update)** - 更新README.md文件，确保包含最新的功能特性和项目信息 (Updated README.md file to include latest features and project information)
 - **🔄 ChangeLog更新 (ChangeLog Update)** - 更新ChangeLogs.md文件，同步最新项目变更 (Updated ChangeLogs.md file to sync latest project changes)

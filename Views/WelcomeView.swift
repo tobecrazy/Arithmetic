@@ -40,7 +40,7 @@ struct WelcomeView: View {
                         .padding(.vertical, 10)
                         .background(
                             LinearGradient(
-                                gradient: Gradient(colors: [.blue, .purple]),
+                                gradient: Gradient(colors: [Color.progressGradientStart, Color.progressGradientEnd]),
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -72,7 +72,7 @@ struct WelcomeView: View {
                         .accessibilityIdentifier("welcomePrevButton")
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(Color.green.opacity(0.08))
+                        .background(Color.accentColor.opacity(0.1))
                         .clipShape(Capsule())
                     }
 
@@ -91,7 +91,7 @@ struct WelcomeView: View {
                         .accessibilityIdentifier("welcomeNextButton")
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(Color.purple.opacity(0.08))
+                        .background(Color.accentColor.opacity(0.1))
                         .clipShape(Capsule())
                     }
                 }
@@ -176,7 +176,7 @@ private struct IntroPage: View {
                     Circle()
                         .stroke(
                             LinearGradient(
-                                gradient: Gradient(colors: [.blue.opacity(0.65), .purple.opacity(0.65)]),
+                                gradient: Gradient(colors: [Color.progressGradientStart.opacity(0.65), Color.progressGradientEnd.opacity(0.65)]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             ),
@@ -194,19 +194,19 @@ private struct IntroPage: View {
                     Group {
                         Image(systemName: "plus")
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.purple)
+                            .foregroundColor(.success) // Adaptive green
                             .offset(x: -50, y: -10)
                         Image(systemName: "minus")
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.blue)
+                            .foregroundColor(.accent) // Adaptive blue
                             .offset(x: 48, y: 12)
                         Image(systemName: "xmark")
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.pink)
+                            .foregroundColor(.error) // Adaptive red
                             .offset(x: -20, y: 50)
                         Image(systemName: "divide")
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.orange)
+                            .foregroundColor(.warning) // Adaptive orange
                             .offset(x: 20, y: -50)
                     }
                     .opacity(animate ? 1 : 0.4)
@@ -260,7 +260,7 @@ private struct IntroPage: View {
 
 private struct DifficultyLevelsPage: View {
     var body: some View {
-        PageContainer(icon: "number", iconColor: .green, gradient: [.green, .blue], titleKey: "welcome.levels.title") {
+        PageContainer(icon: "number", iconColor: .green, gradient: [.success, .accent], titleKey: "welcome.levels.title") {
             LazyVStack(spacing: 14) {
                 ForEach(DifficultyLevel.allCases, id: \.self) { level in
                     VStack(alignment: .leading, spacing: 8) {
@@ -304,7 +304,7 @@ private struct DifficultyLevelsPage: View {
 
 private struct FeaturesPage: View {
     var body: some View {
-        PageContainer(icon: "lightbulb.fill", iconColor: .orange, gradient: [.orange, .pink], titleKey: "welcome.features.title") {
+        PageContainer(icon: "lightbulb.fill", iconColor: .orange, gradient: [.warning, .error], titleKey: "welcome.features.title") {
             VStack(spacing: 18) {
                 FeatureCard(icon: "gamecontroller.fill", iconColor: .blue, title: "welcome.feature.game.title".localized, description: "welcome.feature.game.desc".localized)
                 FeatureCard(icon: "text.book.closed.fill", iconColor: .green, title: "welcome.feature.solutions.title".localized, description: "welcome.feature.solutions.desc".localized)
@@ -317,7 +317,7 @@ private struct FeaturesPage: View {
 
 private struct FeaturesPage2: View {
     var body: some View {
-        PageContainer(icon: "sparkles", iconColor: .yellow, gradient: [.yellow, .orange], titleKey: "welcome.features.title2") {
+        PageContainer(icon: "sparkles", iconColor: .yellow, gradient: [.warning, .accent], titleKey: "welcome.features.title2") {
             VStack(spacing: 18) {
                 FeatureCard(icon: "qrcode", iconColor: .gray, title: "welcome.feature.qrcode.title".localized, description: "welcome.feature.qrcode.desc".localized)
                 FeatureCard(icon: "doc.text", iconColor: .brown, title: "welcome.feature.pdf.title".localized, description: "welcome.feature.pdf.desc".localized)
@@ -328,7 +328,7 @@ private struct FeaturesPage2: View {
 
 private struct HowToPage: View {
     var body: some View {
-        PageContainer(icon: "hand.tap.fill", iconColor: .purple, gradient: [.purple, .blue], titleKey: "welcome.howto.title") {
+        PageContainer(icon: "hand.tap.fill", iconColor: .purple, gradient: [.accent, .primary], titleKey: "welcome.howto.title") {
             VStack(spacing: 18) {
                 HowToStep(number: 1, title: "welcome.howto.step1.title".localized, description: "welcome.howto.step1.desc".localized, color: .blue)
                 HowToStep(number: 2, title: "welcome.howto.step2.title".localized, description: "welcome.howto.step2.desc".localized, color: .green)
@@ -341,7 +341,7 @@ private struct HowToPage: View {
 
 private struct HowToPage2: View {
     var body: some View {
-        PageContainer(icon: "hand.draw.fill", iconColor: .pink, gradient: [.pink, .red], titleKey: "welcome.howto.title") {
+        PageContainer(icon: "hand.draw.fill", iconColor: .pink, gradient: [.error, .warning], titleKey: "welcome.howto.title") {
             VStack(spacing: 18) {
                 HowToStep(number: 5, title: "welcome.howto.step5.title".localized, description: "welcome.howto.step5.desc".localized, color: .purple)
                 HowToStep(number: 6, title: "welcome.howto.step6.title".localized, description: "welcome.howto.step6.desc".localized, color: .pink)
@@ -383,7 +383,7 @@ private struct FeatureCard: View {
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color(.systemBackground))
-                .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
+                .shadow(color: .primary.opacity(0.05), radius: 6, x: 0, y: 3)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16)
@@ -422,7 +422,7 @@ private struct HowToStep: View {
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color(.systemBackground))
-                .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
+                .shadow(color: .primary.opacity(0.05), radius: 6, x: 0, y: 3)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16)
@@ -440,7 +440,7 @@ private struct DifficultyStarRow: View {
             ForEach(0..<DifficultyLevel.allCases.count, id: \.self) { i in
                 Image(systemName: i <= difficultyIndex ? "star.fill" : "star")
                     .font(.caption)
-                    .foregroundColor(i <= difficultyIndex ? .orange : .gray.opacity(0.45))
+                    .foregroundColor(i <= difficultyIndex ? .accentColor : .secondary.opacity(0.45))
             }
         }
         .accessibilityLabel("difficultyStars_\(difficultyIndex + 1)")
