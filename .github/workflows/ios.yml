@@ -14,11 +14,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Reset Swift Package Manager cache
-        run: |
-          rm -rf ~/Library/Caches/org.swift.swiftpm
-          rm -rf ~/Library/Developer/Xcode/DerivedData
-          xcodebuild -resolvePackageDependencies -project Arithmetic.xcodeproj -scheme Arithmetic
+      - name: Clone Firebase iOS SDK
+        run: git clone --depth 1 https://github.com/firebase/firebase-ios-sdk.git ../firebase-ios-sdk
+      - name: Resolve Swift Packages
+        run: xcodebuild -resolvePackageDependencies -project Arithmetic.xcodeproj -scheme Arithmetic
       - name: Build
         env:
           platform: ${{ 'iOS Simulator' }}
