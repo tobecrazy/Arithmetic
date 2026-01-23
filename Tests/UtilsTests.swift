@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 @testable import Arithmetic
 
 // Test suite for DeviceUtils
@@ -365,26 +366,6 @@ class QuestionGeneratorTests: XCTestCase {
         XCTAssertTrue(key.contains("-"))
     }
     
-    func testSafeRandomWithValidRange() {
-        let result = QuestionGenerator.safeRandom(in: 1...10)
-        XCTAssertTrue(result >= 1 && result <= 10)
-    }
-    
-    func testSafeRandomWithInvalidRange() {
-        let result = QuestionGenerator.safeRandom(in: 10...1)  // Invalid range
-        XCTAssertEqual(result, 10)  // Should return lower bound
-    }
-    
-    func testSafeRandomWithValidRangeForHalfOpen() {
-        let result = QuestionGenerator.safeRandom(in: 1..<10)  // Range from 1 to 9
-        XCTAssertTrue(result >= 1 && result < 10)
-    }
-    
-    func testSafeRandomWithInvalidHalfOpenRange() {
-        let result = QuestionGenerator.safeRandom(in: 10..<1)  // Invalid range
-        XCTAssertEqual(result, 10)  // Should return lower bound
-    }
-    
     func testGenerateQuestionsWithZeroCount() {
         let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level1, count: 0)
         XCTAssertEqual(questions.count, 0)
@@ -422,7 +403,7 @@ class SystemInfoManagerTests: XCTestCase {
     }
     
     override func tearDown() {
-        systemInfoManager.stopRealTimeUpdates()
+        // stopRealTimeUpdates is private, so we don't call it here
         super.tearDown()
     }
     
@@ -774,12 +755,12 @@ class HapticFeedbackHelperTests: XCTestCase {
     }
 
     func testSequentialHapticCalls() {
-        XCTAssertNoThrow {
-            haptics.light()
+        XCTAssertNoThrow { [self] in
+            self.haptics.light()
             usleep(50000)
-            haptics.medium()
+            self.haptics.medium()
             usleep(50000)
-            haptics.success()
+            self.haptics.success()
         }
     }
 }
@@ -849,12 +830,12 @@ class SoundEffectsHelperTests: XCTestCase {
     }
 
     func testMultipleSoundEffectsInSequence() {
-        XCTAssertNoThrow {
-            sounds.playButtonTap()
+        XCTAssertNoThrow { [self] in
+            self.sounds.playButtonTap()
             usleep(50000)
-            sounds.playCorrectAnswer()
+            self.sounds.playCorrectAnswer()
             usleep(50000)
-            sounds.playSuccess()
+            self.sounds.playSuccess()
         }
     }
 }

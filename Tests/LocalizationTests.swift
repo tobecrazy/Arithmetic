@@ -94,4 +94,4 @@ class LocalizationTests: XCTestCase {
         let localizedChinese = "solution.standard.three_numbers_op2_first".localizedFormat(10, "+", 2, "×", 3, 2, "×", 3, 6, 10, "+", 6, 16, 10, "+", 2, "×", 3, 16)
         XCTAssertEqual(localizedChinese.trimmingCharacters(in: .whitespacesAndNewlines), expectedChinese.trimmingCharacters(in: .whitespacesAndNewlines))
     }
-
+}

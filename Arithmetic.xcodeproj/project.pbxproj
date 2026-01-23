@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8ATEST0001000000000000001 /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0001000000000000011 /* UtilsTests.swift */; };
+		8ATEST0001000000000000002 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0001000000000000012 /* GameViewModelTests.swift */; };
+		8ATEST0001000000000000003 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0001000000000000013 /* LocalizationTests.swift */; };
 		8A0000000000000000000003 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000004 /* GoogleService-Info.plist */; };
 		8A0C5AE12EC8D88E0020200A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C5AE02EC8D88E0020200A /* SettingsView.swift */; };
 		8A0C5AED2EC9C92D0020200A /* MathBankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */; };
@@ -59,7 +62,21 @@
 		8AFF11782EEE7AC300CA7987 /* QrCodeToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8ATEST0001000000000000020 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A2B3C4D5E6F789C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A2B3C4D5E6F7898;
+			remoteInfo = Arithmetic;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		8ATEST0001000000000000010 /* ArithmeticTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArithmeticTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8ATEST0001000000000000011 /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
+		8ATEST0001000000000000012 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
+		8ATEST0001000000000000013 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7892 /* Arithmetic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arithmetic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0000000000000000000004 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A0C5AE02EC8D88E0020200A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -142,6 +159,7 @@
 				8AF3AB9C2E05AE3600F67CDE /* Utils */,
 				8AF3AB9E2E05AE3600F67CDE /* ViewModels */,
 				8AF3ABA32E05AE3600F67CDE /* Views */,
+				8ATEST0001000000000000014 /* Tests */,
 				1A2B3C4D5E6F7897 /* Products */,
 				8AEB5CF92F0B8C63004CB384 /* Recovered References */,
 			);
@@ -151,8 +169,19 @@
 			isa = PBXGroup;
 			children = (
 				1A2B3C4D5E6F7892 /* Arithmetic.app */,
+				8ATEST0001000000000000010 /* ArithmeticTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8ATEST0001000000000000014 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8ATEST0001000000000000011 /* UtilsTests.swift */,
+				8ATEST0001000000000000012 /* GameViewModelTests.swift */,
+				8ATEST0001000000000000013 /* LocalizationTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		8A2AE9122E06A88A00A99591 /* CoreData */ = {
@@ -281,7 +310,33 @@
 			productReference = 1A2B3C4D5E6F7892 /* Arithmetic.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8ATEST0001000000000000030 /* ArithmeticTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8ATEST0001000000000000031 /* Build configuration list for PBXNativeTarget "ArithmeticTests" */;
+			buildPhases = (
+				8ATEST0001000000000000032 /* Sources */,
+				8ATEST0001000000000000033 /* Frameworks */,
+				8ATEST0001000000000000034 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8ATEST0001000000000000021 /* PBXTargetDependency */,
+			);
+			name = ArithmeticTests;
+			productName = ArithmeticTests;
+			productReference = 8ATEST0001000000000000010 /* ArithmeticTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXTargetDependency section */
+		8ATEST0001000000000000021 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A2B3C4D5E6F7898 /* Arithmetic */;
+			targetProxy = 8ATEST0001000000000000020 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXProject section */
 		1A2B3C4D5E6F789C /* Project object */ = {
@@ -313,6 +368,7 @@
 			projectRoot = "";
 			targets = (
 				1A2B3C4D5E6F7898 /* Arithmetic */,
+				8ATEST0001000000000000030 /* ArithmeticTests */,
 			);
 		};
 /* End PBXProject section */
@@ -415,7 +471,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8ATEST0001000000000000032 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8ATEST0001000000000000001 /* UtilsTests.swift in Sources */,
+				8ATEST0001000000000000002 /* GameViewModelTests.swift in Sources */,
+				8ATEST0001000000000000003 /* LocalizationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase (Tests) section */
+		8ATEST0001000000000000033 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase (Tests) section */
+
+/* Begin PBXResourcesBuildPhase (Tests) section */
+		8ATEST0001000000000000034 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase (Tests) section */
 
 /* Begin PBXVariantGroup section */
 		8AF3AB972E05AE3600F67CDE /* Localizable.strings */ = {
@@ -593,6 +679,50 @@
 			};
 			name = Release;
 		};
+		8ATEST0001000000000000040 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6NQ9M8HGC4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ArithmeticTests;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dbyl.ArithmeticTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arithmetic.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arithmetic";
+			};
+			name = Debug;
+		};
+		8ATEST0001000000000000041 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6NQ9M8HGC4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ArithmeticTests;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dbyl.ArithmeticTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arithmetic.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arithmetic";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -610,6 +740,15 @@
 			buildConfigurations = (
 				1A2B3C4D5E6F789E /* Debug */,
 				1A2B3C4D5E6F789F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8ATEST0001000000000000031 /* Build configuration list for PBXNativeTarget "ArithmeticTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8ATEST0001000000000000040 /* Debug */,
+				8ATEST0001000000000000041 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
