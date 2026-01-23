@@ -13,7 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Clone Firebase iOS SDK
+      run: git clone --depth 1 https://github.com/firebase/firebase-ios-sdk.git ../firebase-ios-sdk
+    - name: Resolve Swift Packages
+      run: xcodebuild -resolvePackageDependencies -project Arithmetic.xcodeproj -scheme Arithmetic
     - name: Build
-      run: swift build -v
+      run: xcodebuild build -project Arithmetic.xcodeproj -scheme Arithmetic
     - name: Run tests
-      run: swift test -v
+      run: xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic
