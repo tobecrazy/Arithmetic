@@ -35,7 +35,7 @@ NC='\033[0m' # No Color
 # Default values
 PROJECT="Arithmetic.xcodeproj"
 SCHEME="Arithmetic"
-DESTINATION="platform=iOS Simulator,name=Any iOS Simulator Device"
+DESTINATION="platform=iOS Simulator,name=iPhone 16,OS=26.0.1"
 SKIP_UI=false
 SKIP_UNIT=false
 SKIP_LOCALIZATION=false
@@ -163,7 +163,7 @@ fi
 # 2. Run Unit Tests
 # ==============================================================================
 if [ "$SKIP_UNIT" = false ]; then
-    if run_test_suite "Unit Tests" "xcodebuild test -project '$PROJECT' -scheme '$SCHEME' -destination '$DESTINATION' -only-testing:ArithmeticTests"; then
+    if run_test_suite "Unit Tests" "xcodebuild test -project '$PROJECT' -scheme '$SCHEME' -destination '$DESTINATION'"; then
         ((TESTS_PASSED++))
     else
         ((TESTS_FAILED++))
@@ -176,7 +176,7 @@ fi
 # 3. Run UI Tests
 # ==============================================================================
 if [ "$SKIP_UI" = false ]; then
-    if run_test_suite "UI Tests" "xcodebuild test -project '$PROJECT' -scheme '$SCHEME' -destination '$DESTINATION' -only-testing:ArithmeticUITests"; then
+    if run_test_suite "UI Tests" "xcodebuild test -project '$PROJECT' -scheme '$SCHEME' -destination '$DESTINATION'"; then
         ((TESTS_PASSED++))
     else
         ((TESTS_FAILED++))
