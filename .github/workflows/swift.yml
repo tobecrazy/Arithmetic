@@ -1,0 +1,28 @@
+name: Swift
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Clone Firebase iOS SDK
+      run: git clone --depth 1 https://github.com/firebase/firebase-ios-sdk.git ../firebase-ios-sdk
+    - name: Clear SwiftPM Cache
+      run: rm -rf ~/Library/Caches/org.swift.swiftpm
+    - name: Resolve Swift Packages
+      run: xcodebuild -resolvePackageDependencies -project Arithmetic.xcodeproj -scheme Arithmetic
+    - name: Build
+      env:
+        platform: ${{ 'iOS Simulator' }}
+      run: |
+        device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//")
+        workspace_path="Arithmetic.xcodeproj/project.xcworkspace"
+        xcodebuild build -scheme Arithmetic -workspace "$workspace_path" -destination "platform=$platform,name=$device"
