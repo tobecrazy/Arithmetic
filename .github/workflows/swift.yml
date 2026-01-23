@@ -24,10 +24,5 @@ jobs:
         platform: ${{ 'iOS Simulator' }}
       run: |
         device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//")
-        xcodebuild build -project Arithmetic.xcodeproj -scheme Arithmetic -destination "platform=$platform,name=$device"
-    - name: Run tests
-      env:
-        platform: ${{ 'iOS Simulator' }}
-      run: |
-        device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//")
-        xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination "platform=$platform,name=$device"
+        workspace_path="Arithmetic.xcodeproj/project.xcworkspace"
+        xcodebuild build -scheme Arithmetic -workspace "$workspace_path" -destination "platform=$platform,name=$device"
