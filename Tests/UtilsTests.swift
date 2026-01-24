@@ -458,15 +458,17 @@ class SystemInfoManagerTests: XCTestCase {
     func testBatteryInfoUptimeStringForLessThanAMinute() {
         var batteryInfo = SystemInfoManager.BatteryInfo()
         batteryInfo.timeIntervalSinceBoot = 30  // 30 seconds
-        
-        XCTAssertTrue(batteryInfo.uptimeString.hasPrefix("00:00:"))
+
+        // Format is MM:SS when hours == 0
+        XCTAssertEqual(batteryInfo.uptimeString, "00:30")
     }
-    
+
     func testBatteryInfoUptimeStringForMoreThanAMinute() {
         var batteryInfo = SystemInfoManager.BatteryInfo()
         batteryInfo.timeIntervalSinceBoot = 125  // 2 minutes and 5 seconds
-        
-        XCTAssertEqual(batteryInfo.uptimeString, "00:02:05")
+
+        // Format is MM:SS when hours == 0
+        XCTAssertEqual(batteryInfo.uptimeString, "02:05")
     }
     
     func testBatteryInfoUptimeStringForMoreThanAnHour() {

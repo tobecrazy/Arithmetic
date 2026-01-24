@@ -10,6 +10,11 @@
 		8ATEST0001000000000000001 /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0001000000000000011 /* UtilsTests.swift */; };
 		8ATEST0001000000000000002 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0001000000000000012 /* GameViewModelTests.swift */; };
 		8ATEST0001000000000000003 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0001000000000000013 /* LocalizationTests.swift */; };
+		8ATEST0002000000000000001 /* QuestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000011 /* QuestionTests.swift */; };
+		8ATEST0002000000000000002 /* DifficultyLevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000012 /* DifficultyLevelTests.swift */; };
+		8ATEST0002000000000000003 /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000013 /* GameStateTests.swift */; };
+		8ATEST0002000000000000004 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000014 /* CoreDataTests.swift */; };
+		8ATEST0002000000000000005 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000015 /* ExtensionsTests.swift */; };
 		8A0000000000000000000003 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000004 /* GoogleService-Info.plist */; };
 		8A0C5AE12EC8D88E0020200A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C5AE02EC8D88E0020200A /* SettingsView.swift */; };
 		8A0C5AED2EC9C92D0020200A /* MathBankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */; };
@@ -77,6 +82,11 @@
 		8ATEST0001000000000000011 /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		8ATEST0001000000000000012 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
 		8ATEST0001000000000000013 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
+		8ATEST0002000000000000011 /* QuestionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionTests.swift; sourceTree = "<group>"; };
+		8ATEST0002000000000000012 /* DifficultyLevelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyLevelTests.swift; sourceTree = "<group>"; };
+		8ATEST0002000000000000013 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
+		8ATEST0002000000000000014 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
+		8ATEST0002000000000000015 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
 		1A2B3C4D5E6F7892 /* Arithmetic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arithmetic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0000000000000000000004 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A0C5AE02EC8D88E0020200A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -180,6 +190,11 @@
 				8ATEST0001000000000000011 /* UtilsTests.swift */,
 				8ATEST0001000000000000012 /* GameViewModelTests.swift */,
 				8ATEST0001000000000000013 /* LocalizationTests.swift */,
+				8ATEST0002000000000000011 /* QuestionTests.swift */,
+				8ATEST0002000000000000012 /* DifficultyLevelTests.swift */,
+				8ATEST0002000000000000013 /* GameStateTests.swift */,
+				8ATEST0002000000000000014 /* CoreDataTests.swift */,
+				8ATEST0002000000000000015 /* ExtensionsTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -478,6 +493,11 @@
 				8ATEST0001000000000000001 /* UtilsTests.swift in Sources */,
 				8ATEST0001000000000000002 /* GameViewModelTests.swift in Sources */,
 				8ATEST0001000000000000003 /* LocalizationTests.swift in Sources */,
+				8ATEST0002000000000000001 /* QuestionTests.swift in Sources */,
+				8ATEST0002000000000000002 /* DifficultyLevelTests.swift in Sources */,
+				8ATEST0002000000000000003 /* GameStateTests.swift in Sources */,
+				8ATEST0002000000000000004 /* CoreDataTests.swift in Sources */,
+				8ATEST0002000000000000005 /* ExtensionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
