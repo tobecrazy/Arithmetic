@@ -535,6 +535,11 @@
   - 重新添加了`welcome.levels.title`, `welcome.features.title`, `welcome.howto.title`等仍被使用中的字符串
   - 确保应用功能完整性，避免运行时错误
 
+### 🌟 2026-01-24 (项目结构文档更新)
+- **📄 项目结构更新** - 更新README.md和ChangeLogs.md中的项目结构文档，确保准确反映当前目录组织 (Updated project structure documentation in README.md and ChangeLogs.md to accurately reflect current directory organization)
+- **🔧 目录结构调整** - 根据实际项目文件和目录结构，更新了项目结构说明 (Updated project structure documentation based on actual project files and directory structure)
+- **📚 文档完善** - 补充了缺失的文件和组件说明，确保文档完整性 (Supplemented missing files and component descriptions to ensure documentation completeness)
+
 ### 🌟 2026-01-04 (最新功能更新)
 - **PDF题库生成功能** - 新增数学题库PDF生成功能，支持题目页和答案页分离 (Added math problem bank PDF generation with separate question and answer pages)
 - **系统信息监控** - 新增全面的系统信息监控功能，包括设备信息、性能数据、电池状态等 (Added comprehensive system information monitoring including device info, performance data, battery status, etc.)
