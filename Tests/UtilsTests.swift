@@ -258,27 +258,50 @@ class ProgressViewUtilsTests: XCTestCase {
     
     func testProgressManagerUpdateProgress() {
         let progressManager = ProgressManager()
+        let expectation = XCTestExpectation(description: "Update progress")
+
         progressManager.updateProgress(0.5, message: "Halfway there")
-        
-        XCTAssertEqual(progressManager.currentProgress, 0.5)
-        XCTAssertEqual(progressManager.progressMessage, "Halfway there")
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(progressManager.currentProgress, 0.5)
+            XCTAssertEqual(progressManager.progressMessage, "Halfway there")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1.0)
     }
-    
+
     func testProgressManagerUpdateProgressClampsValues() {
         let progressManager = ProgressManager()
+        let expectation = XCTestExpectation(description: "Update progress clamped")
+
         progressManager.updateProgress(1.5)  // Above 1.0
-        XCTAssertEqual(progressManager.currentProgress, 1.0)  // Should be clamped to 1.0
-        
-        progressManager.updateProgress(-0.5)  // Below 0.0
-        XCTAssertEqual(progressManager.currentProgress, 0.0)  // Should be clamped to 0.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(progressManager.currentProgress, 1.0)  // Should be clamped to 1.0
+
+            progressManager.updateProgress(-0.5)  // Below 0.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                XCTAssertEqual(progressManager.currentProgress, 0.0)  // Should be clamped to 0.0
+                expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 2.0)
     }
-    
+
     func testProgressManagerSetLoading() {
         let progressManager = ProgressManager()
+        let expectation = XCTestExpectation(description: "Set loading")
+
         progressManager.setLoading(true, message: "Loading...")
-        
-        XCTAssertTrue(progressManager.isLoading)
-        XCTAssertEqual(progressManager.progressMessage, "Loading...")
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertTrue(progressManager.isLoading)
+            XCTAssertEqual(progressManager.progressMessage, "Loading...")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1.0)
     }
     
     func testProgressManagerReset() {

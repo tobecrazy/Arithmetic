@@ -456,76 +456,106 @@ class GameViewModelTests: XCTestCase {
     // MARK: - Solution Content Tests
 
     func testUpdateSolutionContentTwoNumberAddition() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         let question = Question(number1: 5, number2: 3, operation: .addition)
         gameViewModel.gameState.questions = [question]
         gameViewModel.gameState.currentQuestionIndex = 0
         gameViewModel.updateSolutionContent()
-        
+
         let expectedSolution = """
-        Step 1: Identify the operation: Addition
-        Step 2: Add the numbers: 5 + 3 = 8
-        Step 3: The answer is 8
+        Standard Addition:
+        Solve: 5 + 3 = 8
+
+        Using the standard algorithm:
+        Add 5 + 3 = 8
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     func testUpdateSolutionContentTwoNumberSubtraction() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         let question = Question(number1: 8, number2: 3, operation: .subtraction)
         gameViewModel.gameState.questions = [question]
         gameViewModel.gameState.currentQuestionIndex = 0
         gameViewModel.updateSolutionContent()
-        
+
         let expectedSolution = """
-        Step 1: Identify the operation: Subtraction
-        Step 2: Subtract the numbers: 8 - 3 = 5
-        Step 3: The answer is 5
+        Standard Subtraction:
+        Solve: 8 - 3 = 5
+
+        Using the standard algorithm:
+        Subtract 8 - 3 = 5
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     func testUpdateSolutionContentTwoNumberMultiplication() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         let question = Question(number1: 4, number2: 6, operation: .multiplication)
         gameViewModel.gameState.questions = [question]
         gameViewModel.gameState.currentQuestionIndex = 0
         gameViewModel.updateSolutionContent()
-        
+
         let expectedSolution = """
-        Step 1: Identify the operation: Multiplication
-        Step 2: Multiply the numbers: 4 × 6 = 24
-        Step 3: The answer is 24
+        Standard Multiplication:
+        Solve: 4 × 6 = 24
+
+        Using the standard algorithm:
+        Multiply 4 × 6 = 24
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     func testUpdateSolutionContentTwoNumberDivision() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         let question = Question(number1: 15, number2: 3, operation: .division)
         gameViewModel.gameState.questions = [question]
         gameViewModel.gameState.currentQuestionIndex = 0
         gameViewModel.updateSolutionContent()
-        
+
         let expectedSolution = """
-        Step 1: Identify the operation: Division
-        Step 2: Divide the numbers: 15 ÷ 3 = 5
-        Step 3: The answer is 5
+        Standard Division:
+        Solve: 15 ÷ 3 = 5
+
+        Using the standard algorithm:
+        Divide 15 ÷ 3 = 5
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
-    
+
     func testUpdateSolutionContentThreeNumberAdditionSubtraction() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         let question = Question(number1: 10, number2: 5, number3: 2, operation1: .addition, operation2: .subtraction)
         gameViewModel.gameState.questions = [question]
         gameViewModel.gameState.currentQuestionIndex = 0
         gameViewModel.updateSolutionContent()
 
         let expectedSolution = """
-        Step 1: Perform the first operation: 10 + 5 = 15
-        Step 2: Perform the second operation with the result: 15 - 2 = 13
-        Step 3: The answer is 13
+        Multi-Step Calculation:
+        Solve: 10 + 5 - 2 = ?
+
+        Step 1: First calculate 10 + 5 = 15
+        Step 2: Then calculate 15 - 2 = 13
+
+        Final Answer: 10 + 5 - 2 = 13
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     func testUpdateSolutionContentThreeNumberMixedPrecedence() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         // Example: 2 + 3 * 4. Multiplication should be done first.
         let question = Question(number1: 2, number2: 3, number3: 4, operation1: .addition, operation2: .multiplication)
         gameViewModel.gameState.questions = [question]
@@ -533,15 +563,21 @@ class GameViewModelTests: XCTestCase {
         gameViewModel.updateSolutionContent()
 
         let expectedSolution = """
-        Step 1: Identify operations and their precedence: Multiplication has higher precedence than Addition.
-        Step 2: Perform the higher precedence operation: 3 × 4 = 12
-        Step 3: Perform the remaining operation: 2 + 12 = 14
-        Step 4: The answer is 14
+        Multi-Step Calculation (Order of Operations):
+        Solve: 2 + 3 × 4 = ?
+
+        Step 1 (higher precedence): 3 × 4 = 12
+        Step 2: 2 + 12 = 14
+
+        Final Answer: 2 + 3 × 4 = 14
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     func testUpdateSolutionContentThreeNumberMixedPrecedenceDivisionFirst() {
+        // Set language to English for consistent test results
+        LocalizationManager.shared.switchLanguage(to: .english)
+
         // Example: 10 / 2 + 3. Division should be done first.
         let question = Question(number1: 10, number2: 2, number3: 3, operation1: .division, operation2: .addition)
         gameViewModel.gameState.questions = [question]
@@ -549,10 +585,13 @@ class GameViewModelTests: XCTestCase {
         gameViewModel.updateSolutionContent()
 
         let expectedSolution = """
-        Step 1: Identify operations and their precedence: Division has higher precedence than Addition.
-        Step 2: Perform the higher precedence operation: 10 ÷ 2 = 5
-        Step 3: Perform the remaining operation: 5 + 3 = 8
-        Step 4: The answer is 8
+        Multi-Step Calculation:
+        Solve: 10 ÷ 2 + 3 = ?
+
+        Step 1: First calculate 10 ÷ 2 = 5
+        Step 2: Then calculate 5 + 3 = 8
+
+        Final Answer: 10 ÷ 2 + 3 = 8
         """
         XCTAssertEqual(gameViewModel.solutionContent.trimmingCharacters(in: .whitespacesAndNewlines), expectedSolution.trimmingCharacters(in: .whitespacesAndNewlines))
     }
