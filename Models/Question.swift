@@ -1,6 +1,7 @@
 import Foundation
 
-class Question: NSObject, NSCoding, Identifiable {
+class Question: NSObject, NSSecureCoding, Identifiable {
+    static var supportsSecureCoding: Bool { true }
     let id: UUID
     let numbers: [Int]
     let operations: [Operation]
@@ -231,14 +232,14 @@ class Question: NSObject, NSCoding, Identifiable {
         super.init()
     }
     
-    // NSCoding
+    // NSSecureCoding
     required init?(coder: NSCoder) {
-        guard let id = coder.decodeObject(forKey: "id") as? UUID,
-              let numbers = coder.decodeObject(forKey: "numbers") as? [Int],
-              let operationStrings = coder.decodeObject(forKey: "operations") as? [String] else {
+        guard let id = coder.decodeObject(of: NSUUID.self, forKey: "id") as UUID?,
+              let numbers = coder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "numbers") as? [Int],
+              let operationStrings = coder.decodeObject(of: [NSArray.self, NSString.self], forKey: "operations") as? [String] else {
             return nil
         }
-        
+
         self.id = id
         self.numbers = numbers
         self.operations = operationStrings.compactMap { Operation(rawValue: $0) }
