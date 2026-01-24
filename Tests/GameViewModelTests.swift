@@ -386,10 +386,30 @@ class GameViewModelTests: XCTestCase {
                 XCTAssertTrue(question.numbers[0] > 0 && question.numbers[1] > 0 && question.numbers[2] > 0)
                 // Ensure division results in integer
                 if question.operations.contains(.division) {
-                    if question.operations[0].precedence < question.operations[1].precedence { // A + (B / C)
-                        XCTAssertEqual(question.numbers[1] % question.numbers[2], 0, "Intermediate division must be integer")
-                    } else { // (A / B) + C
-                        XCTAssertEqual(question.numbers[0] % question.numbers[1], 0, "Intermediate division must be integer")
+                    let op1 = question.operations[0]
+                    let op2 = question.operations[1]
+
+                    if op1.precedence < op2.precedence {
+                        // Higher precedence op2 executes first (e.g., A + B / C)
+                        if op2 == .division {
+                            XCTAssertEqual(question.numbers[1] % question.numbers[2], 0, "Intermediate division B/C must be integer")
+                        }
+                    } else {
+                        // Same or higher precedence op1 executes first (e.g., A / B + C or A / B * C)
+                        if op1 == .division {
+                            XCTAssertEqual(question.numbers[0] % question.numbers[1], 0, "Intermediate division A/B must be integer")
+                        }
+                        // Also check op2 if it's division (e.g., A * B / C)
+                        if op2 == .division {
+                            var intermediateResult: Int
+                            switch op1 {
+                            case .addition: intermediateResult = question.numbers[0] + question.numbers[1]
+                            case .subtraction: intermediateResult = question.numbers[0] - question.numbers[1]
+                            case .multiplication: intermediateResult = question.numbers[0] * question.numbers[1]
+                            case .division: intermediateResult = question.numbers[0] / question.numbers[1]
+                            }
+                            XCTAssertEqual(intermediateResult % question.numbers[2], 0, "Final division result/C must be integer")
+                        }
                     }
                 }
             }
