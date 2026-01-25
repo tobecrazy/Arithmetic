@@ -16,7 +16,7 @@
 
 *An intelligent arithmetic learning application built with SwiftUI to help elementary students master basic mathematical operations*
 
-[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring) • [🔄 更新日志](#-最近更新-recent-updates) • [📖 详细更新日志](ChangeLogs.md)
+[🚀 快速开始](#-快速开始-quick-start) • [✨ 功能特点](#-功能特点-features) • [📥 安装说明](#-安装说明-installation) • [🏗️ 技术实现](#️-技术实现-technical-implementation) • [📊 系统信息监控](#️-系统信息监控-system-information-monitoring) • [🔄 更新日志](#-最近更新-recent-updates) • [📖 详细更新日志](ChangeLogs.md) • [🌐 Wiki](https://deepwiki.com/tobecrazy/Arithmetic)
 
 </div>
 
