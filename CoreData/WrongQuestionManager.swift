@@ -2,8 +2,15 @@ import Foundation
 import CoreData
 
 class WrongQuestionManager {
+    // MARK: - Constants
+    private enum Constants {
+        static let masteryCorrectRate = 0.7
+        static let masteryMinAttempts = 3
+        static let autoRemovalAttempts = 3
+    }
+
     private let context: NSManagedObjectContext
-    
+
     init(context: NSManagedObjectContext = CoreDataManager.shared.context) {
         self.context = context
     }
@@ -90,11 +97,11 @@ class WrongQuestionManager {
                     if !answeredCorrectly {
                         existingQuestion.timesWrong += 1
                     }
-                    
+
                     // If answered correctly multiple times, consider removing from wrong questions
-                    if answeredCorrectly && existingQuestion.timesShown > 3 {
+                    if answeredCorrectly && existingQuestion.timesShown > Constants.autoRemovalAttempts {
                         let correctRate = Double(existingQuestion.timesShown - existingQuestion.timesWrong) / Double(existingQuestion.timesShown)
-                        if correctRate >= 0.7 { // 70% correct rate
+                        if correctRate >= Constants.masteryCorrectRate {
                             context.delete(existingQuestion)
                         }
                     }
@@ -176,9 +183,9 @@ class WrongQuestionManager {
     }
     
     // Delete mastered questions (those with high correct rate)
-    func deleteMasteredQuestions(correctRateThreshold: Double = 0.7, minAttempts: Int = 3) {
+    func deleteMasteredQuestions(correctRateThreshold: Double = Constants.masteryCorrectRate, minAttempts: Int = Constants.masteryMinAttempts) {
         let fetchRequest: NSFetchRequest<WrongQuestionEntity> = WrongQuestionEntity.fetchRequest()
-        
+
         do {
             let questions = try context.fetch(fetchRequest)
             for question in questions {
@@ -186,7 +193,7 @@ class WrongQuestionManager {
                 let totalAttempts = Int(question.timesShown)
                 let wrongAttempts = Int(question.timesWrong)
                 let correctAttempts = totalAttempts - wrongAttempts
-                
+
                 // If attempts are enough and correct rate is high, delete the question
                 if totalAttempts >= minAttempts {
                     let correctRate = Double(correctAttempts) / Double(totalAttempts)

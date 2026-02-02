@@ -1,8 +1,24 @@
 import Foundation
 import CoreData
+import Combine
 
 class CoreDataManager {
     static let shared = CoreDataManager()
+
+    // MARK: - Published Properties
+    @Published private(set) var initializationStatus: InitializationStatus = .initializing
+
+    // MARK: - Initialization Status
+    enum InitializationStatus {
+        case initializing
+        case ready
+        case failed(Error)
+
+        var isReady: Bool {
+            if case .ready = self { return true }
+            return false
+        }
+    }
 
     private var isInitialized = false
     private var initializationError: Error?
@@ -313,21 +329,24 @@ class CoreDataManager {
         container.persistentStoreDescriptions = [storeDescription]
 
         // Load persistent stores with proper error handling
-        container.loadPersistentStores { (storeDescription, error) in
+        container.loadPersistentStores { [weak self] (storeDescription, error) in
+            guard let self = self else { return }
+
             if let error = error as NSError? {
                 print("Core Data store loading failed: \(error), \(error.userInfo)")
-                // Don't use fatalError - instead set the error for later handling
                 self.initializationError = error
                 self.isInitialized = false
+                self.initializationStatus = .failed(error)
             } else {
                 self.isInitialized = true
+                self.initializationStatus = .ready
                 print("Core Data store loaded successfully at: \(storeDescription.url?.absoluteString ?? "unknown")")
             }
         }
 
         return container
     }()
-    
+
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
