@@ -22,6 +22,12 @@
 		8A2AE91D2E06FFC900A99591 /* AboutMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */; };
 		8A2AE91F2E06FFC900A99591 /* OtherOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AE9202E06FFC900A99591 /* OtherOptionsView.swift */; };
 		8A4DBA432F30F95A008FFC98 /* QuestionGenerator+ThreeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA422F30F95A008FFC98 /* QuestionGenerator+ThreeNumber.swift */; };
+		8A4DBA4A2F31A131008FFC98 /* AnswerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA452F31A131008FFC98 /* AnswerInputView.swift */; };
+		8A4DBA4B2F31A131008FFC98 /* GameControlButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA462F31A131008FFC98 /* GameControlButtonsView.swift */; };
+		8A4DBA4C2F31A131008FFC98 /* QuestionDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA482F31A131008FFC98 /* QuestionDisplayView.swift */; };
+		8A4DBA4D2F31A131008FFC98 /* GameInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA472F31A131008FFC98 /* GameInfoHeaderView.swift */; };
+		8A4DBA4E2F31A131008FFC98 /* SolutionPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA492F31A131008FFC98 /* SolutionPanelView.swift */; };
+		8A4DBA4F2F31A131008FFC98 /* AnswerFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA442F31A131008FFC98 /* AnswerFeedbackView.swift */; };
 		8A600A332F10930500B4AAD0 /* SoundEffectsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A322F10930500B4AAD0 /* SoundEffectsHelper.swift */; };
 		8A600A342F10930500B4AAD0 /* HapticFeedbackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A312F10930500B4AAD0 /* HapticFeedbackHelper.swift */; };
 		8A600A362F10931C00B4AAD0 /* ConfettiCelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */; };
@@ -95,6 +101,12 @@
 		8A2AE91E2E06FFC900A99591 /* AboutMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeView.swift; sourceTree = "<group>"; };
 		8A2AE9202E06FFC900A99591 /* OtherOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherOptionsView.swift; sourceTree = "<group>"; };
 		8A4DBA422F30F95A008FFC98 /* QuestionGenerator+ThreeNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuestionGenerator+ThreeNumber.swift"; sourceTree = "<group>"; };
+		8A4DBA442F31A131008FFC98 /* AnswerFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerFeedbackView.swift; sourceTree = "<group>"; };
+		8A4DBA452F31A131008FFC98 /* AnswerInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerInputView.swift; sourceTree = "<group>"; };
+		8A4DBA462F31A131008FFC98 /* GameControlButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControlButtonsView.swift; sourceTree = "<group>"; };
+		8A4DBA472F31A131008FFC98 /* GameInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInfoHeaderView.swift; sourceTree = "<group>"; };
+		8A4DBA482F31A131008FFC98 /* QuestionDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDisplayView.swift; sourceTree = "<group>"; };
+		8A4DBA492F31A131008FFC98 /* SolutionPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionPanelView.swift; sourceTree = "<group>"; };
 		8A600A312F10930500B4AAD0 /* HapticFeedbackHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackHelper.swift; sourceTree = "<group>"; };
 		8A600A322F10930500B4AAD0 /* SoundEffectsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffectsHelper.swift; sourceTree = "<group>"; };
 		8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiCelebrationView.swift; sourceTree = "<group>"; };
@@ -274,6 +286,12 @@
 		8AF3ABA32E05AE3600F67CDE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8A4DBA442F31A131008FFC98 /* AnswerFeedbackView.swift */,
+				8A4DBA452F31A131008FFC98 /* AnswerInputView.swift */,
+				8A4DBA462F31A131008FFC98 /* GameControlButtonsView.swift */,
+				8A4DBA472F31A131008FFC98 /* GameInfoHeaderView.swift */,
+				8A4DBA482F31A131008FFC98 /* QuestionDisplayView.swift */,
+				8A4DBA492F31A131008FFC98 /* SolutionPanelView.swift */,
 				8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */,
 				8AFF11772EEE7AC300CA7987 /* QrCodeToolView.swift */,
 				8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */,
@@ -474,6 +492,12 @@
 				8A0C5AED2EC9C92D0020200A /* MathBankView.swift in Sources */,
 				8AF3ABAC2E05AE3600F67CDE /* CGFloat+Adaptive.swift in Sources */,
 				8A600A362F10931C00B4AAD0 /* ConfettiCelebrationView.swift in Sources */,
+				8A4DBA4A2F31A131008FFC98 /* AnswerInputView.swift in Sources */,
+				8A4DBA4B2F31A131008FFC98 /* GameControlButtonsView.swift in Sources */,
+				8A4DBA4C2F31A131008FFC98 /* QuestionDisplayView.swift in Sources */,
+				8A4DBA4D2F31A131008FFC98 /* GameInfoHeaderView.swift in Sources */,
+				8A4DBA4E2F31A131008FFC98 /* SolutionPanelView.swift in Sources */,
+				8A4DBA4F2F31A131008FFC98 /* AnswerFeedbackView.swift in Sources */,
 				8A600A382F10932400B4AAD0 /* Color+Theme.swift in Sources */,
 				8ABE41362EA0778E007EC146 /* FormulaGuideView.swift in Sources */,
 				8AF3ABAD2E05AE3600F67CDE /* Font+Adaptive.swift in Sources */,
