@@ -86,7 +86,7 @@ class QuestionGenerator {
         case .level1: return 0.0   // 等级1不生成三数运算
         case .level2: return 0.4   // 等级2有40%概率生成三数运算
         case .level3: return 0.6   // 等级3有60%概率生成三数运算
-        case .level4: return 0.0   // 等级4不生成三数运算（小范围乘除法，避免复杂边缘情况）
+        case .level4: return 0.4   // 等级4有40%概率生成三数运算
         case .level5: return 0.8   // 等级5有80%概率生成三数运算
         case .level6: return 0.9   // 等级6有90%概率生成三数运算
         }

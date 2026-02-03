@@ -4,7 +4,8 @@ import Foundation
 extension QuestionGenerator {
     /// Generates a three-number arithmetic question
     static func generateThreeNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
-        let maxAttempts = 20
+        // For small ranges with division (like level4: 1-10), use fewer attempts and simpler logic
+        let maxAttempts = difficultyLevel.range.upperBound <= 10 ? 10 : 20
         var attempts = 0
 
         while attempts < maxAttempts {
@@ -47,7 +48,7 @@ extension QuestionGenerator {
     /// Generates initial numbers for three-number operations
     private static func generateInitialNumbers(for difficultyLevel: DifficultyLevel) -> [Int] {
         let upperBound = difficultyLevel.range.upperBound
-        let maxNumberForOperation = upperBound / 3
+        let maxNumberForOperation = max(2, upperBound / 3)
 
         let num1 = safeRandom(in: Constants.minNumberValue...min(maxNumberForOperation, upperBound))
         let num2 = safeRandom(in: Constants.minNumberValue...min(maxNumberForOperation, upperBound))
@@ -69,9 +70,23 @@ extension QuestionGenerator {
 
         case .level4, .level5:
             // Multiplication and division only
-            let op1 = supportedOperations.randomElement() ?? .multiplication
-            let op2 = supportedOperations.randomElement() ?? .multiplication
-            return [op1, op2]
+            // For level4 (small range), prefer multiplication to avoid division edge cases
+            if difficultyLevel == .level4 {
+                // 70% multiplication, 30% division for level4
+                let useDivision = Double.random(in: 0...1) < 0.3
+                if useDivision {
+                    // Only use division in one operation, not both
+                    let firstIsDivision = Bool.random()
+                    return firstIsDivision ? [.division, .multiplication] : [.multiplication, .division]
+                } else {
+                    return [.multiplication, .multiplication]
+                }
+            } else {
+                // Level5 can handle more division
+                let op1 = supportedOperations.randomElement() ?? .multiplication
+                let op2 = supportedOperations.randomElement() ?? .multiplication
+                return [op1, op2]
+            }
 
         default:
             // Addition and subtraction only
@@ -104,7 +119,7 @@ extension QuestionGenerator {
     private static func adjustDivisionForFirstOperation(numbers: [Int], range: ClosedRange<Int>) -> [Int] {
         var adjusted = numbers
         let divisor = max(2, adjusted[1])
-        let quotient = max(3, adjusted[0] / divisor)
+        let quotient = max(2, adjusted[0] / divisor)
 
         // Ensure integer division
         adjusted[0] = quotient * divisor
@@ -112,10 +127,17 @@ extension QuestionGenerator {
 
         // Validate range
         if adjusted[0] > range.upperBound {
-            let maxNewDivisor = max(2, range.upperBound / quotient)
-            let newDivisor = max(2, min(maxNewDivisor, quotient))
-            adjusted[0] = quotient * newDivisor
-            adjusted[1] = newDivisor
+            // For small ranges, use simpler division
+            if range.upperBound <= 10 {
+                // Use small, safe divisors for small ranges
+                adjusted[1] = min(divisor, 3)
+                adjusted[0] = min(quotient * adjusted[1], range.upperBound)
+            } else {
+                let maxNewDivisor = max(2, range.upperBound / quotient)
+                let newDivisor = max(2, min(maxNewDivisor, quotient))
+                adjusted[0] = quotient * newDivisor
+                adjusted[1] = newDivisor
+            }
         }
 
         return adjusted
@@ -179,9 +201,16 @@ extension QuestionGenerator {
     /// Generates a simple fallback question when generation fails
     private static func generateFallbackThreeNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
         let maxNum = min(10, difficultyLevel.range.upperBound / 3)
-        let num1 = safeRandom(in: 5...maxNum)
-        let num2 = safeRandom(in: 4...maxNum)
-        let num3 = safeRandom(in: 3...maxNum)
+        let minNum = max(2, difficultyLevel.range.lowerBound)
+
+        let num1 = safeRandom(in: minNum...maxNum)
+        let num2 = safeRandom(in: minNum...maxNum)
+        let num3 = safeRandom(in: minNum...maxNum)
+
+        // For small ranges (like level4: 1-10), use multiplication only to avoid edge cases
+        if difficultyLevel.range.upperBound <= 10 && difficultyLevel.supportedOperations.contains(.multiplication) {
+            return Question(number1: num1, number2: num2, number3: num3, operation1: .multiplication, operation2: .multiplication)
+        }
 
         return Question(number1: num1, number2: num2, number3: num3, operation1: .addition, operation2: .addition)
     }
