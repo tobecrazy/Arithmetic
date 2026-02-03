@@ -160,7 +160,12 @@ class QuestionGenerator {
                     // 强化：避免相同数字相减，确保差值至少为2（减少结果为1的情况）
                     if number1 == number2 {
                         if number1 > minNumber + 1 {
-                            number2 = number1 - safeRandom(in: 2...min(3, number1 - minNumber))
+                            let maxDiff = min(3, number1 - minNumber)
+                            if maxDiff >= 2 {
+                                number2 = number1 - safeRandom(in: 2...maxDiff)
+                            } else {
+                                number2 = number1 - 1
+                            }
                         } else {
                             number1 = max(minNumber + 2, number1)
                             number2 = number1 - 2
@@ -168,7 +173,10 @@ class QuestionGenerator {
                     }
                     // 进一步提高教学价值，避免差值过小（结果为1的情况）
                     if number1 - number2 <= 1 && number1 > minNumber + 1 {
-                        number2 = max(minNumber, number1 - safeRandom(in: 2...min(4, number1 - minNumber)))
+                        let maxDiff = min(4, number1 - minNumber)
+                        if maxDiff >= 2 {
+                            number2 = max(minNumber, number1 - safeRandom(in: 2...maxDiff))
+                        }
                     }
                 } else {
                     // 等级2及以上，确保被减数至少为10，差值有意义
@@ -178,12 +186,20 @@ class QuestionGenerator {
 
                     // 强化：避免相同数字相减
                     if number1 == number2 {
-                        number2 = max(minNumber, number1 - safeRandom(in: 3...min(6, number1 - minNumber)))
+                        let maxDiff = min(6, number1 - minNumber)
+                        if maxDiff >= 3 {
+                            number2 = max(minNumber, number1 - safeRandom(in: 3...maxDiff))
+                        } else if number1 > minNumber {
+                            number2 = number1 - 1
+                        }
                     }
 
                     // 确保差值不会太小，进一步减少结果为0、1的情况
                     if number1 - number2 <= 2 {
-                        number2 = max(minNumber, number1 - safeRandom(in: 3...min(7, number1 - minNumber)))
+                        let maxDiff = min(7, number1 - minNumber)
+                        if maxDiff >= 3 {
+                            number2 = max(minNumber, number1 - safeRandom(in: 3...maxDiff))
+                        }
                     }
                 }
                 
