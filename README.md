@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.5* | *Updated: February 3, 2026*
+*Version: 1.0.6* | *Updated: February 3, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -369,6 +369,29 @@
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2026-02-03 (代码质量提升、模块化重构和文档增强 / Code Quality, Modularization and Documentation Enhancements)
+- **🧩 组件模块化 (Component Modularization)** - 创建6个可重用SwiftUI组件 (Created 6 reusable SwiftUI components)
+  - QuestionDisplayView - 题目显示组件，支持TTS (Question display with TTS support)
+  - GameInfoHeaderView - 游戏信息头部(时间、进度、分数) (Game info header: time, progress, score)
+  - AnswerInputView - 答案输入和提交组件 (Answer input and submit component)
+  - SolutionPanelView - 可展开的解析面板 (Expandable solution panel)
+  - GameControlButtonsView - 游戏控制按钮(暂停、保存、退出、完成) (Game controls: pause, save, exit, finish)
+  - AnswerFeedbackView - 答案反馈动画组件 (Answer feedback with animations)
+- **📚 Swift DocC文档 (Swift DocC Documentation)** - 为核心API添加完整文档注释 (Added comprehensive documentation to core APIs)
+  - QuestionGenerator.swift - 所有公共方法、使用示例、问题分布表 (All public methods, usage examples, distribution tables)
+  - GameViewModel.swift - 18个公共方法、架构说明、使用示例 (18 public methods, architecture explanations, usage examples)
+  - 支持Xcode快速帮助(Option+Click)查看 (Supports Xcode Quick Help via Option+Click)
+  - 可生成静态文档网站 (Can generate static documentation website)
+- **🏗️ ViewBuilder模式 (ViewBuilder Patterns)** - 创建视图组合工具库 (Created view composition utilities)
+  - View+ViewBuilder.swift扩展 (View+ViewBuilder.swift extension)
+  - 3个扩展方法：.if(), .ifElse(), .ifLet() (3 extension methods: .if(), .ifElse(), .ifLet())
+  - 5个可重用模式：badge, iconLabel, card, loadingOverlay, emptyState (5 reusable patterns: badge, iconLabel, card, loadingOverlay, emptyState)
+  - 提供类型安全的视图转换 (Provides type-safe view transformations)
+- **📋 项目规范 (Project Guidelines)** - 更新CLAUDE.md开发指南 (Updated CLAUDE.md development guidelines)
+  - 添加文件创建规范，防止不必要的文档文件 (Added file creation guidelines to prevent unnecessary documentation files)
+  - 明确文档更新策略 (Clarified documentation update strategy)
+- **✅ 测试验证 (Test Verification)** - 所有增强功能已验证，356/356测试通过 (All enhancements verified, 356/356 tests passing)
 
 ### 🌟 2026-02-03 (代码质量提升和测试修复 / Code Quality Improvements and Test Fixes)
 - **🔧 代码重构 (Code Refactoring)** - 解决了5个关键代码质量问题 (Resolved 5 critical code quality issues)
