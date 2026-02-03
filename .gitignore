@@ -64,3 +64,6 @@ fastlane/test_output
 .qwen/settings.json
 firebase-debug.log
 GoogleService-Info.plist
+CRITICAL_ISSUES_FIXED.md
+BUILD_FIX_SUMMARY.md
+TEST_RESULTS_SUMMARY.md

@@ -10,36 +10,27 @@ class GameViewModel: ObservableObject {
     @Published var showSolutionSteps: Bool = false
     @Published var solutionContent: String = ""
     private var cancellables = Set<AnyCancellable>()
-    
+
+    // MARK: - Constants
+    private enum Constants {
+        static let alertDismissalDelay: TimeInterval = 3.0
+    }
+
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
         self.gameState = GameState(difficultyLevel: difficultyLevel, timeInMinutes: timeInMinutes)
-        
-        // 监听游戏完成状态
-        gameState.$gameCompleted
-            .sink { [weak self] completed in
-                if completed {
-                    self?.timerActive = false
-                }
-            }
-            .store(in: &cancellables)
-            
-        // 监听游戏暂停状态
-        gameState.$isPaused
-            .sink { [weak self] isPaused in
-                if isPaused {
-                    self?.timerActive = false
-                }
-            }
-            .store(in: &cancellables)
-        
-        // 监听语言变化
-        setupLanguageChangeListener()
+        setupSubscriptions()
     }
-    
+
     // 从保存的进度初始化
     init(savedGameState: GameState) {
         self.gameState = savedGameState
-        
+        setupSubscriptions()
+    }
+
+    // MARK: - Private Setup Methods
+
+    /// Sets up all Combine subscriptions for game state changes
+    private func setupSubscriptions() {
         // 监听游戏完成状态
         gameState.$gameCompleted
             .sink { [weak self] completed in
@@ -48,7 +39,7 @@ class GameViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-            
+
         // 监听游戏暂停状态
         gameState.$isPaused
             .sink { [weak self] isPaused in
@@ -57,7 +48,7 @@ class GameViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-        
+
         // 监听语言变化
         setupLanguageChangeListener()
     }
@@ -79,52 +70,41 @@ class GameViewModel: ObservableObject {
         // 重置游戏状态
         let difficultyLevel = gameState.difficultyLevel
         let timeInMinutes = gameState.totalTime / 60
-        
+
         // 创建新的游戏状态
         self.gameState = GameState(difficultyLevel: difficultyLevel, timeInMinutes: timeInMinutes)
-        
-        // 重新监听游戏完成状态
+
+        // 清除旧订阅并重新设置
         cancellables.removeAll()
-        gameState.$gameCompleted
-            .sink { [weak self] completed in
-                if completed {
-                    self?.timerActive = false
-                }
-            }
-            .store(in: &cancellables)
-        
-        // 重新设置语言变化监听器
-        setupLanguageChangeListener()
-        
+        setupSubscriptions()
+
         // 激活计时器
         timerActive = true
-        
+
         // 读出当前题目
         readCurrentQuestion()
     }
     
 func submitAnswer(_ answer: Int) {
     let isCorrect = gameState.checkAnswer(answer)
-    
+
     if isCorrect {
         // If answer is correct, move to next question immediately
         if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
             gameState.currentQuestionIndex += 1
             gameState.showingCorrectAnswer = false
-            
+
             // 读出新题目
             readCurrentQuestion()
-            
-            // Force UI update by triggering objectWillChange
-            self.objectWillChange.send()
         } else {
             gameState.gameCompleted = true
         }
     } else {
         // If answer is incorrect, we'll wait for the user to click the "Next Question" button
         // Note: The wrong question is already added to the collection in gameState.checkAnswer()
-        // No need to add it again here
+        #if DEBUG
         print("Question answered incorrectly: \(gameState.questions[gameState.currentQuestionIndex].questionText)")
+        #endif
     }
 }
     
@@ -144,16 +124,16 @@ func resumeGame() {
 func saveProgress() {
     if gameState.saveProgress() {
         showSaveProgressSuccess = true
-        
-        // 3秒后自动隐藏成功提示
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+
+        // 自动隐藏成功提示
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.alertDismissalDelay) {
             self.showSaveProgressSuccess = false
         }
     } else {
         showSaveProgressError = true
-        
-        // 3秒后自动隐藏错误提示
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+
+        // 自动隐藏错误提示
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.alertDismissalDelay) {
             self.showSaveProgressError = false
         }
     }
@@ -180,17 +160,14 @@ static func getSavedGameInfo() -> (difficultyLevel: DifficultyLevel, progress: S
 func moveToNextQuestion() {
     // 重置解析显示状态
     showSolutionSteps = false
-    
+
     // Implement the logic directly in the view model instead of calling the game state
     if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
         gameState.currentQuestionIndex += 1
         gameState.showingCorrectAnswer = false
-        
+
         // 读出新题目
         readCurrentQuestion()
-        
-        // Force UI update by triggering objectWillChange
-        self.objectWillChange.send()
     } else {
         gameState.gameCompleted = true
     }
@@ -206,13 +183,9 @@ func moveToNextQuestion() {
         if gameState.isPaused {
             return
         }
-        
+
         if gameState.timeRemaining > 0 {
-            // Explicitly notify observers before changing the value
-            self.objectWillChange.send()
             gameState.timeRemaining -= 1
-            // Also notify gameState observers to ensure UI updates
-            gameState.objectWillChange.send()
         } else {
             endGame()
         }
@@ -240,17 +213,13 @@ func moveToNextQuestion() {
     func updateSolutionContent() {
         let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
         let newSolutionContent = currentQuestion.getSolutionSteps(for: gameState.difficultyLevel)
-        
-        // Debug: Print solution content for verification
+
         #if DEBUG
         print("Updating solution content for language: \(LocalizationManager.shared.currentLanguage.rawValue)")
         print("Solution content: \(newSolutionContent)")
         #endif
-        
+
         solutionContent = newSolutionContent
-        
-        // Force UI update
-        objectWillChange.send()
     }
     
     // 显示解析
@@ -286,6 +255,6 @@ func moveToNextQuestion() {
     
     deinit {
         timerActive = false
-        cancellables.forEach { $0.cancel() }
+        // Combine automatically cancels subscriptions when cancellables is deallocated
     }
 }
