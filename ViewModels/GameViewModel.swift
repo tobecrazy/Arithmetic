@@ -2,26 +2,87 @@ import Foundation
 import SwiftUI
 import Combine
 
+/// The central view model that manages game state, user interactions, and reactive updates.
+///
+/// `GameViewModel` serves as the single source of truth for all game logic, implementing
+/// the MVVM pattern with Combine for reactive data flow. It handles timer management,
+/// answer validation, game progress persistence, and TTS (Text-to-Speech) coordination.
+///
+/// ## Architecture
+/// - Follows MVVM pattern with `@Published` properties for reactive SwiftUI updates
+/// - Uses Combine to listen to `GameState` changes and language switching
+/// - Manages game lifecycle: start, pause, resume, save, and end
+/// - Coordinates with CoreData for progress persistence and wrong question tracking
+///
+/// ## Key Responsibilities
+/// - Timer management (start, pause, resume, decrement)
+/// - Answer submission and validation
+/// - Solution display with localization
+/// - Game progress saving and loading
+/// - TTS coordination for question read-aloud
+/// - Language change adaptation
+///
+/// ## Example Usage
+/// ```swift
+/// // Create new game
+/// let viewModel = GameViewModel(difficultyLevel: .level2, timeInMinutes: 10)
+/// viewModel.startGame()
+///
+/// // Resume saved game
+/// if let savedGame = GameViewModel.loadSavedGame() {
+///     savedGame.startGame()
+/// }
+///
+/// // Submit answer
+/// viewModel.submitAnswer(42)
+/// ```
 class GameViewModel: ObservableObject {
+    // MARK: - Published Properties
+
+    /// The current game state containing questions, score, time, and progress
     @Published var gameState: GameState
+
+    /// Indicates whether the game timer is currently active and counting down
     @Published var timerActive: Bool = false
+
+    /// Shows a success message when game progress is saved successfully
     @Published var showSaveProgressSuccess: Bool = false
+
+    /// Shows an error message when game progress fails to save
     @Published var showSaveProgressError: Bool = false
+
+    /// Controls visibility of the solution steps panel
     @Published var showSolutionSteps: Bool = false
+
+    /// The localized solution content for the current question
     @Published var solutionContent: String = ""
+
+    /// Set of Combine cancellables for managing subscriptions
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Constants
     private enum Constants {
+        /// Duration in seconds before auto-dismissing alert messages
         static let alertDismissalDelay: TimeInterval = 3.0
     }
 
+    // MARK: - Initialization
+
+    /// Creates a new game with the specified difficulty and time limit.
+    ///
+    /// - Parameters:
+    ///   - difficultyLevel: The difficulty level determining question ranges and operations
+    ///   - timeInMinutes: The total time allowed for the game in minutes
     init(difficultyLevel: DifficultyLevel, timeInMinutes: Int) {
         self.gameState = GameState(difficultyLevel: difficultyLevel, timeInMinutes: timeInMinutes)
         setupSubscriptions()
     }
 
-    // 从保存的进度初始化
+    /// Creates a view model from a previously saved game state.
+    ///
+    /// Used when resuming a paused or saved game from CoreData.
+    ///
+    /// - Parameter savedGameState: The game state loaded from persistent storage
     init(savedGameState: GameState) {
         self.gameState = savedGameState
         setupSubscriptions()
@@ -53,6 +114,10 @@ class GameViewModel: ObservableObject {
         setupLanguageChangeListener()
     }
     
+    /// Starts or resumes the game, activating the timer and reading the current question.
+    ///
+    /// If the game is paused, it will be resumed. The timer becomes active and the
+    /// current question is read aloud if TTS is enabled.
     func startGame() {
         // 如果游戏处于暂停状态，先恢复
         if gameState.isPaused {
@@ -66,6 +131,12 @@ class GameViewModel: ObservableObject {
         readCurrentQuestion()
     }
     
+    /// Resets the game to its initial state with the same difficulty and time settings.
+    ///
+    /// Creates a new `GameState` with fresh questions, resets all subscriptions,
+    /// and starts the game timer.
+    ///
+    /// - Note: This completely discards the current game progress
     func resetGame() {
         // 重置游戏状态
         let difficultyLevel = gameState.difficultyLevel
@@ -85,7 +156,19 @@ class GameViewModel: ObservableObject {
         readCurrentQuestion()
     }
     
-func submitAnswer(_ answer: Int) {
+    /// Validates and processes a user's answer to the current question.
+    ///
+    /// If the answer is correct, automatically advances to the next question.
+    /// If incorrect, displays the correct answer and waits for user to click "Next Question".
+    /// Wrong answers are automatically saved to the wrong question collection.
+    ///
+    /// - Parameter answer: The user's submitted answer as an integer
+    ///
+    /// ## Behavior
+    /// - **Correct**: Increments score, moves to next question, reads new question via TTS
+    /// - **Incorrect**: Shows correct answer, enables solution panel, saves to wrong questions
+    /// - **Last Question**: Marks game as completed instead of advancing
+    func submitAnswer(_ answer: Int) {
     let isCorrect = gameState.checkAnswer(answer)
 
     if isCorrect {
@@ -108,20 +191,30 @@ func submitAnswer(_ answer: Int) {
     }
 }
     
-// 暂停游戏
-func pauseGame() {
+    /// Pauses the game, stopping the timer.
+    ///
+    /// The pause state is tracked and can only be used once per game session.
+    /// Use ``resumeGame()`` to continue.
+    func pauseGame() {
     gameState.pauseGame()
     timerActive = false
 }
 
-// 恢复游戏
-func resumeGame() {
+    /// Resumes a paused game, reactivating the timer.
+    ///
+    /// Only works if the game was previously paused via ``pauseGame()``.
+    func resumeGame() {
     gameState.resumeGame()
     timerActive = true
 }
 
-// 保存游戏进度
-func saveProgress() {
+    /// Saves the current game progress to CoreData for later resumption.
+    ///
+    /// Displays a success or error message for 3 seconds after the save attempt.
+    /// The saved game can be restored using ``loadSavedGame()``.
+    ///
+    /// - Note: Only one game can be saved at a time; saving overwrites any previous save
+    func saveProgress() {
     if gameState.saveProgress() {
         showSaveProgressSuccess = true
 
@@ -139,25 +232,45 @@ func saveProgress() {
     }
 }
 
-// 加载保存的游戏进度
-static func loadSavedGame() -> GameViewModel? {
+    /// Loads a previously saved game from CoreData, if one exists.
+    ///
+    /// - Returns: A `GameViewModel` initialized with the saved game state, or `nil` if no save exists
+    ///
+    /// ## Example
+    /// ```swift
+    /// if let savedGame = GameViewModel.loadSavedGame() {
+    ///     // Present savedGame to user
+    ///     navigationPath.append(savedGame)
+    /// }
+    /// ```
+    static func loadSavedGame() -> GameViewModel? {
     if let savedGameState = GameState.loadProgress() {
         return GameViewModel(savedGameState: savedGameState)
     }
     return nil
 }
 
-// 检查是否有保存的游戏进度
-static func hasSavedProgress() -> Bool {
+    /// Checks whether a saved game exists in CoreData.
+    ///
+    /// - Returns: `true` if a saved game can be resumed, `false` otherwise
+    static func hasSavedProgress() -> Bool {
     return GameState.hasSavedProgress()
 }
 
-// 获取保存的游戏信息
-static func getSavedGameInfo() -> (difficultyLevel: DifficultyLevel, progress: String, savedAt: Date)? {
+    /// Retrieves information about the saved game without loading it.
+    ///
+    /// - Returns: A tuple containing difficulty level, progress text, and save date, or `nil` if no save exists
+    ///
+    /// Useful for displaying save game information in the UI before loading.
+    static func getSavedGameInfo() -> (difficultyLevel: DifficultyLevel, progress: String, savedAt: Date)? {
     return GameState.getSavedGameInfo()
 }
 
-func moveToNextQuestion() {
+    /// Advances to the next question after viewing the solution for a wrong answer.
+    ///
+    /// Resets the solution panel state and moves to the next question, or marks
+    /// the game as completed if this was the last question.
+    func moveToNextQuestion() {
     // 重置解析显示状态
     showSolutionSteps = false
 
@@ -173,11 +286,20 @@ func moveToNextQuestion() {
     }
 }
     
+    /// Immediately ends the game, stopping the timer and marking it as completed.
+    ///
+    /// Used when the user manually finishes the game or time runs out.
     func endGame() {
         timerActive = false
         gameState.gameCompleted = true
     }
     
+    /// Decrements the remaining time by one second unless the game is paused.
+    ///
+    /// Called once per second by the game timer. When time reaches zero,
+    /// automatically ends the game.
+    ///
+    /// - Note: This method does nothing if ``gameState.isPaused`` is `true`
     func decrementTimer() {
         // 如果游戏暂停，不减少时间
         if gameState.isPaused {
@@ -222,19 +344,27 @@ func moveToNextQuestion() {
         solutionContent = newSolutionContent
     }
     
-    // 显示解析
+    /// Displays the solution steps for the current question.
+    ///
+    /// Updates ``solutionContent`` with localized solution steps and sets
+    /// ``showSolutionSteps`` to `true`.
     func showSolution() {
         updateSolutionContent()
         showSolutionSteps = true
     }
     
-    // 隐藏解析
+    /// Hides the solution panel and clears solution content.
     func hideSolution() {
         showSolutionSteps = false
         solutionContent = ""
     }
     
-    // 读出当前题目
+    /// Reads the current question aloud using TTS (Text-to-Speech) if enabled.
+    ///
+    /// Respects the user's TTS preference stored in `UserDefaults` and uses
+    /// the current language for pronunciation.
+    ///
+    /// - Note: Does nothing if TTS is disabled or the question index is invalid
     func readCurrentQuestion() {
         guard UserDefaults.standard.bool(forKey: "isTtsEnabled") else {
             return

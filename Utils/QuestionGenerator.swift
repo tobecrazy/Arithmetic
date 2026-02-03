@@ -1,15 +1,84 @@
 import Foundation
 
+/// A factory class responsible for generating arithmetic questions with intelligent difficulty scaling.
+///
+/// `QuestionGenerator` creates mathematically valid questions that respect PEMDAS rules,
+/// ensure all division operations result in integers, and incorporate wrong questions
+/// from previous attempts for adaptive learning.
+///
+/// ## Features
+/// - Generates both two-number and three-number arithmetic operations
+/// - Ensures all division operations produce integer results
+/// - Incorporates up to 30% wrong questions for review
+/// - Avoids duplicate questions within a set
+/// - Adaptive difficulty based on question range and supported operations
+///
+/// ## Example Usage
+/// ```swift
+/// // Generate 20 Level 2 questions
+/// let questions = QuestionGenerator.generateQuestions(
+///     difficultyLevel: .level2,
+///     count: 20,
+///     wrongQuestions: []
+/// )
+///
+/// // Generate questions with wrong question integration
+/// let wrongQuestions = WrongQuestionManager.shared.getWrongQuestions(for: .level2)
+/// let mixedQuestions = QuestionGenerator.generateQuestions(
+///     difficultyLevel: .level2,
+///     count: 25,
+///     wrongQuestions: wrongQuestions.map { $0.toQuestion() }.compactMap { $0 }
+/// )
+/// ```
 class QuestionGenerator {
     // MARK: - Constants
+
+    /// Configuration constants for question generation behavior
     enum Constants {
+        /// Maximum number of attempts to generate a unique, valid question before giving up
         static let maxGenerationAttempts = 100
+
+        /// Minimum value for question numbers to ensure meaningful arithmetic
         static let minNumberValue = 2
+
+        /// Fallback range for simple addition when generation fails
         static let fallbackNumberRange = 2...10
+
+        /// Target ratio of wrong questions to include in question sets (30%)
         static let wrongQuestionRatio = 0.3
+
+        /// Correct answer rate threshold for considering a question mastered (70%)
         static let masteryCorrectRate = 0.7
     }
 
+    // MARK: - Public Methods
+
+    /// Generates a set of non-repetitive arithmetic questions for a given difficulty level.
+    ///
+    /// This method intelligently combines wrong questions from previous attempts with newly
+    /// generated questions to create an adaptive learning experience. Up to 30% of the returned
+    /// questions will be from the wrong questions collection, with the remainder being freshly
+    /// generated based on the difficulty level.
+    ///
+    /// - Parameters:
+    ///   - difficultyLevel: The difficulty level that determines number ranges and supported operations
+    ///   - count: The desired number of questions to generate
+    ///   - wrongQuestions: Optional array of previously answered incorrectly questions to incorporate
+    ///
+    /// - Returns: An array of valid, non-duplicate questions shuffled in random order
+    ///
+    /// - Note: If generation struggles to create enough unique questions, the method will fall back
+    ///         to simple addition problems to ensure the requested count is met.
+    ///
+    /// ## Question Distribution by Level
+    /// | Level | Range | Operations | Two-Number % | Three-Number % |
+    /// |-------|-------|------------|--------------|----------------|
+    /// | 1     | 1-10  | +, -       | 100%         | 0%             |
+    /// | 2     | 1-20  | +, -       | 60%          | 40%            |
+    /// | 3     | 1-50  | +, -       | 40%          | 60%            |
+    /// | 4     | 1-10  | ×, ÷       | 60%          | 40%            |
+    /// | 5     | 1-20  | ×, ÷       | 20%          | 80%            |
+    /// | 6     | 1-100 | +, -, ×, ÷ | 10%          | 90%            |
     static func generateQuestions(difficultyLevel: DifficultyLevel, count: Int, wrongQuestions: [Question] = []) -> [Question] {
         var questions: [Question] = []
         var generatedCombinations: Set<String> = []
@@ -71,7 +140,16 @@ class QuestionGenerator {
         return questions.shuffled()
     }
     
-    // 生成题目的唯一标识键
+    /// Generates a unique identifier key for a question to prevent duplicates.
+    ///
+    /// The key combines numbers and operations in a predictable format:
+    /// - Two-number: `"{num1}{op}{num2}"` (e.g., "5+3")
+    /// - Three-number: `"{num1}{op1}{num2}{op2}{num3}"` (e.g., "5+3-2")
+    ///
+    /// - Parameter question: The question to generate a key for
+    /// - Returns: A string uniquely identifying this specific arithmetic expression
+    ///
+    /// - Note: This method is used internally to track generated questions and avoid duplicates
     static func getCombinationKey(for question: Question) -> String {
         if question.numbers.count == 2 {
             return "\(question.numbers[0])\(question.operations[0].rawValue)\(question.numbers[1])"
@@ -86,20 +164,38 @@ class QuestionGenerator {
         case .level1: return 0.0   // 等级1不生成三数运算
         case .level2: return 0.4   // 等级2有40%概率生成三数运算
         case .level3: return 0.6   // 等级3有60%概率生成三数运算
-        case .level4: return 0.0   // 等级4不生成三数运算（小范围乘除法，避免复杂边缘情况）
+        case .level4: return 0.4   // 等级4有40%概率生成三数运算
         case .level5: return 0.8   // 等级5有80%概率生成三数运算
         case .level6: return 0.9   // 等级6有90%概率生成三数运算
         }
     }
     
-    // 安全随机数生成，避免 lowerBound > upperBound 导致崩溃
+    /// Generates a random integer within a closed range with safety checks.
+    ///
+    /// This method prevents crashes that would occur if `lowerBound > upperBound` by
+    /// validating the range before generating a random number.
+    ///
+    /// - Parameter range: A closed range (e.g., `2...10`) to generate a random number from
+    /// - Returns: A random integer within the range, or `lowerBound` if the range is invalid
+    ///
+    /// ## Example
+    /// ```swift
+    /// let num = QuestionGenerator.safeRandom(in: 1...10)  // Returns 1-10
+    /// let safe = QuestionGenerator.safeRandom(in: 10...1)  // Returns 10 (invalid range)
+    /// ```
     static func safeRandom(in range: ClosedRange<Int>) -> Int {
         guard range.lowerBound <= range.upperBound else {
             return range.lowerBound // 或者返回一个默认值
         }
         return Int.random(in: range)
     }
-    // 支持半开区间
+    /// Generates a random integer within a half-open range with safety checks.
+    ///
+    /// This overload handles half-open ranges (e.g., `2..<10`) and prevents crashes
+    /// from invalid ranges.
+    ///
+    /// - Parameter range: A half-open range (e.g., `2..<10`) to generate a random number from
+    /// - Returns: A random integer within the range, or `lowerBound` if the range is invalid
     static func safeRandom(in range: Range<Int>) -> Int {
         guard range.lowerBound < range.upperBound else {
             return range.lowerBound

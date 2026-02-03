@@ -476,6 +476,26 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
 - ✅ PEMDAS respected for multi-number operations
 - ✅ No force unwrapping of optionals
 
+## File Creation Guidelines
+
+### Documentation Files
+
+**IMPORTANT**: Do not proactively create summary, report, or documentation markdown files unless explicitly requested by the user.
+
+**Prohibited unless requested**:
+- Summary files (e.g., `SUMMARY.md`, `REPORT.md`)
+- Test result files (e.g., `TEST_RESULTS_*.md`)
+- Enhancement tracking files (e.g., `ENHANCEMENTS.md`)
+- Analysis reports (e.g., `CODE_ANALYSIS.md`)
+- Any other documentation markdown files
+
+**Exceptions** (these files should be updated when relevant):
+- `README.md` - Update when explicitly requested or for significant feature changes
+- `ChangeLogs.md` - Update when explicitly requested or for version releases
+- `CLAUDE.md` - This file, only update when project structure or guidelines change
+
+**Rationale**: Summary files clutter the repository and become outdated quickly. Code and existing documentation should be self-explanatory.
+
 ## Firebase Configuration
 
 The project integrates Firebase for Crashlytics and Analytics:
