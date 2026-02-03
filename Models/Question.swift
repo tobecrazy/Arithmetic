@@ -125,11 +125,14 @@ class Question: NSObject, NSSecureCoding, Identifiable {
         return lhs.numbers == rhs.numbers && lhs.operations == rhs.operations
     }
     
-    // 验证题目是否数学上合理（所有除法都能整除）
+    // 验证题目是否数学上合理（所有除法都能整除，且所有中间结果为正数）
     func isValid() -> Bool {
         if numbers.count == 2 && operations.count == 1 {
             // 两数运算验证
             switch operations[0] {
+            case .subtraction:
+                // 对于减法，确保第一个数大于等于第二个数（避免负数结果）
+                return numbers[0] >= numbers[1]
             case .division:
                 return numbers[1] != 0 && numbers[0] % numbers[1] == 0
             default:
@@ -142,44 +145,73 @@ class Question: NSObject, NSSecureCoding, Identifiable {
             let num3 = numbers[2]
             let op1 = operations[0]
             let op2 = operations[1]
-            
-            // 检查所有可能的除法操作是否能整除
+
+            // 检查所有可能的除法操作是否能整除，以及中间结果是否为正数
             if op1.precedence < op2.precedence {
                 // 第二个操作优先级更高 (e.g., A + B ÷ C 或 A - B × C)
+                // 先计算 B op2 C
+                var intermediateResult2: Int
                 if op2 == .division {
                     // 检查 B ÷ C 是否能整除
                     if num3 == 0 || num2 % num3 != 0 {
                         return false
                     }
+                    intermediateResult2 = num2 / num3
+                } else if op2 == .multiplication {
+                    intermediateResult2 = num2 * num3
+                } else if op2 == .subtraction {
+                    intermediateResult2 = num2 - num3
+                    // 确保中间结果为正数
+                    if intermediateResult2 <= 0 {
+                        return false
+                    }
+                } else { // addition
+                    intermediateResult2 = num2 + num3
+                }
+
+                // 然后计算 A op1 intermediateResult2
+                if op1 == .subtraction {
+                    // 对于 A - intermediateResult2，确保 A >= intermediateResult2
+                    if num1 < intermediateResult2 {
+                        return false
+                    }
                 }
             } else {
-                // 第一个操作优先级更高或相等 (e.g., A ÷ B × C 或 A × B ÷ C)
+                // 第一个操作优先级更高或相等 (e.g., A ÷ B × C 或 A × B ÷ C 或 A + B - C)
+                // 先计算 A op1 B
+                var intermediateResult1: Int
                 if op1 == .division {
                     // 检查 A ÷ B 是否能整除
                     if num2 == 0 || num1 % num2 != 0 {
                         return false
                     }
-                }
-                if op2 == .division {
-                    // 计算中间结果
-                    var intermediateResult: Int
-                    switch op1 {
-                    case .addition: intermediateResult = num1 + num2
-                    case .subtraction: intermediateResult = num1 - num2
-                    case .multiplication: intermediateResult = num1 * num2
-                    case .division: 
-                        if num2 == 0 || num1 % num2 != 0 {
-                            return false // 第一步除法就不能整除
-                        }
-                        intermediateResult = num1 / num2
+                    intermediateResult1 = num1 / num2
+                } else if op1 == .subtraction {
+                    intermediateResult1 = num1 - num2
+                    // 确保中间结果为正数
+                    if intermediateResult1 <= 0 {
+                        return false
                     }
-                    // 检查中间结果 ÷ C 是否能整除
-                    if num3 == 0 || intermediateResult % num3 != 0 {
+                } else if op1 == .multiplication {
+                    intermediateResult1 = num1 * num2
+                } else { // addition
+                    intermediateResult1 = num1 + num2
+                }
+
+                // 然后计算 intermediateResult1 op2 C
+                if op2 == .division {
+                    // 检查 intermediateResult1 ÷ C 是否能整除
+                    if num3 == 0 || intermediateResult1 % num3 != 0 {
+                        return false
+                    }
+                } else if op2 == .subtraction {
+                    // 对于 intermediateResult1 - C，确保 intermediateResult1 >= C
+                    if intermediateResult1 < num3 {
                         return false
                     }
                 }
             }
-            
+
             // 额外检查：确保最终结果为正整数
             let finalResult = self.correctAnswer
             return finalResult > 0
