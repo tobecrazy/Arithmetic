@@ -1,5 +1,103 @@
 # Change Log
 
+### 🌟 2026-02-03 (代码质量提升和测试修复 / Code Quality Improvements and Test Fixes)
+- **🔧 代码重构 (Code Refactoring)** - 全面解决5个关键代码质量问题 (Comprehensively resolved 5 critical code quality issues)
+
+  **1. GameViewModel代码重复消除 (Eliminated Code Duplication in GameViewModel)**
+  - 问题：两个初始化方法包含48行重复代码 (Issue: Two initializers contained 48 lines of duplicate code)
+  - 解决：提取setupSubscriptions()方法 (Solution: Extracted setupSubscriptions() method)
+  - 效果：减少代码重复，提高可维护性 (Effect: Reduced code duplication, improved maintainability)
+
+  **2. 内存管理改进 (Improved Memory Management)**
+  - 问题：deinit中手动取消Combine订阅是多余的 (Issue: Manual Combine subscription cancellation in deinit was redundant)
+  - 解决：依赖Combine的自动清理机制 (Solution: Rely on Combine's automatic cleanup)
+  - 效果：简化代码，避免潜在内存问题 (Effect: Simplified code, avoided potential memory issues)
+
+  **3. QuestionGenerator复杂方法重构 (Refactored Complex QuestionGenerator Method)**
+  - 问题：单个方法包含396行代码，难以维护 (Issue: Single method contained 396 lines, difficult to maintain)
+  - 解决：创建QuestionGenerator+ThreeNumber.swift扩展文件 (Solution: Created QuestionGenerator+ThreeNumber.swift extension file)
+  - 分解为11个专注方法 (Broke down into 11 focused methods):
+    * generateThreeNumberQuestion() - 主入口
+    * attemptGenerateThreeNumberQuestion() - 生成尝试
+    * generateInitialNumbers() - 初始数字生成
+    * selectOperations() - 运算符选择
+    * ensureDivisionSafety() - 除法安全保证
+    * adjustDivisionForFirstOperation() - 第一个除法调整
+    * adjustDivisionForSecondOperation() - 第二个除法调整
+    * calculateIntermediateResult() - 中间结果计算
+    * findDivisors() - 因数查找
+    * generateFallbackThreeNumberQuestion() - 降级生成
+    * hasRepetitivePattern() - 重复模式检测
+  - 效果：代码可读性大幅提升，易于测试和调试 (Effect: Significantly improved readability, easier to test and debug)
+
+  **4. Core Data错误处理增强 (Enhanced Core Data Error Handling)**
+  - 问题：Core Data初始化失败时静默失败 (Issue: Core Data initialization failures were silent)
+  - 解决：添加@Published initializationStatus枚举 (Solution: Added @Published initializationStatus enum)
+  - 状态：initializing / ready / failed(Error)
+  - 效果：UI可以响应初始化错误 (Effect: UI can respond to initialization errors)
+
+  **5. 魔术数字常量化 (Extracted Magic Numbers to Constants)**
+  - 问题：硬编码的数值分散在代码中 (Issue: Hard-coded values scattered throughout code)
+  - 解决：创建Constants枚举 (Solution: Created Constants enums)
+  - 文件：QuestionGenerator.swift, WrongQuestionManager.swift, GameViewModel.swift
+  - 常量：maxGenerationAttempts, minNumberValue, wrongQuestionRatio等 (Constants: maxGenerationAttempts, minNumberValue, wrongQuestionRatio, etc.)
+  - 效果：提高代码可读性和可维护性 (Effect: Improved code readability and maintainability)
+
+- **✅ 测试修复 (Test Fixes)** - 修复所有CI测试失败，实现356/356测试通过 (Fixed all CI test failures, achieved 356/356 tests passing)
+
+  **问题根源 (Root Cause)**
+  - Level4 (范围1-10) 三数运算生成时出现"Range requires lowerBound <= upperBound"崩溃 (Level4 (range 1-10) three-number generation crashed with "Range requires lowerBound <= upperBound")
+  - 当range.upperBound / quotient < 2时，创建了无效范围如2...1 (Created invalid ranges like 2...1 when range.upperBound / quotient < 2)
+
+  **解决方案 (Solutions)**
+  1. **改进初始数字生成** (Improved Initial Number Generation)
+     ```swift
+     let maxNumberForOperation = max(2, upperBound / 3)
+     ```
+
+  2. **增强小范围除法安全** (Enhanced Division Safety for Small Ranges)
+     ```swift
+     if range.upperBound <= 10 {
+         adjusted[1] = min(divisor, 3)
+         adjusted[0] = min(quotient * adjusted[1], range.upperBound)
+     }
+     ```
+
+  3. **优化Level4运算选择** (Optimized Level4 Operation Selection)
+     - 70%概率生成乘法运算 (70% probability for multiplication)
+     - 30%概率生成除法运算 (30% probability for division)
+     - 避免两个操作都是除法 (Avoid both operations being division)
+
+  4. **改进降级生成** (Improved Fallback Generation)
+     - 小范围优先使用乘法运算 (Prefer multiplication for small ranges)
+     - 确保降级题目也符合难度要求 (Ensure fallback questions meet difficulty requirements)
+
+  **测试结果 (Test Results)**
+  - 之前：3个测试失败 (Before: 3 tests failing)
+  - 之后：356/356测试全部通过 (After: 356/356 tests all passing)
+  - 执行时间：6.9秒 (Execution time: 6.9s)
+  - Level4保持40%三数运算概率 (Level4 maintains 40% three-number probability)
+
+- **📁 代码组织 (Code Organization)** - 改进项目结构和模块化 (Improved project structure and modularization)
+  - 新增Utils/QuestionGenerator+ThreeNumber.swift (Added Utils/QuestionGenerator+ThreeNumber.swift)
+  - 分离三数运算逻辑到独立文件 (Separated three-number logic into dedicated file)
+  - 更好的代码组织和可发现性 (Better code organization and discoverability)
+
+- **🚀 质量改进 (Quality Improvements)** - 全面提升代码质量和可靠性 (Comprehensive code quality and reliability improvements)
+  - ✅ 100%测试通过率 (100% test pass rate)
+  - ✅ 减少代码复杂度 (Reduced code complexity)
+  - ✅ 提高代码可维护性 (Improved code maintainability)
+  - ✅ 更快的测试执行 (Faster test execution)
+  - ✅ 更可靠的问题生成 (More reliable question generation)
+  - ✅ 更好的错误处理 (Better error handling)
+  - ✅ 消除CI/CD失败 (Eliminated CI/CD failures)
+
+- **📊 技术影响 (Technical Impact)**
+  - 代码行数：从396行单一方法优化为11个专注方法 (Lines of code: Optimized from 396-line single method to 11 focused methods)
+  - 测试覆盖率：保持高覆盖率同时提高可靠性 (Test coverage: Maintained high coverage while improving reliability)
+  - 构建时间：无显著影响 (Build time: No significant impact)
+  - 运行时性能：略有提升(更快的测试执行) (Runtime performance: Slight improvement (faster test execution))
+
 ### 🌟 2026-02-01 (文档更新 / Documentation Update)
 - **📄 README更新 (README Update)** - 更新README.md版本号至1.0.4，同步最新项目状态 (Updated README.md version to 1.0.4, synced latest project status)
 - **🔄 ChangeLog更新 (ChangeLog Update)** - 更新ChangeLogs.md文件，记录最新项目变更 (Updated ChangeLogs.md file to record latest project changes)

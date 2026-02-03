@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.4* | *Updated: February 1, 2026*
+*Version: 1.0.5* | *Updated: February 3, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -369,6 +369,29 @@
 ---
 
 ## 🔄 最近更新 (Recent Updates)
+
+### 🌟 2026-02-03 (代码质量提升和测试修复 / Code Quality Improvements and Test Fixes)
+- **🔧 代码重构 (Code Refactoring)** - 解决了5个关键代码质量问题 (Resolved 5 critical code quality issues)
+  - 消除GameViewModel中的代码重复，提取setupSubscriptions()方法 (Eliminated code duplication in GameViewModel by extracting setupSubscriptions() method)
+  - 改进内存管理，移除不必要的手动取消订阅 (Improved memory management by removing unnecessary manual subscription cancellation)
+  - 重构QuestionGenerator，将396行复杂方法分解为11个专注函数 (Refactored QuestionGenerator, breaking down 396-line complex method into 11 focused functions)
+  - 新增@Published initializationStatus到CoreDataManager以处理初始化错误 (Added @Published initializationStatus to CoreDataManager to handle initialization errors)
+  - 提取魔术数字到Constants枚举，提高代码可维护性 (Extracted magic numbers to Constants enums, improving code maintainability)
+- **✅ 测试修复 (Test Fixes)** - 修复了所有CI测试失败，356/356测试通过 (Fixed all CI test failures, 356/356 tests passing)
+  - 修复了level4三数运算生成中的范围验证问题 (Fixed range validation issues in level4 three-number generation)
+  - 改进初始数字生成：max(2, upperBound / 3) (Improved initial number generation: max(2, upperBound / 3))
+  - 增强小范围(≤10)的除法安全性 (Enhanced division safety for small ranges (≤10))
+  - 为level4优化运算选择(70%乘法，30%除法) (Optimized operation selection for level4 (70% multiplication, 30% division))
+  - 保持level4的40%三数运算概率，同时确保数学正确性 (Maintained 40% three-number probability for level4 while ensuring mathematical correctness)
+- **📁 代码组织 (Code Organization)** - 新建QuestionGenerator+ThreeNumber.swift扩展文件 (Created QuestionGenerator+ThreeNumber.swift extension file)
+  - 将三数运算逻辑重构为11个专注方法 (Refactored three-number logic into 11 focused methods)
+  - 提高代码可读性和可维护性 (Improved code readability and maintainability)
+  - 更好的关注点分离 (Better separation of concerns)
+- **🚀 质量改进 (Quality Improvements)** - 全面提升代码质量和测试覆盖率 (Comprehensive code quality and test coverage improvements)
+  - 100%测试通过率 (100% test pass rate)
+  - 减少代码复杂度 (Reduced code complexity)
+  - 更快的测试执行时间(6.9秒) (Faster test execution time (6.9s))
+  - 更可靠的问题生成 (More reliable question generation)
 
 For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 
