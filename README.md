@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.6* | *Updated: February 3, 2026*
+*Version: 1.0.7* | *Updated: February 4, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -337,10 +337,13 @@
 - **🔢 整数结果保证 (Integer Result Guarantee)** - 所有算术运算（加减乘除）均产生整数结果，无小数或分数 (All arithmetic operations (addition, subtraction, multiplication, division) produce integer results, no decimals or fractions)
 - **📈 智能难度递进 (Intelligent Difficulty Progression)** - 难度越高，三数运算出现概率越大 (Higher difficulty levels have greater probability of three-number operations)
 - **🎯 智能题目质量控制 (Intelligent Question Quality Control)**：
-  - **乘法优化 (Multiplication Optimization)** - ×1题目占比降至5%，大幅提高教学价值 (×1 questions reduced to 5%, significantly improving educational value)
-  - **除法优化 (Division Optimization)** - 完全避免÷1，除数范围2-10，避免相同数字除法 (Completely avoids ÷1, divisor range 2-10, avoids same number divisions)
-  - **减法优化 (Subtraction Optimization)** - 避免相同数字相减，确保差值至少为2，提高计算挑战性 (Avoids same number subtraction, ensures difference is at least 2, increasing calculation challenge)
-  - **商值控制 (Quotient Control)** - 90%概率避免商为1的简单除法，优先生成有意义的计算题目 (90% probability avoids simple division with quotient of 1, prioritizes meaningful calculation questions)
+  - **消除重复和相同数运算 (Eliminate Duplicates and Identical Number Operations)** - 严格避免相同数字相减(5-5)、相除(6÷6)等过于简单的题目 (Strictly avoid overly simple questions like same-number subtraction (5-5) or division (6÷6))
+  - **乘法优化 (Multiplication Optimization)** - 完全消除×1题目，确保因数至少为2 (Completely eliminates ×1 questions, ensuring factors are at least 2)
+  - **除法优化 (Division Optimization)** - 完全避免÷1和相同数字除法，商值提高(Level 4最小为3，Level 5/6最小为4) (Completely avoids ÷1 and same-number divisions, higher quotients: Level 4 minimum 3, Level 5/6 minimum 4)
+  - **加法优化 (Addition Optimization)** - Level 2+要求总和至少为8，避免1+1、2+2等过于简单的组合 (Level 2+ requires sum of at least 8, avoiding overly simple combinations like 1+1, 2+2)
+  - **减法优化 (Subtraction Optimization)** - 确保差值有意义(Level 1最小为2，Level 2+最小为3)，避免结果为0或1的情况 (Ensures meaningful differences: Level 1 minimum 2, Level 2+ minimum 3, avoiding results of 0 or 1)
+  - **三数运算优化 (Three-Number Operation Optimization)** - 拒绝所有数字都≤3的题目和重复模式(如2+2+2)，提高最小答案要求 (Rejects questions where all numbers are ≤3 and repetitive patterns like 2+2+2, increased minimum answer requirements)
+  - **去重优化 (Deduplication Optimization)** - 交换律运算自动去重(3+5与5+3视为相同，2×7与7×2视为相同) (Commutative operations auto-deduplicated: 3+5 and 5+3 treated as same, 2×7 and 7×2 treated as same)
 
 ### ⏱️ 时间管理系统 (Time Management System)
 - **灵活时间设置 (Flexible Time Setting)** - 可配置限制时间：3-30分钟 (Configurable time limit: 3-30 minutes)
