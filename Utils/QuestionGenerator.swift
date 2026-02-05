@@ -130,7 +130,9 @@ class QuestionGenerator {
         }
 
         // 如果仍然没有足够的题目，用简单的加法题目补充
-        while questions.count < count {
+        var fallbackAttempts = 0
+        let maxFallbackAttempts = 1000 // Prevent infinite loops
+        while questions.count < count && fallbackAttempts < maxFallbackAttempts {
             let maxFallback = min(10, difficultyLevel.range.upperBound)
             let minFallback = difficultyLevel == .level1 ? 2 : Constants.minNumberValueLevel2Plus
 
@@ -152,6 +154,15 @@ class QuestionGenerator {
             if !generatedCombinations.contains(combination) && num1 != num2 {
                 questions.append(fallbackQuestion)
                 generatedCombinations.insert(combination)
+                fallbackAttempts = 0 // Reset counter on success
+            } else {
+                fallbackAttempts += 1
+                // If we've failed many times, relax the uniqueness requirement
+                if fallbackAttempts > 100 {
+                    // Just add the question even if it's a duplicate or has same numbers
+                    questions.append(fallbackQuestion)
+                    fallbackAttempts = 0
+                }
             }
         }
 
@@ -290,7 +301,14 @@ class QuestionGenerator {
                     // Level 1: 避免相同数字和过小数字
                     if number1 == number2 || (number1 <= 2 && number2 <= 2) {
                         number1 = safeRandom(in: 2...range.upperBound)
-                        number2 = safeRandom(in: 2...(range.upperBound - number1))
+                        let maxNum2 = range.upperBound - number1
+                        if maxNum2 >= 2 {
+                            number2 = safeRandom(in: 2...maxNum2)
+                        } else {
+                            // Fallback: use smaller number1 to have space for number2
+                            number1 = safeRandom(in: 2...(range.upperBound - 2))
+                            number2 = safeRandom(in: 2...(range.upperBound - number1))
+                        }
                     }
                 } else {
                     // 等级2及以上，确保总和达到最小值，避免过于简单
