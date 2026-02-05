@@ -303,8 +303,25 @@ class QuestionGenerator {
                         number2 = safeRandom(in: minSecondNumber...maxSecondNumber)
                     } else {
                         // 重新选择第一个数字，确保能够满足最小和要求
-                        number1 = safeRandom(in: minNumber...(range.upperBound - minSum + minNumber))
-                        number2 = safeRandom(in: max(minNumber, minSum - number1)...(range.upperBound - number1))
+                        let maxFirstNumber = range.upperBound - minSum + minNumber
+                        // Safety check: ensure we have a valid range for number1
+                        if minNumber <= maxFirstNumber {
+                            number1 = safeRandom(in: minNumber...maxFirstNumber)
+                            let newMinSecondNumber = max(minNumber, minSum - number1)
+                            let newMaxSecondNumber = range.upperBound - number1
+                            // Double-check the range is valid before calling safeRandom
+                            if newMinSecondNumber <= newMaxSecondNumber {
+                                number2 = safeRandom(in: newMinSecondNumber...newMaxSecondNumber)
+                            } else {
+                                // Fallback: use simpler values that we know will work
+                                number1 = minNumber
+                                number2 = minSum - minNumber
+                            }
+                        } else {
+                            // Fallback: range too small, use minimum valid values
+                            number1 = minNumber
+                            number2 = min(minSum - minNumber, range.upperBound - number1)
+                        }
                     }
 
                     // 严格避免相同数字
@@ -358,8 +375,22 @@ class QuestionGenerator {
                     number2 = safeRandom(in: minSecondFactor...maxSecondFactor)
                 } else {
                     // 重新生成更小的第一个因数
-                    number1 = safeRandom(in: actualMinFactor...min(maxFactor, range.upperBound / minSecondFactor))
-                    number2 = safeRandom(in: minSecondFactor...min(range.upperBound / number1, maxFactor))
+                    let maxFirstFactor = min(maxFactor, range.upperBound / minSecondFactor)
+                    if actualMinFactor <= maxFirstFactor {
+                        number1 = safeRandom(in: actualMinFactor...maxFirstFactor)
+                        let newMaxSecondFactor = min(range.upperBound / number1, maxFactor)
+                        if minSecondFactor <= newMaxSecondFactor {
+                            number2 = safeRandom(in: minSecondFactor...newMaxSecondFactor)
+                        } else {
+                            // Fallback to safe values
+                            number1 = actualMinFactor
+                            number2 = minSecondFactor
+                        }
+                    } else {
+                        // Range too constrained, use minimum values
+                        number1 = actualMinFactor
+                        number2 = minSecondFactor
+                    }
                 }
 
                 // 确保结果不超过范围
@@ -373,8 +404,14 @@ class QuestionGenerator {
 
                 // 再次验证范围
                 if number1 * number2 > range.upperBound {
-                    number1 = safeRandom(in: actualMinFactor...min(maxFactor, range.upperBound / minSecondFactor))
-                    number2 = max(minSecondFactor, min(range.upperBound / number1, maxFactor))
+                    let maxFirstFactor = min(maxFactor, range.upperBound / minSecondFactor)
+                    if actualMinFactor <= maxFirstFactor {
+                        number1 = safeRandom(in: actualMinFactor...maxFirstFactor)
+                        number2 = max(minSecondFactor, min(range.upperBound / number1, maxFactor))
+                    } else {
+                        number1 = actualMinFactor
+                        number2 = minSecondFactor
+                    }
                 }
 
             case .division:
@@ -425,7 +462,12 @@ class QuestionGenerator {
                 // 验证范围
                 if number1 > range.upperBound {
                     let maxDivisor = max(actualMinDivisor, range.upperBound / minQuotient)
-                    number2 = safeRandom(in: actualMinDivisor...min(5, maxDivisor))
+                    let safeDivisorMax = min(5, maxDivisor)
+                    if actualMinDivisor <= safeDivisorMax {
+                        number2 = safeRandom(in: actualMinDivisor...safeDivisorMax)
+                    } else {
+                        number2 = actualMinDivisor
+                    }
                     number1 = minQuotient * number2
                 }
 
