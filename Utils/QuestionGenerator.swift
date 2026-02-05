@@ -133,6 +133,17 @@ class QuestionGenerator {
         while questions.count < count {
             let maxFallback = min(10, difficultyLevel.range.upperBound)
             let minFallback = difficultyLevel == .level1 ? 2 : Constants.minNumberValueLevel2Plus
+
+            // Ensure minFallback <= maxFallback to avoid invalid range crashes
+            guard minFallback <= maxFallback else {
+                print("⚠️ Warning: Invalid fallback range min=\(minFallback) max=\(maxFallback), using 1...10")
+                let num1 = Int.random(in: 1...10)
+                let num2 = Int.random(in: 1...10)
+                let fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition)
+                questions.append(fallbackQuestion)
+                continue
+            }
+
             let num1 = Int.random(in: minFallback...maxFallback)
             let num2 = Int.random(in: minFallback...maxFallback)
             let fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition)

@@ -202,7 +202,8 @@ class GameProgressManagerTests: XCTestCase {
         // Clean up any existing data before each test
         manager.deleteGameProgress()
 
-        testGameState = GameState(difficultyLevel: .level1, timeInMinutes: 5)
+        // Don't create testGameState here - it will be created in individual tests as needed
+        // This avoids crashes during setUp if question generation fails
     }
 
     override func tearDown() {
@@ -213,7 +214,15 @@ class GameProgressManagerTests: XCTestCase {
         super.tearDown()
     }
 
+    // Helper method to safely create a test GameState
+    private func createTestGameState(level: DifficultyLevel = .level1, timeInMinutes: Int = 5) -> GameState {
+        return GameState(difficultyLevel: level, timeInMinutes: timeInMinutes)
+    }
+
     func testSaveGameProgress() {
+        // Create a test game state
+        testGameState = createTestGameState()
+
         // Modify game state
         testGameState.score = 25
         testGameState.currentQuestionIndex = 5
@@ -224,6 +233,7 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testHasGameProgressAfterSave() {
+        testGameState = createTestGameState()
         _ = manager.saveGameProgress(testGameState)
         XCTAssertTrue(manager.hasGameProgress())
     }
@@ -235,6 +245,7 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testLoadGameProgress() {
+        testGameState = createTestGameState()
         testGameState.score = 30
         testGameState.currentQuestionIndex = 3
         let saveSuccess = manager.saveGameProgress(testGameState)
@@ -268,6 +279,7 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testDeleteGameProgress() {
+        testGameState = createTestGameState()
         _ = manager.saveGameProgress(testGameState)
         XCTAssertTrue(manager.hasGameProgress())
 
@@ -276,6 +288,7 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testGetSavedGameInfo() {
+        testGameState = createTestGameState()
         testGameState.currentQuestionIndex = 10
         _ = manager.saveGameProgress(testGameState)
 
