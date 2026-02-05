@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.6* | *Updated: February 3, 2026*
+*Version: 1.0.7* | *Updated: February 4, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -337,10 +337,13 @@
 - **🔢 整数结果保证 (Integer Result Guarantee)** - 所有算术运算（加减乘除）均产生整数结果，无小数或分数 (All arithmetic operations (addition, subtraction, multiplication, division) produce integer results, no decimals or fractions)
 - **📈 智能难度递进 (Intelligent Difficulty Progression)** - 难度越高，三数运算出现概率越大 (Higher difficulty levels have greater probability of three-number operations)
 - **🎯 智能题目质量控制 (Intelligent Question Quality Control)**：
-  - **乘法优化 (Multiplication Optimization)** - ×1题目占比降至5%，大幅提高教学价值 (×1 questions reduced to 5%, significantly improving educational value)
-  - **除法优化 (Division Optimization)** - 完全避免÷1，除数范围2-10，避免相同数字除法 (Completely avoids ÷1, divisor range 2-10, avoids same number divisions)
-  - **减法优化 (Subtraction Optimization)** - 避免相同数字相减，确保差值至少为2，提高计算挑战性 (Avoids same number subtraction, ensures difference is at least 2, increasing calculation challenge)
-  - **商值控制 (Quotient Control)** - 90%概率避免商为1的简单除法，优先生成有意义的计算题目 (90% probability avoids simple division with quotient of 1, prioritizes meaningful calculation questions)
+  - **消除重复和相同数运算 (Eliminate Duplicates and Identical Number Operations)** - 严格避免相同数字相减(5-5)、相除(6÷6)等过于简单的题目 (Strictly avoid overly simple questions like same-number subtraction (5-5) or division (6÷6))
+  - **乘法优化 (Multiplication Optimization)** - 完全消除×1题目，确保因数至少为2 (Completely eliminates ×1 questions, ensuring factors are at least 2)
+  - **除法优化 (Division Optimization)** - 完全避免÷1和相同数字除法，商值提高(Level 4最小为3，Level 5/6最小为4) (Completely avoids ÷1 and same-number divisions, higher quotients: Level 4 minimum 3, Level 5/6 minimum 4)
+  - **加法优化 (Addition Optimization)** - Level 2+要求总和至少为8，避免1+1、2+2等过于简单的组合 (Level 2+ requires sum of at least 8, avoiding overly simple combinations like 1+1, 2+2)
+  - **减法优化 (Subtraction Optimization)** - 确保差值有意义(Level 1最小为2，Level 2+最小为3)，避免结果为0或1的情况 (Ensures meaningful differences: Level 1 minimum 2, Level 2+ minimum 3, avoiding results of 0 or 1)
+  - **三数运算优化 (Three-Number Operation Optimization)** - 拒绝所有数字都≤3的题目和重复模式(如2+2+2)，提高最小答案要求 (Rejects questions where all numbers are ≤3 and repetitive patterns like 2+2+2, increased minimum answer requirements)
+  - **去重优化 (Deduplication Optimization)** - 交换律运算自动去重(3+5与5+3视为相同，2×7与7×2视为相同) (Commutative operations auto-deduplicated: 3+5 and 5+3 treated as same, 2×7 and 7×2 treated as same)
 
 ### ⏱️ 时间管理系统 (Time Management System)
 - **灵活时间设置 (Flexible Time Setting)** - 可配置限制时间：3-30分钟 (Configurable time limit: 3-30 minutes)
@@ -369,52 +372,6 @@
 ---
 
 ## 🔄 最近更新 (Recent Updates)
-
-### 🌟 2026-02-03 (代码质量提升、模块化重构和文档增强 / Code Quality, Modularization and Documentation Enhancements)
-- **🧩 组件模块化 (Component Modularization)** - 创建6个可重用SwiftUI组件 (Created 6 reusable SwiftUI components)
-  - QuestionDisplayView - 题目显示组件，支持TTS (Question display with TTS support)
-  - GameInfoHeaderView - 游戏信息头部(时间、进度、分数) (Game info header: time, progress, score)
-  - AnswerInputView - 答案输入和提交组件 (Answer input and submit component)
-  - SolutionPanelView - 可展开的解析面板 (Expandable solution panel)
-  - GameControlButtonsView - 游戏控制按钮(暂停、保存、退出、完成) (Game controls: pause, save, exit, finish)
-  - AnswerFeedbackView - 答案反馈动画组件 (Answer feedback with animations)
-- **📚 Swift DocC文档 (Swift DocC Documentation)** - 为核心API添加完整文档注释 (Added comprehensive documentation to core APIs)
-  - QuestionGenerator.swift - 所有公共方法、使用示例、问题分布表 (All public methods, usage examples, distribution tables)
-  - GameViewModel.swift - 18个公共方法、架构说明、使用示例 (18 public methods, architecture explanations, usage examples)
-  - 支持Xcode快速帮助(Option+Click)查看 (Supports Xcode Quick Help via Option+Click)
-  - 可生成静态文档网站 (Can generate static documentation website)
-- **🏗️ ViewBuilder模式 (ViewBuilder Patterns)** - 创建视图组合工具库 (Created view composition utilities)
-  - View+ViewBuilder.swift扩展 (View+ViewBuilder.swift extension)
-  - 3个扩展方法：.if(), .ifElse(), .ifLet() (3 extension methods: .if(), .ifElse(), .ifLet())
-  - 5个可重用模式：badge, iconLabel, card, loadingOverlay, emptyState (5 reusable patterns: badge, iconLabel, card, loadingOverlay, emptyState)
-  - 提供类型安全的视图转换 (Provides type-safe view transformations)
-- **📋 项目规范 (Project Guidelines)** - 更新CLAUDE.md开发指南 (Updated CLAUDE.md development guidelines)
-  - 添加文件创建规范，防止不必要的文档文件 (Added file creation guidelines to prevent unnecessary documentation files)
-  - 明确文档更新策略 (Clarified documentation update strategy)
-- **✅ 测试验证 (Test Verification)** - 所有增强功能已验证，356/356测试通过 (All enhancements verified, 356/356 tests passing)
-
-### 🌟 2026-02-03 (代码质量提升和测试修复 / Code Quality Improvements and Test Fixes)
-- **🔧 代码重构 (Code Refactoring)** - 解决了5个关键代码质量问题 (Resolved 5 critical code quality issues)
-  - 消除GameViewModel中的代码重复，提取setupSubscriptions()方法 (Eliminated code duplication in GameViewModel by extracting setupSubscriptions() method)
-  - 改进内存管理，移除不必要的手动取消订阅 (Improved memory management by removing unnecessary manual subscription cancellation)
-  - 重构QuestionGenerator，将396行复杂方法分解为11个专注函数 (Refactored QuestionGenerator, breaking down 396-line complex method into 11 focused functions)
-  - 新增@Published initializationStatus到CoreDataManager以处理初始化错误 (Added @Published initializationStatus to CoreDataManager to handle initialization errors)
-  - 提取魔术数字到Constants枚举，提高代码可维护性 (Extracted magic numbers to Constants enums, improving code maintainability)
-- **✅ 测试修复 (Test Fixes)** - 修复了所有CI测试失败，356/356测试通过 (Fixed all CI test failures, 356/356 tests passing)
-  - 修复了level4三数运算生成中的范围验证问题 (Fixed range validation issues in level4 three-number generation)
-  - 改进初始数字生成：max(2, upperBound / 3) (Improved initial number generation: max(2, upperBound / 3))
-  - 增强小范围(≤10)的除法安全性 (Enhanced division safety for small ranges (≤10))
-  - 为level4优化运算选择(70%乘法，30%除法) (Optimized operation selection for level4 (70% multiplication, 30% division))
-  - 保持level4的40%三数运算概率，同时确保数学正确性 (Maintained 40% three-number probability for level4 while ensuring mathematical correctness)
-- **📁 代码组织 (Code Organization)** - 新建QuestionGenerator+ThreeNumber.swift扩展文件 (Created QuestionGenerator+ThreeNumber.swift extension file)
-  - 将三数运算逻辑重构为11个专注方法 (Refactored three-number logic into 11 focused methods)
-  - 提高代码可读性和可维护性 (Improved code readability and maintainability)
-  - 更好的关注点分离 (Better separation of concerns)
-- **🚀 质量改进 (Quality Improvements)** - 全面提升代码质量和测试覆盖率 (Comprehensive code quality and test coverage improvements)
-  - 100%测试通过率 (100% test pass rate)
-  - 减少代码复杂度 (Reduced code complexity)
-  - 更快的测试执行时间(6.9秒) (Faster test execution time (6.9s))
-  - 更可靠的问题生成 (More reliable question generation)
 
 For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 
@@ -941,7 +898,6 @@ Arithmetic/
 ├── 📄 ChangeLogs.md
 ├── 📄 CLAUDE.md
 ├── 📄 GEMINI.md
-├── ⚙️ GoogleService-Info.plist
 ├── ⚙️ Info.plist
 ├── 📄 LICENSE
 ├── 📝 Prompt.md
@@ -970,7 +926,8 @@ Arithmetic/
 │   ├── Color+Theme.swift                  # 主题颜色扩展
 │   ├── Font+Adaptive.swift                # 字体适配扩展
 │   ├── String+Localized.swift             # 字符串本地化扩展
-│   └── View+Navigation.swift              # 视图导航扩展
+│   ├── View+Navigation.swift              # 视图导航扩展
+│   └── View+ViewBuilder.swift             # 视图构建器扩展
 ├── 📁 Models/                             # 数据模型
 │   ├── DifficultyLevel.swift              # 难度等级模型
 │   ├── GameState.swift                    # 游戏状态模型
@@ -987,6 +944,7 @@ Arithmetic/
 │   ├── NavigationUtil.swift               # 导航工具
 │   ├── ProgressViewUtils.swift            # 进度视图工具
 │   ├── QuestionGenerator.swift            # 题目生成器
+│   ├── QuestionGenerator+ThreeNumber.swift # 三数运算题目生成器
 │   ├── SoundEffectsHelper.swift           # 音效辅助类
 │   ├── SystemInfoManager.swift            # 系统信息管理器（含电池、网络、屏幕信息）
 │   └── TTSHelper.swift                    # TTS辅助类
@@ -995,6 +953,13 @@ Arithmetic/
 ├── 📁 Views/                              # 视图层
 │   ├── AboutMeView.swift                  # 关于我视图
 │   ├── CachedAsyncImageView.swift         # 图片缓存视图
+│   ├── Components/                        # 视图组件
+│   │   ├── AnswerFeedbackView.swift       # 答案反馈组件
+│   │   ├── AnswerInputView.swift          # 答案输入组件
+│   │   ├── GameControlButtonsView.swift   # 游戏控制按钮组件
+│   │   ├── GameInfoHeaderView.swift       # 游戏信息头部组件
+│   │   ├── QuestionDisplayView.swift      # 题目显示组件
+│   │   └── SolutionPanelView.swift        # 解题面板组件
 │   ├── ConfettiCelebrationView.swift      # 庆祝动画视图
 │   ├── ContentView.swift                  # 主视图
 │   ├── FormulaGuideView.swift             # 小学数学公式大全视图
@@ -1012,9 +977,19 @@ Arithmetic/
 │   └── WrongQuestionsView.swift           # 错题集视图
 ├── 📁 scripts/                            # 构建和工具脚本
 │   ├── check_localizations.sh             # 本地化检查并嵌入Git信息 (Checks localization and embeds Git info)
+│   ├── quick_test.sh                      # 快速测试脚本
+│   ├── run_all_tests.sh                   # 运行所有测试脚本
 │   ├── upload_dsyms.sh                    # dSYM上传脚本
-│   └── embed_git_info.sh                  # Git信息嵌入脚本
+│   └── upload-symbols                     # 符号上传脚本
 └── 📁 Tests/                              # 测试文件
+    ├── ArithmeticUITests.swift            # UI测试
+    ├── CoreDataTests.swift                # Core Data测试
+    ├── DifficultyLevelTests.swift         # 难度等级测试
+    ├── ExtensionsTests.swift              # 扩展测试
+    ├── GameStateTests.swift               # 游戏状态测试
+    ├── GameViewModelTests.swift           # 游戏视图模型测试
+    ├── LocalizationTests.swift            # 本地化测试
+    ├── QuestionTests.swift                # 题目模型测试
     └── UtilsTests.swift                   # 工具类测试
 ```
 

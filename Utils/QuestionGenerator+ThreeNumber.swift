@@ -30,6 +30,14 @@ extension QuestionGenerator {
             return nil
         }
 
+        // 额外检查：避免三个数字都太小（Level 2+）
+        if difficultyLevel != .level1 && difficultyLevel != .level4 {
+            let allTooSmall = numbers.allSatisfy({ $0 <= Constants.minNumberValue })
+            if allTooSmall {
+                return nil
+            }
+        }
+
         // Adjust numbers for division operations
         if operations.contains(.division) {
             numbers = ensureDivisionSafety(numbers: numbers, operations: operations, range: difficultyLevel.range)
@@ -38,7 +46,20 @@ extension QuestionGenerator {
         // Validate final result
         let question = Question(number1: numbers[0], number2: numbers[1], number3: numbers[2], operation1: operations[0], operation2: operations[1])
 
-        guard question.isValid() && question.correctAnswer > 1 && question.correctAnswer <= difficultyLevel.range.upperBound else {
+        // 提高最小答案要求，确保题目有足够挑战性
+        let minAcceptableAnswer: Int
+        switch difficultyLevel {
+        case .level1:
+            minAcceptableAnswer = 2
+        case .level2, .level4:
+            minAcceptableAnswer = 3
+        case .level3, .level5, .level6:
+            minAcceptableAnswer = 5
+        }
+
+        guard question.isValid() &&
+              question.correctAnswer >= minAcceptableAnswer &&
+              question.correctAnswer <= difficultyLevel.range.upperBound else {
             return nil
         }
 
@@ -48,11 +69,28 @@ extension QuestionGenerator {
     /// Generates initial numbers for three-number operations
     private static func generateInitialNumbers(for difficultyLevel: DifficultyLevel) -> [Int] {
         let upperBound = difficultyLevel.range.upperBound
-        let maxNumberForOperation = max(2, upperBound / 3)
+        let maxNumberForOperation = max(Constants.minNumberValueLevel2Plus, upperBound / 3)
 
-        let num1 = safeRandom(in: Constants.minNumberValue...min(maxNumberForOperation, upperBound))
-        let num2 = safeRandom(in: Constants.minNumberValue...min(maxNumberForOperation, upperBound))
-        let num3 = safeRandom(in: Constants.minNumberValue...min(maxNumberForOperation, upperBound))
+        // 根据难度等级设置更高的最小值
+        let minNumber: Int
+        switch difficultyLevel {
+        case .level1:
+            minNumber = Constants.minNumberValue // Level 1 基础最小值
+        case .level2:
+            minNumber = Constants.minNumberValueLevel2Plus // Level 2 使用3
+        case .level3:
+            minNumber = Constants.minNumberValueLevel3Plus // Level 3 使用5
+        case .level4:
+            minNumber = Constants.minNumberValue // 乘除法从2开始
+        case .level5:
+            minNumber = Constants.minNumberValueLevel2Plus // Level 5 从3开始
+        case .level6:
+            minNumber = Constants.minNumberValueLevel2Plus // 混合运算从3开始
+        }
+
+        let num1 = safeRandom(in: minNumber...min(maxNumberForOperation, upperBound))
+        let num2 = safeRandom(in: minNumber...min(maxNumberForOperation, upperBound))
+        let num3 = safeRandom(in: minNumber...min(maxNumberForOperation, upperBound))
 
         return [num1, num2, num3]
     }
@@ -201,17 +239,33 @@ extension QuestionGenerator {
     /// Generates a simple fallback question when generation fails
     private static func generateFallbackThreeNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
         let maxNum = min(10, difficultyLevel.range.upperBound / 3)
-        let minNum = max(2, difficultyLevel.range.lowerBound)
+        let minNum: Int
+
+        // 根据难度等级使用不同的最小值
+        switch difficultyLevel {
+        case .level1:
+            minNum = max(2, difficultyLevel.range.lowerBound)
+        case .level2, .level4:
+            minNum = Constants.minNumberValueLevel2Plus
+        default:
+            minNum = Constants.minNumberValueLevel3Plus
+        }
 
         let num1 = safeRandom(in: minNum...maxNum)
         let num2 = safeRandom(in: minNum...maxNum)
         let num3 = safeRandom(in: minNum...maxNum)
 
-        // For small ranges (like level4: 1-10), use multiplication only to avoid edge cases
-        if difficultyLevel.range.upperBound <= 10 && difficultyLevel.supportedOperations.contains(.multiplication) {
-            return Question(number1: num1, number2: num2, number3: num3, operation1: .multiplication, operation2: .multiplication)
+        // 确保三个数字不完全相同
+        var adjustedNum3 = num3
+        if num1 == num2 && num2 == num3 {
+            adjustedNum3 = (num3 < maxNum) ? num3 + 1 : num3 - 1
         }
 
-        return Question(number1: num1, number2: num2, number3: num3, operation1: .addition, operation2: .addition)
+        // For small ranges (like level4: 1-10), use multiplication only to avoid edge cases
+        if difficultyLevel.range.upperBound <= 10 && difficultyLevel.supportedOperations.contains(.multiplication) {
+            return Question(number1: num1, number2: num2, number3: adjustedNum3, operation1: .multiplication, operation2: .multiplication)
+        }
+
+        return Question(number1: num1, number2: num2, number3: adjustedNum3, operation1: .addition, operation2: .addition)
     }
 }

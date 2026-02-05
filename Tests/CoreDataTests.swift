@@ -176,18 +176,53 @@ class GameProgressManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+
+        // Wait for CoreData to be fully initialized
+        let expectation = XCTestExpectation(description: "CoreData initialization")
+
+        // Check initialization status and wait if needed
+        if CoreDataManager.shared.initializationStatus.isReady {
+            expectation.fulfill()
+        } else {
+            // Poll for initialization
+            DispatchQueue.global().async {
+                var attempts = 0
+                while !CoreDataManager.shared.initializationStatus.isReady && attempts < 50 {
+                    Thread.sleep(forTimeInterval: 0.1)
+                    attempts += 1
+                }
+                expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 10.0)
+
         manager = GameProgressManager()
-        testGameState = GameState(difficultyLevel: .level1, timeInMinutes: 5)
+
+        // Clean up any existing data before each test
+        manager.deleteGameProgress()
+
+        // Don't create testGameState here - it will be created in individual tests as needed
+        // This avoids crashes during setUp if question generation fails
     }
 
     override func tearDown() {
+        // Clean up after each test
         manager.deleteGameProgress()
         manager = nil
         testGameState = nil
         super.tearDown()
     }
 
+    // Helper method to safely create a test GameState
+    private func createTestGameState(level: DifficultyLevel = .level1, timeInMinutes: Int = 5) -> GameState {
+        return GameState(difficultyLevel: level, timeInMinutes: timeInMinutes)
+    }
+
     func testSaveGameProgress() {
+        // Create a test game state
+        testGameState = createTestGameState()
+
         // Modify game state
         testGameState.score = 25
         testGameState.currentQuestionIndex = 5
@@ -198,16 +233,19 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testHasGameProgressAfterSave() {
+        testGameState = createTestGameState()
         _ = manager.saveGameProgress(testGameState)
         XCTAssertTrue(manager.hasGameProgress())
     }
 
     func testHasNoGameProgressInitially() {
-        manager.deleteGameProgress()
-        XCTAssertFalse(manager.hasGameProgress())
+        // Explicitly ensure no game progress exists (cleanup already done in setUp)
+        // This tests the fresh state after setUp cleanup
+        XCTAssertFalse(manager.hasGameProgress(), "Should have no game progress after setUp cleanup")
     }
 
     func testLoadGameProgress() {
+        testGameState = createTestGameState()
         testGameState.score = 30
         testGameState.currentQuestionIndex = 3
         let saveSuccess = manager.saveGameProgress(testGameState)
@@ -241,6 +279,7 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testDeleteGameProgress() {
+        testGameState = createTestGameState()
         _ = manager.saveGameProgress(testGameState)
         XCTAssertTrue(manager.hasGameProgress())
 
@@ -249,6 +288,7 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testGetSavedGameInfo() {
+        testGameState = createTestGameState()
         testGameState.currentQuestionIndex = 10
         _ = manager.saveGameProgress(testGameState)
 
@@ -258,9 +298,10 @@ class GameProgressManagerTests: XCTestCase {
     }
 
     func testGetSavedGameInfoReturnsNilWhenNoSave() {
-        manager.deleteGameProgress()
+        // Explicitly ensure no game progress exists (cleanup already done in setUp)
+        // This tests that getSavedGameInfo returns nil when no save exists
         let info = manager.getSavedGameInfo()
-        XCTAssertNil(info)
+        XCTAssertNil(info, "Should return nil when no saved game exists")
     }
 }
 
