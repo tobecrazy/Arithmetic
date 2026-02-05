@@ -88,8 +88,20 @@ class GameState: ObservableObject {
         print("🆘 Generating \(questionsToGenerate) fallback questions...")
 
         for _ in 0..<questionsToGenerate {
-            let num1 = Int.random(in: 1...min(10, difficultyLevel.range.upperBound))
-            let num2 = Int.random(in: 1...min(10, difficultyLevel.range.upperBound))
+            // Safety: Ensure we have a valid range
+            let maxValue = max(10, difficultyLevel.range.upperBound) // Ensure at least 10
+            let minValue = 1
+
+            // Double-check the range is valid
+            guard minValue <= maxValue else {
+                print("⚠️ Warning: Invalid range in fallback questions, using default 1...10")
+                let question = Question(number1: Int.random(in: 1...10), number2: Int.random(in: 1...10), operation: .addition)
+                fallbackQuestions.append(question)
+                continue
+            }
+
+            let num1 = Int.random(in: minValue...min(10, maxValue))
+            let num2 = Int.random(in: minValue...min(10, maxValue))
             let question = Question(number1: num1, number2: num2, operation: .addition)
             fallbackQuestions.append(question)
         }
