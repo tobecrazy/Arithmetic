@@ -73,6 +73,7 @@
 - **📋 答案页面 (Answer Pages)** - 生成包含题目和答案的完整PDF，便于自我检测和评分 (Generates complete PDF with both question and answer pages for self-assessment)
 - **📤 分享选项 (Sharing Options)** - 支持保存到文件、文档目录或通过系统分享功能分享 (Supports saving to files, document directory, or sharing via system share functionality)
 - **🖨️ 打印友好 (Print-Friendly)** - A4格式优化布局，确保打印效果清晰 (A4 format optimized layout to ensure clear printing results)
+- **📐 A4兼容性增强 (A4 Compatibility Enhancements)** - 改进页面边距、字体缩放和分页逻辑，减少断行与溢出，提升实际打印对齐度 (Improved margins, font scaling, and pagination logic to reduce line breaks/overflow and improve print alignment)
 - **🌐 双语支持 (Bilingual Support)** - 生成的PDF支持中英文双语，适应不同语言环境 (Generated PDFs support bilingual Chinese/English for different language environments)
 - **💾 本地存储 (Local Storage)** - 题库PDF自动保存至应用文档目录，方便随时访问 (Problem bank PDFs automatically saved to app document directory for easy access)
 - **✨ 节约纸张优化 (Paper-Saving Optimization)** - 优化PDF排版以最大化A4纸张利用率 (Optimized PDF layout to maximize A4 paper utilization)
@@ -379,6 +380,7 @@
 - **🏗️ ViewBuilder模式库 (ViewBuilder Pattern Library)** - 创建视图组合工具和模式，提供条件视图转换等功能 (Created view composition utilities and patterns, providing conditional view transformation functions)
 - **🔧 代码重构 (Code Refactoring)** - 解决代码重复、内存管理、复杂方法等问题，提升代码质量 (Resolved code duplication, memory management, and complex method issues to improve code quality)
 - **✅ 测试修复 (Test Fixes)** - 修复所有CI测试失败，实现356/356测试通过 (Fixed all CI test failures, achieved 356/356 tests passing)
+- **🖨️ PDF生成优化 (PDF Generation Enhancements)** - 改进PDF分页与排版逻辑，提升A4纸张兼容性与打印对齐效果 (Improved PDF pagination and layout for better A4 compatibility and print alignment)
 
 ### 🌟 2026-02-04 (题目生成系统优化 - 提升难度和教学价值 / Question Generation System Optimization - Enhanced Difficulty and Educational Value)
 - **🎯 消除过于简单的题目 (Eliminated Overly Simple Questions)** - 全面优化题目生成逻辑，大幅提升题目质量和挑战性 (Comprehensively optimized question generation logic, significantly improving question quality and challenge level)

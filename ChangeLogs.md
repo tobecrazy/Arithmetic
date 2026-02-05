@@ -5,6 +5,10 @@
   - **新增6个组件文件 (Added 6 Component Files)**: QuestionDisplayView, GameInfoHeaderView, AnswerInputView, SolutionPanelView, GameControlButtonsView, AnswerFeedbackView
   - **收益 (Benefits)**: 更好的代码组织、组件可重用、独立测试、Xcode画布预览支持 (Better code organization, component reusability, independent testing, Xcode canvas preview support)
 
+- **🖨️ PDF生成优化 (PDF Generation Enhancements)** - 增强PDF生成逻辑，改进A4纸张兼容性与排版稳定性 (Enhanced PDF generation logic, improved A4 compatibility and layout stability)
+  - **分页与排版优化 (Pagination & Layout)**: 改进分页算法，减少断行/溢出问题，保证题目对齐 (Improved pagination to reduce line breaks/overflow and keep questions aligned)
+  - **页面规范 (Page Standards)**: 优化边距与字体缩放，确保A4打印清晰一致 (Optimized margins and font scaling for consistent A4 printing)
+
 - **📚 Swift DocC文档增强 (Swift DocC Documentation Enhancement)** - 为核心API添加专业级文档，文档覆盖率从~20%提升至~80% (Added professional-grade documentation to core APIs, documentation coverage improved from ~20% to ~80%)
   - **QuestionGenerator.swift文档 (QuestionGenerator.swift Documentation)**: 类概述、使用示例、问题分布表、5个公共方法详细文档 (Class overview, usage examples, question distribution table, detailed docs for 5 public methods)
   - **GameViewModel.swift文档 (GameViewModel.swift Documentation)**: 类概述、18个公共方法完整文档、Published属性说明 (Class overview, complete docs for 18 public methods, Published properties documentation)
