@@ -444,7 +444,8 @@ class MathBankPDFGenerator {
         // 绘制答案（三列紧凑布局）
         for (index, question) in questions.enumerated() {
             let questionNumber = startQuestionNumber + index
-            let answerBody = "\(question.questionText.replacingOccurrences(of: " = ?", with: "")) = \(question.correctAnswer)"
+            // Use correctAnswerText to support both integer and fraction answers
+            let answerBody = "\(question.questionText.replacingOccurrences(of: " = ?", with: "")) = \(question.correctAnswerText)"
 
             // 计算位置（三列布局）
             let column = index % 3

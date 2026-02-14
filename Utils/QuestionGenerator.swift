@@ -842,55 +842,98 @@ class QuestionGenerator {
             return Question(number1: num1, number2: num2, operation: .multiplication, difficultyLevel: .level7)
         } else {
             // Generate division that may or may not result in integer
-            // 50% integer division, 50% fraction result
-            let shouldBeFraction = Bool.random()
+            // Distribution: 40% integer division, 30% simple fraction, 30% reducible fraction (e.g., 25÷15=5/3)
+            let rand = Double.random(in: 0...1)
 
-            if shouldBeFraction {
-                // Non-integer division (results in a pedagogically meaningful fraction)
-                // Use reverse generation: start with a target fraction, then calculate dividend
-                // This ensures results like 1/2, 2/3, 3/4, 5/6 instead of 21/10
-
-                // Common denominators for educational fractions
-                let commonDenominators = [2, 3, 4, 5, 6, 8, 10, 12]
-                let divisor = commonDenominators.randomElement()!
-
-                // Generate a numerator that doesn't divide evenly by divisor
-                // and produces a proper or simple improper fraction
-                var numerator: Int
-                repeat {
-                    // For proper fractions (result < 1): numerator < divisor
-                    // For simple improper fractions (result 1-3): numerator = divisor * multiplier + remainder
-                    let useImproper = Double.random(in: 0...1) < 0.3 // 30% improper fractions
-
-                    if useImproper {
-                        // Generate improper fraction with result between 1 and 3
-                        let wholePartMultiplier = Int.random(in: 1...2)
-                        let remainder = Int.random(in: 1...(divisor - 1))
-                        numerator = wholePartMultiplier * divisor + remainder
-                    } else {
-                        // Generate proper fraction (result < 1)
-                        numerator = Int.random(in: 1...(divisor - 1))
-                    }
-                } while numerator % divisor == 0 // Ensure it doesn't divide evenly
-
-                // Ensure dividend is within reasonable range (1-100)
-                let dividend = numerator
-                if dividend > 100 {
-                    // Fallback to simpler fraction
-                    let simpleDivisor = [2, 3, 4, 5].randomElement()!
-                    let simpleNumerator = Int.random(in: 1...(simpleDivisor - 1))
-                    return Question(number1: simpleNumerator, number2: simpleDivisor, operation: .division, difficultyLevel: .level7)
-                }
-
-                return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
-            } else {
-                // Integer division
+            if rand < 0.4 {
+                // 40% Integer division (e.g., 24 ÷ 6 = 4)
                 let quotient = Int.random(in: 2...10)
                 let divisor = Int.random(in: 2...10)
                 let dividend = quotient * divisor
                 return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
+            } else if rand < 0.7 {
+                // 30% Simple non-integer division with small numbers
+                // Results in simple fractions like 1/2, 2/3, 3/4
+                return generateSimpleFractionDivision()
+            } else {
+                // 30% Reducible fraction division (e.g., 25÷15=5/3, 14÷21=2/3)
+                // Two larger integers that share a common factor
+                return generateReducibleFractionDivision()
             }
         }
+    }
+
+    /// Generates a division question with small numbers resulting in a simple fraction
+    /// Examples: 1÷2=1/2, 2÷3=2/3, 3÷4=3/4
+    private static func generateSimpleFractionDivision() -> Question {
+        // Common denominators for educational fractions
+        let commonDenominators = [2, 3, 4, 5, 6, 8, 10, 12]
+        let divisor = commonDenominators.randomElement()!
+
+        // Generate a numerator that doesn't divide evenly by divisor
+        var numerator: Int
+        repeat {
+            // 30% improper fractions (result > 1), 70% proper fractions (result < 1)
+            let useImproper = Double.random(in: 0...1) < 0.3
+
+            if useImproper {
+                // Generate improper fraction with result between 1 and 3
+                let wholePartMultiplier = Int.random(in: 1...2)
+                let remainder = Int.random(in: 1...(divisor - 1))
+                numerator = wholePartMultiplier * divisor + remainder
+            } else {
+                // Generate proper fraction (result < 1)
+                numerator = Int.random(in: 1...(divisor - 1))
+            }
+        } while numerator % divisor == 0 // Ensure it doesn't divide evenly
+
+        // Ensure dividend is within reasonable range (1-100)
+        if numerator > 100 {
+            // Fallback to simpler fraction
+            let simpleDivisor = [2, 3, 4, 5].randomElement()!
+            let simpleNumerator = Int.random(in: 1...(simpleDivisor - 1))
+            return Question(number1: simpleNumerator, number2: simpleDivisor, operation: .division, difficultyLevel: .level7)
+        }
+
+        return Question(number1: numerator, number2: divisor, operation: .division, difficultyLevel: .level7)
+    }
+
+    /// Generates a division question where both numbers are larger and share a common factor
+    /// The result simplifies to a nice fraction
+    /// Examples: 25÷15=5/3, 14÷21=2/3, 10÷15=2/3, 12÷18=2/3, 35÷21=5/3
+    private static func generateReducibleFractionDivision() -> Question {
+        // Target simplified fractions that are pedagogically meaningful
+        let targetFractions: [(numerator: Int, denominator: Int)] = [
+            (1, 2), (1, 3), (2, 3), (1, 4), (3, 4),
+            (1, 5), (2, 5), (3, 5), (4, 5),
+            (1, 6), (5, 6),
+            (2, 7), (3, 7), (4, 7), (5, 7),
+            (3, 8), (5, 8), (7, 8),
+            // Improper fractions (result > 1)
+            (3, 2), (4, 3), (5, 3), (5, 4), (7, 4),
+            (6, 5), (7, 5), (8, 5),
+            (7, 6), (8, 3), (9, 4), (7, 3)
+        ]
+
+        let target = targetFractions.randomElement()!
+
+        // Multiply both numerator and denominator by a common factor to get larger numbers
+        // Factor range: 2-10 for variety
+        let factor = Int.random(in: 2...10)
+
+        let dividend = target.numerator * factor   // e.g., 5 * 5 = 25
+        let divisor = target.denominator * factor  // e.g., 3 * 5 = 15
+
+        // Validate: ensure both numbers are within range and divisor != 0
+        guard divisor > 0 && dividend <= 100 && divisor <= 100 else {
+            // Fallback: use smaller factor
+            let smallFactor = Int.random(in: 2...5)
+            let smallDividend = target.numerator * smallFactor
+            let smallDivisor = target.denominator * smallFactor
+            return Question(number1: smallDividend, number2: smallDivisor, operation: .division, difficultyLevel: .level7)
+        }
+
+        return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
     }
 
     /// Generates a question with both operands as fractions
