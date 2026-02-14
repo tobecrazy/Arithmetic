@@ -1,5 +1,117 @@
 # Change Log
 
+### 🌟 2026-02-06 (Level 7 分数运算支持 / Level 7 Fraction Operations Support)
+
+#### ✨ 新增功能 (New Features)
+- **🔢 Level 7 - 复杂混合运算含分数 (Complex Mixed Operations with Fractions)**
+  - 新增Level 7难度等级，100道题目，每题1分
+  - 支持分数作为答案，特别是非整除的除法运算
+  - 自动分数简化（如 6/9 → 2/3）
+  - 带分数显示支持（如 7/3 → 2⅓）
+  - Added Level 7 difficulty, 100 questions, 1 point each
+  - Supports fractions as answers, especially non-integer division
+  - Automatic fraction simplification (e.g., 6/9 → 2/3)
+  - Mixed number display support (e.g., 7/3 → 2⅓)
+
+- **➕ 分数运算系统 (Fraction Operations System)**
+  - 新增Fraction模型，使用GCD算法自动简化分数
+  - 支持假分数转换为带分数
+  - 分数相等性判断（自动简化后比较）
+  - Added Fraction model with GCD-based automatic simplification
+  - Supports improper fraction to mixed number conversion
+  - Fraction equality comparison (after simplification)
+
+- **🎤 分数朗读支持 (Fraction TTS Support)**
+  - TTSHelper扩展支持分数自然发音
+  - 中文："二分之一"、"三分之二" (Chinese: "二分之一", "三分之二")
+  - 英文："one half", "two thirds" (English: "one half", "two thirds")
+  - Extended TTSHelper with natural fraction pronunciation
+
+- **📝 分数输入界面 (Fraction Input Interface)**
+  - 新增FractionInputView专用分数输入组件
+  - 分子分母分开输入，带除法线显示
+  - 数字键盘优化，输入验证
+  - Added dedicated FractionInputView component
+  - Separate numerator/denominator inputs with division line
+  - Numeric keypad optimization with validation
+
+#### 🔄 功能更新 (Feature Updates)
+- **Level 5 更新 (Level 5 Updates)**
+  - 数值范围从1-20扩展至1-50
+  - 题目数量从25题增至30题
+  - 每题分值从4分调整为3分（总分90分，可通过速度奖励达到100分）
+  - Range expanded from 1-20 to 1-50
+  - Question count increased from 25 to 30
+  - Points per question adjusted from 4 to 3 (90 total, can reach 100 with speed bonus)
+
+- **Level 6 更新 (Level 6 Updates)**
+  - 数值范围从1-100扩展至1-1000
+  - 重命名为"三位数混合运算"
+  - 强调三位数大数运算能力
+  - Range expanded from 1-100 to 1-1000
+  - Renamed to "Three-digit Mixed Operations"
+  - Emphasizes large three-digit calculation abilities
+
+#### 💾 数据持久化 (Data Persistence)
+- **CoreData 架构更新 (CoreData Schema Updates)**
+  - WrongQuestionEntity增加分数字段：answerType, fractionNumerator, fractionDenominator
+  - 向后兼容：旧数据自动默认为整数类型
+  - GameProgressEntity支持Level 7进度保存
+  - Added fraction fields to WrongQuestionEntity: answerType, fractionNumerator, fractionDenominator
+  - Backward compatible: Legacy data defaults to integer type
+  - GameProgressEntity supports Level 7 progress saving
+
+#### 🌐 本地化 (Localization)
+- **新增40+分数相关本地化字符串 (Added 40+ Fraction-related Localization Strings)**
+  - 分数显示："分子"、"分母"、"化简后" ("Numerator", "Denominator", "Simplified")
+  - 分数发音辅助：常用分数读法 (Fraction pronunciation helpers: common fraction pronunciation)
+  - 难度等级名称更新 (Difficulty level name updates)
+  - 完整中英文双语支持 (Complete Chinese/English bilingual support)
+
+#### 🧪 测试覆盖 (Test Coverage)
+- **新增FractionTests.swift (Added FractionTests.swift)**
+  - 分数初始化、简化、GCD算法测试
+  - 带分数转换、相等性判断测试
+  - 边界情况和负数测试
+  - Initialization, simplification, GCD algorithm tests
+  - Mixed number conversion, equality tests
+  - Edge cases and negative number tests
+
+- **扩展现有测试 (Extended Existing Tests)**
+  - QuestionTests: 新增FractionAnswerTests类
+  - DifficultyLevelTests: Level 7属性和范围测试
+  - UtilsTests: Level 5/6/7题目生成测试
+  - CoreDataTests: 分数存储和向后兼容性测试
+  - QuestionTests: Added FractionAnswerTests class
+  - DifficultyLevelTests: Level 7 properties and range tests
+  - UtilsTests: Level 5/6/7 question generation tests
+  - CoreDataTests: Fraction storage and backward compatibility tests
+
+#### 📊 技术影响 (Technical Impact)
+- **新增文件 (New Files)**:
+  - Models/Fraction.swift (162 lines)
+  - Views/FractionInputView.swift (98 lines)
+  - Tests/FractionTests.swift (235 lines)
+
+- **修改文件 (Modified Files)**:
+  - Models/Question.swift: 新增分数答案支持
+  - Models/DifficultyLevel.swift: Level 7和Level 5/6更新
+  - Utils/TTSHelper.swift: 分数朗读支持
+  - Utils/QuestionGenerator.swift: Level 7题目生成
+  - CoreData相关文件：Schema更新
+  - Views/GameView.swift: 条件分数输入渲染
+  - 本地化文件：40+新字符串
+
+- **代码质量 (Code Quality)**:
+  - 完整的单元测试覆盖
+  - 向后兼容的数据迁移
+  - 类型安全的分数运算
+  - SwiftUI响应式UI更新
+  - Complete unit test coverage
+  - Backward-compatible data migration
+  - Type-safe fraction operations
+  - Reactive SwiftUI updates
+
 ### 🌟 2026-02-05 (项目结构优化和代码质量提升 / Project Structure Optimization and Code Quality Enhancement)
 - **🧩 组件模块化 (Component Modularization)** - 创建可重用SwiftUI组件库，分解1020行的GameView，提高可维护性 (Created reusable SwiftUI component library, broke down 1020-line GameView for better maintainability)
   - **新增6个组件文件 (Added 6 Component Files)**: QuestionDisplayView, GameInfoHeaderView, AnswerInputView, SolutionPanelView, GameControlButtonsView, AnswerFeedbackView

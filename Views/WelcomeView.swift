@@ -457,6 +457,7 @@ extension DifficultyLevel {
         case .level4: return "welcome.level4.desc".localized
         case .level5: return "welcome.level5.desc".localized
         case .level6: return "welcome.level6.desc".localized
+        case .level7: return "welcome.level7.desc".localized
         }
     }
 }

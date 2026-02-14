@@ -28,6 +28,10 @@ struct WrongQuestionAttributes {
     static let timesWrong = "timesWrong"
     static let solutionMethod = "solutionMethod"
     static let solutionSteps = "solutionSteps"
+    // Fraction support (optional fields for backward compatibility)
+    static let answerType = "answerType"
+    static let fractionNumerator = "fractionNumerator"
+    static let fractionDenominator = "fractionDenominator"
 }
 
 // GameProgress entity attributes

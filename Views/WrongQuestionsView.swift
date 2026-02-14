@@ -32,6 +32,8 @@ struct WrongQuestionsView: View {
             return LinearGradient(colors: [Color.red.opacity(0.8), Color.red], startPoint: .leading, endPoint: .trailing)
         case .level6:
             return LinearGradient(colors: [Color.pink.opacity(0.8), Color.pink], startPoint: .leading, endPoint: .trailing)
+        case .level7:
+            return LinearGradient(colors: [Color.cyan.opacity(0.8), Color.cyan], startPoint: .leading, endPoint: .trailing)
         case .none:
             return LinearGradient(colors: [Color.progressGradientStart, Color.progressGradientEnd], startPoint: .leading, endPoint: .trailing)
         }
@@ -45,6 +47,7 @@ struct WrongQuestionsView: View {
         case .level4: return "star.fill"
         case .level5: return "crown.fill"
         case .level6: return "medal.fill"
+        case .level7: return "sparkles"
         }
     }
 
@@ -299,7 +302,7 @@ struct WrongQuestionsView: View {
 
                 // Answer row
                 HStack {
-                    Text("wrong_questions.answer".localizedFormat(String(question.correctAnswer)))
+                    Text("wrong_questions.answer".localizedFormat(question.answerDisplayString))
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.success)
 
@@ -505,7 +508,17 @@ struct WrongQuestionsView: View {
                     determinedSolutionMethod = question.getSolutionMethod(for: qLevel).rawValue // Use freshly computed method
                     determinedSolutionSteps = question.getSolutionSteps(for: qLevel) // Use freshly computed steps
                 }
-                
+
+                // Check for fraction answer
+                var fractionAnswer: Fraction? = nil
+                if let answerType = entity.answerType, answerType == "fraction",
+                   entity.fractionDenominator != 0 {
+                    fractionAnswer = Fraction(
+                        numerator: Int(entity.fractionNumerator),
+                        denominator: Int(entity.fractionDenominator)
+                    )
+                }
+
                 return WrongQuestionViewModel(
                     id: entity.id,
                     questionText: entity.questionText,
@@ -515,7 +528,9 @@ struct WrongQuestionsView: View {
                     timesWrong: Int(entity.timesWrong),
                     solutionMethod: determinedSolutionMethod,
                     solutionSteps: determinedSolutionSteps,
-                    originalEntity: entity
+                    originalEntity: entity,
+                    answerType: entity.answerType,
+                    fractionAnswer: fractionAnswer
                 )
             }
             
@@ -668,7 +683,19 @@ struct WrongQuestionViewModel: Identifiable {
     let solutionMethod: String
     let solutionSteps: String
     let originalEntity: WrongQuestionEntity?
-    
+    // Fraction support
+    let answerType: String?
+    let fractionAnswer: Fraction?
+
+    // Get display string for answer
+    var answerDisplayString: String {
+        if let type = answerType, type == "fraction", let fraction = fractionAnswer {
+            return fraction.localizedString()
+        } else {
+            return String(correctAnswer)
+        }
+    }
+
     // 获取当前语言的解析内容
     var currentLanguageSolutionSteps: String {
         if let entity = originalEntity, let question = entity.toQuestion() {
@@ -678,9 +705,10 @@ struct WrongQuestionViewModel: Identifiable {
     }
     
     // 便捷初始化方法（保持向后兼容）
-    init(id: UUID, questionText: String, correctAnswer: Int, level: DifficultyLevel, 
-         timesShown: Int, timesWrong: Int, solutionMethod: String, solutionSteps: String, 
-         originalEntity: WrongQuestionEntity? = nil) {
+    init(id: UUID, questionText: String, correctAnswer: Int, level: DifficultyLevel,
+         timesShown: Int, timesWrong: Int, solutionMethod: String, solutionSteps: String,
+         originalEntity: WrongQuestionEntity? = nil,
+         answerType: String? = nil, fractionAnswer: Fraction? = nil) {
         self.id = id
         self.questionText = questionText
         self.correctAnswer = correctAnswer
@@ -690,6 +718,8 @@ struct WrongQuestionViewModel: Identifiable {
         self.solutionMethod = solutionMethod
         self.solutionSteps = solutionSteps
         self.originalEntity = originalEntity
+        self.answerType = answerType
+        self.fractionAnswer = fractionAnswer
     }
 }
 

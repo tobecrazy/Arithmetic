@@ -89,8 +89,9 @@ class QuestionGenerator {
     /// | 2     | 1-20  | +, -       | 60%          | 40%            |
     /// | 3     | 1-50  | +, -       | 40%          | 60%            |
     /// | 4     | 1-10  | ×, ÷       | 60%          | 40%            |
-    /// | 5     | 1-20  | ×, ÷       | 20%          | 80%            |
-    /// | 6     | 1-100 | +, -, ×, ÷ | 10%          | 90%            |
+    /// | 5     | 1-50  | ×, ÷       | 70%          | 30%            |
+    /// | 6     | 1-1000 | +, -, ×, ÷ | 10%          | 90%            |
+    /// | 7     | Fractions | +, -, ×, ÷ | 50%         | 50% (fractions only, no simple +/- within 50) |
     static func generateQuestions(difficultyLevel: DifficultyLevel, count: Int, wrongQuestions: [Question] = []) -> [Question] {
         var questions: [Question] = []
         var generatedCombinations: Set<String> = []
@@ -129,29 +130,39 @@ class QuestionGenerator {
             }
         }
 
-        // 如果仍然没有足够的题目，用简单的加法题目补充
+        // 如果仍然没有足够的题目，用简单的题目补充
+        // Level 7 uses fraction questions as fallback, other levels use addition
         var fallbackAttempts = 0
         let maxFallbackAttempts = 1000 // Prevent infinite loops
         while questions.count < count && fallbackAttempts < maxFallbackAttempts {
-            let maxFallback = min(10, difficultyLevel.range.upperBound)
-            let minFallback = difficultyLevel == .level1 ? 2 : Constants.minNumberValueLevel2Plus
+            let fallbackQuestion: Question
 
-            // Ensure minFallback <= maxFallback to avoid invalid range crashes
-            guard minFallback <= maxFallback else {
-                print("⚠️ Warning: Invalid fallback range min=\(minFallback) max=\(maxFallback), using 1...10")
-                let num1 = Int.random(in: 1...10)
-                let num2 = Int.random(in: 1...10)
-                let fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition)
-                questions.append(fallbackQuestion)
-                continue
+            if difficultyLevel == .level7 {
+                // Level 7 fallback: use fraction questions (no simple addition)
+                fallbackQuestion = generatePureFractionQuestion()
+            } else {
+                // Other levels fallback: use simple addition
+                let maxFallback = min(10, difficultyLevel.range.upperBound)
+                let minFallback = difficultyLevel == .level1 ? 2 : Constants.minNumberValueLevel2Plus
+
+                // Ensure minFallback <= maxFallback to avoid invalid range crashes
+                guard minFallback <= maxFallback else {
+                    print("⚠️ Warning: Invalid fallback range min=\(minFallback) max=\(maxFallback), using 1...10")
+                    let num1 = Int.random(in: 1...10)
+                    let num2 = Int.random(in: 1...10)
+                    fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition, difficultyLevel: difficultyLevel)
+                    questions.append(fallbackQuestion)
+                    continue
+                }
+
+                let num1 = Int.random(in: minFallback...maxFallback)
+                let num2 = Int.random(in: minFallback...maxFallback)
+                fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition, difficultyLevel: difficultyLevel)
             }
 
-            let num1 = Int.random(in: minFallback...maxFallback)
-            let num2 = Int.random(in: minFallback...maxFallback)
-            let fallbackQuestion = Question(number1: num1, number2: num2, operation: .addition)
             let combination = getCombinationKey(for: fallbackQuestion)
 
-            if !generatedCombinations.contains(combination) && num1 != num2 {
+            if !generatedCombinations.contains(combination) {
                 questions.append(fallbackQuestion)
                 generatedCombinations.insert(combination)
                 fallbackAttempts = 0 // Reset counter on success
@@ -159,7 +170,7 @@ class QuestionGenerator {
                 fallbackAttempts += 1
                 // If we've failed many times, relax the uniqueness requirement
                 if fallbackAttempts > 100 {
-                    // Just add the question even if it's a duplicate or has same numbers
+                    // Just add the question even if it's a duplicate
                     questions.append(fallbackQuestion)
                     fallbackAttempts = 0
                 }
@@ -215,8 +226,9 @@ class QuestionGenerator {
         case .level2: return 0.4   // 等级2有40%概率生成三数运算
         case .level3: return 0.6   // 等级3有60%概率生成三数运算
         case .level4: return 0.4   // 等级4有40%概率生成三数运算
-        case .level5: return 0.8   // 等级5有80%概率生成三数运算
+        case .level5: return 0.3   // 等级5有30%概率生成三数运算
         case .level6: return 0.9   // 等级6有90%概率生成三数运算
+        case .level7: return 0.5   // 等级7有50%概率生成三数运算
         }
     }
     
@@ -255,6 +267,11 @@ class QuestionGenerator {
     
     // 生成两数运算题目
     private static func generateTwoNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
+        // Special handling for Level 7 with fractions
+        if difficultyLevel == .level7 {
+            return generateLevel7TwoNumberQuestion()
+        }
+
         let range = difficultyLevel.range
         let supportedOperations = difficultyLevel.supportedOperations
 
@@ -279,9 +296,11 @@ class QuestionGenerator {
         case .level4:
             minNumber = 2 // 乘除法从2开始
         case .level5:
-            minNumber = 3 // Level 5 乘除法从3开始
+            minNumber = 2 // Level 5 乘除法从2开始（特殊处理两位数）
         case .level6:
             minNumber = Constants.minNumberValueLevel2Plus // 混合运算使用较高最小值
+        case .level7:
+            minNumber = Constants.minNumberValueLevel2Plus // Level 7 混合运算使用较高最小值
         }
 
         // 尝试生成符合条件的题目
@@ -380,151 +399,288 @@ class QuestionGenerator {
 
             case .multiplication:
                 // 乘法：确保结果不超过范围上限，完全避免×1的情况
-                let maxFactor = min(range.upperBound, Int(sqrt(Double(range.upperBound))))
 
-                // 完全禁止×1的题目，确保至少从2开始
-                let actualMinFactor = max(2, minNumber)
-                number1 = safeRandom(in: actualMinFactor...maxFactor)
-
-                let minSecondFactor = max(2, actualMinFactor) // 确保第二个因数至少为2
-                let maxSecondFactor = min(range.upperBound / number1, maxFactor)
-
-                if maxSecondFactor >= minSecondFactor {
-                    number2 = safeRandom(in: minSecondFactor...maxSecondFactor)
-                } else {
-                    // 重新生成更小的第一个因数
-                    let maxFirstFactor = min(maxFactor, range.upperBound / minSecondFactor)
-                    if actualMinFactor <= maxFirstFactor {
-                        number1 = safeRandom(in: actualMinFactor...maxFirstFactor)
-                        let newMaxSecondFactor = min(range.upperBound / number1, maxFactor)
-                        if minSecondFactor <= newMaxSecondFactor {
-                            number2 = safeRandom(in: minSecondFactor...newMaxSecondFactor)
+                // Level 5: Two-digit multiplication (at least one factor should be 10-50)
+                if difficultyLevel == .level5 {
+                    // One factor should be 10-50, the other 2-10
+                    let useLargeFirst = Bool.random()
+                    if useLargeFirst {
+                        // First number is 10-50
+                        number1 = safeRandom(in: 10...50)
+                        let maxSecondFactor = min(10, range.upperBound / number1)
+                        if maxSecondFactor >= 2 {
+                            number2 = safeRandom(in: 2...maxSecondFactor)
                         } else {
-                            // Fallback to safe values
+                            // If range too small, adjust number1
+                            number1 = safeRandom(in: 10...min(50, range.upperBound / 2))
+                            number2 = 2
+                        }
+                    } else {
+                        // Second number is 10-50
+                        number2 = safeRandom(in: 10...50)
+                        let maxFirstFactor = min(10, range.upperBound / number2)
+                        if maxFirstFactor >= 2 {
+                            number1 = safeRandom(in: 2...maxFirstFactor)
+                        } else {
+                            // If range too small, adjust number2
+                            number2 = safeRandom(in: 10...min(50, range.upperBound / 2))
+                            number1 = 2
+                        }
+                    }
+
+                    // Ensure result is within range
+                    if number1 * number2 > range.upperBound {
+                        let largeFactor = max(number1, number2)
+                        let smallFactor = min(number1, number2)
+                        let newSmallFactor = max(2, range.upperBound / largeFactor)
+                        if largeFactor == number1 {
+                            number2 = newSmallFactor
+                        } else {
+                            number1 = newSmallFactor
+                        }
+                    }
+                } else {
+                    // Standard multiplication for other levels
+                    let maxFactor = min(range.upperBound, Int(sqrt(Double(range.upperBound))))
+
+                    // 完全禁止×1的题目，确保至少从2开始
+                    let actualMinFactor = max(2, minNumber)
+                    number1 = safeRandom(in: actualMinFactor...maxFactor)
+
+                    let minSecondFactor = max(2, actualMinFactor) // 确保第二个因数至少为2
+                    let maxSecondFactor = min(range.upperBound / number1, maxFactor)
+
+                    if maxSecondFactor >= minSecondFactor {
+                        number2 = safeRandom(in: minSecondFactor...maxSecondFactor)
+                    } else {
+                        // 重新生成更小的第一个因数
+                        let maxFirstFactor = min(maxFactor, range.upperBound / minSecondFactor)
+                        if actualMinFactor <= maxFirstFactor {
+                            number1 = safeRandom(in: actualMinFactor...maxFirstFactor)
+                            let newMaxSecondFactor = min(range.upperBound / number1, maxFactor)
+                            if minSecondFactor <= newMaxSecondFactor {
+                                number2 = safeRandom(in: minSecondFactor...newMaxSecondFactor)
+                            } else {
+                                // Fallback to safe values
+                                number1 = actualMinFactor
+                                number2 = minSecondFactor
+                            }
+                        } else {
+                            // Range too constrained, use minimum values
                             number1 = actualMinFactor
                             number2 = minSecondFactor
                         }
-                    } else {
-                        // Range too constrained, use minimum values
-                        number1 = actualMinFactor
-                        number2 = minSecondFactor
                     }
-                }
 
-                // 确保结果不超过范围
-                if number1 * number2 > range.upperBound {
-                    number2 = max(minSecondFactor, range.upperBound / number1)
-                }
+                    // 确保结果不超过范围
+                    if number1 * number2 > range.upperBound {
+                        number2 = max(minSecondFactor, range.upperBound / number1)
+                    }
 
-                // 双重保险：确保没有因数为1
-                if number1 == 1 { number1 = 2 }
-                if number2 == 1 { number2 = 2 }
+                    // 双重保险：确保没有因数为1
+                    if number1 == 1 { number1 = 2 }
+                    if number2 == 1 { number2 = 2 }
 
-                // 再次验证范围
-                if number1 * number2 > range.upperBound {
-                    let maxFirstFactor = min(maxFactor, range.upperBound / minSecondFactor)
-                    if actualMinFactor <= maxFirstFactor {
-                        number1 = safeRandom(in: actualMinFactor...maxFirstFactor)
-                        number2 = max(minSecondFactor, min(range.upperBound / number1, maxFactor))
-                    } else {
-                        number1 = actualMinFactor
-                        number2 = minSecondFactor
+                    // 再次验证范围
+                    if number1 * number2 > range.upperBound {
+                        let maxFirstFactor = min(maxFactor, range.upperBound / minSecondFactor)
+                        if actualMinFactor <= maxFirstFactor {
+                            number1 = safeRandom(in: actualMinFactor...maxFirstFactor)
+                            number2 = max(minSecondFactor, min(range.upperBound / number1, maxFactor))
+                        } else {
+                            number1 = actualMinFactor
+                            number2 = minSecondFactor
+                        }
                     }
                 }
 
             case .division:
-                // 除法：确保整除，严格避免相同数字和结果为1
-                let actualMinDivisor = max(2, minNumber)
-                let actualMinQuotient: Int
+                // 除法：确保整除（除非Level 7允许分数），严格避免相同数字和结果为1
+                let allowFractions = difficultyLevel == .level7
 
-                switch difficultyLevel {
-                case .level1:
-                    actualMinQuotient = 2
-                case .level4:
-                    actualMinQuotient = 3 // Level 4 最小商为3
-                case .level5, .level6:
-                    actualMinQuotient = 4 // Level 5/6 最小商为4
-                default:
-                    actualMinQuotient = 3
-                }
+                if allowFractions {
+                    // Level 7: Allow fraction results (about 30% of division questions should have fractions)
+                    let shouldBeFraction = Double.random(in: 0...1) < 0.3
 
-                // 选择除数（至少为2）
-                number2 = safeRandom(in: actualMinDivisor...min(10, range.upperBound))
+                    if shouldBeFraction {
+                        // Generate a division that results in a pedagogically meaningful fraction
+                        // Use reverse generation: start with a target fraction structure
+                        // This ensures results like 1/2, 2/3, 3/4 instead of 21/10
 
-                // 计算可能的最大商
-                let maxPossibleQuotient = range.upperBound / number2
-                let minQuotient = actualMinQuotient
-                let maxQuotient = max(minQuotient, maxPossibleQuotient)
+                        // Common denominators for educational fractions
+                        let commonDenominators = [2, 3, 4, 5, 6, 8, 10, 12]
+                        let divisor = commonDenominators.randomElement()!
 
-                let quotient: Int
-                if maxQuotient >= minQuotient {
-                    // 优先选择较大的商（70%概率选择上半区间）
-                    if maxQuotient > minQuotient + 2 {
-                        let isLargerRange = Double.random(in: 0...1) < 0.7
-                        if isLargerRange {
-                            let midPoint = (minQuotient + maxQuotient) / 2
-                            quotient = safeRandom(in: midPoint...maxQuotient)
+                        // Generate a numerator that produces a meaningful fraction
+                        let useImproper = Double.random(in: 0...1) < 0.3 // 30% improper fractions
+                        var numerator: Int
+
+                        if useImproper {
+                            // Improper fraction with result between 1 and 3
+                            let wholePartMultiplier = Int.random(in: 1...2)
+                            let remainder = Int.random(in: 1...(divisor - 1))
+                            numerator = wholePartMultiplier * divisor + remainder
+                        } else {
+                            // Proper fraction (result < 1)
+                            numerator = Int.random(in: 1...(divisor - 1))
+                        }
+
+                        // Ensure numerator doesn't divide evenly by divisor
+                        if numerator % divisor == 0 {
+                            numerator = max(1, numerator - 1)
+                        }
+
+                        // Validate within range
+                        if numerator <= range.upperBound {
+                            number1 = numerator
+                            number2 = divisor
+                        } else {
+                            // Fallback: use simpler fraction
+                            number2 = [2, 3, 4, 5].randomElement()!
+                            number1 = Int.random(in: 1...(number2 - 1))
+                        }
+                    } else {
+                        // Generate an integer division for Level 7
+                        let actualMinDivisor = max(2, minNumber)
+                        let actualMinQuotient = 2
+
+                        number2 = safeRandom(in: actualMinDivisor...min(10, range.upperBound))
+                        let maxPossibleQuotient = range.upperBound / number2
+                        let minQuotient = actualMinQuotient
+                        let maxQuotient = max(minQuotient, maxPossibleQuotient)
+
+                        let quotient = safeRandom(in: minQuotient...maxQuotient)
+                        number1 = quotient * number2
+
+                        if number1 > range.upperBound {
+                            let maxDivisor = max(actualMinDivisor, range.upperBound / minQuotient)
+                            let safeDivisorMax = min(10, maxDivisor)
+                            if actualMinDivisor <= safeDivisorMax {
+                                number2 = safeRandom(in: actualMinDivisor...safeDivisorMax)
+                            } else {
+                                number2 = actualMinDivisor
+                            }
+                            number1 = minQuotient * number2
+                        }
+                    }
+                } else if difficultyLevel == .level5 {
+                    // Level 5: Two-digit division (quotient 2-50, divisor 2-10)
+                    let divisor = safeRandom(in: 2...10)
+                    let quotient = safeRandom(in: 2...min(50, range.upperBound / divisor))
+                    number1 = quotient * divisor
+                    number2 = divisor
+
+                    // Ensure range compliance
+                    if number1 > range.upperBound {
+                        let maxQuotient = range.upperBound / divisor
+                        if maxQuotient >= 2 {
+                            number1 = safeRandom(in: 2...maxQuotient) * divisor
+                        } else {
+                            number1 = 2 * divisor
+                        }
+                    }
+
+                    // Avoid dividend equals divisor
+                    if number1 == number2 {
+                        number1 = (quotient + 1) * number2
+                        if number1 > range.upperBound {
+                            number1 = max(2, quotient - 1) * number2
+                        }
+                    }
+                } else {
+                    // Standard division for other levels (integer results only)
+                    let actualMinDivisor = max(2, minNumber)
+                    let actualMinQuotient: Int
+
+                    switch difficultyLevel {
+                    case .level1:
+                        actualMinQuotient = 2
+                    case .level4:
+                        actualMinQuotient = 3 // Level 4 最小商为3
+                    case .level5, .level6:
+                        actualMinQuotient = 4 // Level 5/6 最小商为4
+                    default:
+                        actualMinQuotient = 3
+                    }
+
+                    // 选择除数（至少为2）
+                    number2 = safeRandom(in: actualMinDivisor...min(10, range.upperBound))
+
+                    // 计算可能的最大商
+                    let maxPossibleQuotient = range.upperBound / number2
+                    let minQuotient = actualMinQuotient
+                    let maxQuotient = max(minQuotient, maxPossibleQuotient)
+
+                    let quotient: Int
+                    if maxQuotient >= minQuotient {
+                        // 优先选择较大的商（70%概率选择上半区间）
+                        if maxQuotient > minQuotient + 2 {
+                            let isLargerRange = Double.random(in: 0...1) < 0.7
+                            if isLargerRange {
+                                let midPoint = (minQuotient + maxQuotient) / 2
+                                quotient = safeRandom(in: midPoint...maxQuotient)
+                            } else {
+                                quotient = safeRandom(in: minQuotient...maxQuotient)
+                            }
                         } else {
                             quotient = safeRandom(in: minQuotient...maxQuotient)
                         }
                     } else {
-                        quotient = safeRandom(in: minQuotient...maxQuotient)
+                        quotient = minQuotient
                     }
-                } else {
-                    quotient = minQuotient
-                }
 
-                // 计算被除数
-                number1 = quotient * number2
+                    // 计算被除数
+                    number1 = quotient * number2
 
-                // 验证范围
-                if number1 > range.upperBound {
-                    let maxDivisor = max(actualMinDivisor, range.upperBound / minQuotient)
-                    let safeDivisorMax = min(5, maxDivisor)
-                    if actualMinDivisor <= safeDivisorMax {
-                        number2 = safeRandom(in: actualMinDivisor...safeDivisorMax)
-                    } else {
-                        number2 = actualMinDivisor
-                    }
-                    number1 = minQuotient * number2
-                }
-
-                // 严格避免被除数等于除数
-                if number1 == number2 {
-                    let newQuotient = max(actualMinQuotient, quotient + 1)
-                    if newQuotient * number2 <= range.upperBound {
-                        number1 = newQuotient * number2
-                    } else {
-                        // 减小除数
-                        if number2 > actualMinDivisor {
-                            number2 -= 1
-                            number1 = max(actualMinQuotient, quotient) * number2
+                    // 验证范围
+                    if number1 > range.upperBound {
+                        let maxDivisor = max(actualMinDivisor, range.upperBound / minQuotient)
+                        let safeDivisorMax = min(5, maxDivisor)
+                        if actualMinDivisor <= safeDivisorMax {
+                            number2 = safeRandom(in: actualMinDivisor...safeDivisorMax)
                         } else {
-                            // 最后调整
-                            number1 = actualMinQuotient * number2
+                            number2 = actualMinDivisor
+                        }
+                        number1 = minQuotient * number2
+                    }
+
+                    // 严格避免被除数等于除数
+                    if number1 == number2 {
+                        let newQuotient = max(actualMinQuotient, quotient + 1)
+                        if newQuotient * number2 <= range.upperBound {
+                            number1 = newQuotient * number2
+                        } else {
+                            // 减小除数
+                            if number2 > actualMinDivisor {
+                                number2 -= 1
+                                number1 = max(actualMinQuotient, quotient) * number2
+                            } else {
+                                // 最后调整
+                                number1 = actualMinQuotient * number2
+                            }
                         }
                     }
-                }
 
-                // 最终验证：确保结果不为1
-                if number2 != 0 && number1 / number2 < actualMinQuotient {
-                    number1 = actualMinQuotient * number2
-                    if number1 > range.upperBound {
-                        number2 = max(actualMinDivisor, range.upperBound / actualMinQuotient)
+                    // 最终验证：确保结果不为1
+                    if number2 != 0 && number1 / number2 < actualMinQuotient {
                         number1 = actualMinQuotient * number2
+                        if number1 > range.upperBound {
+                            number2 = max(actualMinDivisor, range.upperBound / actualMinQuotient)
+                            number1 = actualMinQuotient * number2
+                        }
                     }
                 }
             }
 
             attempts += 1
         } while (number1 <= 0 || number2 <= 0 ||
-                 number1 == number2 && (operation == .subtraction || operation == .division) || // 避免减法和除法中的相同数字
+                 number1 == number2 && (operation == .subtraction || (operation == .division && difficultyLevel != .level7)) || // 避免减法和除法中的相同数字（除非Level 7允许分数）
                  (operation == .multiplication && (number1 == 1 || number2 == 1)) || // 避免乘法中的1
                  (operation == .multiplication && number1 * number2 > range.upperBound) ||
                  (operation == .division && number1 > range.upperBound) ||
                  (operation == .subtraction && number1 - number2 < (difficultyLevel == .level1 ? 2 : Constants.minDifferenceLevel2Plus)) ||
                  (operation == .addition && difficultyLevel != .level1 && number1 + number2 < Constants.minSumLevel2Plus) ||
-                 (operation == .division && number2 != 0 && (number1 / number2 < 2 || number1 % number2 != 0))) && attempts < maxAttempts
+                 (operation == .division && number2 != 0 && (number1 / number2 < 2 || (difficultyLevel != .level7 && number1 % number2 != 0)))) && attempts < maxAttempts
 
         // 最后的安全检查和调整
         if number1 <= 0 || number2 <= 0 {
@@ -532,7 +688,7 @@ class QuestionGenerator {
             number2 = max(minNumber, number2)
         }
 
-        return Question(number1: number1, number2: number2, operation: operation)
+        return Question(number1: number1, number2: number2, operation: operation, difficultyLevel: difficultyLevel)
     }
 
     // MARK: - Three Number Question Generation
@@ -653,5 +809,301 @@ class QuestionGenerator {
         }
 
         return false // 没有发现重复模式，允许生成
+    }
+
+    // MARK: - Level 7 Fraction Question Generation
+
+    /// Generates a Level 7 question with fractions only (no simple addition/subtraction within 50)
+    /// Distribution: 50% pure fractions, 30% mixed (int+frac), 20% integer multiplication/division
+    private static func generateLevel7TwoNumberQuestion() -> Question {
+        let rand = Double.random(in: 0...1)
+
+        if rand < 0.5 {
+            // 50% pure fraction operations (both operands are fractions)
+            return generatePureFractionQuestion()
+        } else if rand < 0.8 {
+            // 30% mixed operations (one integer, one fraction)
+            return generateMixedFractionQuestion()
+        } else {
+            // 20% integer multiplication/division only (no addition/subtraction)
+            return generateLevel7IntegerMultiplicationDivision()
+        }
+    }
+
+    /// Generates an integer multiplication or division question for Level 7
+    /// This avoids simple addition/subtraction within 50
+    private static func generateLevel7IntegerMultiplicationDivision() -> Question {
+        let operation: Question.Operation = Bool.random() ? .multiplication : .division
+
+        if operation == .multiplication {
+            // Generate multiplication: result should be reasonable (not too large)
+            let num1 = Int.random(in: 2...12)
+            let num2 = Int.random(in: 2...12)
+            return Question(number1: num1, number2: num2, operation: .multiplication, difficultyLevel: .level7)
+        } else {
+            // Generate division that may or may not result in integer
+            // 50% integer division, 50% fraction result
+            let shouldBeFraction = Bool.random()
+
+            if shouldBeFraction {
+                // Non-integer division (results in a pedagogically meaningful fraction)
+                // Use reverse generation: start with a target fraction, then calculate dividend
+                // This ensures results like 1/2, 2/3, 3/4, 5/6 instead of 21/10
+
+                // Common denominators for educational fractions
+                let commonDenominators = [2, 3, 4, 5, 6, 8, 10, 12]
+                let divisor = commonDenominators.randomElement()!
+
+                // Generate a numerator that doesn't divide evenly by divisor
+                // and produces a proper or simple improper fraction
+                var numerator: Int
+                repeat {
+                    // For proper fractions (result < 1): numerator < divisor
+                    // For simple improper fractions (result 1-3): numerator = divisor * multiplier + remainder
+                    let useImproper = Double.random(in: 0...1) < 0.3 // 30% improper fractions
+
+                    if useImproper {
+                        // Generate improper fraction with result between 1 and 3
+                        let wholePartMultiplier = Int.random(in: 1...2)
+                        let remainder = Int.random(in: 1...(divisor - 1))
+                        numerator = wholePartMultiplier * divisor + remainder
+                    } else {
+                        // Generate proper fraction (result < 1)
+                        numerator = Int.random(in: 1...(divisor - 1))
+                    }
+                } while numerator % divisor == 0 // Ensure it doesn't divide evenly
+
+                // Ensure dividend is within reasonable range (1-100)
+                let dividend = numerator
+                if dividend > 100 {
+                    // Fallback to simpler fraction
+                    let simpleDivisor = [2, 3, 4, 5].randomElement()!
+                    let simpleNumerator = Int.random(in: 1...(simpleDivisor - 1))
+                    return Question(number1: simpleNumerator, number2: simpleDivisor, operation: .division, difficultyLevel: .level7)
+                }
+
+                return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
+            } else {
+                // Integer division
+                let quotient = Int.random(in: 2...10)
+                let divisor = Int.random(in: 2...10)
+                let dividend = quotient * divisor
+                return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
+            }
+        }
+    }
+
+    /// Generates a question with both operands as fractions
+    /// Examples: 1/2 + 1/3, 3/4 - 1/8, 2/3 × 1/2, 5/6 ÷ 1/3
+    private static func generatePureFractionQuestion() -> Question {
+        let operation = Question.Operation.allCases.randomElement()!
+
+        // Generate two fractions
+        let frac1 = generateRandomFraction()
+        let frac2 = generateRandomFraction()
+
+        // Create question with fraction operands
+        let question = Question(operand1: frac1, operand2: frac2, operation: operation, difficultyLevel: .level7)
+
+        // Validate the result is reasonable
+        if let fractionAnswer = question.fractionAnswer {
+            // Check if result is too large or negative
+            if abs(fractionAnswer.numerator) > 100 || abs(fractionAnswer.denominator) > 100 {
+                // Retry with simpler fractions
+                return generatePureFractionQuestion()
+            }
+            if fractionAnswer.numerator < 0 {
+                // Avoid negative results for subtraction
+                return generatePureFractionQuestion()
+            }
+        }
+
+        return question
+    }
+
+    /// Generates a question with one integer and one fraction
+    /// Examples: 2 × 1/4, 3 + 1/2, 5 - 1/3, 6 ÷ 1/2
+    private static func generateMixedFractionQuestion() -> Question {
+        let operation = Question.Operation.allCases.randomElement()!
+
+        // Generate integer (2-10)
+        let integer = Int.random(in: 2...10)
+
+        // Generate fraction
+        let fraction = generateRandomFraction()
+
+        // Randomly decide which operand is the fraction
+        let fractionIsSecond = Bool.random()
+
+        let question: Question
+        if fractionIsSecond {
+            question = Question(operand1: integer, operand2: fraction, operation: operation, difficultyLevel: .level7)
+        } else {
+            question = Question(operand1: fraction, operand2: integer, operation: operation, difficultyLevel: .level7)
+        }
+
+        // Validate the result
+        if let fractionAnswer = question.fractionAnswer {
+            if abs(fractionAnswer.numerator) > 100 || abs(fractionAnswer.denominator) > 100 {
+                return generateMixedFractionQuestion()
+            }
+            if fractionAnswer.numerator < 0 {
+                return generateMixedFractionQuestion()
+            }
+        }
+
+        return question
+    }
+
+    /// Generates a random fraction for Level 7
+    /// 70% use common denominators (2,3,4,5,6,8,10,12)
+    /// 30% use random denominators (2-20)
+    private static func generateRandomFraction() -> Fraction {
+        let useCommonDenominator = Double.random(in: 0...1) < 0.7
+
+        let denominator: Int
+        if useCommonDenominator {
+            let commonDenominators = [2, 3, 4, 5, 6, 8, 10, 12]
+            denominator = commonDenominators.randomElement()!
+        } else {
+            denominator = Int.random(in: 2...20)
+        }
+
+        // Numerator should be less than denominator for proper fractions (mostly)
+        // But allow some improper fractions (20% chance)
+        let allowImproper = Double.random(in: 0...1) < 0.2
+        let numerator: Int
+        if allowImproper {
+            numerator = Int.random(in: 1...(denominator * 2))
+        } else {
+            numerator = Int.random(in: 1...(denominator - 1))
+        }
+
+        return Fraction(numerator: numerator, denominator: denominator)
+    }
+
+    /// Generates a Level 7 three-number question with fractions only
+    /// 60% include at least one fraction, 40% integer multiplication/division chains
+    static func generateLevel7ThreeNumberQuestion() -> Question {
+        let rand = Double.random(in: 0...1)
+
+        if rand < 0.6 {
+            // 60% include at least one fraction operand
+            return generateThreeNumberWithFractions()
+        } else {
+            // 40% integer multiplication/division chains (no simple add/sub)
+            return generateLevel7IntegerThreeNumberQuestion()
+        }
+    }
+
+    /// Generates a Level 7 three-number question with only multiplication and division
+    /// Avoids simple addition/subtraction within 50
+    private static func generateLevel7IntegerThreeNumberQuestion() -> Question {
+        // Only use multiplication and division for integer three-number questions
+        let operations: [Question.Operation] = [.multiplication, .division]
+        let op1 = operations.randomElement()!
+        let op2 = operations.randomElement()!
+
+        var num1, num2, num3: Int
+
+        // Generate numbers that work well with multiplication/division
+        if op1 == .multiplication && op2 == .multiplication {
+            // A × B × C - keep numbers small
+            num1 = Int.random(in: 2...5)
+            num2 = Int.random(in: 2...5)
+            num3 = Int.random(in: 2...5)
+        } else if op1 == .division && op2 == .division {
+            // A ÷ B ÷ C - need careful construction for integer results
+            num2 = Int.random(in: 2...5)
+            num3 = Int.random(in: 2...5)
+            let quotient1 = Int.random(in: 2...5)
+            let quotient2 = quotient1 * num3
+            num1 = quotient2 * num2
+        } else if op1 == .multiplication && op2 == .division {
+            // A × B ÷ C
+            num1 = Int.random(in: 2...6)
+            num3 = Int.random(in: 2...6)
+            // Ensure (A × B) is divisible by C
+            let multiplier = Int.random(in: 1...3)
+            num2 = num3 * multiplier
+        } else {
+            // A ÷ B × C
+            num2 = Int.random(in: 2...5)
+            num3 = Int.random(in: 2...5)
+            let quotient = Int.random(in: 2...5)
+            num1 = quotient * num2
+        }
+
+        let question = Question(number1: num1, number2: num2, number3: num3,
+                               operation1: op1, operation2: op2, difficultyLevel: .level7)
+
+        // Validate the question
+        if question.isValid() && question.correctAnswer > 0 && question.correctAnswer <= 1000 {
+            return question
+        }
+
+        // Fallback to fraction question if validation fails
+        return generateThreeNumberWithFractions()
+    }
+
+    /// Generates a three-number question with at least one fraction
+    /// Uses denominator families for simplicity (1/2, 1/4, 1/8 or 1/3, 1/6, 1/9)
+    private static func generateThreeNumberWithFractions() -> Question {
+        // Choose a denominator family
+        let families: [[Int]] = [
+            [2, 4, 8],     // Halves family
+            [3, 6, 9],     // Thirds family
+            [5, 10],       // Fifths family
+        ]
+
+        let family = families.randomElement()!
+        let operations = [Question.Operation.addition, Question.Operation.subtraction]
+
+        // Generate three operands from the same family or integers
+        var operands: [Any] = []
+        for _ in 0..<3 {
+            if Bool.random() {
+                // Use a fraction from the family
+                let denom = family.randomElement()!
+                let numer = Int.random(in: 1...(denom - 1))
+                operands.append(Fraction(numerator: numer, denominator: denom))
+            } else {
+                // Use a small integer
+                operands.append(Int.random(in: 1...5))
+            }
+        }
+
+        // Ensure at least one is a fraction
+        let hasFraction = operands.contains { $0 is Fraction }
+        if !hasFraction {
+            // Replace first operand with a fraction
+            let denom = family.randomElement()!
+            let numer = Int.random(in: 1...(denom - 1))
+            operands[0] = Fraction(numerator: numer, denominator: denom)
+        }
+
+        let op1 = operations.randomElement()!
+        let op2 = operations.randomElement()!
+
+        let question = Question(
+            operand1: operands[0],
+            operand2: operands[1],
+            operand3: operands[2],
+            operation1: op1,
+            operation2: op2,
+            difficultyLevel: .level7
+        )
+
+        // Validate result
+        if let fractionAnswer = question.fractionAnswer {
+            if abs(fractionAnswer.numerator) > 100 || abs(fractionAnswer.denominator) > 100 {
+                return generateThreeNumberWithFractions()
+            }
+            if fractionAnswer.numerator < 0 {
+                return generateThreeNumberWithFractions()
+            }
+        }
+
+        return question
     }
 }

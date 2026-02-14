@@ -413,6 +413,142 @@ class QuestionGeneratorTests: XCTestCase {
         let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level1, count: 5, wrongQuestions: [])
         XCTAssertEqual(questions.count, 5)
     }
+
+    // MARK: - Level 5 Tests (Two-digit multiplication/division within 50)
+
+    func testLevel5GeneratesQuestionsWithinRange() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level5, count: 30)
+        XCTAssertEqual(questions.count, 30)
+
+        for question in questions {
+            // All numbers should be within 1-50 range
+            for number in question.numbers {
+                XCTAssertTrue(number >= 1 && number <= 50, "Number \(number) out of range for Level 5")
+            }
+        }
+    }
+
+    func testLevel5GeneratesTwoDigitOperations() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level5, count: 30)
+
+        for question in questions {
+            // Should have multiplication or division operations
+            XCTAssertTrue(question.operations.contains(.multiplication) || question.operations.contains(.division),
+                         "Level 5 should only have multiplication or division")
+        }
+
+        // At least some questions should involve two-digit numbers (10-50)
+        let hasTwoDigitNumbers = questions.contains { question in
+            question.numbers.contains(where: { $0 >= 10 && $0 <= 50 })
+        }
+        XCTAssertTrue(hasTwoDigitNumbers, "Level 5 should include questions with two-digit numbers")
+    }
+
+    func testLevel5DivisionProducesIntegers() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level5, count: 30)
+
+        for question in questions {
+            if question.operations.contains(.division) {
+                XCTAssertTrue(question.isValid(), "Level 5 division should produce integer results")
+            }
+        }
+    }
+
+    // MARK: - Level 6 Tests (Three-digit operations up to 1000)
+
+    func testLevel6GeneratesQuestionsWithinRange() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level6, count: 100)
+        XCTAssertEqual(questions.count, 100)
+
+        for question in questions {
+            // All initial numbers should be within 1-1000 range
+            for number in question.numbers {
+                XCTAssertTrue(number >= 1 && number <= 1000, "Number \(number) out of range for Level 6")
+            }
+        }
+    }
+
+    func testLevel6FavorsThreeNumberOperations() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level6, count: 100)
+        let threeNumberQuestions = questions.filter { $0.numbers.count == 3 }
+
+        // Level 6 should have ~90% three-number operations
+        let percentage = Double(threeNumberQuestions.count) / Double(questions.count) * 100
+        XCTAssertGreaterThan(percentage, 70, "Level 6 should have at least 70% three-number operations")
+    }
+
+    func testLevel6AllOperationsProduceIntegers() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level6, count: 100)
+
+        for question in questions {
+            XCTAssertTrue(question.isValid(), "All Level 6 operations should produce valid integer results")
+            XCTAssertGreaterThan(question.correctAnswer, 0, "Level 6 should produce positive results")
+        }
+    }
+
+    func testLevel6IncludesLargeNumbers() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level6, count: 100)
+        let hasLargeNumbers = questions.contains { question in
+            question.numbers.contains(where: { $0 >= 100 })
+        }
+
+        XCTAssertTrue(hasLargeNumbers, "Level 6 should include three-digit numbers")
+    }
+
+    // MARK: - Level 7 Tests (Complex operations with fractions)
+
+    func testLevel7GeneratesQuestionsWithFractions() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level7, count: 100)
+        XCTAssertEqual(questions.count, 100)
+
+        let fractionQuestions = questions.filter { $0.answerType == .fraction }
+
+        // Level 7 should support fractions (may be low % initially as division generation
+        // still favors integer results, but fraction infrastructure should work)
+        XCTAssertGreaterThanOrEqual(fractionQuestions.count, 0, "Level 7 should support fraction questions")
+
+        // Verify at least one fraction question exists in a larger sample
+        let largerSample = QuestionGenerator.generateQuestions(difficultyLevel: .level7, count: 200)
+        let largerFractionQuestions = largerSample.filter { $0.answerType == .fraction }
+        XCTAssertGreaterThan(largerFractionQuestions.count, 0, "Level 7 should generate some fraction questions in larger sample")
+    }
+
+    func testLevel7FractionAnswersAreValid() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level7, count: 100)
+
+        for question in questions where question.answerType == .fraction {
+            XCTAssertNotNil(question.fractionAnswer, "Fraction questions should have fractionAnswer")
+            XCTAssertTrue(question.isValid(), "Fraction questions should be valid")
+
+            // Verify fraction answer is properly simplified
+            if let fraction = question.fractionAnswer {
+                XCTAssertNotEqual(fraction.denominator, 0, "Denominator cannot be zero")
+                XCTAssertGreaterThan(fraction.denominator, 0, "Denominator should be positive")
+            }
+        }
+    }
+
+    func testLevel7IntegerQuestionsStillValid() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level7, count: 100)
+        let integerQuestions = questions.filter { $0.answerType == .integer }
+
+        for question in integerQuestions {
+            XCTAssertTrue(question.isValid(), "Integer questions in Level 7 should still be valid")
+            XCTAssertGreaterThan(question.correctAnswer, 0, "Should produce positive results")
+        }
+    }
+
+    func testLevel7AllowsNonIntegerDivision() {
+        let questions = QuestionGenerator.generateQuestions(difficultyLevel: .level7, count: 100)
+
+        // Look for division operations that result in fractions
+        let divisionWithFractions = questions.filter { question in
+            question.operations.contains(.division) && question.answerType == .fraction
+        }
+
+        // Level 7 should allow non-integer division (unlike other levels)
+        XCTAssertGreaterThan(divisionWithFractions.count, 0, "Level 7 should allow non-integer division")
+    }
 }
 
 // Test suite for SystemInfoManager

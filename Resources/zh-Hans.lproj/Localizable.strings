@@ -3,10 +3,114 @@
 "difficulty.level2" = "等级2 (20以内加减法)";
 "difficulty.level3" = "等级3 (50以内加减法)";
 "difficulty.level4" = "等级4 (10以内乘除法)";
-"difficulty.level5" = "等级5 (20以内乘除法)";
-"difficulty.level6" = "等级6 (100以内混合运算)";
+"difficulty.level5" = "等级5 (50以内乘除法)";
+"difficulty.level6" = "等级6 (三位数混合运算)";
+"difficulty.level7" = "等级7 (复杂混合运算含分数)";
 "difficulty.level" = "难度等级";
 "button.start" = "开始游戏";
+
+/* 分数支持 */
+"fraction.numerator" = "分子";
+"fraction.denominator" = "分母";
+"fraction.invalid_denominator" = "分母不能为零";
+"fraction.simplified" = "化简后：%@";
+"fraction.half" = "二分之一";
+"fraction.halves" = "二分之";
+"fraction.third" = "三分之一";
+"fraction.thirds" = "三分之";
+"fraction.quarter" = "四分之一";
+"fraction.quarters" = "四分之";
+"fraction.fifth" = "五分之一";
+"fraction.fifths" = "五分之";
+"fraction.sixth" = "六分之一";
+"fraction.sixths" = "六分之";
+"fraction.seventh" = "七分之一";
+"fraction.sevenths" = "七分之";
+"fraction.eighth" = "八分之一";
+"fraction.eighths" = "八分之";
+"fraction.ninth" = "九分之一";
+"fraction.ninths" = "九分之";
+"fraction.tenth" = "十分之一";
+"fraction.tenths" = "十分之";
+"fraction.parts_of" = "%d分之%d";
+"fraction.mixed_and" = "又";
+"fraction.one_half" = "二分之一";
+"fraction.one_third" = "三分之一";
+"fraction.one_quarter" = "四分之一";
+"fraction.one_fifth" = "五分之一";
+"fraction.two_thirds" = "三分之二";
+"fraction.three_quarters" = "四分之三";
+
+/* 数字汉字 (0-100) */
+"fraction.number.0" = "零";
+"fraction.number.1" = "一";
+"fraction.number.2" = "二";
+"fraction.number.3" = "三";
+"fraction.number.4" = "四";
+"fraction.number.5" = "五";
+"fraction.number.6" = "六";
+"fraction.number.7" = "七";
+"fraction.number.8" = "八";
+"fraction.number.9" = "九";
+"fraction.number.10" = "十";
+"fraction.number.11" = "十一";
+"fraction.number.12" = "十二";
+"fraction.number.13" = "十三";
+"fraction.number.14" = "十四";
+"fraction.number.15" = "十五";
+"fraction.number.16" = "十六";
+"fraction.number.17" = "十七";
+"fraction.number.18" = "十八";
+"fraction.number.19" = "十九";
+"fraction.number.20" = "二十";
+"fraction.number.21" = "二十一";
+"fraction.number.22" = "二十二";
+"fraction.number.23" = "二十三";
+"fraction.number.24" = "二十四";
+"fraction.number.25" = "二十五";
+"fraction.number.30" = "三十";
+"fraction.number.40" = "四十";
+"fraction.number.50" = "五十";
+"fraction.number.60" = "六十";
+"fraction.number.70" = "七十";
+"fraction.number.80" = "八十";
+"fraction.number.90" = "九十";
+"fraction.number.100" = "一百";
+
+/* 分母汉字 (2-100) - 格式：X分之 */
+"fraction.denominator.2" = "二";
+"fraction.denominator.3" = "三";
+"fraction.denominator.4" = "四";
+"fraction.denominator.5" = "五";
+"fraction.denominator.6" = "六";
+"fraction.denominator.7" = "七";
+"fraction.denominator.8" = "八";
+"fraction.denominator.9" = "九";
+"fraction.denominator.10" = "十";
+"fraction.denominator.11" = "十一";
+"fraction.denominator.12" = "十二";
+"fraction.denominator.13" = "十三";
+"fraction.denominator.14" = "十四";
+"fraction.denominator.15" = "十五";
+"fraction.denominator.16" = "十六";
+"fraction.denominator.17" = "十七";
+"fraction.denominator.18" = "十八";
+"fraction.denominator.19" = "十九";
+"fraction.denominator.20" = "二十";
+"fraction.denominator.21" = "二十一";
+"fraction.denominator.22" = "二十二";
+"fraction.denominator.23" = "二十三";
+"fraction.denominator.24" = "二十四";
+"fraction.denominator.25" = "二十五";
+"fraction.denominator.30" = "三十";
+"fraction.denominator.40" = "四十";
+"fraction.denominator.50" = "五十";
+"fraction.denominator.60" = "六十";
+"fraction.denominator.70" = "七十";
+"fraction.denominator.80" = "八十";
+"fraction.denominator.90" = "九十";
+"fraction.denominator.100" = "一百";
+
 
 "settings.time" = "时间设置";
 "settings.language" = "语言设置";
@@ -114,6 +218,7 @@
 "solution.standard.subtraction" = "标准减法解析：\n%d - %d = %d\n\n直接计算%d减%d等于%d";
 "solution.standard.multiplication" = "标准乘法解析：\n%d × %d = %d\n\n直接计算%d乘%d等于%d";
 "solution.standard.division" = "标准除法解析：\n%d ÷ %d = %d\n\n直接计算%d除以%d等于%d";
+"solution.standard.division_with_result" = "标准除法解析：\n%1$d ÷ %2$d = %3$@\n\n直接计算%4$d除以%5$d等于%6$@";
 "solution.standard.three_numbers" = "标准计算解析：\n%d %@ %d %@ %d = ?\n\n步骤1：计算%d %@ %d = %d\n步骤2：计算%d %@ %d = %d\n\n所以，%d %@ %d %@ %d = %d";
 "solution.standard.three_numbers_op2_first" = "标准计算解析（按运算顺序）：\n题目：%1$d %2$@ %3$d %4$@ %5$d = ?\n\n步骤1（先算乘除）：%6$d %7$@ %8$d = %9$d\n步骤2（后算加减）：%10$d %11$@ %12$d = %13$d\n\n所以，%14$d %15$@ %16$d %17$@ %18$d = %19$d";
 
@@ -123,6 +228,9 @@
 "solution.decomposition_multiplication.steps" = "分解乘法解析：\n%d × %d = %d\n\n步骤1：将%d分解为%d和%d\n步骤2：计算%d × %d = %d\n步骤3：计算%d × %d = %d\n步骤4：%d + %d = %d\n\n所以，%d × %d = %d";
 "solution.division_verification.steps" = "除法验算法解析：\n%d ÷ %d = %d\n\n思考：%d × %d = ?\n验算：%d × %d = %d\n因为%d = %d，所以%d ÷ %d = %d";
 "solution.grouping_division.steps" = "分组除法解析：\n%d ÷ %d = %d\n\n将%d个物品平均分成%d组\n每组有%d × %d = %d个物品\n所以，%d ÷ %d = %d";
+
+"solution.fraction.two_operands" = "分数运算解析：\n题目：%1$@ %2$@ %3$@ = ?\n\n计算：%4$@ %5$@ %6$@ = %7$@\n\n答案：%8$@ %9$@ %10$@ = %11$@";
+"solution.fraction.three_operands" = "分数多步运算解析：\n题目：%1$@ %2$@ %3$@ %4$@ %5$@ = ?\n\n计算：%6$@ %7$@ %8$@ %9$@ %10$@ = %11$@\n\n答案：%12$@ %13$@ %14$@ %15$@ %16$@ = %17$@";
 
 /* Multiplication Table */
 "button.multiplication_table" = "9×9 乘法表";
@@ -522,3 +630,4 @@
 "copied_status" = "已复制";
 
 
+"welcome.level7.desc" = "复杂混合运算含分数";

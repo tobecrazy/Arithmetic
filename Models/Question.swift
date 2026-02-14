@@ -5,7 +5,86 @@ class Question: NSObject, NSSecureCoding, Identifiable {
     let id: UUID
     let numbers: [Int]
     let operations: [Operation]
-    
+    let difficultyLevel: DifficultyLevel?
+
+    // Answer type enumeration
+    enum AnswerType: String, Codable {
+        case integer
+        case fraction
+    }
+
+    // Store fraction answer when applicable
+    let fractionAnswer: Fraction?
+
+    // Store computed integer answer (for fraction operations that result in whole numbers)
+    let computedAnswer: Int?
+
+    // Store fraction operands when applicable (nil entry means use integer from numbers array)
+    // Examples:
+    // - 1/2 + 1/3: fractionOperands = [Fraction(1,2), Fraction(1,3)], numbers = [0,0]
+    // - 2 × 1/4:   fractionOperands = [nil, Fraction(1,4)], numbers = [2,0]
+    // - 3 + 5:     fractionOperands = nil, numbers = [3,5] (existing behavior)
+    let fractionOperands: [Fraction?]?
+
+    // Determine if answer should be a fraction
+    var answerType: AnswerType {
+        // Only Level 7 can have fraction answers
+        guard let level = difficultyLevel, level == .level7 else {
+            return .integer
+        }
+
+        // Check if we have fraction operands - this takes precedence
+        if let fractionOps = fractionOperands, fractionOps.contains(where: { $0 != nil }) {
+            // If we have a computed integer answer, it's still an integer
+            if computedAnswer != nil {
+                return .integer
+            }
+            // Otherwise, if we have a fraction answer, it's a fraction
+            if fractionAnswer != nil {
+                return .fraction
+            }
+        }
+
+        // Check if any division operation results in a non-integer
+        if numbers.count == 2 && operations.count == 1 && operations[0] == .division {
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            if num2 != 0 && num1 % num2 != 0 {
+                return .fraction
+            }
+        } else if numbers.count == 3 && operations.count == 2 {
+            // For three-number operations, check if any intermediate division is non-integer
+            let op1 = operations[0]
+            let op2 = operations[1]
+
+            if op1.precedence < op2.precedence {
+                // Second operation has higher precedence
+                if op2 == .division && numbers[1] % numbers[2] != 0 {
+                    return .fraction
+                }
+            } else {
+                // First operation has higher or same precedence
+                if op1 == .division && numbers[0] % numbers[1] != 0 {
+                    return .fraction
+                } else if op2 == .division {
+                    // Calculate intermediate result first
+                    var intermediateResult = 0
+                    switch op1 {
+                    case .addition: intermediateResult = numbers[0] + numbers[1]
+                    case .subtraction: intermediateResult = numbers[0] - numbers[1]
+                    case .multiplication: intermediateResult = numbers[0] * numbers[1]
+                    case .division: intermediateResult = numbers[0] / numbers[1]
+                    }
+                    if intermediateResult % numbers[2] != 0 {
+                        return .fraction
+                    }
+                }
+            }
+        }
+
+        return .integer
+    }
+
     // 解题方法枚举
     enum SolutionMethod: String, Codable {
         case breakingTen = "breaking_ten"  // 破十法
@@ -23,8 +102,18 @@ class Question: NSObject, NSSecureCoding, Identifiable {
         }
     }
     
-    // 计算正确答案
+    // 计算正确答案 (for integer answers)
     var correctAnswer: Int {
+        if answerType == .fraction {
+            // For fractions, return 0 as placeholder; use fractionAnswer instead
+            return 0
+        }
+
+        // Check if we have a precomputed answer from fraction operations
+        if let computed = computedAnswer {
+            return computed
+        }
+
         if numbers.count == 2 && operations.count == 1 {
             // 简单的两数运算
             switch operations[0] {
@@ -119,14 +208,81 @@ class Question: NSObject, NSSecureCoding, Identifiable {
             }
         }
     }
-    
+
+    // Check integer answer
+    func checkAnswer(_ intAnswer: Int) -> Bool {
+        guard answerType == .integer else {
+            return false
+        }
+        return intAnswer == correctAnswer
+    }
+
+    // Get the correct answer as a display string (handles both integer and fraction)
+    var correctAnswerText: String {
+        if answerType == .fraction {
+            if let fraction = fractionAnswer {
+                return fraction.unicodeDescription
+            }
+        }
+        if let computed = computedAnswer {
+            return String(computed)
+        }
+        return String(correctAnswer)
+    }
+
+    // Check fraction answer
+    func checkAnswer(_ fractionAnswer: Fraction) -> Bool {
+        guard answerType == .fraction, let correctFraction = self.fractionAnswer else {
+            return false
+        }
+        return fractionAnswer == correctFraction
+    }
+
+    // Check decimal answer (with tolerance for repeating decimals like 0.333... ≈ 1/3)
+    func checkDecimalAnswer(_ decimal: Double, tolerance: Double = 0.001) -> Bool {
+        if answerType == .fraction {
+            // Compare against fraction answer
+            guard let fraction = fractionAnswer else {
+                return false
+            }
+            return abs(fraction.toDecimal() - decimal) < tolerance
+        } else {
+            // Compare against integer answer
+            return abs(Double(correctAnswer) - decimal) < tolerance
+        }
+    }
+
+    // Compute correct fraction answer
+    func computeFractionAnswer() -> Fraction? {
+        guard answerType == .fraction else {
+            return nil
+        }
+
+        if numbers.count == 2 && operations.count == 1 && operations[0] == .division {
+            let num1 = numbers[0]
+            let num2 = numbers[1]
+            guard num2 != 0 else { return nil }
+            return Fraction(numerator: num1, denominator: num2).simplified()
+        } else if numbers.count == 3 && operations.count == 2 {
+            // For three-number operations with fractions, this is more complex
+            // For now, return nil (will be implemented if needed)
+            return nil
+        }
+
+        return nil
+    }
+
     // 用于检查题目是否重复
     static func == (lhs: Question, rhs: Question) -> Bool {
         return lhs.numbers == rhs.numbers && lhs.operations == rhs.operations
     }
     
     // 验证题目是否数学上合理（所有除法都能整除，且所有中间结果为正数）
+    // For Level 7, allow non-integer division results (fractions)
     func isValid() -> Bool {
+        // Level 7 allows fractions, so division doesn't need to be exact
+        let allowFractions = difficultyLevel == .level7
+
         if numbers.count == 2 && operations.count == 1 {
             // 两数运算验证
             switch operations[0] {
@@ -134,7 +290,13 @@ class Question: NSObject, NSSecureCoding, Identifiable {
                 // 对于减法，确保第一个数大于等于第二个数（避免负数结果）
                 return numbers[0] >= numbers[1]
             case .division:
-                return numbers[1] != 0 && numbers[0] % numbers[1] == 0
+                if allowFractions {
+                    // For Level 7, only check division by zero
+                    return numbers[1] != 0
+                } else {
+                    // For other levels, division must be exact
+                    return numbers[1] != 0 && numbers[0] % numbers[1] == 0
+                }
             default:
                 return true
             }
@@ -147,13 +309,19 @@ class Question: NSObject, NSSecureCoding, Identifiable {
             let op2 = operations[1]
 
             // 检查所有可能的除法操作是否能整除，以及中间结果是否为正数
+            // For Level 7, allow fractions
+            let allowFractions = difficultyLevel == .level7
+
             if op1.precedence < op2.precedence {
                 // 第二个操作优先级更高 (e.g., A + B ÷ C 或 A - B × C)
                 // 先计算 B op2 C
                 var intermediateResult2: Int
                 if op2 == .division {
-                    // 检查 B ÷ C 是否能整除
-                    if num3 == 0 || num2 % num3 != 0 {
+                    // 检查 B ÷ C 是否能整除 (unless Level 7 allows fractions)
+                    if num3 == 0 {
+                        return false
+                    }
+                    if !allowFractions && num2 % num3 != 0 {
                         return false
                     }
                     intermediateResult2 = num2 / num3
@@ -181,8 +349,11 @@ class Question: NSObject, NSSecureCoding, Identifiable {
                 // 先计算 A op1 B
                 var intermediateResult1: Int
                 if op1 == .division {
-                    // 检查 A ÷ B 是否能整除
-                    if num2 == 0 || num1 % num2 != 0 {
+                    // 检查 A ÷ B 是否能整除 (unless Level 7 allows fractions)
+                    if num2 == 0 {
+                        return false
+                    }
+                    if !allowFractions && num1 % num2 != 0 {
                         return false
                     }
                     intermediateResult1 = num1 / num2
@@ -200,8 +371,11 @@ class Question: NSObject, NSSecureCoding, Identifiable {
 
                 // 然后计算 intermediateResult1 op2 C
                 if op2 == .division {
-                    // 检查 intermediateResult1 ÷ C 是否能整除
-                    if num3 == 0 || intermediateResult1 % num3 != 0 {
+                    // 检查 intermediateResult1 ÷ C 是否能整除 (unless Level 7 allows fractions)
+                    if num3 == 0 {
+                        return false
+                    }
+                    if !allowFractions && intermediateResult1 % num3 != 0 {
                         return false
                     }
                 } else if op2 == .subtraction {
@@ -221,8 +395,29 @@ class Question: NSObject, NSSecureCoding, Identifiable {
     
     // 题目的字符串表示
     var questionText: String {
+        // Handle fraction operands
+        if let fractionOps = fractionOperands {
+            var parts: [String] = []
+            for (i, num) in numbers.enumerated() {
+                if let frac = fractionOps[i] {
+                    parts.append(frac.unicodeDescription) // Use Unicode format: "½" instead of "1/2"
+                } else {
+                    parts.append("\(num)") // "3"
+                }
+            }
+
+            if parts.count == 2 && operations.count == 1 {
+                // Two-number operation
+                return "\(parts[0]) \(operations[0].symbol) \(parts[1]) = ?"
+            } else if parts.count == 3 && operations.count == 2 {
+                // Three-number operation
+                return "\(parts[0]) \(operations[0].symbol) \(parts[1]) \(operations[1].symbol) \(parts[2]) = ?"
+            }
+        }
+
+        // Standard integer operations
         if numbers.count == 2 && operations.count == 1 {
-            // 简单的两数运算
+            // 简单的两数运算 - 题目不应显示答案，始终显示 "= ?"
             return "\(numbers[0]) \(operations[0].symbol) \(numbers[1]) = ?"
         } else if numbers.count == 3 && operations.count == 2 {
             // 三数运算
@@ -230,40 +425,273 @@ class Question: NSObject, NSSecureCoding, Identifiable {
         }
         return "Invalid Question"
     }
-    
+
     // 获取用于语音朗读的题目文本
     var questionTextForSpeech: String {
         let questionExpression: String
-        if numbers.count == 2 && operations.count == 1 {
-            // 简单的两数运算，去掉 "= ?" 部分
-            questionExpression = "\(numbers[0]) \(operations[0].symbol) \(numbers[1])"
-        } else if numbers.count == 3 && operations.count == 2 {
-            // 三数运算，去掉 "= ?" 部分
-            questionExpression = "\(numbers[0]) \(operations[0].symbol) \(numbers[1]) \(operations[1].symbol) \(numbers[2])"
+
+        // Handle fraction operands - convert to words for TTS
+        if let fractionOps = fractionOperands {
+            var parts: [String] = []
+            for (i, num) in numbers.enumerated() {
+                if let frac = fractionOps[i] {
+                    parts.append(frac.toWords()) // "one half", "三分之一"
+                } else {
+                    // TODO: Convert integer to words too for consistency
+                    parts.append("\(num)")
+                }
+            }
+
+            if parts.count == 2 && operations.count == 1 {
+                // Two-number operation
+                let opWord = operationToWords(operations[0])
+                questionExpression = "\(parts[0]) \(opWord) \(parts[1])"
+            } else if parts.count == 3 && operations.count == 2 {
+                // Three-number operation
+                let op1Word = operationToWords(operations[0])
+                let op2Word = operationToWords(operations[1])
+                questionExpression = "\(parts[0]) \(op1Word) \(parts[1]) \(op2Word) \(parts[2])"
+            } else {
+                questionExpression = "Invalid Question"
+            }
         } else {
-            questionExpression = "Invalid Question"
+            // Standard integer operations
+            if numbers.count == 2 && operations.count == 1 {
+                // 简单的两数运算，去掉 "= ?" 部分
+                questionExpression = "\(numbers[0]) \(operations[0].symbol) \(numbers[1])"
+            } else if numbers.count == 3 && operations.count == 2 {
+                // 三数运算，去掉 "= ?" 部分
+                questionExpression = "\(numbers[0]) \(operations[0].symbol) \(numbers[1]) \(operations[1].symbol) \(numbers[2])"
+            } else {
+                questionExpression = "Invalid Question"
+            }
         }
-        
+
         // 使用本地化字符串格式化语音文本
         return "question.read_aloud".localizedFormat(questionExpression)
     }
+
+    // Helper: Convert operation to words for TTS
+    private func operationToWords(_ operation: Operation) -> String {
+        switch operation {
+        case .addition: return "plus"
+        case .subtraction: return "minus"
+        case .multiplication: return "times"
+        case .division: return "divided by"
+        }
+    }
     
     // 便捷初始化方法 - 两数运算
-    init(number1: Int, number2: Int, operation: Operation) {
+    init(number1: Int, number2: Int, operation: Operation, difficultyLevel: DifficultyLevel? = nil) {
         self.id = UUID()
         self.numbers = [number1, number2]
         self.operations = [operation]
+        self.difficultyLevel = difficultyLevel
+        self.fractionOperands = nil // No fraction operands
+
+        // Compute fraction answer if applicable
+        if let level = difficultyLevel, level == .level7, operation == .division, number2 != 0, number1 % number2 != 0 {
+            self.fractionAnswer = Fraction(numerator: number1, denominator: number2).simplified()
+            self.computedAnswer = nil
+        } else {
+            self.fractionAnswer = nil
+            self.computedAnswer = nil
+        }
+
         super.init()
     }
-    
+
+    // 便捷初始化方法 - 两数运算（支持分数操作数）
+    init(operand1: Any, operand2: Any, operation: Operation, difficultyLevel: DifficultyLevel? = nil) {
+        self.id = UUID()
+        self.operations = [operation]
+        self.difficultyLevel = difficultyLevel
+
+        // Parse operands: can be Int or Fraction
+        var frac1: Fraction? = nil
+        var frac2: Fraction? = nil
+        var num1: Int = 0
+        var num2: Int = 0
+
+        if let f = operand1 as? Fraction {
+            frac1 = f
+            num1 = 0 // Placeholder
+        } else if let n = operand1 as? Int {
+            num1 = n
+        }
+
+        if let f = operand2 as? Fraction {
+            frac2 = f
+            num2 = 0 // Placeholder
+        } else if let n = operand2 as? Int {
+            num2 = n
+        }
+
+        self.numbers = [num1, num2]
+        self.fractionOperands = [frac1, frac2]
+
+        // Compute the answer
+        if frac1 != nil || frac2 != nil {
+            // At least one operand is a fraction
+            let leftFrac = frac1 ?? Fraction(numerator: num1, denominator: 1)
+            let rightFrac = frac2 ?? Fraction(numerator: num2, denominator: 1)
+
+            let resultFraction: Fraction
+            switch operation {
+            case .addition:
+                resultFraction = (leftFrac + rightFrac).simplified()
+            case .subtraction:
+                resultFraction = (leftFrac - rightFrac).simplified()
+            case .multiplication:
+                resultFraction = (leftFrac * rightFrac).simplified()
+            case .division:
+                resultFraction = (leftFrac / rightFrac).simplified()
+            }
+
+            // Check if result is a whole number
+            if resultFraction.numerator % resultFraction.denominator == 0 {
+                self.fractionAnswer = nil // It's an integer answer
+                self.computedAnswer = resultFraction.numerator / resultFraction.denominator
+            } else {
+                self.fractionAnswer = resultFraction
+                self.computedAnswer = nil
+            }
+        } else {
+            // Both operands are integers (shouldn't happen with this init, but handle it)
+            if difficultyLevel == .level7 && operation == .division && num2 != 0 && num1 % num2 != 0 {
+                self.fractionAnswer = Fraction(numerator: num1, denominator: num2).simplified()
+                self.computedAnswer = nil
+            } else {
+                self.fractionAnswer = nil
+                self.computedAnswer = nil
+            }
+        }
+
+        super.init()
+    }
+
     // 便捷初始化方法 - 三数运算
-    init(number1: Int, number2: Int, number3: Int, operation1: Operation, operation2: Operation) {
+    init(number1: Int, number2: Int, number3: Int, operation1: Operation, operation2: Operation, difficultyLevel: DifficultyLevel? = nil) {
         self.id = UUID()
         self.numbers = [number1, number2, number3]
         self.operations = [operation1, operation2]
+        self.difficultyLevel = difficultyLevel
+        self.fractionOperands = nil // No fraction operands
+        // For now, three-number fractions are not supported
+        self.fractionAnswer = nil
+        self.computedAnswer = nil
         super.init()
     }
-    
+
+    // 便捷初始化方法 - 三数运算（支持分数操作数）
+    init(operand1: Any, operand2: Any, operand3: Any, operation1: Operation, operation2: Operation, difficultyLevel: DifficultyLevel? = nil) {
+        self.id = UUID()
+        self.operations = [operation1, operation2]
+        self.difficultyLevel = difficultyLevel
+
+        // Parse operands: can be Int or Fraction
+        var frac1: Fraction? = nil
+        var frac2: Fraction? = nil
+        var frac3: Fraction? = nil
+        var num1: Int = 0
+        var num2: Int = 0
+        var num3: Int = 0
+
+        if let f = operand1 as? Fraction {
+            frac1 = f
+            num1 = 0
+        } else if let n = operand1 as? Int {
+            num1 = n
+        }
+
+        if let f = operand2 as? Fraction {
+            frac2 = f
+            num2 = 0
+        } else if let n = operand2 as? Int {
+            num2 = n
+        }
+
+        if let f = operand3 as? Fraction {
+            frac3 = f
+            num3 = 0
+        } else if let n = operand3 as? Int {
+            num3 = n
+        }
+
+        self.numbers = [num1, num2, num3]
+        self.fractionOperands = [frac1, frac2, frac3]
+
+        // Compute the answer (following PEMDAS)
+        if frac1 != nil || frac2 != nil || frac3 != nil {
+            // At least one operand is a fraction
+            let leftFrac = frac1 ?? Fraction(numerator: num1, denominator: 1)
+            let midFrac = frac2 ?? Fraction(numerator: num2, denominator: 1)
+            let rightFrac = frac3 ?? Fraction(numerator: num3, denominator: 1)
+
+            let resultFraction: Fraction
+            if operation1.precedence < operation2.precedence {
+                // Second operation has higher precedence
+                var intermediateResult: Fraction
+                switch operation2 {
+                case .multiplication:
+                    intermediateResult = (midFrac * rightFrac).simplified()
+                case .division:
+                    intermediateResult = (midFrac / rightFrac).simplified()
+                default:
+                    intermediateResult = midFrac
+                }
+
+                switch operation1 {
+                case .addition:
+                    resultFraction = (leftFrac + intermediateResult).simplified()
+                case .subtraction:
+                    resultFraction = (leftFrac - intermediateResult).simplified()
+                default:
+                    resultFraction = leftFrac
+                }
+            } else {
+                // First operation has higher or equal precedence
+                var intermediateResult: Fraction
+                switch operation1 {
+                case .addition:
+                    intermediateResult = (leftFrac + midFrac).simplified()
+                case .subtraction:
+                    intermediateResult = (leftFrac - midFrac).simplified()
+                case .multiplication:
+                    intermediateResult = (leftFrac * midFrac).simplified()
+                case .division:
+                    intermediateResult = (leftFrac / midFrac).simplified()
+                }
+
+                switch operation2 {
+                case .addition:
+                    resultFraction = (intermediateResult + rightFrac).simplified()
+                case .subtraction:
+                    resultFraction = (intermediateResult - rightFrac).simplified()
+                case .multiplication:
+                    resultFraction = (intermediateResult * rightFrac).simplified()
+                case .division:
+                    resultFraction = (intermediateResult / rightFrac).simplified()
+                }
+            }
+
+            // Check if result is a whole number
+            if resultFraction.numerator % resultFraction.denominator == 0 {
+                self.fractionAnswer = nil
+                self.computedAnswer = resultFraction.numerator / resultFraction.denominator
+            } else {
+                self.fractionAnswer = resultFraction
+                self.computedAnswer = nil
+            }
+        } else {
+            // All operands are integers (shouldn't happen with this init, but handle it)
+            self.fractionAnswer = nil
+            self.computedAnswer = nil
+        }
+
+        super.init()
+    }
+
     // NSSecureCoding
     required init?(coder: NSCoder) {
         guard let id = coder.decodeObject(of: NSUUID.self, forKey: "id") as UUID?,
@@ -275,13 +703,81 @@ class Question: NSObject, NSSecureCoding, Identifiable {
         self.id = id
         self.numbers = numbers
         self.operations = operationStrings.compactMap { Operation(rawValue: $0) }
+
+        // Decode difficulty level if present
+        if let levelString = coder.decodeObject(of: NSString.self, forKey: "difficultyLevel") as String? {
+            self.difficultyLevel = DifficultyLevel(rawValue: levelString)
+        } else {
+            self.difficultyLevel = nil
+        }
+
+        // Decode fraction answer if present
+        if let numerator = coder.decodeObject(of: NSNumber.self, forKey: "fractionNumerator") as? Int,
+           let denominator = coder.decodeObject(of: NSNumber.self, forKey: "fractionDenominator") as? Int,
+           denominator != 0 {
+            self.fractionAnswer = Fraction(numerator: numerator, denominator: denominator)
+        } else {
+            self.fractionAnswer = nil
+        }
+
+        // Decode computed answer if present
+        if let computed = coder.decodeObject(of: NSNumber.self, forKey: "computedAnswer") as? Int {
+            self.computedAnswer = computed
+        } else {
+            self.computedAnswer = nil
+        }
+
+        // Decode fraction operands if present
+        if let count = coder.decodeObject(of: NSNumber.self, forKey: "fractionOperandsCount") as? Int {
+            var decodedFractions: [Fraction?] = []
+            for i in 0..<count {
+                if let numerator = coder.decodeObject(of: NSNumber.self, forKey: "fractionOperand\(i)Numerator") as? Int,
+                   let denominator = coder.decodeObject(of: NSNumber.self, forKey: "fractionOperand\(i)Denominator") as? Int,
+                   denominator != 0 {
+                    decodedFractions.append(Fraction(numerator: numerator, denominator: denominator))
+                } else {
+                    decodedFractions.append(nil)
+                }
+            }
+            self.fractionOperands = decodedFractions
+        } else {
+            self.fractionOperands = nil
+        }
+
         super.init()
     }
-    
+
     func encode(with coder: NSCoder) {
         coder.encode(id, forKey: "id")
         coder.encode(numbers, forKey: "numbers")
         coder.encode(operations.map { $0.rawValue }, forKey: "operations")
+
+        // Encode difficulty level
+        if let level = difficultyLevel {
+            coder.encode(level.rawValue, forKey: "difficultyLevel")
+        }
+
+        // Encode fraction answer
+        if let fraction = fractionAnswer {
+            coder.encode(NSNumber(value: fraction.numerator), forKey: "fractionNumerator")
+            coder.encode(NSNumber(value: fraction.denominator), forKey: "fractionDenominator")
+        }
+
+        // Encode computed answer
+        if let computed = computedAnswer {
+            coder.encode(NSNumber(value: computed), forKey: "computedAnswer")
+        }
+
+        // Encode fraction operands
+        if let fractionOps = fractionOperands {
+            coder.encode(NSNumber(value: fractionOps.count), forKey: "fractionOperandsCount")
+            for (i, frac) in fractionOps.enumerated() {
+                if let f = frac {
+                    coder.encode(NSNumber(value: f.numerator), forKey: "fractionOperand\(i)Numerator")
+                    coder.encode(NSNumber(value: f.denominator), forKey: "fractionOperand\(i)Denominator")
+                }
+            }
+        }
     }
     
     // 获取解题方法 - 根据难度等级应用不同的特殊方法
@@ -531,31 +1027,45 @@ class Question: NSObject, NSSecureCoding, Identifiable {
     
     // 生成标准解法
     private func generateStandardSolution() -> String {
+        // Check if we have fraction operands - use fraction-aware solution generation
+        if let fractionOps = fractionOperands, fractionOps.contains(where: { $0 != nil }) {
+            return generateFractionSolution()
+        }
+
         if operations.count == 1 {
             let num1 = numbers[0]
             let num2 = numbers[1]
-            let result = correctAnswer
-            
+
+            // For fraction answers (Level 7 division), use the fraction result text
+            // For integer answers, use the integer result
+            let resultText: String
+            if answerType == .fraction, let fraction = fractionAnswer {
+                resultText = fraction.localizedString()
+            } else {
+                resultText = "\(correctAnswer)"
+            }
+
             switch operations[0] {
             case .addition:
                 return "solution.standard.addition".localizedFormat(
-                    num1, num2, result,
-                    num1, num2, result
+                    num1, num2, correctAnswer,
+                    num1, num2, correctAnswer
                 )
             case .subtraction:
                 return "solution.standard.subtraction".localizedFormat(
-                    num1, num2, result,
-                    num1, num2, result
+                    num1, num2, correctAnswer,
+                    num1, num2, correctAnswer
                 )
             case .multiplication:
                 return "solution.standard.multiplication".localizedFormat(
-                    num1, num2, result,
-                    num1, num2, result
+                    num1, num2, correctAnswer,
+                    num1, num2, correctAnswer
                 )
             case .division:
-                return "solution.standard.division".localizedFormat(
-                    num1, num2, result,
-                    num1, num2, result
+                // For division, use the correct result text (integer or fraction)
+                return "solution.standard.division_with_result".localizedFormat(
+                    num1, num2, resultText,
+                    num1, num2, resultText
                 )
             }
         } else if operations.count == 2 {
@@ -564,7 +1074,7 @@ class Question: NSObject, NSSecureCoding, Identifiable {
             let num3 = numbers[2]
             let op1 = operations[0]
             let op2 = operations[1]
-            
+
             let actualFinalResult = self.correctAnswer // Get the already correctly calculated answer
 
             if op1.precedence < op2.precedence {
@@ -608,7 +1118,61 @@ class Question: NSObject, NSSecureCoding, Identifiable {
                 )
             }
         }
-        
+
+        return "solution.standard".localized
+    }
+
+    // 生成分数运算的解法
+    private func generateFractionSolution() -> String {
+        guard let fractionOps = fractionOperands else {
+            return "solution.standard".localized
+        }
+
+        // Get operand display strings (fraction or integer)
+        func operandString(_ index: Int) -> String {
+            if let frac = fractionOps[index] {
+                return frac.localizedString()
+            } else {
+                return "\(numbers[index])"
+            }
+        }
+
+        // Get the result display string
+        let resultString: String
+        if let fracAnswer = fractionAnswer {
+            resultString = fracAnswer.localizedString()
+        } else if let computed = computedAnswer {
+            resultString = "\(computed)"
+        } else {
+            resultString = "\(correctAnswer)"
+        }
+
+        if operations.count == 1 {
+            let operand1 = operandString(0)
+            let operand2 = operandString(1)
+            let opSymbol = operations[0].symbol
+
+            // Build solution text for fraction operations
+            return "solution.fraction.two_operands".localizedFormat(
+                operand1, opSymbol, operand2,
+                operand1, opSymbol, operand2, resultString,
+                operand1, opSymbol, operand2, resultString
+            )
+        } else if operations.count == 2 {
+            let operand1 = operandString(0)
+            let operand2 = operandString(1)
+            let operand3 = operandString(2)
+            let op1Symbol = operations[0].symbol
+            let op2Symbol = operations[1].symbol
+
+            // For three-operand fraction operations
+            return "solution.fraction.three_operands".localizedFormat(
+                operand1, op1Symbol, operand2, op2Symbol, operand3,
+                operand1, op1Symbol, operand2, op2Symbol, operand3, resultString,
+                operand1, op1Symbol, operand2, op2Symbol, operand3, resultString
+            )
+        }
+
         return "solution.standard".localized
     }
     

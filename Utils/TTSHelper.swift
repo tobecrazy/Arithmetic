@@ -156,6 +156,94 @@ class TTSHelper: ObservableObject {
     var isSpeaking: Bool {
         return synthesizer.isSpeaking
     }
+
+    /// Converts a fraction to natural spoken text in the specified language
+    func speakFraction(_ fraction: Fraction, language: LocalizationManager.Language) -> String {
+        // Check for whole number
+        if fraction.numerator % fraction.denominator == 0 {
+            let whole = fraction.numerator / fraction.denominator
+            return spelledOutNumber("\(whole)", language: language)
+        }
+
+        // Check for mixed number
+        if let mixed = fraction.toMixedNumber() {
+            let wholePart = spelledOutNumber("\(mixed.whole)", language: language)
+            let fractionPart = speakSimpleFraction(numerator: mixed.fraction.numerator,
+                                                   denominator: mixed.fraction.denominator,
+                                                   language: language)
+            switch language {
+            case .chinese:
+                return "\(wholePart) 又 \(fractionPart)"
+            case .english:
+                return "\(wholePart) and \(fractionPart)"
+            }
+        }
+
+        // Simple fraction
+        return speakSimpleFraction(numerator: fraction.numerator,
+                                   denominator: fraction.denominator,
+                                   language: language)
+    }
+
+    /// Converts a simple fraction (not mixed) to natural spoken text
+    private func speakSimpleFraction(numerator: Int, denominator: Int, language: LocalizationManager.Language) -> String {
+        switch language {
+        case .chinese:
+            return speakFractionChinese(numerator: numerator, denominator: denominator)
+        case .english:
+            return speakFractionEnglish(numerator: numerator, denominator: denominator)
+        }
+    }
+
+    /// Speaks a fraction in Chinese
+    private func speakFractionChinese(numerator: Int, denominator: Int) -> String {
+        // In Chinese, fractions are read as "分母分之分子"
+        // e.g., 1/2 = "二分之一", 2/3 = "三分之二"
+        let numeratorText = spelledOutNumber("\(numerator)", language: .chinese)
+        let denominatorText = spelledOutNumber("\(denominator)", language: .chinese)
+        return "\(denominatorText)分之\(numeratorText)"
+    }
+
+    /// Speaks a fraction in English
+    private func speakFractionEnglish(numerator: Int, denominator: Int) -> String {
+        // Handle common fractions with special names
+        if numerator == 1 {
+            switch denominator {
+            case 2: return "one half"
+            case 3: return "one third"
+            case 4: return "one quarter"
+            case 5: return "one fifth"
+            case 6: return "one sixth"
+            case 7: return "one seventh"
+            case 8: return "one eighth"
+            case 9: return "one ninth"
+            case 10: return "one tenth"
+            default: break
+            }
+        } else if numerator == 2 && denominator == 3 {
+            return "two thirds"
+        } else if numerator == 3 && denominator == 4 {
+            return "three quarters"
+        }
+
+        // General case: "numerator denominator-ths"
+        let numeratorText = spelledOutNumber("\(numerator)", language: .english)
+        let denominatorText = spelledOutNumber("\(denominator)", language: .english)
+
+        // Add ordinal suffix for denominator
+        let denominatorOrdinal: String
+        if denominator == 2 {
+            denominatorOrdinal = numerator > 1 ? "halves" : "half"
+        } else if denominator == 3 {
+            denominatorOrdinal = denominatorText + (numerator > 1 ? " thirds" : " third")
+        } else if denominator == 4 {
+            denominatorOrdinal = denominatorText + (numerator > 1 ? " quarters" : " quarter")
+        } else {
+            denominatorOrdinal = denominatorText + (numerator > 1 ? " ths" : " th")
+        }
+
+        return "\(numeratorText) \(denominatorOrdinal)"
+    }
 }
 
 // MARK: - Singleton Instance

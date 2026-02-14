@@ -45,15 +45,15 @@
 
 | 🎯 核心功能 | 🧠 智能系统 | 🌐 用户体验 |
 |------------|------------|------------|
-| 6级难度体系 | 错题收集分析 | 中英文双语 |
+| 7级难度体系 | 错题收集分析 | 中英文双语 |
 | 四则运算练习 | 8种解题方法 | 设备自适应 |
-| 实时计分系统 | 进度自动保存 | 响应式设计 |
-| TTS语音朗读 | 九九乘法表 | 深色模式支持 |
-| PDF题库生成 | 系统信息监控 | 设置选项 |
-| 欢迎引导流程 | 数学公式大全 | QR码扫描工具 |
-| 网络状态检测 | 单位换算 | 电池监控 |
-| Firebase崩溃监控 (Firebase Crash Monitoring) | 运行时长计算 | 关于页面 (About Page) |
-| Git信息嵌入 (Git Info Embedding) | 崩溃测试功能 | |
+| 分数运算支持 | 进度自动保存 | 响应式设计 |
+| 实时计分系统 | 九九乘法表 | 深色模式支持 |
+| TTS语音朗读 | 系统信息监控 | 设置选项 |
+| PDF题库生成 | 数学公式大全 | QR码扫描工具 |
+| 欢迎引导流程 | 单位换算 | 电池监控 |
+| 网络状态检测 | 运行时长计算 | 关于页面 (About Page) |
+| Firebase崩溃监控 (Firebase Crash Monitoring) | 崩溃测试功能 | Git信息嵌入 (Git Info Embedding) |
 
 </div>
 
@@ -592,7 +592,7 @@ We welcome all forms of contributions! 🎉
 2. **进入主界面** - 完成引导或跳过后进入主界面
 
 #### 🎮 日常使用流程 (Daily Usage Flow)
-1. **选择难度** - 在主页面选择适合的难度等级（1-6级）
+1. **选择难度** - 在主页面选择适合的难度等级（1-7级）
 2. **设置时间** - 配置答题时间（3-30分钟）
 3. **选择语言** - 选择界面语言（中文或英文）
 4. **开始练习** - 点击"开始游戏"按钮开始答题
@@ -607,7 +607,7 @@ We welcome all forms of contributions! 🎉
 2. **Enter Main Interface** - Proceed to the main interface after completing or skipping the onboarding
 
 #### 🎮 Daily Usage Flow
-1. **Select Difficulty** - Choose appropriate difficulty level (Level 1-6) on the main page
+1. **Select Difficulty** - Choose appropriate difficulty level (Level 1-7) on the main page
 2. **Set Time** - Configure answering time (3-30 minutes)
 3. **Choose Language** - Select interface language (Chinese or English)
 4. **Start Practice** - Click "Start Game" button to begin answering
@@ -620,9 +620,10 @@ We welcome all forms of contributions! 🎉
 flowchart TB
     L1[等级1 - 10以内加减法<br/>Level 1 - Addition/Subtraction within 10] --> L2[等级2 - 20以内加减法<br/>Level 2 - Addition/Subtraction within 20]
     L2 --> L3[等级3 - 50以内加减法<br/>Level 3 - Addition/Subtraction within 50]
-    L3 --> L6[等级6 - 100以内混合运算<br/>Level 6 - Mixed Operations within 100]
-    L4[等级4 - 10以内乘除法<br/>Level 4 - Multiplication/Division within 10] --> L5[等级5 - 20以内乘除法<br/>Level 5 - Multiplication/Division within 20]
+    L3 --> L6[等级6 - 1000以内混合运算<br/>Level 6 - Mixed Operations within 1000]
+    L4[等级4 - 10以内乘除法<br/>Level 4 - Multiplication/Division within 10] --> L5[等级5 - 50以内乘除法<br/>Level 5 - Multiplication/Division within 50]
     L5 --> L6
+    L6 --> L7[等级7 - 复杂混合运算含分数<br/>Level 7 - Complex Mixed Operations with Fractions]
 ```
 
 [⬆️ 返回目录](#-目录-table-of-contents)
@@ -639,8 +640,9 @@ flowchart TB
 | **Level 2** | 20以内加减法 | 25题 | 4分 | 100分 | 🔟 四种解法 |
 | **Level 3** | 50以内加减法 | 50题 | 2分 | 100分 | 进阶练习 |
 | **Level 4** | 10以内乘除法 | 20题 | 5分 | 100分 | 🔢 口诀基础 |
-| **Level 5** | 20以内乘除法 | 25题 | 4分 | 100分 | 🧩 分解方法 |
-| **Level 6** | 100以内混合运算 | 100题 | 1分 | 100分 | 🔄 综合应用 |
+| **Level 5** | 50以内乘除法 | 30题 | 3分 | 90分 | 🧩 两位数运算 |
+| **Level 6** | 1000以内混合运算 | 100题 | 1分 | 100分 | 🔄 三位数综合 |
+| **Level 7** | 100以内复杂混合运算 | 100题 | 1分 | 100分 | ➗ 分数运算 |
 
 </div>
 
@@ -664,6 +666,16 @@ flowchart TB
 - **三数运算 (Three-number operations)**: 包含加减乘除四种运算的混合题目 (Mixed questions containing all four operations: addition, subtraction, multiplication, division)
 - **运算顺序 (Operation order)**: 严格遵循先乘除后加减的运算顺序 (Strictly follows the order of multiplication/division before addition/subtraction)
 - **智能组合 (Smart combination)**: 确保混合运算中每步计算都产生合理的整数结果 (Ensures each step in mixed operations produces reasonable integer results)
+- **数值范围 (Number range)**: 1-1000，包含三位数运算 (1-1000, includes three-digit operations)
+
+#### 🟣 复杂混合运算等级（Level 7）(Complex Mixed Operations Level (Level 7))
+- **分数运算支持 (Fraction Operations Support)**: 支持分数作为答案，特别是非整除的除法运算 (Supports fractions as answers, especially non-integer division operations)
+- **分数简化 (Fraction Simplification)**: 自动简化分数到最简形式（如 6/9 简化为 2/3）(Automatically simplifies fractions to simplest form (e.g., 6/9 simplified to 2/3))
+- **带分数显示 (Mixed Number Display)**: 假分数可转换为带分数形式（如 7/3 显示为 2⅓）(Improper fractions can be converted to mixed number form (e.g., 7/3 displayed as 2⅓))
+- **分数输入 (Fraction Input)**: 专用分数输入界面，分子分母分别输入 (Dedicated fraction input interface, separate inputs for numerator and denominator)
+- **分数朗读 (Fraction TTS)**: TTS语音支持自然读出分数（如"二分之一"、"one half"）(TTS voice supports natural pronunciation of fractions (e.g., "二分之一", "one half"))
+- **混合答案类型 (Mixed Answer Types)**: 同一关卡中包含整数答案和分数答案的题目 (Questions with both integer and fraction answers in the same level)
+- **数值范围 (Number range)**: 1-100，重点训练复杂混合运算 (1-100, focuses on complex mixed operations)
 
 [⬆️ 返回目录](#-目录-table-of-contents)
 
@@ -734,7 +746,7 @@ flowchart TB
 ### 🎮 游戏操作流程 (Game Operation Flow)
 
 1. **🏠 主页操作 (Home Page Operations)**
-   - 选择难度等级（1-6级）/ Select difficulty level (Level 1-6)
+   - 选择难度等级（1-7级）/ Select difficulty level (Level 1-7)
    - 设置答题时间（3-30分钟）/ Set answering time (3-30 minutes)
    - 选择界面语言（中文/英文）/ Choose interface language (Chinese/English)
    - 点击"开始游戏"或"错题集" / Click "Start Game" or "Wrong Questions"
