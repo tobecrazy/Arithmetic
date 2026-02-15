@@ -5,7 +5,7 @@
 "difficulty.level4" = "等级4 (10以内乘除法)";
 "difficulty.level5" = "等级5 (50以内乘除法)";
 "difficulty.level6" = "等级6 (三位数混合运算)";
-"difficulty.level7" = "等级7 (复杂混合运算含分数)";
+"difficulty.level7" = "等级7 (分数四则运算)";
 "difficulty.level" = "难度等级";
 "button.start" = "开始游戏";
 
@@ -630,4 +630,4 @@
 "copied_status" = "已复制";
 
 
-"welcome.level7.desc" = "复杂混合运算含分数";
+"welcome.level7.desc" = "分数四则运算（加减乘除）";

@@ -400,7 +400,7 @@ class Question: NSObject, NSSecureCoding, Identifiable {
             var parts: [String] = []
             for (i, num) in numbers.enumerated() {
                 if let frac = fractionOps[i] {
-                    parts.append(frac.unicodeDescription) // Use Unicode format: "½" instead of "1/2"
+                    parts.append(frac.description) // Use regular format: "1/2" instead of "½"
                 } else {
                     parts.append("\(num)") // "3"
                 }

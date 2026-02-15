@@ -5,7 +5,7 @@
 "difficulty.level4" = "Level 4 (Multiplication & Division 1-10)";
 "difficulty.level5" = "Level 5 (Multiplication & Division 1-50)";
 "difficulty.level6" = "Level 6 (Three-digit Mixed Operations)";
-"difficulty.level7" = "Level 7 (Complex Mixed Operations with Fractions)";
+"difficulty.level7" = "Level 7 (Fraction Arithmetic Operations)";
 "difficulty.level" = "Difficulty Level";
 "button.start" = "Start Game";
 
@@ -637,4 +637,4 @@
 "copied_status" = "Copied";
 
 
-"welcome.level7.desc" = "Complex Mixed Operations with Fractions";
+"welcome.level7.desc" = "Fraction Arithmetic (+, -, ×, ÷)";

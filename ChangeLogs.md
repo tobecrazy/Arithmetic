@@ -1,5 +1,10 @@
 # Change Log
 
+### 🌟 2026-02-15 (修复分数相关测试失败 / Fix Fraction-Related Test Failures)
+- **🔧 修复分数显示问题 (Fixed Fraction Display Issue)** - 修复Question.questionText属性以正确显示分数 (Fixed Question.questionText property to properly display fractions)
+- **🌍 修复中英双语分数读法 (Fixed Bilingual Fraction Pronunciation)** - 修正中文分数读法规则，确保1/2显示为"二分之一" (Corrected Chinese fraction pronunciation rules, ensuring 1/2 displays as "二分之一")
+- **🧪 修复测试失败 (Fixed Test Failures)** - 修复了6个测试失败，包括分数显示和中英文读法测试 (Fixed 6 test failures, including fraction display and bilingual pronunciation tests)
+
 ### 🌟 2026-02-14 (版本更新和文档同步 / Version Update and Documentation Sync)
 - **🔄 版本更新 (Version Update)** - 更新应用版本至1.0.9 (Updated app version to 1.0.9)
 - **📄 文档同步 (Documentation Sync)** - 同步README.md和ChangeLogs.md内容 (Synchronized README.md and ChangeLogs.md content)

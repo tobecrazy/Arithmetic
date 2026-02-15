@@ -813,124 +813,101 @@ class QuestionGenerator {
 
     // MARK: - Level 7 Fraction Question Generation
 
-    /// Generates a Level 7 question with fractions only (no simple addition/subtraction within 50)
-    /// Distribution: 50% pure fractions, 30% mixed (int+frac), 20% integer multiplication/division
+    /// Generates a Level 7 question with fractions only
+    /// Distribution: 40% pure fractions, 35% mixed (int+frac), 25% integer division resulting in fractions
+    /// ALL questions involve fractions - no integer-only arithmetic
     private static func generateLevel7TwoNumberQuestion() -> Question {
         let rand = Double.random(in: 0...1)
 
-        if rand < 0.5 {
-            // 50% pure fraction operations (both operands are fractions)
+        if rand < 0.40 {
+            // 40% pure fraction operations (both operands are fractions)
             return generatePureFractionQuestion()
-        } else if rand < 0.8 {
-            // 30% mixed operations (one integer, one fraction)
+        } else if rand < 0.75 {
+            // 35% mixed operations (one integer, one fraction)
             return generateMixedFractionQuestion()
         } else {
-            // 20% integer multiplication/division only (no addition/subtraction)
-            return generateLevel7IntegerMultiplicationDivision()
+            // 25% integer division that results in a fraction (e.g., 5 ÷ 2 = 5/2)
+            return generateIntegerDivisionResultingInFraction()
         }
     }
 
-    /// Generates an integer multiplication or division question for Level 7
-    /// This avoids simple addition/subtraction within 50
-    private static func generateLevel7IntegerMultiplicationDivision() -> Question {
-        let operation: Question.Operation = Bool.random() ? .multiplication : .division
+    /// Generates an integer division question that results in a REDUCIBLE fraction
+    /// All integer divisions must be simplifiable (e.g., 6÷4=3/2, NOT 5÷6=5/6)
+    /// Examples: 6÷4=3/2, 10÷15=2/3, 12÷8=3/2, 25÷15=5/3, 14÷21=2/3
+    private static func generateIntegerDivisionResultingInFraction() -> Question {
+        // Distribution: 40% easier (smaller factors), 60% harder (larger factors)
+        let useEasier = Double.random(in: 0...1) < 0.4
 
-        if operation == .multiplication {
-            // Generate multiplication: result should be reasonable (not too large)
-            let num1 = Int.random(in: 2...12)
-            let num2 = Int.random(in: 2...12)
-            return Question(number1: num1, number2: num2, operation: .multiplication, difficultyLevel: .level7)
+        if useEasier {
+            // Smaller numbers but still reducible (factors 2-4)
+            return generateSimpleFractionDivision()
         } else {
-            // Generate division that may or may not result in integer
-            // Distribution: 40% integer division, 30% simple fraction, 30% reducible fraction (e.g., 25÷15=5/3)
-            let rand = Double.random(in: 0...1)
-
-            if rand < 0.4 {
-                // 40% Integer division (e.g., 24 ÷ 6 = 4)
-                let quotient = Int.random(in: 2...10)
-                let divisor = Int.random(in: 2...10)
-                let dividend = quotient * divisor
-                return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
-            } else if rand < 0.7 {
-                // 30% Simple non-integer division with small numbers
-                // Results in simple fractions like 1/2, 2/3, 3/4
-                return generateSimpleFractionDivision()
-            } else {
-                // 30% Reducible fraction division (e.g., 25÷15=5/3, 14÷21=2/3)
-                // Two larger integers that share a common factor
-                return generateReducibleFractionDivision()
-            }
+            // Larger numbers requiring more reduction steps (factors 3-10)
+            return generateReducibleFractionDivision()
         }
     }
 
-    /// Generates a division question with small numbers resulting in a simple fraction
-    /// Examples: 1÷2=1/2, 2÷3=2/3, 3÷4=3/4
+    /// Generates a reducible integer division question (ALWAYS reducible, never simple like 5÷6)
+    /// All integer divisions in Level 7 must result in fractions that can be simplified
+    /// Examples: 6÷4=3/2, 10÷15=2/3, 12÷8=3/2, 25÷15=5/3, 14÷21=2/3
     private static func generateSimpleFractionDivision() -> Question {
-        // Common denominators for educational fractions
-        let commonDenominators = [2, 3, 4, 5, 6, 8, 10, 12]
-        let divisor = commonDenominators.randomElement()!
-
-        // Generate a numerator that doesn't divide evenly by divisor
-        var numerator: Int
-        repeat {
-            // 30% improper fractions (result > 1), 70% proper fractions (result < 1)
-            let useImproper = Double.random(in: 0...1) < 0.3
-
-            if useImproper {
-                // Generate improper fraction with result between 1 and 3
-                let wholePartMultiplier = Int.random(in: 1...2)
-                let remainder = Int.random(in: 1...(divisor - 1))
-                numerator = wholePartMultiplier * divisor + remainder
-            } else {
-                // Generate proper fraction (result < 1)
-                numerator = Int.random(in: 1...(divisor - 1))
-            }
-        } while numerator % divisor == 0 // Ensure it doesn't divide evenly
-
-        // Ensure dividend is within reasonable range (1-100)
-        if numerator > 100 {
-            // Fallback to simpler fraction
-            let simpleDivisor = [2, 3, 4, 5].randomElement()!
-            let simpleNumerator = Int.random(in: 1...(simpleDivisor - 1))
-            return Question(number1: simpleNumerator, number2: simpleDivisor, operation: .division, difficultyLevel: .level7)
-        }
-
-        return Question(number1: numerator, number2: divisor, operation: .division, difficultyLevel: .level7)
+        // Always generate reducible fractions - route to reducible generator with smaller factors
+        return generateReducibleFractionDivisionWithFactor(minFactor: 2, maxFactor: 4)
     }
 
     /// Generates a division question where both numbers are larger and share a common factor
-    /// The result simplifies to a nice fraction
+    /// The result simplifies to a nice fraction (MUST be reducible)
     /// Examples: 25÷15=5/3, 14÷21=2/3, 10÷15=2/3, 12÷18=2/3, 35÷21=5/3
     private static func generateReducibleFractionDivision() -> Question {
+        // Use larger factors for more challenging reducible fractions
+        return generateReducibleFractionDivisionWithFactor(minFactor: 3, maxFactor: 10)
+    }
+
+    /// Core method that generates reducible fraction divisions with configurable factor range
+    /// - Parameters:
+    ///   - minFactor: Minimum multiplication factor (determines difficulty)
+    ///   - maxFactor: Maximum multiplication factor
+    /// - Returns: A question where dividend÷divisor results in a reducible fraction
+    private static func generateReducibleFractionDivisionWithFactor(minFactor: Int, maxFactor: Int) -> Question {
         // Target simplified fractions that are pedagogically meaningful
+        // These are the SIMPLIFIED results after reduction
         let targetFractions: [(numerator: Int, denominator: Int)] = [
+            // Proper fractions (result < 1) - common educational fractions
             (1, 2), (1, 3), (2, 3), (1, 4), (3, 4),
             (1, 5), (2, 5), (3, 5), (4, 5),
             (1, 6), (5, 6),
             (2, 7), (3, 7), (4, 7), (5, 7),
             (3, 8), (5, 8), (7, 8),
-            // Improper fractions (result > 1)
+            // Improper fractions (result > 1) - more challenging
             (3, 2), (4, 3), (5, 3), (5, 4), (7, 4),
             (6, 5), (7, 5), (8, 5),
-            (7, 6), (8, 3), (9, 4), (7, 3)
+            (7, 6), (8, 3), (9, 4), (7, 3), (9, 5), (11, 6)
         ]
 
         let target = targetFractions.randomElement()!
 
-        // Multiply both numerator and denominator by a common factor to get larger numbers
-        // Factor range: 2-10 for variety
-        let factor = Int.random(in: 2...10)
+        // Multiply both numerator and denominator by a common factor to create reducible fractions
+        // The result will simplify back to the target fraction
+        let factor = Int.random(in: minFactor...maxFactor)
 
-        let dividend = target.numerator * factor   // e.g., 5 * 5 = 25
-        let divisor = target.denominator * factor  // e.g., 3 * 5 = 15
+        let dividend = target.numerator * factor   // e.g., 2 * 6 = 12 for 2/3
+        let divisor = target.denominator * factor  // e.g., 3 * 6 = 18 for 2/3
+        // Result: 12÷18 = 12/18 = 2/3 (after simplification)
 
-        // Validate: ensure both numbers are within range and divisor != 0
+        // Validate: ensure both numbers are within range (1-100) and divisor != 0
         guard divisor > 0 && dividend <= 100 && divisor <= 100 else {
-            // Fallback: use smaller factor
-            let smallFactor = Int.random(in: 2...5)
+            // Fallback: use smaller factor to stay within range
+            let smallFactor = Int.random(in: 2...min(4, maxFactor))
             let smallDividend = target.numerator * smallFactor
             let smallDivisor = target.denominator * smallFactor
-            return Question(number1: smallDividend, number2: smallDivisor, operation: .division, difficultyLevel: .level7)
+
+            // Final safety check
+            if smallDivisor > 0 && smallDividend <= 100 && smallDivisor <= 100 {
+                return Question(number1: smallDividend, number2: smallDivisor, operation: .division, difficultyLevel: .level7)
+            } else {
+                // Ultimate fallback: use base fraction with factor 2
+                return Question(number1: target.numerator * 2, number2: target.denominator * 2, operation: .division, difficultyLevel: .level7)
+            }
         }
 
         return Question(number1: dividend, number2: divisor, operation: .division, difficultyLevel: .level7)
@@ -938,7 +915,15 @@ class QuestionGenerator {
 
     /// Generates a question with both operands as fractions
     /// Examples: 1/2 + 1/3, 3/4 - 1/8, 2/3 × 1/2, 5/6 ÷ 1/3
-    private static func generatePureFractionQuestion() -> Question {
+    /// - Parameter attempts: Recursion counter to prevent infinite loops (max 50 attempts)
+    private static func generatePureFractionQuestion(attempts: Int = 0) -> Question {
+        // Safety limit to prevent infinite recursion
+        guard attempts < 50 else {
+            // Return a safe default fraction question (1/2 + 1/3 = 5/6)
+            return Question(operand1: Fraction.oneHalf, operand2: Fraction.oneThird,
+                           operation: .addition, difficultyLevel: .level7)
+        }
+
         let operation = Question.Operation.allCases.randomElement()!
 
         // Generate two fractions
@@ -953,11 +938,11 @@ class QuestionGenerator {
             // Check if result is too large or negative
             if abs(fractionAnswer.numerator) > 100 || abs(fractionAnswer.denominator) > 100 {
                 // Retry with simpler fractions
-                return generatePureFractionQuestion()
+                return generatePureFractionQuestion(attempts: attempts + 1)
             }
             if fractionAnswer.numerator < 0 {
                 // Avoid negative results for subtraction
-                return generatePureFractionQuestion()
+                return generatePureFractionQuestion(attempts: attempts + 1)
             }
         }
 
@@ -966,7 +951,15 @@ class QuestionGenerator {
 
     /// Generates a question with one integer and one fraction
     /// Examples: 2 × 1/4, 3 + 1/2, 5 - 1/3, 6 ÷ 1/2
-    private static func generateMixedFractionQuestion() -> Question {
+    /// - Parameter attempts: Recursion counter to prevent infinite loops (max 50 attempts)
+    private static func generateMixedFractionQuestion(attempts: Int = 0) -> Question {
+        // Safety limit to prevent infinite recursion
+        guard attempts < 50 else {
+            // Return a safe default mixed question (2 × 1/2 = 1)
+            return Question(operand1: 2, operand2: Fraction.oneHalf,
+                           operation: .multiplication, difficultyLevel: .level7)
+        }
+
         let operation = Question.Operation.allCases.randomElement()!
 
         // Generate integer (2-10)
@@ -988,10 +981,10 @@ class QuestionGenerator {
         // Validate the result
         if let fractionAnswer = question.fractionAnswer {
             if abs(fractionAnswer.numerator) > 100 || abs(fractionAnswer.denominator) > 100 {
-                return generateMixedFractionQuestion()
+                return generateMixedFractionQuestion(attempts: attempts + 1)
             }
             if fractionAnswer.numerator < 0 {
-                return generateMixedFractionQuestion()
+                return generateMixedFractionQuestion(attempts: attempts + 1)
             }
         }
 
@@ -1026,72 +1019,31 @@ class QuestionGenerator {
     }
 
     /// Generates a Level 7 three-number question with fractions only
-    /// 60% include at least one fraction, 40% integer multiplication/division chains
+    /// ALL three-number questions for Level 7 must involve at least one fraction operand
+    /// This ensures Level 7 focuses exclusively on fractional arithmetic
     static func generateLevel7ThreeNumberQuestion() -> Question {
-        let rand = Double.random(in: 0...1)
-
-        if rand < 0.6 {
-            // 60% include at least one fraction operand
-            return generateThreeNumberWithFractions()
-        } else {
-            // 40% integer multiplication/division chains (no simple add/sub)
-            return generateLevel7IntegerThreeNumberQuestion()
-        }
-    }
-
-    /// Generates a Level 7 three-number question with only multiplication and division
-    /// Avoids simple addition/subtraction within 50
-    private static func generateLevel7IntegerThreeNumberQuestion() -> Question {
-        // Only use multiplication and division for integer three-number questions
-        let operations: [Question.Operation] = [.multiplication, .division]
-        let op1 = operations.randomElement()!
-        let op2 = operations.randomElement()!
-
-        var num1, num2, num3: Int
-
-        // Generate numbers that work well with multiplication/division
-        if op1 == .multiplication && op2 == .multiplication {
-            // A × B × C - keep numbers small
-            num1 = Int.random(in: 2...5)
-            num2 = Int.random(in: 2...5)
-            num3 = Int.random(in: 2...5)
-        } else if op1 == .division && op2 == .division {
-            // A ÷ B ÷ C - need careful construction for integer results
-            num2 = Int.random(in: 2...5)
-            num3 = Int.random(in: 2...5)
-            let quotient1 = Int.random(in: 2...5)
-            let quotient2 = quotient1 * num3
-            num1 = quotient2 * num2
-        } else if op1 == .multiplication && op2 == .division {
-            // A × B ÷ C
-            num1 = Int.random(in: 2...6)
-            num3 = Int.random(in: 2...6)
-            // Ensure (A × B) is divisible by C
-            let multiplier = Int.random(in: 1...3)
-            num2 = num3 * multiplier
-        } else {
-            // A ÷ B × C
-            num2 = Int.random(in: 2...5)
-            num3 = Int.random(in: 2...5)
-            let quotient = Int.random(in: 2...5)
-            num1 = quotient * num2
-        }
-
-        let question = Question(number1: num1, number2: num2, number3: num3,
-                               operation1: op1, operation2: op2, difficultyLevel: .level7)
-
-        // Validate the question
-        if question.isValid() && question.correctAnswer > 0 && question.correctAnswer <= 1000 {
-            return question
-        }
-
-        // Fallback to fraction question if validation fails
+        // 100% include at least one fraction operand - no integer-only operations
         return generateThreeNumberWithFractions()
     }
 
     /// Generates a three-number question with at least one fraction
     /// Uses denominator families for simplicity (1/2, 1/4, 1/8 or 1/3, 1/6, 1/9)
-    private static func generateThreeNumberWithFractions() -> Question {
+    /// Supports all four operations: +, -, ×, ÷
+    /// - Parameter attempts: Recursion counter to prevent infinite loops (max 50 attempts)
+    private static func generateThreeNumberWithFractions(attempts: Int = 0) -> Question {
+        // Safety limit to prevent infinite recursion
+        guard attempts < 50 else {
+            // Return a safe default three-number fraction question (1/2 + 1/4 + 1/8 = 7/8)
+            return Question(
+                operand1: Fraction.oneHalf,
+                operand2: Fraction.oneQuarter,
+                operand3: Fraction.oneEighth,
+                operation1: .addition,
+                operation2: .addition,
+                difficultyLevel: .level7
+            )
+        }
+
         // Choose a denominator family
         let families: [[Int]] = [
             [2, 4, 8],     // Halves family
@@ -1100,19 +1052,22 @@ class QuestionGenerator {
         ]
 
         let family = families.randomElement()!
-        let operations = [Question.Operation.addition, Question.Operation.subtraction]
+
+        // All four operations are supported for Level 7 fraction questions
+        let operations: [Question.Operation] = [.addition, .subtraction, .multiplication, .division]
 
         // Generate three operands from the same family or integers
         var operands: [Any] = []
         for _ in 0..<3 {
-            if Bool.random() {
+            // 70% chance for fraction, 30% chance for small integer
+            if Double.random(in: 0...1) < 0.7 {
                 // Use a fraction from the family
                 let denom = family.randomElement()!
                 let numer = Int.random(in: 1...(denom - 1))
                 operands.append(Fraction(numerator: numer, denominator: denom))
             } else {
-                // Use a small integer
-                operands.append(Int.random(in: 1...5))
+                // Use a small integer (2-6 to avoid trivial operations)
+                operands.append(Int.random(in: 2...6))
             }
         }
 
@@ -1140,10 +1095,17 @@ class QuestionGenerator {
         // Validate result
         if let fractionAnswer = question.fractionAnswer {
             if abs(fractionAnswer.numerator) > 100 || abs(fractionAnswer.denominator) > 100 {
-                return generateThreeNumberWithFractions()
+                return generateThreeNumberWithFractions(attempts: attempts + 1)
             }
             if fractionAnswer.numerator < 0 {
-                return generateThreeNumberWithFractions()
+                return generateThreeNumberWithFractions(attempts: attempts + 1)
+            }
+        }
+
+        // Also validate computed answer if it's a whole number result
+        if let computed = question.computedAnswer {
+            if computed < 0 || computed > 1000 {
+                return generateThreeNumberWithFractions(attempts: attempts + 1)
             }
         }
 
