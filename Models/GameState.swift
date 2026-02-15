@@ -109,7 +109,7 @@ class GameState: ObservableObject {
         return fallbackQuestions
     }
     
-    // 检查答案
+    // 检查答案 (Integer answer)
     func checkAnswer(_ answer: Int) -> Bool {
         let currentQuestion = questions[currentQuestionIndex]
         let isCorrect = answer == currentQuestion.correctAnswer
@@ -128,6 +128,42 @@ class GameState: ObservableObject {
             if wrongQuestionManager.isWrongQuestion(currentQuestion) {
                 wrongQuestionManager.updateWrongQuestion(currentQuestion, answeredCorrectly: true)
                 print("Updated wrong question statistics (correct answer): \(currentQuestion.questionText)")
+            }
+        } else {
+            // 如果回答错误，添加到错题集
+            let wrongQuestionManager = WrongQuestionManager()
+            wrongQuestionManager.addWrongQuestion(currentQuestion, for: difficultyLevel)
+            print("Added to wrong questions collection: \(currentQuestion.questionText)")
+            // Reset streak on wrong answer
+            streakCount = 0
+        }
+
+        self.isCorrect = isCorrect
+        self.showingCorrectAnswer = !isCorrect
+
+        return isCorrect
+    }
+
+    // 检查答案 (Fraction answer)
+    func checkAnswer(_ fraction: Fraction) -> Bool {
+        let currentQuestion = questions[currentQuestionIndex]
+        let isCorrect = currentQuestion.checkAnswer(fraction)
+
+        // Store placeholder for userAnswers (0 indicates fraction was attempted)
+        userAnswers[currentQuestionIndex] = 0
+
+        if isCorrect {
+            score += pointsPerQuestion
+            streakCount += 1
+            if streakCount > longestStreak {
+                longestStreak = streakCount
+            }
+
+            // 如果是错题集中的题目，更新统计信息
+            let wrongQuestionManager = WrongQuestionManager()
+            if wrongQuestionManager.isWrongQuestion(currentQuestion) {
+                wrongQuestionManager.updateWrongQuestion(currentQuestion, answeredCorrectly: true)
+                print("Updated wrong question statistics (correct fraction answer): \(currentQuestion.questionText)")
             }
         } else {
             // 如果回答错误，添加到错题集

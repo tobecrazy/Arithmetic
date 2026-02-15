@@ -232,7 +232,39 @@ class CoreDataManager {
         solutionStepsAttribute.isOptional = true
         solutionStepsAttribute.defaultValue = ""
         wrongQuestionProperties.append(solutionStepsAttribute)
-        
+
+        // 添加分数答案类型属性 (for backward compatibility)
+        let answerTypeAttribute = NSAttributeDescription()
+        answerTypeAttribute.name = "answerType"
+        answerTypeAttribute.attributeType = .stringAttributeType
+        answerTypeAttribute.isOptional = true
+        answerTypeAttribute.defaultValue = "integer"
+        wrongQuestionProperties.append(answerTypeAttribute)
+
+        // 添加分数分子属性
+        let fractionNumeratorAttribute = NSAttributeDescription()
+        fractionNumeratorAttribute.name = "fractionNumerator"
+        fractionNumeratorAttribute.attributeType = .integer32AttributeType
+        fractionNumeratorAttribute.isOptional = true
+        fractionNumeratorAttribute.defaultValue = 0
+        wrongQuestionProperties.append(fractionNumeratorAttribute)
+
+        // 添加分数分母属性
+        let fractionDenominatorAttribute = NSAttributeDescription()
+        fractionDenominatorAttribute.name = "fractionDenominator"
+        fractionDenominatorAttribute.attributeType = .integer32AttributeType
+        fractionDenominatorAttribute.isOptional = true
+        fractionDenominatorAttribute.defaultValue = 1
+        wrongQuestionProperties.append(fractionDenominatorAttribute)
+
+        // 添加分数操作数属性 (stores fraction operands like "1/2,nil,3/4" for questions like "1/2 + 3 + 3/4")
+        let fractionOperandsAttribute = NSAttributeDescription()
+        fractionOperandsAttribute.name = "fractionOperands"
+        fractionOperandsAttribute.attributeType = .stringAttributeType
+        fractionOperandsAttribute.isOptional = true
+        fractionOperandsAttribute.defaultValue = nil
+        wrongQuestionProperties.append(fractionOperandsAttribute)
+
         wrongQuestionEntity.properties = wrongQuestionProperties
         
         // 创建GameProgress实体

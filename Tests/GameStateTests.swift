@@ -384,4 +384,182 @@ class GameStateTests: XCTestCase {
             }
         }
     }
+
+    // MARK: - Fraction Answer Tests
+
+    func testCheckAnswerWithCorrectFraction() {
+        let level7State = GameState(difficultyLevel: .level7, timeInMinutes: 5)
+
+        // Find a question with fraction answer
+        var fractionQuestion: Question? = nil
+        var fractionQuestionIndex: Int = 0
+        for (index, question) in level7State.questions.enumerated() {
+            if question.answerType == .fraction {
+                fractionQuestion = question
+                fractionQuestionIndex = index
+                break
+            }
+        }
+
+        guard let question = fractionQuestion, let expectedFraction = question.fractionAnswer else {
+            XCTSkip("No fraction questions found in level 7")
+            return
+        }
+
+        // Move to the fraction question
+        while level7State.currentQuestionIndex < fractionQuestionIndex {
+            level7State.moveToNextQuestion()
+        }
+
+        // Submit correct fraction answer
+        let result = level7State.checkAnswer(expectedFraction)
+
+        XCTAssertTrue(result)
+        XCTAssertEqual(level7State.score, level7State.pointsPerQuestion)
+        XCTAssertEqual(level7State.streakCount, 1)
+        XCTAssertTrue(level7State.isCorrect)
+        XCTAssertFalse(level7State.showingCorrectAnswer)
+    }
+
+    func testCheckAnswerWithIncorrectFraction() {
+        let level7State = GameState(difficultyLevel: .level7, timeInMinutes: 5)
+
+        // Find a question with fraction answer
+        var fractionQuestion: Question? = nil
+        var fractionQuestionIndex: Int = 0
+        for (index, question) in level7State.questions.enumerated() {
+            if question.answerType == .fraction {
+                fractionQuestion = question
+                fractionQuestionIndex = index
+                break
+            }
+        }
+
+        guard let question = fractionQuestion, let expectedFraction = question.fractionAnswer else {
+            XCTSkip("No fraction questions found in level 7")
+            return
+        }
+
+        // Move to the fraction question
+        while level7State.currentQuestionIndex < fractionQuestionIndex {
+            level7State.moveToNextQuestion()
+        }
+
+        // Submit incorrect fraction answer (different numerator)
+        let wrongFraction = Fraction(numerator: expectedFraction.numerator + 1, denominator: expectedFraction.denominator)
+        let result = level7State.checkAnswer(wrongFraction)
+
+        XCTAssertFalse(result)
+        XCTAssertEqual(level7State.score, 0)
+        XCTAssertEqual(level7State.streakCount, 0)
+        XCTAssertFalse(level7State.isCorrect)
+        XCTAssertTrue(level7State.showingCorrectAnswer)
+    }
+
+    func testCheckAnswerWithNonSimplifiedFraction() {
+        let level7State = GameState(difficultyLevel: .level7, timeInMinutes: 5)
+
+        // Find a question with fraction answer
+        var fractionQuestion: Question? = nil
+        var fractionQuestionIndex: Int = 0
+        for (index, question) in level7State.questions.enumerated() {
+            if question.answerType == .fraction {
+                fractionQuestion = question
+                fractionQuestionIndex = index
+                break
+            }
+        }
+
+        guard let question = fractionQuestion, let expectedFraction = question.fractionAnswer else {
+            XCTSkip("No fraction questions found in level 7")
+            return
+        }
+
+        // Move to the fraction question
+        while level7State.currentQuestionIndex < fractionQuestionIndex {
+            level7State.moveToNextQuestion()
+        }
+
+        // Submit equivalent but non-simplified fraction (e.g., 2/4 instead of 1/2)
+        let nonSimplifiedFraction = Fraction(numerator: expectedFraction.numerator * 2, denominator: expectedFraction.denominator * 2)
+        let result = level7State.checkAnswer(nonSimplifiedFraction)
+
+        // Should be accepted because Fraction comparison uses simplified forms
+        XCTAssertTrue(result)
+        XCTAssertEqual(level7State.score, level7State.pointsPerQuestion)
+    }
+
+    func testCheckFractionAnswerUpdatesUserAnswersWithPlaceholder() {
+        let level7State = GameState(difficultyLevel: .level7, timeInMinutes: 5)
+
+        // Find a question with fraction answer
+        var fractionQuestion: Question? = nil
+        var questionIndex: Int = 0
+        for (index, question) in level7State.questions.enumerated() {
+            if question.answerType == .fraction {
+                fractionQuestion = question
+                questionIndex = index
+                break
+            }
+        }
+
+        guard let question = fractionQuestion, let expectedFraction = question.fractionAnswer else {
+            XCTSkip("No fraction questions found in level 7")
+            return
+        }
+
+        // Move to the fraction question
+        while level7State.currentQuestionIndex < questionIndex {
+            level7State.moveToNextQuestion()
+        }
+
+        // Submit correct fraction answer
+        _ = level7State.checkAnswer(expectedFraction)
+
+        // userAnswers[index] should be 0 (placeholder for fractions)
+        XCTAssertEqual(level7State.userAnswers[questionIndex], 0)
+    }
+
+    func testCheckFractionAnswerStreakBehavior() {
+        let level7State = GameState(difficultyLevel: .level7, timeInMinutes: 5)
+
+        // Find first 3 fraction questions and their indices
+        var fractionQuestionsWithIndices: [(index: Int, question: Question)] = []
+        for (index, question) in level7State.questions.enumerated() {
+            if question.answerType == .fraction {
+                fractionQuestionsWithIndices.append((index, question))
+                if fractionQuestionsWithIndices.count == 3 {
+                    break
+                }
+            }
+        }
+
+        guard fractionQuestionsWithIndices.count >= 3 else {
+            XCTSkip("Not enough fraction questions found in level 7")
+            return
+        }
+
+        // Answer 3 fraction questions correctly
+        for (i, item) in fractionQuestionsWithIndices.enumerated() {
+            let question = item.question
+            let questionIndex = item.index
+            guard let expectedFraction = question.fractionAnswer else {
+                XCTFail("Fraction question should have fractionAnswer")
+                return
+            }
+
+            // Move to this question
+            while level7State.currentQuestionIndex < questionIndex {
+                level7State.moveToNextQuestion()
+            }
+
+            _ = level7State.checkAnswer(expectedFraction)
+            if i < 2 {
+                level7State.moveToNextQuestion()
+            }
+        }
+
+        XCTAssertEqual(level7State.streakCount, 3)
+        XCTAssertEqual(level7State.longestStreak, 3)
+    }
 }

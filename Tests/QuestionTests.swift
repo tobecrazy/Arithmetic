@@ -392,3 +392,198 @@ class SolutionStepsTests: XCTestCase {
         XCTAssertFalse(steps.isEmpty)
     }
 }
+
+// MARK: - Fraction Answer Tests
+class FractionAnswerTests: XCTestCase {
+
+    func testAnswerTypeInteger() {
+        // Level 1-6 should always return integer answer type
+        let question = Question(number1: 10, number2: 5, operation: .division, difficultyLevel: .level5)
+        XCTAssertEqual(question.answerType, .integer)
+    }
+
+    func testAnswerTypeFractionForLevel7NonIntegerDivision() {
+        // Level 7 with non-integer division should return fraction answer type
+        let question = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level7)
+        XCTAssertEqual(question.answerType, .fraction)
+        XCTAssertNotNil(question.fractionAnswer)
+    }
+
+    func testAnswerTypeIntegerForLevel7IntegerDivision() {
+        // Level 7 with exact division should still return integer
+        let question = Question(number1: 10, number2: 5, operation: .division, difficultyLevel: .level7)
+        XCTAssertEqual(question.answerType, .integer)
+    }
+
+    func testFractionAnswerSimplified() {
+        // 6/9 should be simplified to 2/3
+        let question = Question(number1: 6, number2: 9, operation: .division, difficultyLevel: .level7)
+        XCTAssertNotNil(question.fractionAnswer)
+        XCTAssertEqual(question.fractionAnswer?.numerator, 2)
+        XCTAssertEqual(question.fractionAnswer?.denominator, 3)
+    }
+
+    func testCheckIntegerAnswer() {
+        let question = Question(number1: 10, number2: 5, operation: .division, difficultyLevel: .level5)
+        XCTAssertTrue(question.checkAnswer(2))
+        XCTAssertFalse(question.checkAnswer(3))
+    }
+
+    func testCheckFractionAnswer() {
+        let question = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level7)
+        let correctFraction = Fraction(numerator: 5, denominator: 3)
+        let incorrectFraction = Fraction(numerator: 1, denominator: 2)
+
+        XCTAssertTrue(question.checkAnswer(correctFraction))
+        XCTAssertFalse(question.checkAnswer(incorrectFraction))
+    }
+
+    func testCheckFractionAnswerSimplified() {
+        // 5/3 answer, user enters 10/6 (which simplifies to 5/3)
+        let question = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level7)
+        let userAnswer = Fraction(numerator: 10, denominator: 6)
+
+        XCTAssertTrue(question.checkAnswer(userAnswer), "Simplified fractions should be equal")
+    }
+
+    func testIsValidLevel7AllowsNonIntegerDivision() {
+        // Level 7 allows non-integer division
+        let question = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level7)
+        XCTAssertTrue(question.isValid())
+    }
+
+    func testIsValidOtherLevelsRequireIntegerDivision() {
+        // Other levels require exact division
+        let question = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level5)
+        XCTAssertFalse(question.isValid())
+    }
+
+    // MARK: - Level 7 Fraction Operation Tests
+
+    func testLevel7FractionAddition() {
+        // Test 1/2 + 1/3 = 5/6
+        let half = Fraction(numerator: 1, denominator: 2)
+        let third = Fraction(numerator: 1, denominator: 3)
+        let question = Question(operand1: half, operand2: third, operation: .addition, difficultyLevel: .level7)
+
+        XCTAssertNotNil(question.fractionAnswer)
+        XCTAssertEqual(question.fractionAnswer?.numerator, 5)
+        XCTAssertEqual(question.fractionAnswer?.denominator, 6)
+    }
+
+    func testLevel7FractionSubtraction() {
+        // Test 3/4 - 1/2 = 1/4
+        let threeFourths = Fraction(numerator: 3, denominator: 4)
+        let half = Fraction(numerator: 1, denominator: 2)
+        let question = Question(operand1: threeFourths, operand2: half, operation: .subtraction, difficultyLevel: .level7)
+
+        XCTAssertNotNil(question.fractionAnswer)
+        XCTAssertEqual(question.fractionAnswer?.numerator, 1)
+        XCTAssertEqual(question.fractionAnswer?.denominator, 4)
+    }
+
+    func testLevel7FractionMultiplication() {
+        // Test 2/3 × 3/4 = 1/2
+        let twoThirds = Fraction(numerator: 2, denominator: 3)
+        let threeFourths = Fraction(numerator: 3, denominator: 4)
+        let question = Question(operand1: twoThirds, operand2: threeFourths, operation: .multiplication, difficultyLevel: .level7)
+
+        XCTAssertNotNil(question.fractionAnswer)
+        XCTAssertEqual(question.fractionAnswer?.numerator, 1)
+        XCTAssertEqual(question.fractionAnswer?.denominator, 2)
+    }
+
+    func testLevel7FractionDivision() {
+        // Test 1/2 ÷ 1/4 = 2
+        let half = Fraction(numerator: 1, denominator: 2)
+        let quarter = Fraction(numerator: 1, denominator: 4)
+        let question = Question(operand1: half, operand2: quarter, operation: .division, difficultyLevel: .level7)
+
+        // Result is 2, which is a whole number so fractionAnswer should be nil
+        XCTAssertNil(question.fractionAnswer)
+        XCTAssertEqual(question.correctAnswer, 2)
+    }
+
+    func testLevel7MixedOperationIntegerPlusFraction() {
+        // Test 2 + 1/2 = 5/2
+        let question = Question(operand1: 2, operand2: Fraction(numerator: 1, denominator: 2), operation: .addition, difficultyLevel: .level7)
+
+        XCTAssertNotNil(question.fractionAnswer)
+        XCTAssertEqual(question.fractionAnswer?.numerator, 5)
+        XCTAssertEqual(question.fractionAnswer?.denominator, 2)
+    }
+
+    func testLevel7MixedOperationFractionTimesInteger() {
+        // Test 1/4 × 8 = 2
+        let quarter = Fraction(numerator: 1, denominator: 4)
+        let question = Question(operand1: quarter, operand2: 8, operation: .multiplication, difficultyLevel: .level7)
+
+        // Result is 2, a whole number
+        XCTAssertNil(question.fractionAnswer)
+        XCTAssertEqual(question.correctAnswer, 2)
+    }
+
+    func testLevel7ThreeNumberFractionOperation() {
+        // Test 1/2 + 1/4 + 1/8 = 7/8
+        let half = Fraction(numerator: 1, denominator: 2)
+        let quarter = Fraction(numerator: 1, denominator: 4)
+        let eighth = Fraction(numerator: 1, denominator: 8)
+        let question = Question(operand1: half, operand2: quarter, operand3: eighth, operation1: .addition, operation2: .addition, difficultyLevel: .level7)
+
+        XCTAssertNotNil(question.fractionAnswer)
+        XCTAssertEqual(question.fractionAnswer?.numerator, 7)
+        XCTAssertEqual(question.fractionAnswer?.denominator, 8)
+    }
+
+    func testQuestionTextWithFractionOperands() {
+        // Test that questionText displays fractions correctly
+        let half = Fraction(numerator: 1, denominator: 2)
+        let third = Fraction(numerator: 1, denominator: 3)
+        let question = Question(operand1: half, operand2: third, operation: .addition, difficultyLevel: .level7)
+
+        let text = question.questionText
+        XCTAssertTrue(text.contains("1/2"))
+        XCTAssertTrue(text.contains("1/3"))
+        XCTAssertTrue(text.contains("+"))
+    }
+
+    func testCheckDecimalAnswer() {
+        // Test decimal answer checking with tolerance
+        let half = Fraction(numerator: 1, denominator: 2)
+        let third = Fraction(numerator: 1, denominator: 3)
+        let question = Question(operand1: half, operand2: third, operation: .addition, difficultyLevel: .level7)
+
+        // 1/2 + 1/3 = 5/6 ≈ 0.833...
+        XCTAssertTrue(question.checkDecimalAnswer(0.833, tolerance: 0.01))
+        XCTAssertTrue(question.checkDecimalAnswer(0.8333, tolerance: 0.001))
+        XCTAssertFalse(question.checkDecimalAnswer(0.5, tolerance: 0.01))
+    }
+
+    func testCheckDecimalAnswerForHalf() {
+        // Test 1/2 = 0.5
+        let half = Fraction(numerator: 1, denominator: 2)
+        let quarter = Fraction(numerator: 1, denominator: 4)
+        let question = Question(operand1: half, operand2: quarter, operation: .addition, difficultyLevel: .level7)
+
+        // 1/2 + 1/4 = 3/4 = 0.75
+        XCTAssertTrue(question.checkDecimalAnswer(0.75, tolerance: 0.01))
+        XCTAssertFalse(question.checkDecimalAnswer(0.5, tolerance: 0.01))
+    }
+
+    func testNSSecureCodeWithFractionOperands() {
+        // Test that fraction operands are properly encoded/decoded
+        let half = Fraction(numerator: 1, denominator: 2)
+        let third = Fraction(numerator: 1, denominator: 3)
+        let originalQuestion = Question(operand1: half, operand2: third, operation: .addition, difficultyLevel: .level7)
+
+        // Encode
+        let data = try! NSKeyedArchiver.archivedData(withRootObject: originalQuestion, requiringSecureCoding: true)
+
+        // Decode
+        let decodedQuestion = try! NSKeyedUnarchiver.unarchivedObject(ofClass: Question.self, from: data)
+
+        XCTAssertNotNil(decodedQuestion)
+        XCTAssertEqual(decodedQuestion?.fractionAnswer, originalQuestion.fractionAnswer)
+        XCTAssertNotNil(decodedQuestion?.fractionOperands)
+    }
+}

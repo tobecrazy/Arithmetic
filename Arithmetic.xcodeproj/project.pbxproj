@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27B039614C47BD51C05C9DA4 /* FractionInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38363ED210E56717EA5219 /* FractionInputView.swift */; };
 		8A0000000000000000000003 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000004 /* GoogleService-Info.plist */; };
 		8A0C5AE12EC8D88E0020200A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C5AE02EC8D88E0020200A /* SettingsView.swift */; };
 		8A0C5AED2EC9C92D0020200A /* MathBankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */; };
@@ -72,6 +73,8 @@
 		8ATEST0002000000000000003 /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000013 /* GameStateTests.swift */; };
 		8ATEST0002000000000000004 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000014 /* CoreDataTests.swift */; };
 		8ATEST0002000000000000005 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000015 /* ExtensionsTests.swift */; };
+		A22710E351EEA8BA1AF967F6 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F03D9EF1AE4DD966D7ED07A /* FractionTests.swift */; };
+		BF602549576F53FDCEAFED95 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89296E9925C990D4296D46F /* Fraction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +89,8 @@
 
 /* Begin PBXFileReference section */
 		1A2B3C4D5E6F7892 /* Arithmetic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arithmetic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A38363ED210E56717EA5219 /* FractionInputView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FractionInputView.swift; sourceTree = "<group>"; };
+		1F03D9EF1AE4DD966D7ED07A /* FractionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FractionTests.swift; sourceTree = "<group>"; };
 		8A0000000000000000000004 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A0C5AE02EC8D88E0020200A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8A0C5AEC2EC9C92D0020200A /* MathBankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathBankView.swift; sourceTree = "<group>"; };
@@ -150,10 +155,21 @@
 		8ATEST0002000000000000013 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		8ATEST0002000000000000014 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		8ATEST0002000000000000015 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
+		B89296E9925C990D4296D46F /* Fraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Fraction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8AF3ABB52E05AF5900F67CDE /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
+		8AF3ABB52E05AF5900F67CDE /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +260,7 @@
 				8AF3AB902E05AE3600F67CDE /* DifficultyLevel.swift */,
 				8AF3AB912E05AE3600F67CDE /* GameState.swift */,
 				8AF3AB922E05AE3600F67CDE /* Question.swift */,
+				B89296E9925C990D4296D46F /* Fraction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -309,6 +326,7 @@
 				8AF3ABA02E05AE3600F67CDE /* GameView.swift */,
 				8AF3ABA12E05AE3600F67CDE /* LanguageSelectorView.swift */,
 				8AF3ABA22E05AE3600F67CDE /* ResultView.swift */,
+				1A38363ED210E56717EA5219 /* FractionInputView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -324,6 +342,7 @@
 				8ATEST0002000000000000013 /* GameStateTests.swift */,
 				8ATEST0002000000000000014 /* CoreDataTests.swift */,
 				8ATEST0002000000000000015 /* ExtensionsTests.swift */,
+				1F03D9EF1AE4DD966D7ED07A /* FractionTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -396,7 +415,7 @@
 			);
 			mainGroup = 1A2B3C4D5E6F7895;
 			packageReferences = (
-				8A87B61F2EF67C5800366D4D /* XCLocalSwiftPackageReference "../firebase-ios-sdk" */,
+				8A87B61F2EF67C5800366D4D /* XCLocalSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 1A2B3C4D5E6F7897 /* Products */;
 			projectDirPath = "";
@@ -517,6 +536,8 @@
 				8AF3ABB12E05AE3600F67CDE /* QuestionGenerator.swift in Sources */,
 				8AD2D94C2E77173A004603C4 /* ImageCacheManager.swift in Sources */,
 				8AD2D94D2E77173A004603C4 /* NavigationUtil.swift in Sources */,
+				BF602549576F53FDCEAFED95 /* Fraction.swift in Sources */,
+				27B039614C47BD51C05C9DA4 /* FractionInputView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +553,7 @@
 				8ATEST0002000000000000003 /* GameStateTests.swift in Sources */,
 				8ATEST0002000000000000004 /* CoreDataTests.swift in Sources */,
 				8ATEST0002000000000000005 /* ExtensionsTests.swift in Sources */,
+				A22710E351EEA8BA1AF967F6 /* FractionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,7 +820,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		8A87B61F2EF67C5800366D4D /* XCLocalSwiftPackageReference "../firebase-ios-sdk" */ = {
+		8A87B61F2EF67C5800366D4D /* XCLocalSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "../firebase-ios-sdk";
 		};
