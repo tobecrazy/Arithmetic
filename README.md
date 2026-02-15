@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.8* | *Updated: February 5, 2026*
+*Version: 1.0.9* | *Updated: February 14, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -65,6 +65,7 @@
 - **灵活删除 (Flexible Deletion)** - 支持删除单个错题、所有错题或已掌握的错题 (Supports deleting individual, all, or mastered wrong questions)
 - **智能识别 (Smart Recognition)** - 自动识别已掌握的错题（正确率达到70%以上） (Automatically identifies mastered questions with 70%+ accuracy)
 - **优先练习 (Priority Practice)** - 错题集中的题目会在后续练习中优先出现，帮助巩固薄弱点 (Questions appear with priority in subsequent practice to help consolidate weak points)
+- **分数支持 (Fraction Support)** - Level 7支持分数运算的错题收集 (Level 7 supports fraction operation wrong question collection)
 
 ### 📚 数学题库生成 (Math Bank PDF Generation)
 - **📄 PDF生成 (PDF Generation)** - 生成可打印的数学题库PDF文件，支持题目页和答案页分离 (Generates printable math problem bank PDF files with separate question and answer pages)
@@ -642,7 +643,7 @@ flowchart TB
 | **Level 4** | 10以内乘除法 | 20题 | 5分 | 100分 | 🔢 口诀基础 |
 | **Level 5** | 50以内乘除法 | 30题 | 3分 | 90分 | 🧩 两位数运算 |
 | **Level 6** | 1000以内混合运算 | 100题 | 1分 | 100分 | 🔄 三位数综合 |
-| **Level 7** | 100以内复杂混合运算 | 100题 | 1分 | 100分 | ➗ 分数运算 |
+| **Level 7** | 复杂混合运算含分数 | 100题 | 1分 | 100分 | ➗ 分数运算与简化 |
 
 </div>
 

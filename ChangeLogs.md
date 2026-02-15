@@ -1,5 +1,10 @@
 # Change Log
 
+### 🌟 2026-02-14 (版本更新和文档同步 / Version Update and Documentation Sync)
+- **🔄 版本更新 (Version Update)** - 更新应用版本至1.0.9 (Updated app version to 1.0.9)
+- **📄 文档同步 (Documentation Sync)** - 同步README.md和ChangeLogs.md内容 (Synchronized README.md and ChangeLogs.md content)
+- **🌐 本地化更新 (Localization Update)** - 更新中英文本地化字符串 (Updated Chinese/English localization strings)
+
 ### 🌟 2026-02-06 (Level 7 分数运算支持 / Level 7 Fraction Operations Support)
 
 #### ✨ 新增功能 (New Features)
