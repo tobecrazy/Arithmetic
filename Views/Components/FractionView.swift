@@ -8,6 +8,24 @@ struct FractionView: View {
     let fraction: Fraction
     let baseFontSize: CGFloat
 
+    // Calculate text width for numerator and denominator
+    private var numeratorWidth: CGFloat {
+        let numeratorText = "\(fraction.numerator)"
+        let font = UIFont.systemFont(ofSize: baseFontSize * 0.75, weight: .semibold)
+        return numeratorText.size(withAttributes: [.font: font]).width
+    }
+
+    private var denominatorWidth: CGFloat {
+        let denominatorText = "\(fraction.denominator)"
+        let font = UIFont.systemFont(ofSize: baseFontSize * 0.75, weight: .semibold)
+        return denominatorText.size(withAttributes: [.font: font]).width
+    }
+
+    // Calculate line width as the maximum of numerator and denominator widths
+    private var lineWidth: CGFloat {
+        max(numeratorWidth, denominatorWidth) + 4
+    }
+
     var body: some View {
         VStack(spacing: 3) {
             // Numerator
@@ -16,11 +34,10 @@ struct FractionView: View {
                 .frame(height: baseFontSize * 0.75)
                 .lineLimit(1)
 
-            // Fraction line - enhanced with distinct appearance
+            // Fraction line - width matches numerator/denominator
             RoundedRectangle(cornerRadius: 1)
                 .fill(Color.primary)
-                .frame(height: 2.5)
-                .padding(.horizontal, -4)
+                .frame(width: lineWidth, height: 2.5)
 
             // Denominator
             Text("\(fraction.denominator)")
@@ -28,11 +45,7 @@ struct FractionView: View {
                 .frame(height: baseFontSize * 0.75)
                 .lineLimit(1)
         }
-        .frame(minWidth: max(
-            baseFontSize * 0.75 * CGFloat(String(fraction.numerator).count) * 0.6,
-            baseFontSize * 0.75 * CGFloat(String(fraction.denominator).count) * 0.6,
-            50
-        ))
+        .frame(minWidth: lineWidth + 2)
     }
 }
 
