@@ -223,11 +223,22 @@ struct GameView: View {
                         ttsHelper.speakMathExpression(questionToRead, language: localizationManager.currentLanguage)
                         haptics.light()
                     }) {
-                        Text(currentQuestion.questionText)
-                            .font(.system(size: 40, weight: .bold))
-                            .foregroundColor(.primary)
-                            .scaleEffect(viewModel.gameState.isCorrect ? 1.1 : 1.0)
-                            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.gameState.isCorrect)
+                        // Use fraction display for Level 7 questions with fractions, otherwise use text
+                        if currentQuestion.difficultyLevel == .level7,
+                           let fractionOps = currentQuestion.fractionOperands,
+                           fractionOps.contains(where: { $0 != nil }) {
+                            QuestionWithFractionView(
+                                question: currentQuestion,
+                                isCorrect: viewModel.gameState.isCorrect,
+                                onTap: {}
+                            )
+                        } else {
+                            Text(currentQuestion.questionText)
+                                .font(.system(size: 40, weight: .bold))
+                                .foregroundColor(.primary)
+                                .scaleEffect(viewModel.gameState.isCorrect ? 1.1 : 1.0)
+                                .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.gameState.isCorrect)
+                        }
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding()

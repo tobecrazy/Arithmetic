@@ -29,6 +29,10 @@
 		8A4DBA4D2F31A131008FFC98 /* GameInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA472F31A131008FFC98 /* GameInfoHeaderView.swift */; };
 		8A4DBA4E2F31A131008FFC98 /* SolutionPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA492F31A131008FFC98 /* SolutionPanelView.swift */; };
 		8A4DBA4F2F31A131008FFC98 /* AnswerFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DBA442F31A131008FFC98 /* AnswerFeedbackView.swift */; };
+	8A5000E007E48AF /* FractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components/FractionView.swift; sourceTree = "<group>"; };
+	8A5001E084285BB /* QuestionWithFractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components/QuestionWithFractionView.swift; sourceTree = "<group>"; };
+	8A5000F087F59A5 /* FractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5000E007E48AF /* FractionView.swift */; };
+	8A5001F0994A683 /* QuestionWithFractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5001E084285BB /* QuestionWithFractionView.swift */; };
 		8A600A332F10930500B4AAD0 /* SoundEffectsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A322F10930500B4AAD0 /* SoundEffectsHelper.swift */; };
 		8A600A342F10930500B4AAD0 /* HapticFeedbackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A312F10930500B4AAD0 /* HapticFeedbackHelper.swift */; };
 		8A600A362F10931C00B4AAD0 /* ConfettiCelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A600A352F10931C00B4AAD0 /* ConfettiCelebrationView.swift */; };
@@ -304,6 +308,8 @@
 			isa = PBXGroup;
 			children = (
 				8A4DBA442F31A131008FFC98 /* AnswerFeedbackView.swift */,
+				8A5000E007E48AF /* FractionView.swift */,
+				8A5001E084285BB /* QuestionWithFractionView.swift */,
 				8A4DBA452F31A131008FFC98 /* AnswerInputView.swift */,
 				8A4DBA462F31A131008FFC98 /* GameControlButtonsView.swift */,
 				8A4DBA472F31A131008FFC98 /* GameInfoHeaderView.swift */,
@@ -517,6 +523,8 @@
 				8A4DBA4D2F31A131008FFC98 /* GameInfoHeaderView.swift in Sources */,
 				8A4DBA4E2F31A131008FFC98 /* SolutionPanelView.swift in Sources */,
 				8A4DBA4F2F31A131008FFC98 /* AnswerFeedbackView.swift in Sources */,
+				8A5000F087F59A5 /* FractionView.swift in Sources */,
+				8A5001F0994A683 /* QuestionWithFractionView.swift in Sources */,
 				8A600A382F10932400B4AAD0 /* Color+Theme.swift in Sources */,
 				8ABE41362EA0778E007EC146 /* FormulaGuideView.swift in Sources */,
 				8AF3ABAD2E05AE3600F67CDE /* Font+Adaptive.swift in Sources */,
