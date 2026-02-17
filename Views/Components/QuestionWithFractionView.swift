@@ -13,7 +13,7 @@ struct QuestionWithFractionView: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 8) {
+            HStack(spacing: 12) {
                 // Build the expression with fractions
                 if question.operations.count == 1 {
                     // Two-operand expression
@@ -32,14 +32,15 @@ struct QuestionWithFractionView: View {
             .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isCorrect)
         }
         .buttonStyle(PlainButtonStyle())
-        .padding()
+        .padding(.vertical, 12)
+        .padding(.horizontal, 8)
     }
 
     // MARK: - Helper Methods
 
     /// Builds a two-operand expression (e.g., "1/2 + 3/4 = ?")
     private func buildTwoOperandExpression() -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 12) {
             // First operand
             if let fractionOps = question.fractionOperands,
                let firstFraction = fractionOps[0] {
@@ -56,7 +57,7 @@ struct QuestionWithFractionView: View {
             // Operation
             Text(question.operations[0].symbol)
                 .font(.system(size: baseFontSize, weight: .bold))
-                .padding(.horizontal, 4)
+                .frame(minWidth: baseFontSize * 0.5)
 
             // Second operand
             if let fractionOps = question.fractionOperands,
@@ -74,7 +75,7 @@ struct QuestionWithFractionView: View {
             // Result placeholder
             Text("=")
                 .font(.system(size: baseFontSize, weight: .bold))
-                .padding(.horizontal, 4)
+                .frame(minWidth: baseFontSize * 0.5)
             Text("?")
                 .font(.system(size: baseFontSize, weight: .bold))
         }
@@ -82,7 +83,7 @@ struct QuestionWithFractionView: View {
 
     /// Builds a three-operand expression (e.g., "1/2 + 3/4 × 1/3 = ?")
     private func buildThreeOperandExpression() -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
             // First operand
             if let fractionOps = question.fractionOperands,
                let firstFraction = fractionOps[0] {
@@ -98,7 +99,7 @@ struct QuestionWithFractionView: View {
             // First operation
             Text(question.operations[0].symbol)
                 .font(.system(size: baseFontSize, weight: .bold))
-                .padding(.horizontal, 4)
+                .frame(minWidth: baseFontSize * 0.45)
 
             // Second operand
             if let fractionOps = question.fractionOperands,
@@ -115,7 +116,7 @@ struct QuestionWithFractionView: View {
             // Second operation
             Text(question.operations[1].symbol)
                 .font(.system(size: baseFontSize, weight: .bold))
-                .padding(.horizontal, 4)
+                .frame(minWidth: baseFontSize * 0.45)
 
             // Third operand
             if let fractionOps = question.fractionOperands,
@@ -132,7 +133,7 @@ struct QuestionWithFractionView: View {
             // Result placeholder
             Text("=")
                 .font(.system(size: baseFontSize, weight: .bold))
-                .padding(.horizontal, 4)
+                .frame(minWidth: baseFontSize * 0.45)
             Text("?")
                 .font(.system(size: baseFontSize, weight: .bold))
         }

@@ -9,20 +9,24 @@ struct FractionView: View {
     let baseFontSize: CGFloat
 
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 3) {
             // Numerator
             Text("\(fraction.numerator)")
                 .font(.system(size: baseFontSize * 0.75, weight: .semibold))
                 .frame(height: baseFontSize * 0.75)
+                .lineLimit(1)
 
-            // Fraction line (using a divider-like line)
-            Divider()
-                .frame(height: 1.5)
+            // Fraction line - enhanced with distinct appearance
+            RoundedRectangle(cornerRadius: 1)
+                .fill(Color.primary)
+                .frame(height: 2.5)
+                .padding(.horizontal, -4)
 
             // Denominator
             Text("\(fraction.denominator)")
                 .font(.system(size: baseFontSize * 0.75, weight: .semibold))
                 .frame(height: baseFontSize * 0.75)
+                .lineLimit(1)
         }
         .frame(minWidth: max(
             baseFontSize * 0.75 * CGFloat(String(fraction.numerator).count) * 0.6,
