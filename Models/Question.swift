@@ -428,6 +428,7 @@ class Question: NSObject, NSSecureCoding, Identifiable {
 
     // 获取用于语音朗读的题目文本
     var questionTextForSpeech: String {
+        let currentLanguage = LocalizationManager.shared.currentLanguage
         let questionExpression: String
 
         // Handle fraction operands - convert to words for TTS
@@ -435,21 +436,22 @@ class Question: NSObject, NSSecureCoding, Identifiable {
             var parts: [String] = []
             for (i, num) in numbers.enumerated() {
                 if let frac = fractionOps[i] {
-                    parts.append(frac.toWords()) // "one half", "三分之一"
+                    // Pass current language to ensure consistent language in fractions
+                    parts.append(frac.toWords(language: currentLanguage))
                 } else {
-                    // TODO: Convert integer to words too for consistency
-                    parts.append("\(num)")
+                    // Convert integer to words too for consistency
+                    parts.append(numberToWords(num, language: currentLanguage))
                 }
             }
 
             if parts.count == 2 && operations.count == 1 {
                 // Two-number operation
-                let opWord = operationToWords(operations[0])
+                let opWord = operationToWords(operations[0], language: currentLanguage)
                 questionExpression = "\(parts[0]) \(opWord) \(parts[1])"
             } else if parts.count == 3 && operations.count == 2 {
                 // Three-number operation
-                let op1Word = operationToWords(operations[0])
-                let op2Word = operationToWords(operations[1])
+                let op1Word = operationToWords(operations[0], language: currentLanguage)
+                let op2Word = operationToWords(operations[1], language: currentLanguage)
                 questionExpression = "\(parts[0]) \(op1Word) \(parts[1]) \(op2Word) \(parts[2])"
             } else {
                 questionExpression = "Invalid Question"
@@ -471,13 +473,55 @@ class Question: NSObject, NSSecureCoding, Identifiable {
         return "question.read_aloud".localizedFormat(questionExpression)
     }
 
-    // Helper: Convert operation to words for TTS
-    private func operationToWords(_ operation: Operation) -> String {
-        switch operation {
-        case .addition: return "plus"
-        case .subtraction: return "minus"
-        case .multiplication: return "times"
-        case .division: return "divided by"
+    // Helper: Convert integer to words for TTS
+    private func numberToWords(_ number: Int, language: LocalizationManager.Language) -> String {
+        // Get the spelled out number using the number formatter
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .spellOut
+
+        let localeIdentifier: String
+        switch language {
+        case .chinese:
+            localeIdentifier = "zh-CN"
+        case .english:
+            localeIdentifier = "en-US"
+        }
+
+        formatter.locale = Locale(identifier: localeIdentifier)
+
+        if let spelled = formatter.string(from: NSNumber(value: number)) {
+            // For English, replace hyphens with spaces for smoother pronunciation
+            if case .english = language {
+                let cleaned = spelled.replacingOccurrences(of: "-", with: " ")
+                    .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return cleaned
+            } else {
+                return spelled
+            }
+        }
+
+        // Fallback: return original number string
+        return "\(number)"
+    }
+
+    // Helper: Convert operation to words for TTS with language support
+    private func operationToWords(_ operation: Operation, language: LocalizationManager.Language) -> String {
+        switch language {
+        case .chinese:
+            switch operation {
+            case .addition: return "加"
+            case .subtraction: return "减"
+            case .multiplication: return "乘以"
+            case .division: return "除以"
+            }
+        case .english:
+            switch operation {
+            case .addition: return "plus"
+            case .subtraction: return "minus"
+            case .multiplication: return "times"
+            case .division: return "divided by"
+            }
         }
     }
     
