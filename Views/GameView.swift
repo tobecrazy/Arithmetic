@@ -260,10 +260,12 @@ struct GameView: View {
                             .animation(.spring(response: 0.2, dampingFraction: 0.3).repeatCount(3), value: isShaking)
 
                             // Display correct answer with proper formatting for fractions
-                            HStack(spacing: 4) {
-                                Text("game.correct_answer".localized)
+                            HStack(spacing: 8) {
+                                // Label: "The correct answer is:" (without placeholder)
+                                Text("game.correct_answer_label".localized)
                                     .foregroundColor(.blue)
                                     .font(.adaptiveBody())
+                                    .lineLimit(1)
 
                                 // Display fraction in vertical format if applicable
                                 if currentQuestion.difficultyLevel == .level7,

@@ -121,6 +121,7 @@
 "game.correct" = "正确！+5分";
 "game.wrong" = "答案错误";
 "game.correct_answer" = "正确答案是 %@";
+"game.correct_answer_label" = "正确答案是：";
 "result.final_score" = "最终得分";
 "result.correct_count" = "答对 %@ 题/共 %@ 题";
 "result.time_used" = "用时";

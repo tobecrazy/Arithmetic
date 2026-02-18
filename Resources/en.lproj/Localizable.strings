@@ -121,6 +121,7 @@
 "game.correct" = "Correct! +5 points";
 "game.wrong" = "Wrong Answer";
 "game.correct_answer" = "The correct answer is %@";
+"game.correct_answer_label" = "The correct answer is:";
 "result.final_score" = "Final Score";
 "result.correct_count" = "%@ correct out of %@";
 "result.time_used" = "Time Used";
