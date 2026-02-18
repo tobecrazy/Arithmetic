@@ -300,11 +300,23 @@ struct WrongQuestionsView: View {
                     .font(.system(size: 22, weight: .bold, design: .rounded))
                     .foregroundColor(.adaptiveText)
 
-                // Answer row
+                // Answer row with proper formatting for fractions
                 HStack {
-                    Text("wrong_questions.answer".localizedFormat(question.answerDisplayString))
+                    // Label
+                    Text("wrong_questions.answer_label".localized)
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.success)
+
+                    // Display fraction in vertical format if applicable
+                    if let answerType = question.answerType,
+                       answerType == "fraction",
+                       let fractionAnswer = question.fractionAnswer {
+                        FractionView(fraction: fractionAnswer, baseFontSize: 18)
+                    } else {
+                        Text(question.answerDisplayString)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.success)
+                    }
 
                     Spacer()
 

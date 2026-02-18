@@ -165,6 +165,7 @@
 "wrong_questions.total" = "Total";
 "wrong_questions.mastered" = "Mastered";
 "wrong_questions.answer" = "Answer: %@";
+"wrong_questions.answer_label" = "Answer:";
 "wrong_questions.level" = "Level: %@";
 "wrong_questions.stats" = "Attempted %@ times, Wrong %@ times";
 "wrong_questions.delete_all" = "Delete All";

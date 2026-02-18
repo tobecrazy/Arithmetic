@@ -165,6 +165,7 @@
 "wrong_questions.total" = "错题总数";
 "wrong_questions.mastered" = "已掌握";
 "wrong_questions.answer" = "答案：%@";
+"wrong_questions.answer_label" = "答案：";
 "wrong_questions.level" = "难度：%@";
 "wrong_questions.stats" = "尝试 %@ 次，错误 %@ 次";
 "wrong_questions.delete_all" = "删除全部";

@@ -733,10 +733,24 @@ struct GameView: View {
                                 Text("game.wrong".localized)
                                     .foregroundColor(.red)
                                     .font(.adaptiveHeadline())
-                                
-                                Text("game.correct_answer".localizedFormat(currentQuestion.correctAnswerText))
-                                    .foregroundColor(.blue)
-                                    .font(.adaptiveBody())
+
+                                // Display correct answer with proper formatting for fractions
+                                HStack(spacing: 8) {
+                                    Text("game.correct_answer_label".localized)
+                                        .foregroundColor(.blue)
+                                        .font(.adaptiveBody())
+                                        .lineLimit(1)
+
+                                    // Display fraction in vertical format if applicable
+                                    if currentQuestion.difficultyLevel == .level7,
+                                       let fractionAnswer = currentQuestion.fractionAnswer {
+                                        FractionView(fraction: fractionAnswer, baseFontSize: 20)
+                                    } else {
+                                        Text(currentQuestion.correctAnswerText)
+                                            .foregroundColor(.blue)
+                                            .font(.adaptiveBody())
+                                    }
+                                }
                                 
                                 // 添加解析按钮
                                 Button(action: {
