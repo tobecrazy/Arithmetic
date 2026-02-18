@@ -259,10 +259,23 @@ struct GameView: View {
                             .offset(x: isShaking ? -5 : 5)
                             .animation(.spring(response: 0.2, dampingFraction: 0.3).repeatCount(3), value: isShaking)
 
-                            Text("game.correct_answer".localizedFormat(currentQuestion.correctAnswerText))
-                                .foregroundColor(.blue)
-                                .font(.adaptiveBody())
-                                .padding(.vertical, 5)
+                            // Display correct answer with proper formatting for fractions
+                            HStack(spacing: 4) {
+                                Text("game.correct_answer".localized)
+                                    .foregroundColor(.blue)
+                                    .font(.adaptiveBody())
+
+                                // Display fraction in vertical format if applicable
+                                if currentQuestion.difficultyLevel == .level7,
+                                   let fractionAnswer = currentQuestion.fractionAnswer {
+                                    FractionView(fraction: fractionAnswer, baseFontSize: 24)
+                                } else {
+                                    Text(currentQuestion.correctAnswerText)
+                                        .foregroundColor(.blue)
+                                        .font(.adaptiveBody())
+                                }
+                            }
+                            .padding(.vertical, 5)
 
                             // 添加解析按钮
                             Button(action: {
