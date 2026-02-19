@@ -41,11 +41,23 @@ class WrongQuestionManager {
                 newWrongQuestion.timesShown = 1
                 newWrongQuestion.timesWrong = 1
                 newWrongQuestion.lastShownAt = Date()  // Set lastShownAt to current date
-                
+
                 // 保存解析方法和步骤
                 newWrongQuestion.solutionMethod = question.getSolutionMethod(for: level).rawValue
                 newWrongQuestion.solutionSteps = question.getSolutionSteps(for: level)
-                
+
+                // Save fraction answer if applicable
+                newWrongQuestion.answerType = question.answerType.rawValue
+                if let fractionAnswer = question.fractionAnswer {
+                    newWrongQuestion.fractionNumerator = Int32(fractionAnswer.numerator)
+                    newWrongQuestion.fractionDenominator = Int32(fractionAnswer.denominator)
+                }
+
+                // Save fraction operands if applicable
+                if let fractionOps = question.fractionOperands {
+                    newWrongQuestion.fractionOperands = serializeFractionOperands(fractionOps)
+                }
+
                 print("Adding new wrong question: \(question.questionText), key: \(combinationKey)")
                 saveContext()
             } else {
@@ -231,11 +243,41 @@ class WrongQuestionManager {
     
     // Helper method: Generate a unique combination key for a question
     private func getCombinationKey(for question: Question) -> String {
+        // Include fraction operands in the combination key to ensure uniqueness
+        if let fractionOps = question.fractionOperands, fractionOps.contains(where: { $0 != nil }) {
+            var parts: [String] = []
+            for (i, num) in question.numbers.enumerated() {
+                if let frac = fractionOps[i] {
+                    parts.append("\(frac.numerator)/\(frac.denominator)")
+                } else {
+                    parts.append("\(num)")
+                }
+            }
+            if parts.count == 2 {
+                return "\(parts[0])\(question.operations[0].rawValue)\(parts[1])"
+            } else {
+                return "\(parts[0])\(question.operations[0].rawValue)\(parts[1])\(question.operations[1].rawValue)\(parts[2])"
+            }
+        }
+
+        // Standard integer-only questions
         if question.numbers.count == 2 {
             return "\(question.numbers[0])\(question.operations[0].rawValue)\(question.numbers[1])"
         } else {
             return "\(question.numbers[0])\(question.operations[0].rawValue)\(question.numbers[1])\(question.operations[1].rawValue)\(question.numbers[2])"
         }
+    }
+
+    // Helper method: Serialize fraction operands to string
+    // Format: "1/2,nil,3/4" where "nil" represents integer operands
+    private func serializeFractionOperands(_ fractionOps: [Fraction?]) -> String {
+        return fractionOps.map { frac in
+            if let f = frac {
+                return "\(f.numerator)/\(f.denominator)"
+            } else {
+                return "nil"
+            }
+        }.joined(separator: ",")
     }
     
     // Save context

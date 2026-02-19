@@ -169,27 +169,69 @@ class GameViewModel: ObservableObject {
     /// - **Incorrect**: Shows correct answer, enables solution panel, saves to wrong questions
     /// - **Last Question**: Marks game as completed instead of advancing
     func submitAnswer(_ answer: Int) {
-    let isCorrect = gameState.checkAnswer(answer)
-
-    if isCorrect {
-        // If answer is correct, move to next question immediately
-        if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
-            gameState.currentQuestionIndex += 1
-            gameState.showingCorrectAnswer = false
-
-            // 读出新题目
-            readCurrentQuestion()
-        } else {
-            gameState.gameCompleted = true
-        }
-    } else {
-        // If answer is incorrect, we'll wait for the user to click the "Next Question" button
-        // Note: The wrong question is already added to the collection in gameState.checkAnswer()
-        #if DEBUG
-        print("Question answered incorrectly: \(gameState.questions[gameState.currentQuestionIndex].questionText)")
-        #endif
+        let isCorrect = gameState.checkAnswer(answer)
+        handleAnswerResult(isCorrect: isCorrect)
     }
-}
+
+    /// Validates and processes a user's fraction answer to the current question.
+    ///
+    /// If the answer is correct, automatically advances to the next question.
+    /// If incorrect, displays the correct answer and waits for user to click "Next Question".
+    /// Wrong answers are automatically saved to the wrong question collection.
+    ///
+    /// - Parameter fraction: The user's submitted answer as a Fraction
+    ///
+    /// ## Behavior
+    /// - **Correct**: Increments score, moves to next question, reads new question via TTS
+    /// - **Incorrect**: Shows correct answer, enables solution panel, saves to wrong questions
+    /// - **Last Question**: Marks game as completed instead of advancing
+    func submitFractionAnswer(_ fraction: Fraction) {
+        let isCorrect = gameState.checkAnswer(fraction)
+        handleAnswerResult(isCorrect: isCorrect)
+    }
+
+    /// Validates and processes a user's decimal answer to the current question (for fraction questions).
+    ///
+    /// - Parameter decimal: The user's submitted answer as a decimal number
+    /// - Parameter tolerance: The acceptable tolerance for decimal comparison (default 0.01)
+    func submitDecimalAnswer(_ decimal: Double, tolerance: Double = 0.01) {
+        let currentQuestion = gameState.questions[gameState.currentQuestionIndex]
+        let isCorrect = currentQuestion.checkDecimalAnswer(decimal, tolerance: tolerance)
+
+        // Update game state for decimal answers
+        if isCorrect {
+            gameState.score += 1
+        } else {
+            gameState.showingCorrectAnswer = true
+            // Add to wrong questions
+            WrongQuestionManager(context: CoreDataManager.shared.context)
+                .addWrongQuestion(currentQuestion, for: gameState.difficultyLevel)
+        }
+
+        handleAnswerResult(isCorrect: isCorrect)
+    }
+
+    /// Common handler for answer results - moves to next question or shows correct answer
+    private func handleAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            // If answer is correct, move to next question immediately
+            if gameState.currentQuestionIndex < gameState.totalQuestions - 1 {
+                gameState.currentQuestionIndex += 1
+                gameState.showingCorrectAnswer = false
+
+                // 读出新题目
+                readCurrentQuestion()
+            } else {
+                gameState.gameCompleted = true
+            }
+        } else {
+            // If answer is incorrect, we'll wait for the user to click the "Next Question" button
+            // Note: The wrong question is already added to the collection in gameState.checkAnswer()
+            #if DEBUG
+            print("Question answered incorrectly: \(gameState.questions[gameState.currentQuestionIndex].questionText)")
+            #endif
+        }
+    }
     
     /// Pauses the game, stopping the timer.
     ///

@@ -39,11 +39,24 @@ struct AnswerFeedbackView: View {
             .offset(x: isShaking ? -5 : 5)
             .animation(.spring(response: 0.2, dampingFraction: 0.3).repeatCount(3), value: isShaking)
 
-            // Correct answer display
-            Text("game.correct_answer".localizedFormat(String(question.correctAnswer)))
-                .foregroundColor(.blue)
-                .font(.adaptiveBody())
-                .padding(.vertical, 5)
+            // Correct answer display with proper formatting for fractions
+            HStack(spacing: 8) {
+                Text("game.correct_answer_label".localized)
+                    .foregroundColor(.blue)
+                    .font(.adaptiveBody())
+                    .lineLimit(1)
+
+                // Display fraction in vertical format if applicable
+                if difficultyLevel == .level7,
+                   let fractionAnswer = question.fractionAnswer {
+                    FractionView(fraction: fractionAnswer, baseFontSize: 20)
+                } else {
+                    Text(String(question.correctAnswer))
+                        .foregroundColor(.blue)
+                        .font(.adaptiveBody())
+                }
+            }
+            .padding(.vertical, 5)
 
             // Solution panel
             SolutionPanelView(

@@ -7,7 +7,7 @@ class DifficultyLevelTests: XCTestCase {
     // MARK: - Basic Properties Tests
 
     func testAllCasesCount() {
-        XCTAssertEqual(DifficultyLevel.allCases.count, 6)
+        XCTAssertEqual(DifficultyLevel.allCases.count, 7)
     }
 
     func testRawValues() {
@@ -57,13 +57,13 @@ class DifficultyLevelTests: XCTestCase {
     func testLevel5Range() {
         let range = DifficultyLevel.level5.range
         XCTAssertEqual(range.lowerBound, 1)
-        XCTAssertEqual(range.upperBound, 20)
+        XCTAssertEqual(range.upperBound, 50)
     }
 
     func testLevel6Range() {
         let range = DifficultyLevel.level6.range
         XCTAssertEqual(range.lowerBound, 1)
-        XCTAssertEqual(range.upperBound, 100)
+        XCTAssertEqual(range.upperBound, 1000)
     }
 
     // MARK: - Supported Operations Tests
@@ -135,7 +135,7 @@ class DifficultyLevelTests: XCTestCase {
     }
 
     func testLevel5QuestionCount() {
-        XCTAssertEqual(DifficultyLevel.level5.questionCount, 25)
+        XCTAssertEqual(DifficultyLevel.level5.questionCount, 30)
     }
 
     func testLevel6QuestionCount() {
@@ -161,7 +161,7 @@ class DifficultyLevelTests: XCTestCase {
     }
 
     func testLevel5PointsPerQuestion() {
-        XCTAssertEqual(DifficultyLevel.level5.pointsPerQuestion, 4)
+        XCTAssertEqual(DifficultyLevel.level5.pointsPerQuestion, 3)
     }
 
     func testLevel6PointsPerQuestion() {
@@ -173,7 +173,13 @@ class DifficultyLevelTests: XCTestCase {
     func testTotalPointsEqual100ForAllLevels() {
         for level in DifficultyLevel.allCases {
             let totalPoints = level.questionCount * level.pointsPerQuestion
-            XCTAssertEqual(totalPoints, 100, "Total points for \(level.rawValue) should be 100, got \(totalPoints)")
+            // Level 5 has 90 base points (30 questions × 3 points)
+            // Other levels have 100 points
+            if level == .level5 {
+                XCTAssertEqual(totalPoints, 90, "Total points for \(level.rawValue) should be 90, got \(totalPoints)")
+            } else {
+                XCTAssertEqual(totalPoints, 100, "Total points for \(level.rawValue) should be 100, got \(totalPoints)")
+            }
         }
     }
 
@@ -214,8 +220,10 @@ class DifficultyLevelTests: XCTestCase {
             XCTAssertTrue(level.supportedOperations.contains(.division))
         }
 
-        // Level 6 has all operations
-        XCTAssertEqual(DifficultyLevel.level6.supportedOperations.count, 4)
+        // Levels 6-7 have all operations
+        for level in [DifficultyLevel.level6, .level7] {
+            XCTAssertEqual(level.supportedOperations.count, 4)
+        }
     }
 
     // MARK: - Range Progression Tests
@@ -225,10 +233,46 @@ class DifficultyLevelTests: XCTestCase {
         XCTAssertLessThan(DifficultyLevel.level1.range.upperBound, DifficultyLevel.level2.range.upperBound)
         XCTAssertLessThan(DifficultyLevel.level2.range.upperBound, DifficultyLevel.level3.range.upperBound)
 
-        // Multiplication/division levels should progress: 10 -> 20
+        // Multiplication/division levels should progress: 10 -> 50 (updated)
         XCTAssertLessThan(DifficultyLevel.level4.range.upperBound, DifficultyLevel.level5.range.upperBound)
 
-        // Level 6 should have the largest range
-        XCTAssertEqual(DifficultyLevel.level6.range.upperBound, 100)
+        // Level 6 should have the largest range (1-1000)
+        XCTAssertEqual(DifficultyLevel.level6.range.upperBound, 1000)
+
+        // Level 7 should have 1-100 range
+        XCTAssertEqual(DifficultyLevel.level7.range.upperBound, 100)
+    }
+
+    // MARK: - Level 7 Tests
+
+    func testLevel7Properties() {
+        XCTAssertEqual(DifficultyLevel.level7.questionCount, 100)
+        XCTAssertEqual(DifficultyLevel.level7.pointsPerQuestion, 1)
+        XCTAssertEqual(DifficultyLevel.level7.range, 1...100)
+        XCTAssertTrue(DifficultyLevel.level7.allowsFractions)
+    }
+
+    func testAllowsFractions() {
+        // Only Level 7 allows fractions
+        XCTAssertTrue(DifficultyLevel.level7.allowsFractions)
+
+        // All other levels do not allow fractions
+        for level in [DifficultyLevel.level1, .level2, .level3, .level4, .level5, .level6] {
+            XCTAssertFalse(level.allowsFractions, "Level \(level) should not allow fractions")
+        }
+    }
+
+    func testLevel5UpdatedProperties() {
+        // Level 5 updated to 30 questions, 1-50 range
+        XCTAssertEqual(DifficultyLevel.level5.questionCount, 30)
+        XCTAssertEqual(DifficultyLevel.level5.pointsPerQuestion, 3)
+        XCTAssertEqual(DifficultyLevel.level5.range, 1...50)
+    }
+
+    func testLevel6UpdatedProperties() {
+        // Level 6 updated to 1-1000 range
+        XCTAssertEqual(DifficultyLevel.level6.questionCount, 100)
+        XCTAssertEqual(DifficultyLevel.level6.pointsPerQuestion, 1)
+        XCTAssertEqual(DifficultyLevel.level6.range, 1...1000)
     }
 }

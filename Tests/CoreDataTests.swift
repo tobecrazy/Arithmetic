@@ -426,3 +426,359 @@ class WrongQuestionEntityTests: XCTestCase {
         context.delete(divEntity)
     }
 }
+
+// MARK: - Fraction Storage Tests
+class FractionStorageTests: XCTestCase {
+
+    var manager: WrongQuestionManager!
+
+    override func setUp() {
+        super.setUp()
+        manager = WrongQuestionManager()
+    }
+
+    override func tearDown() {
+        // Clean up test data
+        manager.deleteWrongQuestions(for: .level7)
+        manager = nil
+        super.tearDown()
+    }
+
+    func testAddWrongQuestionWithFractionAnswer() {
+        // Create a question with a fraction answer
+        let fractionQuestion = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level7)
+
+        // Verify it has a fraction answer
+        XCTAssertEqual(fractionQuestion.answerType, .fraction)
+        XCTAssertNotNil(fractionQuestion.fractionAnswer)
+
+        // Add to wrong questions
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        // Verify it was stored
+        XCTAssertTrue(manager.isWrongQuestion(fractionQuestion))
+    }
+
+    func testRetrieveWrongQuestionWithFractionAnswer() {
+        let fractionQuestion = Question(number1: 7, number2: 4, operation: .division, difficultyLevel: .level7)
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        // Retrieve wrong questions
+        let wrongQuestions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+
+        // Find our question
+        let retrieved = wrongQuestions.first { q in
+            q.numbers == [7, 4] && q.operations == [.division]
+        }
+
+        XCTAssertNotNil(retrieved)
+        if let retrieved = retrieved {
+            XCTAssertEqual(retrieved.answerType, .fraction)
+            XCTAssertNotNil(retrieved.fractionAnswer)
+
+            // Verify fraction is correctly stored
+            if let fraction = retrieved.fractionAnswer {
+                let expectedFraction = Fraction(numerator: 7, denominator: 4).simplified()
+                XCTAssertEqual(fraction, expectedFraction)
+            }
+        }
+    }
+
+    func testFractionAnswerPersistsThroughCoreData() {
+        let fractionQuestion = Question(number1: 5, number2: 3, operation: .division, difficultyLevel: .level7)
+
+        // Save and retrieve
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+        let retrieved = manager.getWrongQuestionsForLevel(.level7, limit: 10).first
+
+        XCTAssertNotNil(retrieved?.fractionAnswer)
+        XCTAssertEqual(retrieved?.fractionAnswer?.numerator, 5)
+        XCTAssertEqual(retrieved?.fractionAnswer?.denominator, 3)
+    }
+
+    func testMixedIntegerAndFractionQuestions() {
+        // Add both integer and fraction questions
+        let integerQuestion = Question(number1: 10, number2: 5, operation: .division, difficultyLevel: .level7)
+        let fractionQuestion = Question(number1: 7, number2: 3, operation: .division, difficultyLevel: .level7)
+
+        manager.addWrongQuestion(integerQuestion, for: .level7)
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        let wrongQuestions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+
+        // Should have both types
+        let hasInteger = wrongQuestions.contains { $0.answerType == .integer }
+        let hasFraction = wrongQuestions.contains { $0.answerType == .fraction }
+
+        XCTAssertTrue(hasInteger)
+        XCTAssertTrue(hasFraction)
+    }
+
+    // MARK: - Fraction Operands Tests
+
+    func testAddWrongQuestionWithFractionOperands() {
+        // Create a question with fraction operands: 3 + 1/2 + 1/4
+        let half = Fraction(numerator: 1, denominator: 2)
+        let quarter = Fraction(numerator: 1, denominator: 4)
+        let fractionQuestion = Question(operand1: 3, operand2: half, operand3: quarter,
+                                       operation1: .addition, operation2: .addition,
+                                       difficultyLevel: .level7)
+
+        // Verify it has fraction operands
+        XCTAssertNotNil(fractionQuestion.fractionOperands)
+        XCTAssertTrue(fractionQuestion.fractionOperands?.contains(where: { $0 != nil }) ?? false)
+
+        // Add to wrong questions
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        // Verify it was stored
+        XCTAssertTrue(manager.isWrongQuestion(fractionQuestion))
+    }
+
+    func testRetrieveWrongQuestionWithFractionOperands() {
+        // Create a question: 3 + 2/4 + 1/2
+        let twoQuarters = Fraction(numerator: 2, denominator: 4)
+        let oneHalf = Fraction(numerator: 1, denominator: 2)
+        let fractionQuestion = Question(operand1: 3, operand2: twoQuarters, operand3: oneHalf,
+                                       operation1: .addition, operation2: .addition,
+                                       difficultyLevel: .level7)
+
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        // Retrieve wrong questions
+        let wrongQuestions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+
+        // Find our question - it should have fraction operands properly restored
+        let retrieved = wrongQuestions.first { q in
+            // Check that the question has the expected fraction operands
+            if let fractionOps = q.fractionOperands {
+                // First operand should be nil (integer 3)
+                // Second operand should be a fraction (2/4 or simplified 1/2)
+                // Third operand should be a fraction (1/2)
+                return fractionOps.count == 3 && fractionOps[0] == nil && fractionOps[1] != nil && fractionOps[2] != nil
+            }
+            return false
+        }
+
+        XCTAssertNotNil(retrieved, "Should find the question with fraction operands")
+        if let retrieved = retrieved {
+            XCTAssertNotNil(retrieved.fractionOperands)
+
+            // Verify the fraction operands are correctly stored
+            if let fractionOps = retrieved.fractionOperands {
+                XCTAssertNil(fractionOps[0], "First operand should be nil (integer)")
+                XCTAssertNotNil(fractionOps[1], "Second operand should be a fraction")
+                XCTAssertNotNil(fractionOps[2], "Third operand should be a fraction")
+
+                // Verify the actual fraction values (2/4 simplifies to 1/2)
+                if let frac2 = fractionOps[1] {
+                    XCTAssertEqual(frac2.simplified(), twoQuarters.simplified())
+                }
+                if let frac3 = fractionOps[2] {
+                    XCTAssertEqual(frac3.simplified(), oneHalf.simplified())
+                }
+            }
+        }
+    }
+
+    func testFractionOperandsDoNotParseAs3Plus0Plus0() {
+        // This is the bug fix test: 3 + 2/4 + 1/2 should NOT be parsed as 3 + 0 + 0
+        let twoQuarters = Fraction(numerator: 2, denominator: 4)
+        let oneHalf = Fraction(numerator: 1, denominator: 2)
+        let fractionQuestion = Question(operand1: 3, operand2: twoQuarters, operand3: oneHalf,
+                                       operation1: .addition, operation2: .addition,
+                                       difficultyLevel: .level7)
+
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        // Retrieve and verify
+        let wrongQuestions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+        let retrieved = wrongQuestions.first { q in
+            if let fractionOps = q.fractionOperands {
+                return fractionOps.count == 3 && fractionOps[0] == nil && fractionOps[1] != nil && fractionOps[2] != nil
+            }
+            return false
+        }
+
+        XCTAssertNotNil(retrieved, "Should retrieve the question")
+
+        // Key assertion: The numbers array should NOT be [3, 0, 0] when converted back
+        // The fractionOperands should be properly preserved
+        if let retrieved = retrieved {
+            // If fractionOperands is nil, then the bug is still present
+            XCTAssertNotNil(retrieved.fractionOperands, "fractionOperands should NOT be nil - this was the bug!")
+
+            // The question text should include fractions, not just "3 + 0 + 0"
+            let questionText = retrieved.questionText
+            XCTAssertFalse(questionText.contains("0 + 0") || questionText.contains("0 = ?"),
+                          "Question text '\(questionText)' should not contain zeros from fraction placeholders")
+        }
+    }
+
+    func testTwoOperandFractionQuestion() {
+        // Create a question: 1/2 + 1/3
+        let oneHalf = Fraction(numerator: 1, denominator: 2)
+        let oneThird = Fraction(numerator: 1, denominator: 3)
+        let fractionQuestion = Question(operand1: oneHalf, operand2: oneThird,
+                                       operation: .addition, difficultyLevel: .level7)
+
+        manager.addWrongQuestion(fractionQuestion, for: .level7)
+
+        // Retrieve and verify
+        let wrongQuestions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+        let retrieved = wrongQuestions.first { q in
+            if let fractionOps = q.fractionOperands, fractionOps.count == 2 {
+                return fractionOps[0] != nil && fractionOps[1] != nil
+            }
+            return false
+        }
+
+        XCTAssertNotNil(retrieved, "Should retrieve the two-operand fraction question")
+        if let retrieved = retrieved {
+            XCTAssertNotNil(retrieved.fractionOperands)
+            XCTAssertEqual(retrieved.fractionOperands?.count, 2)
+        }
+    }
+
+    func testMixedIntegerAndFractionOperands() {
+        // Create a question: 5 × 1/2 (integer × fraction)
+        let oneHalf = Fraction(numerator: 1, denominator: 2)
+        let mixedQuestion = Question(operand1: 5, operand2: oneHalf,
+                                    operation: .multiplication, difficultyLevel: .level7)
+
+        manager.addWrongQuestion(mixedQuestion, for: .level7)
+
+        // Retrieve and verify
+        let wrongQuestions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+        let retrieved = wrongQuestions.first { q in
+            if let fractionOps = q.fractionOperands, fractionOps.count == 2 {
+                // First should be nil (integer 5), second should be a fraction
+                return fractionOps[0] == nil && fractionOps[1] != nil
+            }
+            return false
+        }
+
+        XCTAssertNotNil(retrieved, "Should retrieve the mixed integer/fraction question")
+        if let retrieved = retrieved {
+            // Verify the integer part is preserved
+            XCTAssertEqual(retrieved.numbers[0], 5)
+            // Verify the fraction is preserved
+            XCTAssertNotNil(retrieved.fractionOperands?[1])
+        }
+    }
+}
+
+// MARK: - Backward Compatibility Tests
+class CoreDataBackwardCompatibilityTests: XCTestCase {
+
+    var manager: WrongQuestionManager!
+
+    override func setUp() {
+        super.setUp()
+        manager = WrongQuestionManager()
+    }
+
+    override func tearDown() {
+        manager.deleteWrongQuestions(for: .level1)
+        manager.deleteWrongQuestions(for: .level7)
+        manager = nil
+        super.tearDown()
+    }
+
+    func testOldQuestionsDefaultToIntegerAnswerType() {
+        // Simulate an old question by creating an entity without answerType set
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+
+        let entity = WrongQuestionEntity(context: context)
+        entity.id = UUID()
+        entity.questionText = "8 + 5 = ?"
+        entity.correctAnswer = 13
+        entity.numbers = "8,5"
+        entity.operations = "+"
+        entity.level = "level1"
+        entity.combinationKey = "8+5"
+        entity.createdAt = Date()
+        entity.timesShown = 1
+        entity.timesWrong = 1
+        entity.solutionMethod = "makingTen"
+        entity.solutionSteps = "Step 1"
+        // Note: answerType is NOT set (simulating old data)
+
+        // Convert to Question
+        let question = entity.toQuestion()
+        XCTAssertNotNil(question)
+
+        // Should default to integer answer type
+        XCTAssertEqual(question?.answerType, .integer)
+        XCTAssertNil(question?.fractionAnswer)
+
+        // Clean up
+        context.delete(entity)
+    }
+
+    func testOldQuestionsCanBeRetrieved() {
+        // Add an old-style question (pre-fraction support)
+        let oldQuestion = Question(number1: 8, number2: 4, operation: .division, difficultyLevel: .level4)
+
+        // This should be an integer division
+        XCTAssertEqual(oldQuestion.answerType, .integer)
+
+        manager.addWrongQuestion(oldQuestion, for: .level4)
+
+        // Should be able to retrieve it
+        let retrieved = manager.getWrongQuestionsForLevel(.level4, limit: 10)
+        XCTAssertGreaterThan(retrieved.count, 0)
+
+        // Clean up
+        manager.deleteWrongQuestions(for: .level4)
+    }
+
+    func testNewFractionFieldsHaveDefaults() {
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+
+        let entity = WrongQuestionEntity(context: context)
+        entity.id = UUID()
+        entity.questionText = "10 - 5 = ?"
+        entity.correctAnswer = 5
+        entity.numbers = "10,5"
+        entity.operations = "-"
+        entity.level = "level1"
+        entity.combinationKey = "10-5"
+        entity.createdAt = Date()
+        entity.timesShown = 1
+        entity.timesWrong = 1
+
+        // Verify default values for new fields
+        XCTAssertEqual(entity.answerType, "integer") // Default value
+        XCTAssertEqual(entity.fractionNumerator, 0) // Default value
+        XCTAssertEqual(entity.fractionDenominator, 1) // Default value
+
+        // Clean up
+        context.delete(entity)
+    }
+
+    func testMigrationDoesNotBreakExistingData() {
+        // Add various questions across different levels
+        let level1Question = Question(number1: 5, number2: 3, operation: .addition)
+        let level4Question = Question(number1: 6, number2: 7, operation: .multiplication)
+        let level7Question = Question(number1: 5, number2: 2, operation: .division, difficultyLevel: .level7)
+
+        manager.addWrongQuestion(level1Question, for: .level1)
+        manager.addWrongQuestion(level4Question, for: .level4)
+        manager.addWrongQuestion(level7Question, for: .level7)
+
+        // All questions should be retrievable
+        let level1Questions = manager.getWrongQuestionsForLevel(.level1, limit: 10)
+        let level4Questions = manager.getWrongQuestionsForLevel(.level4, limit: 10)
+        let level7Questions = manager.getWrongQuestionsForLevel(.level7, limit: 10)
+
+        XCTAssertGreaterThan(level1Questions.count, 0)
+        XCTAssertGreaterThan(level4Questions.count, 0)
+        XCTAssertGreaterThan(level7Questions.count, 0)
+
+        // Clean up
+        manager.deleteWrongQuestions(for: .level1)
+        manager.deleteWrongQuestions(for: .level4)
+        manager.deleteWrongQuestions(for: .level7)
+    }
+}

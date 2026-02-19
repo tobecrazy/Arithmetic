@@ -4,6 +4,11 @@ import Foundation
 extension QuestionGenerator {
     /// Generates a three-number arithmetic question
     static func generateThreeNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
+        // Special handling for Level 7 with fractions
+        if difficultyLevel == .level7 {
+            return generateLevel7ThreeNumberQuestion()
+        }
+
         // For small ranges with division (like level4: 1-10), use fewer attempts and simpler logic
         let maxAttempts = difficultyLevel.range.upperBound <= 10 ? 10 : 20
         var attempts = 0
@@ -44,7 +49,7 @@ extension QuestionGenerator {
         }
 
         // Validate final result
-        let question = Question(number1: numbers[0], number2: numbers[1], number3: numbers[2], operation1: operations[0], operation2: operations[1])
+        let question = Question(number1: numbers[0], number2: numbers[1], number3: numbers[2], operation1: operations[0], operation2: operations[1], difficultyLevel: difficultyLevel)
 
         // 提高最小答案要求，确保题目有足够挑战性
         let minAcceptableAnswer: Int
@@ -53,7 +58,7 @@ extension QuestionGenerator {
             minAcceptableAnswer = 2
         case .level2, .level4:
             minAcceptableAnswer = 3
-        case .level3, .level5, .level6:
+        case .level3, .level5, .level6, .level7:
             minAcceptableAnswer = 5
         }
 
@@ -84,7 +89,7 @@ extension QuestionGenerator {
             minNumber = Constants.minNumberValue // 乘除法从2开始
         case .level5:
             minNumber = Constants.minNumberValueLevel2Plus // Level 5 从3开始
-        case .level6:
+        case .level6, .level7:
             minNumber = Constants.minNumberValueLevel2Plus // 混合运算从3开始
         }
 
@@ -100,7 +105,7 @@ extension QuestionGenerator {
         let supportedOperations = difficultyLevel.supportedOperations
 
         switch difficultyLevel {
-        case .level6:
+        case .level6, .level7:
             // Mixed operations - any combination
             let op1 = supportedOperations.randomElement() ?? .addition
             let op2 = supportedOperations.randomElement() ?? .addition
@@ -238,6 +243,11 @@ extension QuestionGenerator {
 
     /// Generates a simple fallback question when generation fails
     private static func generateFallbackThreeNumberQuestion(difficultyLevel: DifficultyLevel) -> Question {
+        // Level 7 fallback: use fraction three-number questions (no simple addition)
+        if difficultyLevel == .level7 {
+            return generateLevel7ThreeNumberQuestion()
+        }
+
         let maxNum = min(10, difficultyLevel.range.upperBound / 3)
         let minNum: Int
 
@@ -263,9 +273,9 @@ extension QuestionGenerator {
 
         // For small ranges (like level4: 1-10), use multiplication only to avoid edge cases
         if difficultyLevel.range.upperBound <= 10 && difficultyLevel.supportedOperations.contains(.multiplication) {
-            return Question(number1: num1, number2: num2, number3: adjustedNum3, operation1: .multiplication, operation2: .multiplication)
+            return Question(number1: num1, number2: num2, number3: adjustedNum3, operation1: .multiplication, operation2: .multiplication, difficultyLevel: difficultyLevel)
         }
 
-        return Question(number1: num1, number2: num2, number3: adjustedNum3, operation1: .addition, operation2: .addition)
+        return Question(number1: num1, number2: num2, number3: adjustedNum3, operation1: .addition, operation2: .addition, difficultyLevel: difficultyLevel)
     }
 }
