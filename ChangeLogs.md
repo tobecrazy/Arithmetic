@@ -1,5 +1,124 @@
 # Change Log
 
+### 🌟 2026-02-18 (Level 7 分数显示优化 / Level 7 Fraction Display Optimization)
+
+#### 🎨 UI/UX 全面优化 (Comprehensive UI/UX Optimization)
+- **📐 垂直堆叠分数显示 (Vertical Stacked Fraction Display)**
+  - 统一所有分数显示为垂直格式：分子在上，分数线居中，分母在下
+  - 优化分数线宽度，与分子/分母宽度精确匹配
+  - 改进组件间距和对齐方式，提升视觉美观度
+  - Unified all fraction displays to vertical format: numerator on top, fraction line centered, denominator below
+  - Optimized fraction line width to precisely match numerator/denominator width
+  - Improved component spacing and alignment for better visual aesthetics
+
+- **🎯 分数输入界面优化 (Fraction Input Interface Optimization)**
+  - FractionInputView升级为垂直堆叠布局
+  - 增强输入框视觉效果：更大的圆角、更清晰的边框
+  - 优化占位符文本和字体大小
+  - FractionInputView upgraded to vertical stacked layout
+  - Enhanced input field visual effects: larger corner radius, clearer borders
+  - Optimized placeholder text and font sizes
+
+- **✅ 答案反馈显示优化 (Answer Feedback Display Optimization)**
+  - AnswerFeedbackView中的分数答案采用垂直格式
+  - 正确/错误答案对比显示更加清晰
+  - 移除冗余的占位符文本
+  - Fraction answers in AnswerFeedbackView use vertical format
+  - Clearer comparison display for correct/incorrect answers
+  - Removed redundant placeholder text
+
+- **📋 错题集分数显示 (Wrong Questions Collection Fraction Display)**
+  - WrongQuestionsView中的分数答案统一为垂直格式
+  - 优化分数显示在列表中的布局
+  - 提升分数可读性和视觉一致性
+  - Fraction answers in WrongQuestionsView unified to vertical format
+  - Optimized fraction layout in list view
+  - Improved fraction readability and visual consistency
+
+#### 🔊 TTS 语音优化 (TTS Voice Optimization)
+- **🌐 语言纯净度修复 (Language Purity Fix)**
+  - 修复分数朗读时中英文混合的问题
+  - 中文模式：完全使用中文发音（例如："二分之一"）
+  - 英文模式：完全使用英文发音（例如："one half"）
+  - Fixed mixed language issue in fraction pronunciation
+  - Chinese mode: Fully uses Chinese pronunciation (e.g., "二分之一")
+  - English mode: Fully uses English pronunciation (e.g., "one half")
+
+- **🎤 发音质量提升 (Pronunciation Quality Enhancement)**
+  - 优化语音合成速率和音调
+  - 确保分数发音自然流畅
+  - 改进数字到文本的转换逻辑
+  - Optimized speech synthesis rate and pitch
+  - Ensured natural and smooth fraction pronunciation
+  - Improved number-to-text conversion logic
+
+#### 📐 技术实现 (Technical Implementation)
+- **新增组件 (New Components)**
+  - `Views/Components/VerticalFractionView.swift` - 垂直分数显示组件
+  - 可重用的分数显示组件，支持自定义字体大小和颜色
+  - `Views/Components/VerticalFractionView.swift` - Vertical fraction display component
+  - Reusable fraction display component with customizable font size and color
+
+- **修改文件 (Modified Files)**
+  - `Views/Components/FractionInputView.swift` - 升级为垂直布局
+  - `Views/Components/AnswerFeedbackView.swift` - 集成垂直分数显示
+  - `Views/WrongQuestionsView.swift` - 统一分数显示格式
+  - `Utils/TTSHelper.swift` - 修复语言混合问题
+  - `Views/Components/FractionInputView.swift` - Upgraded to vertical layout
+  - `Views/Components/AnswerFeedbackView.swift` - Integrated vertical fraction display
+  - `Views/WrongQuestionsView.swift` - Unified fraction display format
+  - `Utils/TTSHelper.swift` - Fixed language mixing issue
+
+- **代码优化 (Code Optimization)**
+  - 提取分数线宽度计算逻辑为独立方法
+  - 统一分数显示样式和间距常量
+  - 改进代码可维护性和可重用性
+  - Extracted fraction line width calculation as separate method
+  - Unified fraction display style and spacing constants
+  - Improved code maintainability and reusability
+
+#### 📊 用户体验提升 (User Experience Enhancement)
+- **✨ 视觉一致性 (Visual Consistency)**
+  - 所有分数显示组件使用相同的垂直格式
+  - 统一的字体大小、颜色和间距
+  - 更清晰的分数线和更好的对齐
+  - All fraction display components use the same vertical format
+  - Unified font sizes, colors, and spacing
+  - Clearer fraction lines and better alignment
+
+- **🎯 可读性提升 (Readability Enhancement)**
+  - 垂直格式更符合数学书写习惯
+  - 更容易识别分子和分母
+  - 适合儿童阅读和理解
+  - Vertical format aligns with mathematical writing conventions
+  - Easier to identify numerator and denominator
+  - Suitable for children to read and understand
+
+- **📱 设备适配 (Device Adaptation)**
+  - 支持iPhone和iPad所有屏幕尺寸
+  - 响应式字体大小调整
+  - 横竖屏模式完美适配
+  - Supports all screen sizes for iPhone and iPad
+  - Responsive font size adjustment
+  - Perfect adaptation for portrait and landscape modes
+
+#### 🧪 测试验证 (Testing Verification)
+- **✅ 功能测试 (Functional Testing)**
+  - 验证所有分数显示组件的正确性
+  - 测试中英文TTS发音纯净度
+  - 确认分数输入和提交流程
+  - Verified correctness of all fraction display components
+  - Tested Chinese/English TTS pronunciation purity
+  - Confirmed fraction input and submission flow
+
+- **🎨 视觉测试 (Visual Testing)**
+  - 检查各种分数值的显示效果
+  - 验证不同屏幕尺寸的适配
+  - 测试深色/浅色模式兼容性
+  - Checked display effects for various fraction values
+  - Verified adaptation to different screen sizes
+  - Tested dark/light mode compatibility
+
 ### 🌟 2026-02-15 (修复分数相关测试失败 / Fix Fraction-Related Test Failures)
 - **🔧 修复分数显示问题 (Fixed Fraction Display Issue)** - 修复Question.questionText属性以正确显示分数 (Fixed Question.questionText property to properly display fractions)
 - **🌍 修复中英双语分数读法 (Fixed Bilingual Fraction Pronunciation)** - 修正中文分数读法规则，确保1/2显示为"二分之一" (Corrected Chinese fraction pronunciation rules, ensuring 1/2 displays as "二分之一")
