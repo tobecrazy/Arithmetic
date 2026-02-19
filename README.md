@@ -3,7 +3,7 @@
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.9* | *Updated: February 18, 2026*
+*Version: 1.0.9* | *Updated: February 19, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -375,7 +375,7 @@
 
 ## 🔄 最近更新 (Recent Updates)
 
-### 🌟 2026-02-18 (Level 7 分数显示优化 / Level 7 Fraction Display Optimization)
+### 🌟 2026-02-19 (Level 7 分数显示优化 / Level 7 Fraction Display Optimization)
 - **📐 分数垂直显示优化 (Fraction Vertical Display Optimization)** - 全面优化分数显示为垂直堆叠格式，提升可读性 (Comprehensively optimized fraction display to vertical stacked format for better readability)
 - **🎨 UI增强 (UI Enhancements)** - 改进分数输入界面、答案反馈和错题显示的视觉效果 (Improved visual effects for fraction input interface, answer feedback, and wrong question display)
 - **🔊 TTS修复 (TTS Fixes)** - 修复分数朗读的中英文混合问题，确保纯语言发音 (Fixed mixed language issue in fraction pronunciation, ensuring pure language audio)
