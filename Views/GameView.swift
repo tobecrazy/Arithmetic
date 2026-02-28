@@ -5,6 +5,17 @@ struct GameView: View {
     @ObservedObject var viewModel: GameViewModel
     var onGameExit: (() -> Void)? = nil
     @State private var userInput: String = ""
+    // Fraction input states
+    @State private var fractionNumerator: String = ""
+    @State private var fractionDenominator: String = ""
+    // Decimal input state for fraction answers
+    @State private var decimalInput: String = ""
+    // Input mode for fraction answers
+    enum InputMode {
+        case fraction
+        case decimal
+    }
+    @State private var inputMode: InputMode = .fraction
     @State private var showingAlert = false
     @State private var showingPauseAlert = false
     @State private var showResultsView = false
@@ -212,11 +223,22 @@ struct GameView: View {
                         ttsHelper.speakMathExpression(questionToRead, language: localizationManager.currentLanguage)
                         haptics.light()
                     }) {
-                        Text(currentQuestion.questionText)
-                            .font(.system(size: 40, weight: .bold))
-                            .foregroundColor(.primary)
-                            .scaleEffect(viewModel.gameState.isCorrect ? 1.1 : 1.0)
-                            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.gameState.isCorrect)
+                        // Use fraction display for Level 7 questions with fractions, otherwise use text
+                        if currentQuestion.difficultyLevel == .level7,
+                           let fractionOps = currentQuestion.fractionOperands,
+                           fractionOps.contains(where: { $0 != nil }) {
+                            QuestionWithFractionView(
+                                question: currentQuestion,
+                                isCorrect: viewModel.gameState.isCorrect,
+                                onTap: {}
+                            )
+                        } else {
+                            Text(currentQuestion.questionText)
+                                .font(.system(size: 40, weight: .bold))
+                                .foregroundColor(.primary)
+                                .scaleEffect(viewModel.gameState.isCorrect ? 1.1 : 1.0)
+                                .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.gameState.isCorrect)
+                        }
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding()
@@ -237,10 +259,25 @@ struct GameView: View {
                             .offset(x: isShaking ? -5 : 5)
                             .animation(.spring(response: 0.2, dampingFraction: 0.3).repeatCount(3), value: isShaking)
 
-                            Text("game.correct_answer".localizedFormat(String(currentQuestion.correctAnswer)))
-                                .foregroundColor(.blue)
-                                .font(.adaptiveBody())
-                                .padding(.vertical, 5)
+                            // Display correct answer with proper formatting for fractions
+                            HStack(spacing: 8) {
+                                // Label: "The correct answer is:" (without placeholder)
+                                Text("game.correct_answer_label".localized)
+                                    .foregroundColor(.blue)
+                                    .font(.adaptiveBody())
+                                    .lineLimit(1)
+
+                                // Display fraction in vertical format if applicable
+                                if currentQuestion.difficultyLevel == .level7,
+                                   let fractionAnswer = currentQuestion.fractionAnswer {
+                                    FractionView(fraction: fractionAnswer, baseFontSize: 24)
+                                } else {
+                                    Text(currentQuestion.correctAnswerText)
+                                        .foregroundColor(.blue)
+                                        .font(.adaptiveBody())
+                                }
+                            }
+                            .padding(.vertical, 5)
 
                             // 添加解析按钮
                             Button(action: {
@@ -358,38 +395,84 @@ struct GameView: View {
                     }
                     
                     // 答案输入框
-                    HStack {
-                        TextField("", text: $userInput)
-                            .keyboardType(.numberPad)
-                            .font(.adaptiveHeadline())
-                            .multilineTextAlignment(.center)
-                            .frame(width: 100)
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(.adaptiveCornerRadius)
-                            .disabled(viewModel.gameState.showingCorrectAnswer)
-                            .onReceive(Just(userInput)) { newValue in
-                                let filtered = newValue.filter { "0123456789".contains($0) }
-                                if filtered != newValue {
-                                    self.userInput = filtered
-                                }
+                    VStack(spacing: 12) {
+                        // Check if current question requires fraction answer
+                        if let currentQuestion = viewModel.gameState.questions.indices.contains(viewModel.gameState.currentQuestionIndex) ?
+                            viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex] : nil,
+                           currentQuestion.answerType == .fraction {
+
+                            // Input mode picker for fraction answers
+                            Picker("Input Mode", selection: $inputMode) {
+                                Text("Fraction").tag(InputMode.fraction)
+                                Text("Decimal").tag(InputMode.decimal)
                             }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .frame(width: 200)
+                            .disabled(viewModel.gameState.showingCorrectAnswer)
+
+                            // Show appropriate input based on mode
+                            if inputMode == .fraction {
+                                // Fraction input
+                                FractionInputView(numerator: $fractionNumerator, denominator: $fractionDenominator)
+                                    .disabled(viewModel.gameState.showingCorrectAnswer)
+                            } else {
+                                // Decimal input
+                                TextField("0.5", text: $decimalInput)
+                                    .keyboardType(.decimalPad)
+                                    .font(.adaptiveHeadline())
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 120)
+                                    .padding()
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(.adaptiveCornerRadius)
+                                    .disabled(viewModel.gameState.showingCorrectAnswer)
+                                    .onReceive(Just(decimalInput)) { newValue in
+                                        // Allow digits and one decimal point
+                                        let filtered = newValue.filter { "0123456789.".contains($0) }
+                                        // Ensure only one decimal point
+                                        let components = filtered.components(separatedBy: ".")
+                                        if components.count > 2 {
+                                            // Multiple decimal points, keep only first
+                                            self.decimalInput = components[0] + "." + components[1...].joined()
+                                        } else if filtered != newValue {
+                                            self.decimalInput = filtered
+                                        }
+                                    }
+                            }
+                        } else {
+                            // Integer input
+                            TextField("", text: $userInput)
+                                .keyboardType(.numberPad)
+                                .font(.adaptiveHeadline())
+                                .multilineTextAlignment(.center)
+                                .frame(width: 100)
+                                .padding()
+                                .background(Color.gray.opacity(0.1))
+                                .cornerRadius(.adaptiveCornerRadius)
+                                .disabled(viewModel.gameState.showingCorrectAnswer)
+                                .onReceive(Just(userInput)) { newValue in
+                                    let filtered = newValue.filter { "0123456789".contains($0) }
+                                    if filtered != newValue {
+                                        self.userInput = filtered
+                                    }
+                                }
+                        }
                     }
                     .padding()
-                    
+
                     // 提交按钮
                     Button(action: submitAnswer) {
                         Text("game.submit".localized)
                             .font(.adaptiveHeadline())
                             .padding()
                             .frame(width: 200)
-                            .background(userInput.isEmpty ? Color.gray : Color.blue)
+                            .background(isInputValid() ? Color.blue : Color.gray)
                             .foregroundColor(.white)
                             .cornerRadius(.adaptiveCornerRadius)
                             .scaleEffect(buttonScale)
                             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: buttonScale)
                     }
-                    .disabled(userInput.isEmpty || viewModel.gameState.showingCorrectAnswer)
+                    .disabled(!isInputValid() || viewModel.gameState.showingCorrectAnswer)
                     .padding()
                     .onLongPressGesture(minimumDuration: 0, pressing: { isPressing in
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
@@ -650,10 +733,24 @@ struct GameView: View {
                                 Text("game.wrong".localized)
                                     .foregroundColor(.red)
                                     .font(.adaptiveHeadline())
-                                
-                                Text("game.correct_answer".localizedFormat(String(currentQuestion.correctAnswer)))
-                                    .foregroundColor(.blue)
-                                    .font(.adaptiveBody())
+
+                                // Display correct answer with proper formatting for fractions
+                                HStack(spacing: 8) {
+                                    Text("game.correct_answer_label".localized)
+                                        .foregroundColor(.blue)
+                                        .font(.adaptiveBody())
+                                        .lineLimit(1)
+
+                                    // Display fraction in vertical format if applicable
+                                    if currentQuestion.difficultyLevel == .level7,
+                                       let fractionAnswer = currentQuestion.fractionAnswer {
+                                        FractionView(fraction: fractionAnswer, baseFontSize: 20)
+                                    } else {
+                                        Text(currentQuestion.correctAnswerText)
+                                            .foregroundColor(.blue)
+                                            .font(.adaptiveBody())
+                                    }
+                                }
                                 
                                 // 添加解析按钮
                                 Button(action: {
@@ -735,22 +832,67 @@ struct GameView: View {
                         }
                         
                         // 答案输入框
-                        HStack {
-                            TextField("", text: $userInput)
-                                .keyboardType(.numberPad)
-                                .font(.system(size: 30))
-                                .multilineTextAlignment(.center)
-                                .frame(width: 150, height: 60)
-                                .padding()
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(.adaptiveCornerRadius)
-                                .disabled(viewModel.gameState.showingCorrectAnswer)
-                                .onReceive(Just(userInput)) { newValue in
-                                    let filtered = newValue.filter { "0123456789".contains($0) }
-                                    if filtered != newValue {
-                                        self.userInput = filtered
-                                    }
+                        VStack(spacing: 12) {
+                            // Check if current question requires fraction answer
+                            if let currentQuestion = viewModel.gameState.questions.indices.contains(viewModel.gameState.currentQuestionIndex) ?
+                                viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex] : nil,
+                               currentQuestion.answerType == .fraction {
+
+                                // Input mode picker for fraction answers
+                                Picker("Input Mode", selection: $inputMode) {
+                                    Text("Fraction").tag(InputMode.fraction)
+                                    Text("Decimal").tag(InputMode.decimal)
                                 }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .frame(width: 200)
+                                .disabled(viewModel.gameState.showingCorrectAnswer)
+
+                                // Show appropriate input based on mode
+                                if inputMode == .fraction {
+                                    // Fraction input
+                                    FractionInputView(numerator: $fractionNumerator, denominator: $fractionDenominator)
+                                        .disabled(viewModel.gameState.showingCorrectAnswer)
+                                } else {
+                                    // Decimal input
+                                    TextField("0.5", text: $decimalInput)
+                                        .keyboardType(.decimalPad)
+                                        .font(.system(size: 30))
+                                        .multilineTextAlignment(.center)
+                                        .frame(width: 150, height: 60)
+                                        .padding()
+                                        .background(Color.gray.opacity(0.1))
+                                        .cornerRadius(.adaptiveCornerRadius)
+                                        .disabled(viewModel.gameState.showingCorrectAnswer)
+                                        .onReceive(Just(decimalInput)) { newValue in
+                                            // Allow digits and one decimal point
+                                            let filtered = newValue.filter { "0123456789.".contains($0) }
+                                            // Ensure only one decimal point
+                                            let components = filtered.components(separatedBy: ".")
+                                            if components.count > 2 {
+                                                self.decimalInput = components[0] + "." + components[1...].joined()
+                                            } else if filtered != newValue {
+                                                self.decimalInput = filtered
+                                            }
+                                        }
+                                }
+                            } else {
+                                // Integer input
+                                TextField("", text: $userInput)
+                                    .keyboardType(.numberPad)
+                                    .font(.system(size: 30))
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 150, height: 60)
+                                    .padding()
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(.adaptiveCornerRadius)
+                                    .disabled(viewModel.gameState.showingCorrectAnswer)
+                                    .onReceive(Just(userInput)) { newValue in
+                                        let filtered = newValue.filter { "0123456789".contains($0) }
+                                        if filtered != newValue {
+                                            self.userInput = filtered
+                                        }
+                                    }
+                            }
                         }
                         .padding()
                         
@@ -959,48 +1101,131 @@ struct GameView: View {
     }
     
     // 提交答案
+    // Helper to check if input is valid
+    private func isInputValid() -> Bool {
+        if let currentQuestion = viewModel.gameState.questions.indices.contains(viewModel.gameState.currentQuestionIndex) ?
+            viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex] : nil {
+            if currentQuestion.answerType == .fraction {
+                // Check based on input mode
+                if inputMode == .fraction {
+                    // Check if both numerator and denominator are valid
+                    guard let _ = Int(fractionNumerator),
+                          let denom = Int(fractionDenominator),
+                          denom != 0 else {
+                        return false
+                    }
+                    return true
+                } else {
+                    // Check if decimal input is valid (or Unicode fraction)
+                    if !decimalInput.isEmpty {
+                        // Try parsing as Unicode fraction or decimal
+                        return Fraction.from(string: decimalInput) != nil || Double(decimalInput) != nil
+                    }
+                    return false
+                }
+            } else {
+                // Check if integer input is valid
+                return !userInput.isEmpty && Int(userInput) != nil
+            }
+        }
+        return false
+    }
+
+    // Helper to clear input fields
+    private func clearInputs() {
+        userInput = ""
+        fractionNumerator = ""
+        fractionDenominator = ""
+        decimalInput = ""
+    }
+
     private func submitAnswer() {
-        guard let answer = Int(userInput) else { return }
+        guard viewModel.gameState.questions.count > viewModel.gameState.currentQuestionIndex else { return }
+
+        let currentQuestion = viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex]
+        var isCorrect = false
+
+        // Check answer based on type and input mode
+        if currentQuestion.answerType == .fraction {
+            if inputMode == .fraction {
+                // Fraction answer
+                guard let num = Int(fractionNumerator),
+                      let denom = Int(fractionDenominator),
+                      denom != 0 else {
+                    return
+                }
+                let userFraction = Fraction(numerator: num, denominator: denom)
+                isCorrect = currentQuestion.checkAnswer(userFraction)
+            } else {
+                // Decimal answer - also accept Unicode fractions
+                // First try to parse as Unicode fraction (½, ⅓, etc.)
+                if let unicodeFraction = Fraction.from(string: decimalInput) {
+                    isCorrect = currentQuestion.checkAnswer(unicodeFraction)
+                } else if let decimal = Double(decimalInput) {
+                    // Otherwise parse as decimal
+                    isCorrect = currentQuestion.checkDecimalAnswer(decimal, tolerance: 0.01)
+                } else {
+                    return
+                }
+            }
+        } else {
+            // Integer answer
+            guard let answer = Int(userInput) else { return }
+            isCorrect = currentQuestion.checkAnswer(answer)
+        }
 
         // Trigger immediate feedback
         withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
             buttonScale = 0.9
         }
 
-        // Check answer and provide feedback
-        if viewModel.gameState.questions.count > viewModel.gameState.currentQuestionIndex {
-            let currentQuestion = viewModel.gameState.questions[viewModel.gameState.currentQuestionIndex]
-            let isCorrect = answer == currentQuestion.correctAnswer
-
-            if isCorrect {
-                haptics.correctAnswer()
-                sounds.playCorrectAnswer()
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
-                    buttonScale = 1.05
-                }
-                // Check for streak celebration
-                if viewModel.gameState.streakCount >= 3 && viewModel.gameState.streakCount % 3 == 0 {
-                    haptics.celebrate(count: 2)
-                    sounds.playAchievement()
-                    showStreakCelebration = true
-                    showConfetti = true
-                }
-            } else {
-                haptics.wrongAnswer()
-                sounds.playWrongAnswer()
+        // Provide feedback based on correctness
+        if isCorrect {
+            haptics.correctAnswer()
+            sounds.playCorrectAnswer()
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.5)) {
+                buttonScale = 1.05
+            }
+            // Check for streak celebration
+            if viewModel.gameState.streakCount >= 3 && viewModel.gameState.streakCount % 3 == 0 {
+                haptics.celebrate(count: 2)
+                sounds.playAchievement()
+                showStreakCelebration = true
+                showConfetti = true
+            }
+        } else {
+            haptics.wrongAnswer()
+            sounds.playWrongAnswer()
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.4)) {
+                isShaking.toggle()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.4)) {
-                    isShaking.toggle()
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.4)) {
-                        isShaking = false
-                    }
+                    isShaking = false
                 }
             }
         }
 
-        viewModel.submitAnswer(answer)
-        userInput = ""
+        // Submit the answer through proper channels (handles moving to next question)
+        if currentQuestion.answerType == .fraction {
+            if inputMode == .fraction {
+                // Fraction input - use submitFractionAnswer
+                let userFraction = Fraction(numerator: Int(fractionNumerator) ?? 0, denominator: Int(fractionDenominator) ?? 1)
+                viewModel.submitFractionAnswer(userFraction)
+            } else {
+                // Decimal input
+                if let unicodeFraction = Fraction.from(string: decimalInput) {
+                    viewModel.submitFractionAnswer(unicodeFraction)
+                } else if let decimal = Double(decimalInput) {
+                    viewModel.submitDecimalAnswer(decimal, tolerance: 0.01)
+                }
+            }
+        } else {
+            // For integers, let ViewModel handle validation and state updates
+            let answerValue = Int(userInput) ?? 0
+            viewModel.submitAnswer(answerValue)
+        }
+        clearInputs()
 
         // Reset button scale
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

@@ -3,10 +3,114 @@
 "difficulty.level2" = "Level 2 (Addition & Subtraction 1-20)";
 "difficulty.level3" = "Level 3 (Addition & Subtraction 1-50)";
 "difficulty.level4" = "Level 4 (Multiplication & Division 1-10)";
-"difficulty.level5" = "Level 5 (Multiplication & Division 1-20)";
-"difficulty.level6" = "Level 6 (Mixed Operations 1-100)";
+"difficulty.level5" = "Level 5 (Multiplication & Division 1-50)";
+"difficulty.level6" = "Level 6 (Three-digit Mixed Operations)";
+"difficulty.level7" = "Level 7 (Fraction Arithmetic Operations)";
 "difficulty.level" = "Difficulty Level";
 "button.start" = "Start Game";
+
+/* Fraction Support */
+"fraction.numerator" = "Numerator";
+"fraction.denominator" = "Denominator";
+"fraction.invalid_denominator" = "Denominator cannot be zero";
+"fraction.simplified" = "Simplified: %@";
+"fraction.half" = "half";
+"fraction.halves" = "halves";
+"fraction.third" = "third";
+"fraction.thirds" = "thirds";
+"fraction.quarter" = "quarter";
+"fraction.quarters" = "quarters";
+"fraction.fifth" = "fifth";
+"fraction.fifths" = "fifths";
+"fraction.sixth" = "sixth";
+"fraction.sixths" = "sixths";
+"fraction.seventh" = "seventh";
+"fraction.sevenths" = "sevenths";
+"fraction.eighth" = "eighth";
+"fraction.eighths" = "eighths";
+"fraction.ninth" = "ninth";
+"fraction.ninths" = "ninths";
+"fraction.tenth" = "tenth";
+"fraction.tenths" = "tenths";
+"fraction.parts_of" = "%d parts of %d";
+"fraction.mixed_and" = "and";
+"fraction.one_half" = "one half";
+"fraction.one_third" = "one third";
+"fraction.one_quarter" = "one quarter";
+"fraction.one_fifth" = "one fifth";
+"fraction.two_thirds" = "two thirds";
+"fraction.three_quarters" = "three quarters";
+
+/* Number Words for Fractions (0-100) */
+"fraction.number.0" = "zero";
+"fraction.number.1" = "one";
+"fraction.number.2" = "two";
+"fraction.number.3" = "three";
+"fraction.number.4" = "four";
+"fraction.number.5" = "five";
+"fraction.number.6" = "six";
+"fraction.number.7" = "seven";
+"fraction.number.8" = "eight";
+"fraction.number.9" = "nine";
+"fraction.number.10" = "ten";
+"fraction.number.11" = "eleven";
+"fraction.number.12" = "twelve";
+"fraction.number.13" = "thirteen";
+"fraction.number.14" = "fourteen";
+"fraction.number.15" = "fifteen";
+"fraction.number.16" = "sixteen";
+"fraction.number.17" = "seventeen";
+"fraction.number.18" = "eighteen";
+"fraction.number.19" = "nineteen";
+"fraction.number.20" = "twenty";
+"fraction.number.21" = "twenty-one";
+"fraction.number.22" = "twenty-two";
+"fraction.number.23" = "twenty-three";
+"fraction.number.24" = "twenty-four";
+"fraction.number.25" = "twenty-five";
+"fraction.number.30" = "thirty";
+"fraction.number.40" = "forty";
+"fraction.number.50" = "fifty";
+"fraction.number.60" = "sixty";
+"fraction.number.70" = "seventy";
+"fraction.number.80" = "eighty";
+"fraction.number.90" = "ninety";
+"fraction.number.100" = "one hundred";
+
+/* Denominator Words (ordinals) for 2-100 */
+"fraction.denominator.2" = "half";
+"fraction.denominator.3" = "third";
+"fraction.denominator.4" = "quarter";
+"fraction.denominator.5" = "fifth";
+"fraction.denominator.6" = "sixth";
+"fraction.denominator.7" = "seventh";
+"fraction.denominator.8" = "eighth";
+"fraction.denominator.9" = "ninth";
+"fraction.denominator.10" = "tenth";
+"fraction.denominator.11" = "eleventh";
+"fraction.denominator.12" = "twelfth";
+"fraction.denominator.13" = "thirteenth";
+"fraction.denominator.14" = "fourteenth";
+"fraction.denominator.15" = "fifteenth";
+"fraction.denominator.16" = "sixteenth";
+"fraction.denominator.17" = "seventeenth";
+"fraction.denominator.18" = "eighteenth";
+"fraction.denominator.19" = "nineteenth";
+"fraction.denominator.20" = "twentieth";
+"fraction.denominator.21" = "twenty-first";
+"fraction.denominator.22" = "twenty-second";
+"fraction.denominator.23" = "twenty-third";
+"fraction.denominator.24" = "twenty-fourth";
+"fraction.denominator.25" = "twenty-fifth";
+"fraction.denominator.30" = "thirtieth";
+"fraction.denominator.40" = "fortieth";
+"fraction.denominator.50" = "fiftieth";
+"fraction.denominator.60" = "sixtieth";
+"fraction.denominator.70" = "seventieth";
+"fraction.denominator.80" = "eightieth";
+"fraction.denominator.90" = "ninetieth";
+"fraction.denominator.100" = "one hundredth";
+
 
 "settings.time" = "Time Setting";
 "settings.language" = "Language Setting";
@@ -17,6 +121,7 @@
 "game.correct" = "Correct! +5 points";
 "game.wrong" = "Wrong Answer";
 "game.correct_answer" = "The correct answer is %@";
+"game.correct_answer_label" = "The correct answer is:";
 "result.final_score" = "Final Score";
 "result.correct_count" = "%@ correct out of %@";
 "result.time_used" = "Time Used";
@@ -60,6 +165,7 @@
 "wrong_questions.total" = "Total";
 "wrong_questions.mastered" = "Mastered";
 "wrong_questions.answer" = "Answer: %@";
+"wrong_questions.answer_label" = "Answer:";
 "wrong_questions.level" = "Level: %@";
 "wrong_questions.stats" = "Attempted %@ times, Wrong %@ times";
 "wrong_questions.delete_all" = "Delete All";
@@ -117,6 +223,7 @@
 "solution.standard.multiplication" = "Standard Multiplication:\nSolve: %d × %d = %d\n\nUsing the standard algorithm:\nMultiply %d × %d = %d";
 
 "solution.standard.division" = "Standard Division:\nSolve: %d ÷ %d = %d\n\nUsing the standard algorithm:\nDivide %d ÷ %d = %d";
+"solution.standard.division_with_result" = "Standard Division:\nSolve: %1$d ÷ %2$d = %3$@\n\nUsing the standard algorithm:\nDivide %4$d ÷ %5$d = %6$@";
 
 "solution.standard.three_numbers" = "Multi-Step Calculation:\nSolve: %d %@ %d %@ %d = ?\n\nStep 1: First calculate %d %@ %d = %d\nStep 2: Then calculate %d %@ %d = %d\n\nFinal Answer: %d %@ %d %@ %d = %d";
 "solution.standard.three_numbers_op2_first" = "Multi-Step Calculation (Order of Operations):\nSolve: %1$d %2$@ %3$d %4$@ %5$d = ?\n\nStep 1 (higher precedence): %6$d %7$@ %8$d = %9$d\nStep 2: %10$d %11$@ %12$d = %13$d\n\nFinal Answer: %14$d %15$@ %16$d %17$@ %18$d = %19$d";
@@ -130,6 +237,9 @@
 "solution.division_verification.steps" = "Division Verification:\nSolve: %d ÷ %d = %d\n\nThink: What times %d equals %d?\nVerification: %d × %d = %d\nSince %d = %d, therefore %d ÷ %d = %d";
 
 "solution.grouping_division.steps" = "Grouping Division:\nSolve: %d ÷ %d = %d\n\nDivide %d items into %d equal groups\nEach group has %d × %d = %d items\nTherefore: %d ÷ %d = %d";
+
+"solution.fraction.two_operands" = "Fraction Operation:\nSolve: %1$@ %2$@ %3$@ = ?\n\nCalculation: %4$@ %5$@ %6$@ = %7$@\n\nAnswer: %8$@ %9$@ %10$@ = %11$@";
+"solution.fraction.three_operands" = "Fraction Multi-Step:\nSolve: %1$@ %2$@ %3$@ %4$@ %5$@ = ?\n\nCalculation: %6$@ %7$@ %8$@ %9$@ %10$@ = %11$@\n\nAnswer: %12$@ %13$@ %14$@ %15$@ %16$@ = %17$@";
 
 /* Multiplication Table */
 "button.multiplication_table" = "9×9 Multiplication Table";
@@ -529,3 +639,4 @@
 "copied_status" = "Copied";
 
 
+"welcome.level7.desc" = "Fraction Arithmetic (+, -, ×, ÷)";

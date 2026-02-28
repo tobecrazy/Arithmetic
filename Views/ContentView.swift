@@ -131,6 +131,7 @@ struct ContentView: View {
         case .level4: return 4
         case .level5: return 5
         case .level6: return 6
+        case .level7: return 7
         }
     }
 
