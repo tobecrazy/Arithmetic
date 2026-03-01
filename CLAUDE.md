@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Arithmetic is an iOS math quiz app designed for children to practice arithmetic operations with increasing difficulty levels. The app features text-to-speech support, adaptive learning through wrong question tracking, and a comprehensive multi-language system. Built with SwiftUI and MVVM architecture, it integrates Firebase Crashlytics and supports 6 progressive difficulty levels with 8 pedagogical solution methods grounded in Chinese elementary math education.
+Arithmetic is an iOS math quiz app designed for children to practice arithmetic operations with increasing difficulty levels. The app features text-to-speech support, adaptive learning through wrong question tracking, and a comprehensive multi-language system. Built with SwiftUI and MVVM architecture, it integrates Firebase Crashlytics and supports 7 progressive difficulty levels (including fraction operations) with 8 pedagogical solution methods grounded in Chinese elementary math education.
 
 ## Development Commands
 
@@ -76,7 +76,8 @@ Models & Data Layer (Question, GameState, Core Data)
 - **GameState**: Complete game session state container
   - Tracks current question index, score, timer, user answers
   - Manages 30% wrong question integration into question set
-- **DifficultyLevel**: Enum defining 6 levels with distinct ranges and operations
+- **DifficultyLevel**: Enum defining 7 levels with distinct ranges and operations
+- **Fraction**: Struct for fraction representation with automatic simplification, arithmetic operations, and improper/mixed number conversion (Level 7 only)
 
 #### 2. ViewModel Layer (`/ViewModels/`)
 - **GameViewModel**: Single central controller for all game logic
@@ -179,14 +180,15 @@ The `QuestionGenerator` uses a sophisticated approach to ensure mathematical cor
 4. **Shuffle** result before returning
 
 **Difficulty Distribution**:
-| Level | Operations | Range | Questions | Two-Num % | Three-Num % |
-|-------|------------|-------|-----------|-----------|------------|
-| 1 | +/- | 1-10 | 20 | 100% | 0% |
-| 2 | +/- | 1-20 | 25 | 60% | 40% |
-| 3 | +/- | 1-50 | 50 | 40% | 60% |
-| 4 | ×÷ | 1-10 | 20 | 100% | 0% |
-| 5 | ×÷ | 1-20 | 25 | 100% | 0% |
-| 6 | +/-×÷ | 1-100 | 100 | 10% | 90% |
+| Level | Operations | Range | Questions | Two-Num % | Three-Num % | Special Features |
+|-------|------------|-------|-----------|-----------|------------|------------------|
+| 1 | +/- | 1-10 | 20 | 100% | 0% | Basic addition/subtraction |
+| 2 | +/- | 1-20 | 25 | 60% | 40% | Making/breaking ten methods |
+| 3 | +/- | 1-50 | 50 | 40% | 60% | Larger range practice |
+| 4 | ×÷ | 1-10 | 20 | 100% | 0% | Multiplication table |
+| 5 | ×÷ | 1-50 | 30 | 100% | 0% | Extended multiplication/division |
+| 6 | +/-×÷ | 1-1000 | 100 | 10% | 90% | Mixed operations, PEMDAS |
+| 7 | +/-×÷ with fractions | 1-100 | 100 | ~50% | ~50% | Fraction operations, improper/mixed conversion |
 
 ### Division Safety Guarantee
 
@@ -236,6 +238,55 @@ The app implements 8 pedagogical solution methods grounded in Chinese elementary
 | 分组除法 (Grouping Division) | 4-5 | Division | 15 ÷ 3 = 5 (15 = 3+3+3+3+3) |
 
 Each method generates localized step-by-step solution text in both Chinese and English.
+
+### Level 7 Fraction Operations
+
+**New in Version 1.0.9**: Level 7 introduces fraction arithmetic, the most advanced difficulty level:
+
+**Key Features**:
+- Supports all four operations with fractions: addition, subtraction, multiplication, division
+- Automatic fraction simplification via GCD algorithm
+- Improper fraction to mixed number conversion (e.g., 7/4 → 1 3/4)
+- Mixed number to improper fraction conversion for calculations
+- Stacked fraction display format for better readability
+- TTS support for fractions (e.g., "one and three fourths")
+- Integer results can be expressed as whole numbers or fractions (e.g., 2 = 2/1)
+
+**Fraction Model (`Fraction.swift`)**:
+```swift
+struct Fraction {
+    let numerator: Int
+    let denominator: Int
+
+    // Automatic simplification
+    var simplified: Fraction { ... }
+
+    // Conversion utilities
+    var asImproper: Fraction { ... }
+    var mixedNumber: (whole: Int, fraction: Fraction)? { ... }
+
+    // Arithmetic operations
+    static func + (lhs: Fraction, rhs: Fraction) -> Fraction
+    static func - (lhs: Fraction, rhs: Fraction) -> Fraction
+    static func * (lhs: Fraction, rhs: Fraction) -> Fraction
+    static func / (lhs: Fraction, rhs: Fraction) -> Fraction
+}
+```
+
+**Input Interface**:
+- `FractionInputView`: Separate fields for whole number, numerator, denominator
+- Real-time validation to prevent zero denominators
+- Support for pure integers (denominator = 1)
+
+**Display Component**:
+- `FractionView`: Stacked numerator/denominator with dividing line
+- Handles improper fractions, mixed numbers, and whole numbers
+- Responsive sizing for different screen sizes
+
+**Critical Validation**:
+- All fraction operations must result in valid fractions (denominator ≠ 0)
+- Division by zero fractions is prevented
+- Negative denominators are normalized to positive with negative numerator
 
 ### Multi-Language System
 
@@ -305,7 +356,8 @@ Arithmetic/
 ├── Models/
 │   ├── Question.swift               # Math problem with PEMDAS calculation and validation
 │   ├── GameState.swift              # Game session state container
-│   └── DifficultyLevel.swift        # 6-level enum with ranges and operations
+│   ├── DifficultyLevel.swift        # 7-level enum with ranges and operations
+│   └── Fraction.swift               # Fraction arithmetic with simplification (Level 7)
 ├── ViewModels/
 │   └── GameViewModel.swift          # Central business logic, reactive state management
 ├── Views/
@@ -318,7 +370,10 @@ Arithmetic/
 │   ├── MathBankView.swift           # PDF generation
 │   ├── QrCodeToolView.swift         # QR code scanning/generation
 │   ├── FormulaGuideView.swift       # Math formulas reference
+│   ├── FractionInputView.swift      # Fraction input interface (Level 7)
 │   ├── SystemInfoView.swift         # Device monitoring
+│   ├── Components/
+│   │   └── FractionView.swift       # Fraction display component
 │   └── [other views]
 ├── CoreData/
 │   ├── CoreDataManager.swift        # Persistence stack singleton
@@ -355,6 +410,7 @@ Arithmetic/
 │   ├── QuestionTests.swift          # Question model tests
 │   ├── DifficultyLevelTests.swift   # Difficulty tests
 │   ├── GameStateTests.swift         # Game state tests
+│   ├── FractionTests.swift          # Fraction arithmetic tests
 │   ├── CoreDataTests.swift          # Persistence tests
 │   ├── LocalizationTests.swift      # Localization validation
 │   ├── ExtensionsTests.swift        # Extension tests
@@ -414,9 +470,21 @@ Arithmetic/
    LocalizationManager.shared.currentLanguage = .chinese
    ```
 
+7. **Fraction Creation (Level 7)**:
+   ```swift
+   // Always validate and simplify
+   let fraction = Fraction(numerator: 6, denominator: 8).simplified  // Returns 3/4
+
+   // Convert improper to mixed
+   let improper = Fraction(numerator: 7, denominator: 4)
+   if let mixed = improper.mixedNumber {
+       print("\(mixed.whole) \(mixed.fraction)")  // "1 3/4"
+   }
+   ```
+
 ### ❌ Anti-Patterns to Avoid
 
-1. **Division without validation**: Generating "9 ÷ 2" (non-integer result)
+1. **Division without validation**: Generating "9 ÷ 2" (non-integer result) in Levels 1-6
 2. **Force unwrapping**: `let value = optional!`
 3. **Hardcoded ranges**: `if level == "hard" { max = 100 }`
 4. **String literals for UI**: `Text("Score: \(score)")` instead of localized strings
@@ -424,6 +492,9 @@ Arithmetic/
 6. **Multiple CoreData managers**: Each utility should use `CoreDataManager.shared`
 7. **Ignoring PEMDAS**: Not respecting operation precedence in multi-number expressions
 8. **Modifying GoogleService-Info.plist**: Never commit Firebase config changes
+9. **Zero denominator fractions**: Always validate `denominator != 0` before creating Fraction instances
+10. **Not simplifying fractions**: Always call `.simplified` on fraction results for Level 7
+11. **Negative denominators**: Normalize to positive denominator with negative numerator instead
 
 ## Testing Strategy
 
@@ -434,6 +505,7 @@ Arithmetic/
 | `UtilsTests.swift` | DeviceUtils, ImageCacheManager, LocalizationManager, QuestionGenerator, SystemInfoManager, TTSHelper, NavigationUtil, ProgressViewUtils |
 | `GameViewModelTests.swift` | ViewModel initialization, game flow, timer, answer submission, state transitions |
 | `QuestionTests.swift` | Question validation, correctAnswer calculation, solution methods |
+| `FractionTests.swift` | Fraction arithmetic, simplification, improper/mixed conversion, zero denominator handling |
 | `DifficultyLevelTests.swift` | Level properties, operation support |
 | `GameStateTests.swift` | Question generation, answer checking, score tracking |
 | `CoreDataTests.swift` | Entity CRUD, migration validation |
@@ -444,10 +516,11 @@ Arithmetic/
 ### Test Coverage Focus
 
 - **Question Generation**: Uniqueness, mathematical correctness, integer division guarantee
+- **Fraction Arithmetic**: Simplification, improper/mixed conversion, four operations, zero denominator prevention
 - **Game Flow**: Pause/resume, answer submission, timer accuracy
 - **CoreData**: Migration, CRUD operations, data integrity
 - **Localization**: Key coverage, format strings, language switching
-- **UI**: Navigation, state persistence, accessibility
+- **UI**: Navigation, state persistence, accessibility, fraction input validation
 
 ## Pre-Commit Verification
 
@@ -470,11 +543,13 @@ xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
 - ✅ All tests pass
 - ✅ No build warnings
 - ✅ Localization keys exist in both languages
-- ✅ Division operations guaranteed to produce integers
+- ✅ Division operations guaranteed to produce integers (Levels 1-6)
+- ✅ Fraction operations produce valid results (Level 7)
 - ✅ No hardcoded UI strings (use localization)
 - ✅ CoreData access only via singleton managers
 - ✅ PEMDAS respected for multi-number operations
 - ✅ No force unwrapping of optionals
+- ✅ Fraction denominators never zero
 
 ## File Creation Guidelines
 
