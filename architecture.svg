@@ -1,0 +1,353 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1520" width="1100" height="1520">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4F46E5"/>
+      <stop offset="50%" style="stop-color:#7C3AED"/>
+      <stop offset="100%" style="stop-color:#EC4899"/>
+    </linearGradient>
+    <linearGradient id="viewsGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#2563EB"/>
+    </linearGradient>
+    <linearGradient id="vmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6"/>
+      <stop offset="100%" style="stop-color:#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="modelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B"/>
+      <stop offset="100%" style="stop-color:#D97706"/>
+    </linearGradient>
+    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="utilGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#EC4899"/>
+      <stop offset="100%" style="stop-color:#DB2777"/>
+    </linearGradient>
+    <linearGradient id="extGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1"/>
+      <stop offset="100%" style="stop-color:#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="resGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#14B8A6"/>
+      <stop offset="100%" style="stop-color:#0D9488"/>
+    </linearGradient>
+    <linearGradient id="testGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F43F5E"/>
+      <stop offset="100%" style="stop-color:#E11D48"/>
+    </linearGradient>
+    <linearGradient id="scriptGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#78716C"/>
+      <stop offset="100%" style="stop-color:#57534E"/>
+    </linearGradient>
+    <filter id="dropShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+    <filter id="titleShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="1520" rx="16" fill="#F8FAFC"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="1100" height="80" rx="16" fill="url(#headerGrad)" filter="url(#titleShadow)"/>
+  <rect x="0" y="40" width="1100" height="40" fill="url(#headerGrad)"/>
+  <text x="550" y="48" font-family="system-ui, -apple-system, 'SF Pro Display', sans-serif" font-size="28" font-weight="700" fill="white" text-anchor="middle">Arithmetic - Project Architecture (MVVM)</text>
+
+  <!-- Subtitle -->
+  <text x="550" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#64748B" text-anchor="middle">iOS Math Quiz App | SwiftUI + Core Data + Firebase | 7 Difficulty Levels | Bilingual (CN/EN)</text>
+
+  <!-- ==================== APP ENTRY ==================== -->
+  <rect x="420" y="130" width="260" height="44" rx="22" fill="#1E1B4B" filter="url(#dropShadow)"/>
+  <text x="550" y="157" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">App/ ArithmeticApp.swift</text>
+
+  <!-- Arrow down -->
+  <polygon points="550,178 542,178 550,194 558,178" fill="#94A3B8"/>
+
+  <!-- ==================== VIEWS LAYER ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="30" y="200" width="1040" height="340" rx="12" fill="white" stroke="#DBEAFE" stroke-width="1.5"/>
+    <rect x="30" y="200" width="1040" height="36" rx="12" fill="url(#viewsGrad)"/>
+    <rect x="30" y="224" width="1040" height="12" fill="url(#viewsGrad)"/>
+    <text x="550" y="223" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Views Layer (SwiftUI)</text>
+  </g>
+
+  <!-- Core Screens -->
+  <text x="55" y="260" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#3B82F6">CORE SCREENS</text>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11" fill="#1E40AF">
+    <text x="55" y="280">ContentView.swift</text>
+    <text x="55" y="296">GameView.swift</text>
+    <text x="55" y="312">ResultView.swift</text>
+    <text x="55" y="328">WrongQuestionsView.swift</text>
+    <text x="55" y="344">SettingsView.swift</text>
+    <text x="55" y="360">WelcomeView.swift</text>
+  </g>
+
+  <!-- Feature Screens -->
+  <text x="260" y="260" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#3B82F6">FEATURE SCREENS</text>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11" fill="#1E40AF">
+    <text x="260" y="280">MultiplicationTableView.swift</text>
+    <text x="260" y="296">MathBankView.swift</text>
+    <text x="260" y="312">QrCodeToolView.swift</text>
+    <text x="260" y="328">FormulaGuideView.swift</text>
+    <text x="260" y="344">FractionInputView.swift</text>
+    <text x="260" y="360">SystemInfoView.swift</text>
+  </g>
+
+  <!-- Supplementary Views -->
+  <text x="520" y="260" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#3B82F6">SUPPLEMENTARY</text>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11" fill="#1E40AF">
+    <text x="520" y="280">AboutMeView.swift</text>
+    <text x="520" y="296">LanguageSelectorView.swift</text>
+    <text x="520" y="312">OtherOptionsView.swift</text>
+    <text x="520" y="328">ConfettiCelebrationView.swift</text>
+    <text x="520" y="344">CachedAsyncImageView.swift</text>
+    <text x="520" y="360">SystemInfoComponents.swift</text>
+  </g>
+
+  <!-- Components -->
+  <text x="760" y="260" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#3B82F6">COMPONENTS/</text>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11" fill="#1E40AF">
+    <text x="760" y="280">QuestionDisplayView.swift</text>
+    <text x="760" y="296">GameInfoHeaderView.swift</text>
+    <text x="760" y="312">AnswerInputView.swift</text>
+    <text x="760" y="328">AnswerFeedbackView.swift</text>
+    <text x="760" y="344">SolutionPanelView.swift</text>
+    <text x="760" y="360">GameControlButtonsView.swift</text>
+    <text x="760" y="376">FractionView.swift</text>
+    <text x="760" y="392">QuestionWithFractionView.swift</text>
+  </g>
+
+  <!-- File count badge -->
+  <rect x="960" y="500" width="90" height="24" rx="12" fill="#DBEAFE"/>
+  <text x="1005" y="516" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">26 files</text>
+
+  <!-- Arrow: Views -> ViewModel -->
+  <line x1="550" y1="540" x2="550" y2="558" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="558" y="554" font-family="system-ui, sans-serif" font-size="10" fill="#94A3B8">@Published bindings</text>
+  <polygon points="550,558 544,558 550,570 556,558" fill="#94A3B8"/>
+
+  <!-- ==================== VIEWMODEL LAYER ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="200" y="575" width="700" height="90" rx="12" fill="white" stroke="#EDE9FE" stroke-width="1.5"/>
+    <rect x="200" y="575" width="700" height="36" rx="12" fill="url(#vmGrad)"/>
+    <rect x="200" y="599" width="700" height="12" fill="url(#vmGrad)"/>
+    <text x="550" y="598" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">ViewModel Layer (Combine + Reactive State)</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="12" fill="#6D28D9">
+    <text x="230" y="638">GameViewModel.swift</text>
+    <text x="480" y="638" font-family="system-ui, sans-serif" font-size="11" fill="#8B5CF6">Central controller: game logic, timer, TTS, state management, progress persistence</text>
+  </g>
+  <rect x="830" y="628" width="50" height="24" rx="12" fill="#EDE9FE"/>
+  <text x="855" y="644" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">1 file</text>
+
+  <!-- Arrow: ViewModel -> Models & Utils -->
+  <line x1="420" y1="665" x2="420" y2="685" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="420,685 414,685 420,697 426,685" fill="#94A3B8"/>
+  <line x1="680" y1="665" x2="680" y2="685" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="680,685 674,685 680,697 686,685" fill="#94A3B8"/>
+
+  <!-- ==================== MODELS LAYER ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="30" y="700" width="480" height="130" rx="12" fill="white" stroke="#FEF3C7" stroke-width="1.5"/>
+    <rect x="30" y="700" width="480" height="36" rx="12" fill="url(#modelGrad)"/>
+    <rect x="30" y="724" width="480" height="12" fill="url(#modelGrad)"/>
+    <text x="270" y="723" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Models Layer</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="12" fill="#92400E">
+    <text x="55" y="760">Question.swift</text>
+    <text x="280" y="760" font-family="system-ui, sans-serif" font-size="10" fill="#B45309">PEMDAS, validation, solution methods</text>
+    <text x="55" y="780">GameState.swift</text>
+    <text x="280" y="780" font-family="system-ui, sans-serif" font-size="10" fill="#B45309">Session state, score, timer, answers</text>
+    <text x="55" y="800">DifficultyLevel.swift</text>
+    <text x="280" y="800" font-family="system-ui, sans-serif" font-size="10" fill="#B45309">7 levels with ranges and operations</text>
+    <text x="55" y="820">Fraction.swift</text>
+    <text x="280" y="820" font-family="system-ui, sans-serif" font-size="10" fill="#B45309">GCD simplification, mixed numbers (L7)</text>
+  </g>
+  <rect x="440" y="692" width="50" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="465" y="708" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#D97706" text-anchor="middle">4 files</text>
+
+  <!-- ==================== UTILS LAYER ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="540" y="700" width="530" height="260" rx="12" fill="white" stroke="#FCE7F3" stroke-width="1.5"/>
+    <rect x="540" y="700" width="530" height="36" rx="12" fill="url(#utilGrad)"/>
+    <rect x="540" y="724" width="530" height="12" fill="url(#utilGrad)"/>
+    <text x="805" y="723" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Utils Layer (Business Logic Services)</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11.5" fill="#9D174D">
+    <text x="565" y="758">QuestionGenerator.swift</text>
+    <text x="565" y="776">QuestionGenerator+ThreeNumber.swift</text>
+    <text x="565" y="794">TTSHelper.swift</text>
+    <text x="565" y="812">LocalizationManager.swift</text>
+    <text x="565" y="830">MathBankPDFGenerator.swift</text>
+    <text x="565" y="848">SystemInfoManager.swift</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11.5" fill="#9D174D">
+    <text x="810" y="758">ImageCacheManager.swift</text>
+    <text x="810" y="776">HapticFeedbackHelper.swift</text>
+    <text x="810" y="794">SoundEffectsHelper.swift</text>
+    <text x="810" y="812">DeviceUtils.swift</text>
+    <text x="810" y="830">NavigationUtil.swift</text>
+    <text x="810" y="848">ProgressViewUtils.swift</text>
+  </g>
+  <rect x="1000" y="692" width="50" height="24" rx="12" fill="#FCE7F3"/>
+  <text x="1025" y="708" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#DB2777" text-anchor="middle">12 files</text>
+
+  <!-- Arrow: Models -> CoreData -->
+  <line x1="270" y1="830" x2="270" y2="860" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="278" y="853" font-family="system-ui, sans-serif" font-size="10" fill="#94A3B8">read/write</text>
+  <polygon points="270,860 264,860 270,872 276,860" fill="#94A3B8"/>
+
+  <!-- ==================== COREDATA LAYER ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="30" y="875" width="480" height="210" rx="12" fill="white" stroke="#D1FAE5" stroke-width="1.5"/>
+    <rect x="30" y="875" width="480" height="36" rx="12" fill="url(#coreGrad)"/>
+    <rect x="30" y="899" width="480" height="12" fill="url(#coreGrad)"/>
+    <text x="270" y="898" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">CoreData Layer (Persistence)</text>
+  </g>
+  <text x="55" y="935" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669">MANAGERS (Singletons)</text>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="12" fill="#065F46">
+    <text x="55" y="955">CoreDataManager.swift</text>
+    <text x="55" y="973">WrongQuestionManager.swift</text>
+    <text x="55" y="991">GameProgressManager.swift</text>
+  </g>
+  <text x="300" y="935" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669">ENTITIES &amp; MODEL</text>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="12" fill="#065F46">
+    <text x="300" y="955">WrongQuestionEntity.swift</text>
+    <text x="300" y="973">GameProgressEntity.swift</text>
+    <text x="300" y="991">ArithmeticModel.swift</text>
+  </g>
+  <text x="55" y="1022" font-family="system-ui, sans-serif" font-size="10" fill="#6B7280">Programmatic model (no .xcdatamodel) | Auto migration | Singleton access pattern</text>
+  <rect x="55" y="1040" width="430" height="30" rx="6" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+  <text x="270" y="1059" font-family="system-ui, sans-serif" font-size="10" fill="#059669" text-anchor="middle">WrongQuestionEntity: combinationKey, answerType, fractionNumerator, fractionDenominator</text>
+  <rect x="440" y="867" width="50" height="24" rx="12" fill="#D1FAE5"/>
+  <text x="465" y="883" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669" text-anchor="middle">6 files</text>
+
+  <!-- ==================== EXTENSIONS LAYER ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="540" y="980" width="250" height="180" rx="12" fill="white" stroke="#E0E7FF" stroke-width="1.5"/>
+    <rect x="540" y="980" width="250" height="36" rx="12" fill="url(#extGrad)"/>
+    <rect x="540" y="1004" width="250" height="12" fill="url(#extGrad)"/>
+    <text x="665" y="1003" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Extensions</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11.5" fill="#3730A3">
+    <text x="565" y="1040">String+Localized.swift</text>
+    <text x="565" y="1058">Font+Adaptive.swift</text>
+    <text x="565" y="1076">CGFloat+Adaptive.swift</text>
+    <text x="565" y="1094">Color+Theme.swift</text>
+    <text x="565" y="1112">View+Navigation.swift</text>
+    <text x="565" y="1130">View+ViewBuilder.swift</text>
+  </g>
+  <rect x="720" y="972" width="50" height="24" rx="12" fill="#E0E7FF"/>
+  <text x="745" y="988" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#4F46E5" text-anchor="middle">6 files</text>
+
+  <!-- ==================== RESOURCES ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="820" y="980" width="250" height="180" rx="12" fill="white" stroke="#CCFBF1" stroke-width="1.5"/>
+    <rect x="820" y="980" width="250" height="36" rx="12" fill="url(#resGrad)"/>
+    <rect x="820" y="1004" width="250" height="12" fill="url(#resGrad)"/>
+    <text x="945" y="1003" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Resources</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="12" fill="#115E59">
+    <text x="845" y="1042">en.lproj/</text>
+    <text x="845" y="1060">  Localizable.strings</text>
+    <text x="845" y="1088">zh-Hans.lproj/</text>
+    <text x="845" y="1106">  Localizable.strings</text>
+  </g>
+  <text x="845" y="1138" font-family="system-ui, sans-serif" font-size="10" fill="#6B7280">Runtime language switching via</text>
+  <text x="845" y="1152" font-family="system-ui, sans-serif" font-size="10" fill="#6B7280">LocalizationManager notifications</text>
+
+  <!-- ==================== TESTS ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="30" y="1110" width="480" height="195" rx="12" fill="white" stroke="#FFE4E6" stroke-width="1.5"/>
+    <rect x="30" y="1110" width="480" height="36" rx="12" fill="url(#testGrad)"/>
+    <rect x="30" y="1134" width="480" height="12" fill="url(#testGrad)"/>
+    <text x="270" y="1133" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Tests</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11.5" fill="#9F1239">
+    <text x="55" y="1170">UtilsTests.swift</text>
+    <text x="55" y="1188">GameViewModelTests.swift</text>
+    <text x="55" y="1206">QuestionTests.swift</text>
+    <text x="55" y="1224">FractionTests.swift</text>
+    <text x="55" y="1242">DifficultyLevelTests.swift</text>
+    <text x="55" y="1260">GameStateTests.swift</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="11.5" fill="#9F1239">
+    <text x="280" y="1170">CoreDataTests.swift</text>
+    <text x="280" y="1188">LocalizationTests.swift</text>
+    <text x="280" y="1206">ExtensionsTests.swift</text>
+    <text x="280" y="1224">MathBankPDFGeneratorTests.swift</text>
+    <text x="280" y="1242">ArithmeticUITests.swift</text>
+  </g>
+  <rect x="440" y="1102" width="55" height="24" rx="12" fill="#FFE4E6"/>
+  <text x="467" y="1118" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#E11D48" text-anchor="middle">11 files</text>
+  <text x="55" y="1290" font-family="system-ui, sans-serif" font-size="10" fill="#6B7280">356+ unit tests | UI tests | Question generation, fractions, CoreData, localization coverage</text>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="540" y="1190" width="530" height="115" rx="12" fill="white" stroke="#E7E5E4" stroke-width="1.5"/>
+    <rect x="540" y="1190" width="530" height="36" rx="12" fill="url(#scriptGrad)"/>
+    <rect x="540" y="1214" width="530" height="12" fill="url(#scriptGrad)"/>
+    <text x="805" y="1213" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">scripts/</text>
+  </g>
+  <g font-family="monospace, 'SF Mono', Menlo" font-size="12" fill="#44403C">
+    <text x="565" y="1250">check_localizations.sh</text>
+    <text x="565" y="1268">upload_dsyms.sh</text>
+    <text x="565" y="1286">upload-symbols</text>
+    <text x="810" y="1250">quick_test.sh</text>
+    <text x="810" y="1268">run_all_tests.sh</text>
+  </g>
+  <rect x="1000" y="1182" width="50" height="24" rx="12" fill="#E7E5E4"/>
+  <text x="1025" y="1198" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#57534E" text-anchor="middle">5 files</text>
+
+  <!-- ==================== DATA FLOW DIAGRAM ==================== -->
+  <g filter="url(#dropShadow)">
+    <rect x="30" y="1340" width="1040" height="150" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="30" y="1340" width="1040" height="36" rx="12" fill="#1E293B"/>
+    <rect x="30" y="1364" width="1040" height="12" fill="#1E293B"/>
+    <text x="550" y="1363" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">Data Flow: User Answer Submission</text>
+  </g>
+
+  <!-- Flow boxes -->
+  <rect x="55" y="1395" width="120" height="36" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+  <text x="115" y="1417" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1E40AF" text-anchor="middle">GameView</text>
+
+  <polygon points="183,1413 195,1407 195,1419" fill="#94A3B8"/>
+
+  <rect x="205" y="1395" width="140" height="36" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/>
+  <text x="275" y="1417" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#5B21B6" text-anchor="middle">submitAnswer()</text>
+
+  <polygon points="353,1413 365,1407 365,1419" fill="#94A3B8"/>
+
+  <rect x="375" y="1395" width="130" height="36" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/>
+  <text x="440" y="1417" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400E" text-anchor="middle">Question.isValid()</text>
+
+  <polygon points="513,1413 525,1407 525,1419" fill="#94A3B8"/>
+
+  <rect x="535" y="1395" width="140" height="36" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/>
+  <text x="605" y="1417" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#5B21B6" text-anchor="middle">@Published update</text>
+
+  <polygon points="683,1413 695,1407 695,1419" fill="#94A3B8"/>
+
+  <rect x="705" y="1395" width="130" height="36" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+  <text x="770" y="1417" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1E40AF" text-anchor="middle">View re-renders</text>
+
+  <polygon points="843,1413 855,1407 855,1419" fill="#94A3B8"/>
+
+  <rect x="865" y="1395" width="180" height="36" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/>
+  <text x="955" y="1417" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065F46" text-anchor="middle">CoreData persist</text>
+
+  <!-- Wrong answer path -->
+  <text x="55" y="1462" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280">If wrong:</text>
+  <rect x="120" y="1445" width="200" height="30" rx="8" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <text x="220" y="1464" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991B1B" text-anchor="middle">WrongQuestionManager.save()</text>
+  <polygon points="328,1460 340,1454 340,1466" fill="#94A3B8"/>
+  <rect x="350" y="1445" width="220" height="30" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/>
+  <text x="460" y="1464" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065F46" text-anchor="middle">30% reappear in future sessions</text>
+
+  <!-- Footer -->
+  <text x="550" y="1508" font-family="system-ui, sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle">Arithmetic v1.0.9 | 70+ source files | iOS 15.0+ | SwiftUI + MVVM + Core Data + Firebase Crashlytics</text>
+</svg>

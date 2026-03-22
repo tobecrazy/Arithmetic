@@ -1,9 +1,11 @@
 <div align="center">
 
+<img src="logo.svg" alt="Arithmetic Logo" width="128" height="128">
+
 # 🧮 小学生算术学习应用
 ## Elementary Arithmetic Learning App
 
-*Version: 1.0.9* | *Updated: February 19, 2026*
+*Version: 1.0.9* | *Updated: March 22, 2026*
 
 [![Demo](https://github.com/tobecrazy/Arithmetic/blob/main/Arithmetic.gif)](https://github.com/tobecrazy/Arithmetic)
 
@@ -375,26 +377,21 @@
 
 ## 🔄 最近更新 (Recent Updates)
 
+### 🌟 2026-03-22 (文档更新与项目品牌化 / Documentation Update & Project Branding)
+- **🎨 项目Logo (Project Logo)** - 新增SVG格式项目Logo，展现数学教育主题 (Added SVG project logo with math education theme)
+- **📄 文档更新 (Documentation Update)** - 更新README.md和ChangeLogs.md，同步最新项目状态 (Updated README.md and ChangeLogs.md to sync latest project status)
+
 ### 🌟 2026-02-19 (Level 7 分数显示优化 / Level 7 Fraction Display Optimization)
 - **📐 分数垂直显示优化 (Fraction Vertical Display Optimization)** - 全面优化分数显示为垂直堆叠格式，提升可读性 (Comprehensively optimized fraction display to vertical stacked format for better readability)
 - **🎨 UI增强 (UI Enhancements)** - 改进分数输入界面、答案反馈和错题显示的视觉效果 (Improved visual effects for fraction input interface, answer feedback, and wrong question display)
 - **🔊 TTS修复 (TTS Fixes)** - 修复分数朗读的中英文混合问题，确保纯语言发音 (Fixed mixed language issue in fraction pronunciation, ensuring pure language audio)
 - **🎯 显示一致性 (Display Consistency)** - 统一所有分数显示组件，包括题目、答案、反馈和错题集 (Unified all fraction display components including questions, answers, feedback, and wrong question collection)
-- **✨ 视觉改进 (Visual Improvements)** - 优化分数线宽度、组件间距和整体布局美观度 (Optimized fraction line width, component spacing, and overall layout aesthetics)
 
 ### 🌟 2026-02-05 (项目结构优化和代码质量提升 / Project Structure Optimization and Code Quality Enhancement)
 - **🧩 组件模块化 (Component Modularization)** - 创建可重用SwiftUI组件库，分解1020行的GameView，提高可维护性 (Created reusable SwiftUI component library, broke down 1020-line GameView for better maintainability)
 - **📚 Swift DocC文档增强 (Swift DocC Documentation Enhancement)** - 为核心API添加专业级文档，文档覆盖率从~20%提升至~80% (Added professional-grade documentation to core APIs, documentation coverage improved from ~20% to ~80%)
-- **🏗️ ViewBuilder模式库 (ViewBuilder Pattern Library)** - 创建视图组合工具和模式，提供条件视图转换等功能 (Created view composition utilities and patterns, providing conditional view transformation functions)
-- **🔧 代码重构 (Code Refactoring)** - 解决代码重复、内存管理、复杂方法等问题，提升代码质量 (Resolved code duplication, memory management, and complex method issues to improve code quality)
 - **✅ 测试修复 (Test Fixes)** - 修复所有CI测试失败，实现356/356测试通过 (Fixed all CI test failures, achieved 356/356 tests passing)
 - **🖨️ PDF生成优化 (PDF Generation Enhancements)** - 改进PDF分页与排版逻辑，提升A4纸张兼容性与打印对齐效果 (Improved PDF pagination and layout for better A4 compatibility and print alignment)
-
-### 🌟 2026-02-04 (题目生成系统优化 - 提升难度和教学价值 / Question Generation System Optimization - Enhanced Difficulty and Educational Value)
-- **🎯 消除过于简单的题目 (Eliminated Overly Simple Questions)** - 全面优化题目生成逻辑，大幅提升题目质量和挑战性 (Comprehensively optimized question generation logic, significantly improving question quality and challenge level)
-- **📊 配置常量化 (Configuration Constants)** - 新增更细粒度的配置常量 (Added more fine-grained configuration constants)
-- **✅ 质量保证 (Quality Assurance)** - 所有优化经过严格测试验证 (All optimizations rigorously tested and verified)
-- **📈 教育价值提升 (Educational Value Enhancement)** - 题目更具挑战性和教学意义 (Questions are more challenging and educationally meaningful)
 
 For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 
@@ -926,6 +923,13 @@ In the "About Me" page, the app provides comprehensive system information monito
 
 ## 📁 项目结构 (Project Structure)
 
+<div align="center">
+<img src="architecture.svg" alt="Project Architecture" width="100%">
+</div>
+
+<details>
+<summary>📂 详细文件列表 (Detailed File List)</summary>
+
 ```
 Arithmetic/
 ├── 🗂️ .gitignore
@@ -1028,6 +1032,8 @@ Arithmetic/
     └── UtilsTests.swift                   # 工具类测试
 ```
 
+</details>
+
 ## 🏗️ Core Data 集成 (Core Data Integration)
 
 ### 🗄️ 数据模型设计 (Data Model Design)
@@ -1063,18 +1069,13 @@ Arithmetic/
 
 ## 🔄 最近更新 (Recent Updates)
 
-### 🌟 2026-02-05 (项目结构优化和代码质量提升 / Project Structure Optimization and Code Quality Enhancement)
-- **🧩 组件模块化 (Component Modularization)** - 创建可重用SwiftUI组件库，分解1020行的GameView，提高可维护性 (Created reusable SwiftUI component library, broke down 1020-line GameView for better maintainability)
-- **📚 Swift DocC文档增强 (Swift DocC Documentation Enhancement)** - 为核心API添加专业级文档，文档覆盖率从~20%提升至~80% (Added professional-grade documentation to core APIs, documentation coverage improved from ~20% to ~80%)
-- **🏗️ ViewBuilder模式库 (ViewBuilder Pattern Library)** - 创建视图组合工具和模式，提供条件视图转换等功能 (Created view composition utilities and patterns, providing conditional view transformation functions)
-- **🔧 代码重构 (Code Refactoring)** - 解决代码重复、内存管理、复杂方法等问题，提升代码质量 (Resolved code duplication, memory management, and complex method issues to improve code quality)
-- **✅ 测试修复 (Test Fixes)** - 修复所有CI测试失败，实现356/356测试通过 (Fixed all CI test failures, achieved 356/356 tests passing)
+### 🌟 2026-03-22 (文档更新与项目品牌化 / Documentation Update & Project Branding)
+- **🎨 项目Logo (Project Logo)** - 新增SVG格式项目Logo，展现数学教育主题 (Added SVG project logo with math education theme)
+- **📄 文档更新 (Documentation Update)** - 更新README.md和ChangeLogs.md，同步最新项目状态 (Updated README.md and ChangeLogs.md to sync latest project status)
 
-### 🌟 2026-02-04 (题目生成系统优化 - 提升难度和教学价值 / Question Generation System Optimization - Enhanced Difficulty and Educational Value)
-- **🎯 消除过于简单的题目 (Eliminated Overly Simple Questions)** - 全面优化题目生成逻辑，大幅提升题目质量和挑战性 (Comprehensively optimized question generation logic, significantly improving question quality and challenge level)
-- **📊 配置常量化 (Configuration Constants)** - 新增更细粒度的配置常量 (Added more fine-grained configuration constants)
-- **✅ 质量保证 (Quality Assurance)** - 所有优化经过严格测试验证 (All optimizations rigorously tested and verified)
-- **📈 教育价值提升 (Educational Value Enhancement)** - 题目更具挑战性和教学意义 (Questions are more challenging and educationally meaningful)
+### 🌟 2026-02-19 (Level 7 分数显示优化 / Level 7 Fraction Display Optimization)
+- **📐 分数垂直显示优化 (Fraction Vertical Display Optimization)** - 全面优化分数显示为垂直堆叠格式，提升可读性 (Comprehensively optimized fraction display to vertical stacked format for better readability)
+- **🔊 TTS修复 (TTS Fixes)** - 修复分数朗读的中英文混合问题 (Fixed mixed language issue in fraction pronunciation)
 
 For a detailed history of updates, see [ChangeLogs.md](ChangeLogs.md).
 
