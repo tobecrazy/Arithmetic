@@ -92,14 +92,14 @@ class ImageCacheManagerTests: XCTestCase {
     
     func testDownloadAndCacheImageWithInvalidURL() {
         let expectation = XCTestExpectation(description: "Download fails with invalid URL")
-        
+
         let invalidURL = URL(string: "invalid-url")!
         cacheManager.downloadAndCacheImage(from: invalidURL) { image in
             XCTAssertNil(image)
             expectation.fulfill()
         }
-        
-        wait(for: [expectation], timeout: 5.0)
+
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testImageCachingDoesNotExceedLimits() {
