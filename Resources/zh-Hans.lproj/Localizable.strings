@@ -282,6 +282,9 @@
 "math_bank.pdf.header_info" = "共%@题 | 第%@页/共%@页";
 "math_bank.pdf.answer_header_info" = "答案页 | 第%@页/共%@页";
 "math_bank.pdf.generated_time" = "生成时间: %@";
+"math_bank.pdf.field_name" = "姓名";
+"math_bank.pdf.field_date" = "日期";
+"math_bank.pdf.field_score" = "得分";
 "math_bank.pdf.questions_suffix" = "题";
 "math_bank.pdf.filename_template" = "数学题库_%@_%@题_%@.pdf";
 "math_bank.pdf.total" = "总数";

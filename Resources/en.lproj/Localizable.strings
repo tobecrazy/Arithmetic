@@ -289,6 +289,9 @@
 "math_bank.pdf.header_info" = "Total %@ Questions | Page %@ of %@";
 "math_bank.pdf.answer_header_info" = "Answer Page | Page %@ of %@";
 "math_bank.pdf.generated_time" = "Generated: %@";
+"math_bank.pdf.field_name" = "Name";
+"math_bank.pdf.field_date" = "Date";
+"math_bank.pdf.field_score" = "Score";
 "math_bank.pdf.questions_suffix" = " Questions";
 "math_bank.pdf.filename_template" = "MathBank_%@_%@Questions_%@.pdf";
 "math_bank.pdf.total" = "Total";
