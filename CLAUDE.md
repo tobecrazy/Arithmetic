@@ -13,26 +13,29 @@ Arithmetic is an iOS math quiz app designed for children to practice arithmetic 
 # Build from command line
 xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
 
-# Build and run in simulator (iPhone 15)
-xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' build
+# Build for a specific simulator
+xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 17' build
 
 # Run all tests
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 17'
 
 # Run specific test file
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:ArithmeticTests/UtilsTests
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:ArithmeticTests/UtilsTests
 
 # Run specific test class
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:ArithmeticTests/UtilsTests/QuestionGeneratorTests
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:ArithmeticTests/UtilsTests/QuestionGeneratorTests
 
 # Run specific test method
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:ArithmeticTests/UtilsTests/QuestionGeneratorTests/testGenerateNonRepetitiveQuestions
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:ArithmeticTests/UtilsTests/QuestionGeneratorTests/testGenerateNonRepetitiveQuestions
 
 # Clean build
 xcodebuild clean -project Arithmetic.xcodeproj -scheme Arithmetic
 
 # Run static analyzer
 xcodebuild analyze -project Arithmetic.xcodeproj -scheme Arithmetic
+
+# List available simulators (if the above fail with "Unable to find device")
+xcrun simctl list devices available | grep iPhone
 ```
 
 ### Localization and Build Scripts
@@ -88,6 +91,7 @@ Models & Data Layer (Question, GameState, Core Data)
 
 #### 3. Views Layer (`/Views/`)
 Core screens:
+- **ContentView**: Main dashboard with resume-game banner, quick stats, inline difficulty picker, time chips, and action buttons
 - **GameView**: Question display, answer input, timer, TTS button
 - **ResultView**: Post-game analytics and streak tracking
 - **WrongQuestionsView**: Error tracking with filtering and deletion
@@ -361,7 +365,7 @@ Arithmetic/
 ├── ViewModels/
 │   └── GameViewModel.swift          # Central business logic, reactive state management
 ├── Views/
-│   ├── ContentView.swift            # Main tab navigation
+│   ├── ContentView.swift            # Main dashboard: resume banner, stats, difficulty picker, actions
 │   ├── GameView.swift               # Core game interface
 │   ├── ResultView.swift             # Post-game analytics
 │   ├── WrongQuestionsView.swift     # Error tracking and management
@@ -414,6 +418,8 @@ Arithmetic/
 │   ├── CoreDataTests.swift          # Persistence tests
 │   ├── LocalizationTests.swift      # Localization validation
 │   ├── ExtensionsTests.swift        # Extension tests
+│   ├── ContentViewEnhancementsTests.swift # Dashboard, stats, resume game tests
+│   ├── MathBankPDFGeneratorTests.swift    # PDF generation tests
 │   └── ArithmeticUITests.swift      # Full app UI tests
 ├── scripts/
 │   ├── check_localizations.sh       # Validate language files + embed Git info
@@ -482,6 +488,17 @@ Arithmetic/
    }
    ```
 
+8. **SwiftUI Color in Views**:
+   ```swift
+   // System colors — no prefix needed
+   .foregroundStyle(.primary)
+   .foregroundStyle(.blue)
+   
+   // Custom Color extensions — must use Color. prefix
+   .foregroundStyle(Color.primaryBlue)
+   .foregroundStyle(Color.adaptiveText)
+   ```
+
 ### ❌ Anti-Patterns to Avoid
 
 1. **Division without validation**: Generating "9 ÷ 2" (non-integer result) in Levels 1-6
@@ -495,6 +512,53 @@ Arithmetic/
 9. **Zero denominator fractions**: Always validate `denominator != 0` before creating Fraction instances
 10. **Not simplifying fractions**: Always call `.simplified` on fraction results for Level 7
 11. **Negative denominators**: Normalize to positive denominator with negative numerator instead
+12. **Using `.foregroundColor()`**: Use `.foregroundStyle()` instead (project-wide convention)
+13. **Using `NavigationStack`**: Not available — deployment target is iOS 15.6, use `NavigationView`
+
+## SwiftUI Conventions
+
+The codebase uses modern SwiftUI APIs while maintaining iOS 15.6 compatibility:
+
+### Use `.foregroundStyle()` (NOT `.foregroundColor()`)
+```swift
+// ✅ Correct - system colors work directly
+Text("Hello").foregroundStyle(.primary)
+Image(systemName: "star").foregroundStyle(.blue)
+
+// ✅ Correct - custom Color extensions need explicit Color. prefix
+Text("Title").foregroundStyle(Color.textPrimary)
+Text("Value").foregroundStyle(Color.adaptiveText)
+Image(systemName: "star").foregroundStyle(Color.primaryBlue)
+
+// ❌ Wrong - custom extensions without prefix fail (ShapeStyle has no member)
+Text("Title").foregroundStyle(.textPrimary)  // Compile error
+Text("Title").foregroundColor(.blue)         // Deprecated
+```
+
+**Rule**: System colors (`.blue`, `.primary`, `.secondary`, `.white`, `.red`, etc.) work without prefix. Custom `Color` extensions (`.primaryBlue`, `.textPrimary`, `.adaptiveText`, `.success`, `.error`, `.warning`, `.accent`) require `Color.` prefix.
+
+### Button Styles
+```swift
+// ✅ Correct
+.buttonStyle(.plain)
+
+// ❌ Deprecated
+.buttonStyle(PlainButtonStyle())
+```
+
+### Navigation
+The app uses `NavigationView` with `.navigationViewStyle(StackNavigationViewStyle())` because the deployment target is iOS 15.6. Do NOT replace with `NavigationStack` (requires iOS 16+).
+
+### Adaptive Sizing
+Use the project's adaptive extensions for iPhone/iPad responsive layouts:
+```swift
+.font(.adaptiveTitle())     // .largeTitle on iPad, .title on iPhone
+.font(.adaptiveHeadline())  // .title on iPad, .headline on iPhone
+.font(.adaptiveBody())      // .title3 on iPad, .body on iPhone
+.font(.adaptiveCaption())   // .body on iPad, .caption on iPhone
+.padding(.adaptivePadding)  // 24 on iPad, 16 on iPhone
+.cornerRadius(.adaptiveCornerRadius)  // 12 on iPad, 8 on iPhone
+```
 
 ## Testing Strategy
 
@@ -511,6 +575,8 @@ Arithmetic/
 | `CoreDataTests.swift` | Entity CRUD, migration validation |
 | `LocalizationTests.swift` | Key existence in both languages, format string validation |
 | `ExtensionsTests.swift` | Font/color/size adaptation |
+| `ContentViewEnhancementsTests.swift` | Resume game, wrong question stats, difficulty level properties, new localization keys, progress parsing, time presets |
+| `MathBankPDFGeneratorTests.swift` | PDF generation logic |
 | `ArithmeticUITests.swift` | Full app workflows, navigation, settings, language switching |
 
 ### Test Coverage Focus
@@ -528,7 +594,7 @@ Before committing changes:
 
 ```bash
 # 1. Run all tests
-xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild test -project Arithmetic.xcodeproj -scheme Arithmetic -destination 'platform=iOS Simulator,name=iPhone 17'
 
 # 2. Build successfully
 xcodebuild -project Arithmetic.xcodeproj -scheme Arithmetic build
@@ -583,7 +649,7 @@ The project integrates Firebase for Crashlytics and Analytics:
 
 ## iOS Deployment Target
 
-- **Minimum**: iOS 15.0+
+- **Minimum**: iOS 15.6
 - **Supported Orientations**:
   - iPhone: Portrait, Landscape Left/Right
   - iPad: All 4 orientations
