@@ -44,7 +44,7 @@ struct QrCodeToolView: View {
                         Text("qr_code.tool.description".localized)
                             .font(.adaptiveBody())
                             .multilineTextAlignment(.center)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .padding(.horizontal, 20)
                     }
                     .padding(.top, 20)
@@ -61,7 +61,7 @@ struct QrCodeToolView: View {
                             }
                             .frame(maxWidth: .infinity, minHeight: 44)
                             .background(Color.accentColor.opacity(0.15))
-                            .foregroundColor(Color.accentColor)
+                            .foregroundStyle(Color.accentColor)
                             .cornerRadius(12)
                             .font(.headline)
                         }
@@ -82,7 +82,7 @@ struct QrCodeToolView: View {
                             }
                             .frame(maxWidth: .infinity, minHeight: 44)
                             .background(Color.accentColor.opacity(0.15))
-                            .foregroundColor(Color.accentColor)
+                            .foregroundStyle(Color.accentColor)
                             .cornerRadius(12)
                             .font(.headline)
                         }
@@ -95,12 +95,12 @@ struct QrCodeToolView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                     .font(.system(size: 14))
                                 Text("qr_code.scan_result".localized)
                                     .font(.subheadline)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(.primary)
+                                    .foregroundStyle(.primary)
                             }
 
                             CopyableInfoRow(
@@ -116,7 +116,7 @@ struct QrCodeToolView: View {
                             VStack(spacing: 8) {
                                 Text("qr_code.scanned_image_label".localized)
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                                 scannedImage
                                     .resizable()
                                     .frame(width: qrCodeSize - 40, height: qrCodeSize - 40)
@@ -133,12 +133,12 @@ struct QrCodeToolView: View {
                         Text("qr_code.text_input_label".localized)
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         ZStack(alignment: .topLeading) {
                             if textInput.isEmpty {
                                 Text("qr_code.placeholder_text".localized)
-                                    .foregroundColor(.gray)
+                                    .foregroundStyle(.gray)
                                     .padding(12)
                             }
 
@@ -181,7 +181,7 @@ struct QrCodeToolView: View {
                                         .stroke(textInput.isEmpty ? Color.gray.opacity(0.2) : Color.green.opacity(0.3), lineWidth: 1)
                                 )
                         )
-                        .foregroundColor(textInput.isEmpty ? .gray : .green)
+                        .foregroundStyle(textInput.isEmpty ? .gray : .green)
                     }
                     .padding(.horizontal, 20)
                     .disabled(textInput.isEmpty)
@@ -192,12 +192,12 @@ struct QrCodeToolView: View {
                             HStack {
                                 Spacer()
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                     .font(.system(size: 14))
                                 Text("qr_code.generated_qr".localized)
                                     .font(.subheadline)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(.primary)
+                                    .foregroundStyle(.primary)
                                 Spacer()
                             }
 
@@ -229,7 +229,7 @@ struct QrCodeToolView: View {
                         Image(systemName: "chevron.left")
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                 }
             }
         }
@@ -367,7 +367,7 @@ private struct CopyableInfoRow: View {
             HStack(spacing: 8) {
                 Text(label)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fontWeight(.medium)
 
                 Spacer()
@@ -380,13 +380,13 @@ private struct CopyableInfoRow: View {
                             .font(.caption2)
                             .fontWeight(.medium)
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(isCopied ? Color.green : Color.blue)
                     .cornerRadius(6)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
             }
 
             Text(value)

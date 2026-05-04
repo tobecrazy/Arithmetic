@@ -10,11 +10,11 @@ struct QuestionDisplayView: View {
         Button(action: onTap) {
             Text(question.questionText)
                 .font(.system(size: fontSize, weight: .bold))
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .scaleEffect(isCorrect ? 1.1 : 1.0)
                 .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isCorrect)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .padding()
     }
 

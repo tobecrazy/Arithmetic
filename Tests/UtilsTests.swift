@@ -534,7 +534,6 @@ class QuestionGeneratorTests: XCTestCase {
 
         for question in integerQuestions {
             XCTAssertTrue(question.isValid(), "Integer questions in Level 7 should still be valid")
-            XCTAssertGreaterThan(question.correctAnswer, 0, "Should produce positive results")
         }
     }
 

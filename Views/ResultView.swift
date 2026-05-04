@@ -34,7 +34,7 @@ struct ResultView: View {
                 // 得分
                 Text("\(gameState.score)")
                     .font(.system(size: 70, weight: .bold))
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                 
                 // 评价
                 let rating = gameState.getPerformanceRating()
@@ -52,7 +52,7 @@ struct ResultView: View {
                     HStack {
                         Text("result.correct_count".localizedFormat(String(gameState.correctAnswersCount), String(gameState.totalQuestions)))
                             .font(.adaptiveBody())
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                         Spacer()
                     }
 
@@ -60,22 +60,22 @@ struct ResultView: View {
                     HStack {
                         Text("result.time_used".localized)
                             .font(.adaptiveBody())
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                         Spacer()
                         Text(gameState.timeUsedText)
                             .font(.adaptiveBody())
-                            .foregroundColor(.blue)
+                            .foregroundStyle(.blue)
                     }
 
                     // 难度
                     HStack {
                         Text("difficulty.level".localized)
                             .font(.adaptiveBody())
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                         Spacer()
                         Text(gameState.difficultyLevel.localizedName)
                             .font(.adaptiveBody())
-                            .foregroundColor(.blue)
+                            .foregroundStyle(.blue)
                     }
 
                     // 最长连续答对
@@ -83,14 +83,14 @@ struct ResultView: View {
                         HStack {
                             Text("result.longest_streak".localized)
                                 .font(.adaptiveBody())
-                                .foregroundColor(.primary)
+                                .foregroundStyle(.primary)
                             Spacer()
                             HStack(spacing: 4) {
                                 Text("🔥")
                                 Text("\(gameState.longestStreak)")
                             }
                             .font(.adaptiveBody())
-                            .foregroundColor(.orange)
+                            .foregroundStyle(.orange)
                         }
                     }
                 }
@@ -110,7 +110,7 @@ struct ResultView: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.orange)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .cornerRadius(.adaptiveCornerRadius)
                     }
                     .padding(.horizontal)
@@ -128,7 +128,7 @@ struct ResultView: View {
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.blue)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                         
@@ -160,7 +160,7 @@ struct ResultView: View {
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.green)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                     }
@@ -193,7 +193,7 @@ struct ResultView: View {
                     // 得分
                     Text("\(gameState.score)")
                         .font(.system(size: 100, weight: .bold))
-                        .foregroundColor(.blue)
+                        .foregroundStyle(.blue)
                         .padding()
                     
                     // 评价
@@ -233,7 +233,7 @@ struct ResultView: View {
                             Spacer()
                             Text(gameState.timeUsedText)
                                 .font(.title2)
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
                         }
                         
                         // 难度
@@ -243,7 +243,7 @@ struct ResultView: View {
                             Spacer()
                             Text(gameState.difficultyLevel.localizedName)
                                 .font(.title2)
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
                         }
                     }
                     .padding()
@@ -264,7 +264,7 @@ struct ResultView: View {
                                 .padding()
                                 .frame(width: 250)
                                 .background(Color.orange)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                         
@@ -280,7 +280,7 @@ struct ResultView: View {
                                 .padding()
                                 .frame(width: 250)
                                 .background(Color.blue)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                         
@@ -312,7 +312,7 @@ struct ResultView: View {
                                 .padding()
                                 .frame(width: 250)
                                 .background(Color.green)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                     }

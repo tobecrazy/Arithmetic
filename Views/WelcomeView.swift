@@ -35,7 +35,7 @@ struct WelcomeView: View {
                             Text("welcome.start_button".localized)
                                 .font(.subheadline.weight(.bold))
                         }
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
                         .background(
@@ -140,7 +140,7 @@ private struct PageContainer<Content: View>: View {
 
                     Image(systemName: icon)
                         .font(.system(size: 72))
-                        .foregroundColor(iconColor)
+                        .foregroundStyle(iconColor)
                         .accessibilityHidden(true)
                 }
                 .padding(.top, 20)
@@ -150,7 +150,7 @@ private struct PageContainer<Content: View>: View {
                     .font(.largeTitle.weight(.bold))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .accessibilityIdentifier(titleKey)
 
                 content
@@ -187,26 +187,26 @@ private struct IntroPage: View {
 
                     Image(systemName: "figure.walk.arithmetic")
                         .font(.system(size: 72))
-                        .foregroundColor(.blue)
+                        .foregroundStyle(.blue)
                         .accessibilityHidden(true)
 
                     // Decorative math symbols
                     Group {
                         Image(systemName: "plus")
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.success) // Adaptive green
+                            .foregroundStyle(Color.success) // Adaptive green
                             .offset(x: -50, y: -10)
                         Image(systemName: "minus")
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.accent) // Adaptive blue
+                            .foregroundStyle(Color.accent) // Adaptive blue
                             .offset(x: 48, y: 12)
                         Image(systemName: "xmark")
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.error) // Adaptive red
+                            .foregroundStyle(Color.error) // Adaptive red
                             .offset(x: -20, y: 50)
                         Image(systemName: "divide")
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.warning) // Adaptive orange
+                            .foregroundStyle(Color.warning) // Adaptive orange
                             .offset(x: 20, y: -50)
                     }
                     .opacity(animate ? 1 : 0.4)
@@ -219,7 +219,7 @@ private struct IntroPage: View {
                 // Tagline
                 Text("welcome.icon.tagline".localized)
                     .font(.headline.weight(.semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
                     .accessibilityIdentifier("welcomeIntroTagline")
@@ -229,7 +229,7 @@ private struct IntroPage: View {
                     .font(.largeTitle.weight(.bold))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .accessibilityIdentifier("welcome.title")
 
                 // Intro description card
@@ -267,7 +267,7 @@ private struct DifficultyLevelsPage: View {
                         HStack(alignment: .center) {
                             Text(level.localizedName)
                                 .font(.headline)
-                                .foregroundColor(.primary)
+                                .foregroundStyle(.primary)
 
                             Spacer()
 
@@ -275,7 +275,7 @@ private struct DifficultyLevelsPage: View {
                         }
                         Text(level.localizedDescription)
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding(16)
@@ -366,15 +366,15 @@ private struct FeatureCard: View {
                     .frame(width: 54, height: 54)
                 Image(systemName: icon)
                     .font(.title2)
-                    .foregroundColor(iconColor)
+                    .foregroundStyle(iconColor)
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 Text(description)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
@@ -405,15 +405,15 @@ private struct HowToStep: View {
                     .frame(width: 44, height: 44)
                 Text("\(number)")
                     .font(.headline.weight(.bold))
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 Text(description)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
@@ -440,7 +440,7 @@ private struct DifficultyStarRow: View {
             ForEach(0..<DifficultyLevel.allCases.count, id: \.self) { i in
                 Image(systemName: i <= difficultyIndex ? "star.fill" : "star")
                     .font(.caption)
-                    .foregroundColor(i <= difficultyIndex ? .accentColor : .secondary.opacity(0.45))
+                    .foregroundStyle(i <= difficultyIndex ? Color.accentColor : Color.secondary.opacity(0.45))
             }
         }
         .accessibilityLabel("difficultyStars_\(difficultyIndex + 1)")

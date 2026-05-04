@@ -37,7 +37,7 @@ struct AnswerInputView: View {
                     .padding()
                     .frame(width: buttonWidth)
                     .background(userInput.isEmpty ? Color.gray : Color.blue)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .cornerRadius(.adaptiveCornerRadius)
                     .scaleEffect(buttonScale)
                     .animation(.spring(response: 0.3, dampingFraction: 0.6), value: buttonScale)

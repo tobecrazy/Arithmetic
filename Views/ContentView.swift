@@ -52,6 +52,17 @@ struct ContentView: View {
     @State private var showOtherOptionsView = false
     @State private var showSettingsView = false
 
+    // Resume Game Banner
+    @State private var hasResumableGame: Bool = false
+    @State private var savedGameInfo: (difficultyLevel: DifficultyLevel, progress: String, savedAt: Date)? = nil
+    @State private var showResumeBanner: Bool = true
+
+    // Quick Stats
+    @State private var wrongQuestionStats: (total: Int, byLevel: [DifficultyLevel: Int]) = (0, [:])
+
+    // Custom Time
+    @State private var isCustomTime: Bool = false
+
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("followSystem") private var followSystem = true
     @AppStorage("HasLaunchedBefore") private var hasLaunchedBefore: Bool = false
@@ -63,7 +74,7 @@ struct ContentView: View {
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+
     static let purpleGradient = LinearGradient(
         colors: [Color(red: 0.5, green: 0.2, blue: 0.8), Color(red: 0.4, green: 0.1, blue: 0.7)],
         startPoint: .topLeading,
@@ -82,11 +93,6 @@ struct ContentView: View {
             }
         }
         .preferredColorScheme(followSystem ? nil : (isDarkMode ? .dark : .light))
-        .onAppear {
-            print("🔍 Debug ContentView.onAppear:")
-            print("  - HasLaunchedBefore: \(hasLaunchedBefore)")
-            print("  - showWelcome: \(showWelcome)")
-        }
     }
 
     var mainContentView: some View {
@@ -105,8 +111,6 @@ struct ContentView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
-            print("🔄 MainContentView appeared - resetting state")
-            // 每次回到主界面重置选择和状态，确保可以再次导航
             isStartingGame = false
             gameViewModel = nil
             showGameView = false
@@ -114,13 +118,26 @@ struct ContentView: View {
             showOtherOptionsView = false
             showSettingsView = false
 
+            loadDashboardData()
+
             withAnimation(.easeInOut(duration: 0.6)) {
                 isAnimating = true
             }
         }
     }
 
-    // MARK: - Navigation now handled by sheets and fullScreenCover modifiers
+    // MARK: - Data Loading
+
+    private func loadDashboardData() {
+        hasResumableGame = GameViewModel.hasSavedProgress()
+        if hasResumableGame {
+            savedGameInfo = GameViewModel.getSavedGameInfo()
+            showResumeBanner = true
+        } else {
+            showResumeBanner = false
+        }
+        wrongQuestionStats = WrongQuestionManager().getWrongQuestionStats(for: nil)
+    }
 
     // MARK: - Helper Functions
     private func levelNumber(for level: DifficultyLevel) -> Int {
@@ -135,6 +152,19 @@ struct ContentView: View {
         }
     }
 
+    private func operationSymbols(for level: DifficultyLevel) -> String {
+        level.supportedOperations.map { $0.symbol }.joined(separator: " ")
+    }
+
+    private func progressRatio(from progressString: String) -> Double {
+        let parts = progressString.split(separator: "/")
+        guard parts.count == 2,
+              let current = Double(parts[0]),
+              let total = Double(parts[1]),
+              total > 0 else { return 0 }
+        return current / total
+    }
+
     // MARK: - Enhanced Components
     @ViewBuilder
     private func enhancedCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {
@@ -147,99 +177,320 @@ struct ContentView: View {
             )
     }
 
+    // MARK: - Resume Game Banner
     @ViewBuilder
-    private func enhancedDifficultyPicker() -> some View {
-        enhancedCard {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.primaryBlue)
-                        .font(.adaptiveBody())
+    private func resumeGameBanner() -> some View {
+        if hasResumableGame && showResumeBanner, let info = savedGameInfo {
+            VStack(spacing: 12) {
+                HStack(alignment: .top) {
+                    Image(systemName: "pause.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(Color.accentGreen)
 
-                    Text("difficulty.level".localized)
-                        .font(.adaptiveHeadline())
-                        .foregroundColor(.textPrimary)
-                        .fontWeight(.semibold)
-                }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("resume.title".localized)
+                            .font(.adaptiveHeadline())
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.textPrimary)
 
-                Picker("difficulty.level".localized, selection: $selectedDifficulty) {
-                    ForEach(DifficultyLevel.allCases, id: \.self) { level in
-                        HStack {
-                            Text(level.localizedName)
-                            Spacer()
-                            HStack(spacing: 2) {
-                                ForEach(1...levelNumber(for: level), id: \.self) { _ in
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.primaryBlue)
-                                        .font(.caption)
-                                }
-                            }
+                        Text("\(info.difficultyLevel.localizedName) • \(info.progress) \("resume.questions".localized)")
+                            .font(.adaptiveCaption())
+                            .foregroundStyle(Color.textSecondary)
+                    }
+
+                    Spacer()
+
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showResumeBanner = false
                         }
-                        .tag(level)
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title3)
+                            .foregroundStyle(Color.textSecondary.opacity(0.6))
                     }
                 }
-                .pickerStyle(.menu)
-                .labelsHidden()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 12)
-                .background(
-                    RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                        .fill(Color.backgroundSecondary)
+
+                // Progress bar
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(Color.backgroundSecondary)
+                            .frame(height: 6)
+
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(Color.accentGreen)
+                            .frame(width: geo.size.width * progressRatio(from: info.progress), height: 6)
+                    }
+                }
+                .frame(height: 6)
+
+                Button {
+                    resumeSavedGame()
+                } label: {
+                    Text("resume.continue".localized)
+                        .font(.adaptiveBody())
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                                .fill(Color.accentGreen)
+                        )
+                }
+            }
+            .padding(.adaptivePadding)
+            .background(
+                RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
+                    .fill(Color(UIColor.systemBackground))
+                    .shadow(color: Color.cardShadow, radius: 8, x: 0, y: 4)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
+                    .stroke(Color.accentGreen.opacity(0.3), lineWidth: 1)
+            )
+            .transition(.move(edge: .top).combined(with: .opacity))
+        }
+    }
+
+    private func resumeSavedGame() {
+        if let vm = GameViewModel.loadSavedGame() {
+            gameViewModel = vm
+            showGameView = true
+        }
+    }
+
+    // MARK: - Quick Stats Card
+    @ViewBuilder
+    private func quickStatsCard() -> some View {
+        enhancedCard {
+            HStack(spacing: 0) {
+                statItem(
+                    icon: "exclamationmark.triangle.fill",
+                    iconColor: .secondaryOrange,
+                    value: "\(wrongQuestionStats.total)",
+                    label: "stats.total_wrong".localized
+                )
+
+                Divider().frame(height: 40)
+
+                statItem(
+                    icon: "star.fill",
+                    iconColor: .primaryBlue,
+                    value: "\(wrongQuestionStats.byLevel[selectedDifficulty] ?? 0)",
+                    label: "stats.this_level".localized
+                )
+
+                Divider().frame(height: 40)
+
+                statItem(
+                    icon: "number.circle.fill",
+                    iconColor: .accentGreen,
+                    value: "\(selectedDifficulty.questionCount)",
+                    label: "stats.questions_count".localized
                 )
             }
         }
     }
 
     @ViewBuilder
-    private func enhancedTimePicker() -> some View {
+    private func statItem(icon: String, iconColor: Color, value: String, label: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .foregroundStyle(iconColor)
+                .font(.adaptiveCaption())
+            Text(value)
+                .font(.adaptiveHeadline())
+                .fontWeight(.bold)
+                .foregroundStyle(Color.textPrimary)
+            Text(label)
+                .font(.adaptiveCaption())
+                .foregroundStyle(Color.textSecondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Improved Difficulty Picker
+    @ViewBuilder
+    private func enhancedDifficultyPicker() -> some View {
         enhancedCard {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Image(systemName: "clock.fill")
-                        .foregroundColor(.primaryBlue)
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(Color.primaryBlue)
                         .font(.adaptiveBody())
 
-                    Text("settings.time".localized)
+                    Text("difficulty.level".localized)
                         .font(.adaptiveHeadline())
-                        .foregroundColor(.textPrimary)
+                        .foregroundStyle(Color.textPrimary)
                         .fontWeight(.semibold)
                 }
 
-                VStack(spacing: 12) {
-                    HStack {
-                        Text("3")
-                            .font(.adaptiveCaption())
-                            .foregroundColor(.textSecondary)
-
-                        Slider(value: Binding(
-                            get: { Double(timeInMinutes) },
-                            set: { timeInMinutes = Int($0) }
-                        ), in: 3...30, step: 1)
-                        .accentColor(.primaryBlue)
-
-                        Text("30")
-                            .font(.adaptiveCaption())
-                            .foregroundColor(.textSecondary)
-                    }
-
-                    HStack {
-                        Image(systemName: "clock.fill")
-                            .foregroundColor(.primaryBlue)
-                            .font(.adaptiveCaption())
-
-                        Text("\(timeInMinutes) \("settings.minutes".localized)")
-                            .font(.adaptiveBody())
-                            .fontWeight(.medium)
-                            .foregroundColor(.textPrimary)
-
-                        Spacer()
+                VStack(spacing: 6) {
+                    ForEach(DifficultyLevel.allCases, id: \.self) { level in
+                        difficultyLevelRow(level)
                     }
                 }
             }
         }
     }
 
+    @ViewBuilder
+    private func difficultyLevelRow(_ level: DifficultyLevel) -> some View {
+        let isSelected = selectedDifficulty == level
+
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                selectedDifficulty = level
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Text("\(levelNumber(for: level))")
+                    .font(.adaptiveCaption())
+                    .fontWeight(.bold)
+                    .foregroundStyle(isSelected ? Color.white : Color.primaryBlue)
+                    .frame(width: 28, height: 28)
+                    .background(
+                        Circle().fill(isSelected ? Color.primaryBlue : Color.primaryBlue.opacity(0.1))
+                    )
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(level.localizedName)
+                        .font(.adaptiveCaption())
+                        .fontWeight(isSelected ? .semibold : .regular)
+                        .foregroundStyle(Color.textPrimary)
+                        .lineLimit(1)
+
+                    HStack(spacing: 8) {
+                        Text(operationSymbols(for: level))
+                            .font(.adaptiveCaption())
+                            .foregroundStyle(Color.secondaryOrange)
+                            .fontWeight(.medium)
+
+                        Text("\(level.range.lowerBound)-\(level.range.upperBound)")
+                            .font(.adaptiveCaption())
+                            .foregroundStyle(Color.textSecondary)
+
+                        Text("\(level.questionCount)\("stats.questions_short".localized)")
+                            .font(.adaptiveCaption())
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+
+                Spacer()
+
+                if isSelected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(Color.primaryBlue)
+                }
+            }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .background(
+                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                    .fill(isSelected ? Color.primaryBlue.opacity(0.08) : Color.clear)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                    .stroke(isSelected ? Color.primaryBlue.opacity(0.3) : Color.clear, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Time Chips Picker
+    @ViewBuilder
+    private func enhancedTimePicker() -> some View {
+        enhancedCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Image(systemName: "clock.fill")
+                        .foregroundStyle(Color.primaryBlue)
+                        .font(.adaptiveBody())
+
+                    Text("settings.time".localized)
+                        .font(.adaptiveHeadline())
+                        .foregroundStyle(Color.textPrimary)
+                        .fontWeight(.semibold)
+
+                    Spacer()
+
+                    Text("\(timeInMinutes) \("settings.minutes".localized)")
+                        .font(.adaptiveBody())
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color.primaryBlue)
+                }
+
+                let presets = [3, 5, 10, 15, 20, 30]
+                let isPresetSelected = presets.contains(timeInMinutes) && !isCustomTime
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: DeviceUtils.isIPad ? 7 : 4), spacing: 8) {
+                    ForEach(presets, id: \.self) { minutes in
+                        timeChip(minutes: minutes, isPresetSelected: isPresetSelected)
+                    }
+
+                    // Custom chip
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isCustomTime = true
+                        }
+                    } label: {
+                        Image(systemName: "slider.horizontal.3")
+                            .font(.adaptiveCaption())
+                            .foregroundStyle(isCustomTime ? Color.white : Color.textPrimary)
+                            .padding(.vertical, 10)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                                    .fill(isCustomTime ? Color.primaryBlue : Color.backgroundSecondary)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+
+                if isCustomTime {
+                    HStack(spacing: 16) {
+                        Stepper(value: $timeInMinutes, in: 1...60, step: 1) {
+                            Text("\(timeInMinutes) \("settings.minutes_short".localized)")
+                                .font(.adaptiveBody())
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color.textPrimary)
+                        }
+                    }
+                    .padding(.top, 4)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func timeChip(minutes: Int, isPresetSelected: Bool) -> some View {
+        let isSelected = timeInMinutes == minutes && isPresetSelected
+
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                timeInMinutes = minutes
+                isCustomTime = false
+            }
+        } label: {
+            Text("\(minutes)")
+                .font(.adaptiveCaption())
+                .fontWeight(isSelected ? .semibold : .regular)
+                .foregroundStyle(isSelected ? Color.white : Color.textPrimary)
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
+                        .fill(isSelected ? Color.primaryBlue : Color.backgroundSecondary)
+                )
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Action Buttons
     @ViewBuilder
     private func enhancedActionButton(
         title: String,
@@ -252,7 +503,7 @@ struct ContentView: View {
             HStack(spacing: 16) {
                 Image(systemName: iconName)
                     .font(.title2)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(width: 44, height: 44)
                     .background(
                         Circle()
@@ -263,12 +514,12 @@ struct ContentView: View {
                     Text(title)
                         .font(.adaptiveHeadline())
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .multilineTextAlignment(.leading)
 
                     Text(subtitle)
                         .font(.adaptiveCaption())
-                        .foregroundColor(.white.opacity(0.8))
+                        .foregroundStyle(.white.opacity(0.8))
                         .multilineTextAlignment(.leading)
                 }
 
@@ -276,7 +527,7 @@ struct ContentView: View {
 
                 Image(systemName: "chevron.right")
                     .font(.body)
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundStyle(.white.opacity(0.7))
             }
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -286,54 +537,68 @@ struct ContentView: View {
                     .shadow(color: Color.cardShadow, radius: 8, x: 0, y: 4)
             )
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
+    }
+
+    private var wrongQuestionsSubtitle: String {
+        wrongQuestionStats.total > 0
+            ? "\(wrongQuestionStats.total) \("stats.questions_to_review".localized)"
+            : "review.past.mistakes".localized
     }
 
     // MARK: - Enhanced iPad Layout
     var enhancedIPadLandscapeLayout: some View {
         HStack(spacing: 20) {
             // Left side: Settings
-            VStack(spacing: 30) {
-                VStack(spacing: 8) {
-                    Image(systemName: "textbook.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(.primaryBlue)
-                        .opacity(isAnimating ? 1 : 0)
-                        .scaleEffect(isAnimating ? 1 : 0.5)
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: isAnimating)
-
-                    Text("app.title".localized)
-                        .font(.adaptiveTitle())
-                        .fontWeight(.bold)
-                        .foregroundColor(.textPrimary)
-                        .opacity(isAnimating ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.6).delay(0.3), value: isAnimating)
-                }
-                .padding(.top, 20)
-
+            ScrollView {
                 VStack(spacing: 20) {
-                    enhancedDifficultyPicker()
+                    VStack(spacing: 8) {
+                        Image(systemName: "textbook.fill")
+                            .font(.largeTitle)
+                            .foregroundStyle(Color.primaryBlue)
+                            .opacity(isAnimating ? 1 : 0)
+                            .scaleEffect(isAnimating ? 1 : 0.5)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: isAnimating)
+
+                        Text("app.title".localized)
+                            .font(.adaptiveTitle())
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.textPrimary)
+                            .opacity(isAnimating ? 1 : 0)
+                            .animation(.easeInOut(duration: 0.6).delay(0.3), value: isAnimating)
+                    }
+                    .padding(.top, 20)
+
+                    resumeGameBanner()
+                        .opacity(isAnimating ? 1 : 0)
+                        .offset(x: isAnimating ? 0 : -50)
+                        .animation(.easeInOut(duration: 0.6).delay(0.3), value: isAnimating)
+
+                    quickStatsCard()
                         .opacity(isAnimating ? 1 : 0)
                         .offset(x: isAnimating ? 0 : -50)
                         .animation(.easeInOut(duration: 0.6).delay(0.4), value: isAnimating)
 
-                    enhancedTimePicker()
+                    enhancedDifficultyPicker()
                         .opacity(isAnimating ? 1 : 0)
                         .offset(x: isAnimating ? 0 : -50)
                         .animation(.easeInOut(duration: 0.6).delay(0.5), value: isAnimating)
+
+                    enhancedTimePicker()
+                        .opacity(isAnimating ? 1 : 0)
+                        .offset(x: isAnimating ? 0 : -50)
+                        .animation(.easeInOut(duration: 0.6).delay(0.6), value: isAnimating)
 
                     enhancedCard {
                         LanguageSelectorView()
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : -50)
-                    .animation(.easeInOut(duration: 0.6).delay(0.6), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(0.7), value: isAnimating)
                 }
-
-                Spacer()
+                .padding(.horizontal, 30)
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 30)
 
             // Right side: Action buttons
             VStack(spacing: 20) {
@@ -356,7 +621,7 @@ struct ContentView: View {
 
                     enhancedActionButton(
                         title: "button.wrong_questions".localized,
-                        subtitle: "review.past.mistakes".localized,
+                        subtitle: wrongQuestionsSubtitle,
                         iconName: "exclamationmark.triangle.fill",
                         gradient: .orangeGradient
                     ) {
@@ -365,7 +630,7 @@ struct ContentView: View {
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
                     .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
-                    
+
                     enhancedActionButton(
                         title: "button.other_options".localized,
                         subtitle: "explore.more.features".localized,
@@ -396,15 +661,13 @@ struct ContentView: View {
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 30)
 
-            // Use sheet presentations for more reliable navigation
             .fullScreenCover(isPresented: $showGameView, onDismiss: {
-                // Reset states when game view is dismissed
                 gameViewModel = nil
                 isStartingGame = false
+                loadDashboardData()
             }) {
                 if let vm = gameViewModel {
                     GameView(viewModel: vm) {
-                        // This closure will be called when user wants to exit to home
                         showGameView = false
                     }
                     .environmentObject(localizationManager)
@@ -412,7 +675,9 @@ struct ContentView: View {
                     ProgressView("Loading...")
                 }
             }
-            .sheet(isPresented: $showWrongQuestionsView) {
+            .sheet(isPresented: $showWrongQuestionsView, onDismiss: {
+                loadDashboardData()
+            }) {
                 NavigationView {
                     WrongQuestionsView()
                         .environmentObject(localizationManager)
@@ -440,7 +705,7 @@ struct ContentView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "textbook.fill")
                         .font(.largeTitle)
-                        .foregroundColor(.primaryBlue)
+                        .foregroundStyle(Color.primaryBlue)
                         .opacity(isAnimating ? 1 : 0)
                         .scaleEffect(isAnimating ? 1 : 0.5)
                         .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: isAnimating)
@@ -448,30 +713,44 @@ struct ContentView: View {
                     Text("app.title".localized)
                         .font(.adaptiveTitle())
                         .fontWeight(.bold)
-                        .foregroundColor(.textPrimary)
+                        .foregroundStyle(Color.textPrimary)
                         .opacity(isAnimating ? 1 : 0)
                         .animation(.easeInOut(duration: 0.6).delay(0.3), value: isAnimating)
                 }
                 .padding(.top, 20)
+
+                // Resume Game Banner
+                resumeGameBanner()
+                    .padding(.horizontal, 20)
+                    .opacity(isAnimating ? 1 : 0)
+                    .offset(y: isAnimating ? 0 : 20)
+                    .animation(.easeInOut(duration: 0.6).delay(0.35), value: isAnimating)
+
+                // Quick Stats
+                quickStatsCard()
+                    .padding(.horizontal, 20)
+                    .opacity(isAnimating ? 1 : 0)
+                    .offset(y: isAnimating ? 0 : 30)
+                    .animation(.easeInOut(duration: 0.6).delay(0.4), value: isAnimating)
 
                 // Settings Section
                 VStack(spacing: 16) {
                     enhancedDifficultyPicker()
                         .opacity(isAnimating ? 1 : 0)
                         .offset(y: isAnimating ? 0 : 30)
-                        .animation(.easeInOut(duration: 0.6).delay(0.4), value: isAnimating)
+                        .animation(.easeInOut(duration: 0.6).delay(0.5), value: isAnimating)
 
                     enhancedTimePicker()
                         .opacity(isAnimating ? 1 : 0)
                         .offset(y: isAnimating ? 0 : 30)
-                        .animation(.easeInOut(duration: 0.6).delay(0.5), value: isAnimating)
+                        .animation(.easeInOut(duration: 0.6).delay(0.6), value: isAnimating)
 
                     enhancedCard {
                         LanguageSelectorView()
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(0.6), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(0.7), value: isAnimating)
                 }
                 .padding(.horizontal, 20)
 
@@ -487,13 +766,13 @@ struct ContentView: View {
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(0.7), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
                     .disabled(isStartingGame)
                     .accessibilityIdentifier("startGameButton")
 
                     enhancedActionButton(
                         title: "button.wrong_questions".localized,
-                        subtitle: "review.past.mistakes".localized,
+                        subtitle: wrongQuestionsSubtitle,
                         iconName: "exclamationmark.triangle.fill",
                         gradient: .orangeGradient
                     ) {
@@ -501,8 +780,8 @@ struct ContentView: View {
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
-                    
+                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
+
                     enhancedActionButton(
                         title: "button.other_options".localized,
                         subtitle: "explore.more.features".localized,
@@ -513,7 +792,7 @@ struct ContentView: View {
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(1.0), value: isAnimating)
 
                     enhancedActionButton(
                         title: "button.settings".localized,
@@ -525,24 +804,21 @@ struct ContentView: View {
                     }
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
-                    .animation(.easeInOut(duration: 0.6).delay(1.0), value: isAnimating)
+                    .animation(.easeInOut(duration: 0.6).delay(1.1), value: isAnimating)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 30)
-
-                // No navigation links needed - using direct state management
             }
         }
         .navigationBarHidden(true)
         .id(refreshTrigger)
         .fullScreenCover(isPresented: $showGameView, onDismiss: {
-            // Reset states when game view is dismissed
             gameViewModel = nil
             isStartingGame = false
+            loadDashboardData()
         }) {
             if let vm = gameViewModel {
                 GameView(viewModel: vm) {
-                    // This closure will be called when user wants to exit to home
                     showGameView = false
                 }
                 .environmentObject(localizationManager)
@@ -550,7 +826,9 @@ struct ContentView: View {
                 ProgressView("Loading...")
             }
         }
-        .sheet(isPresented: $showWrongQuestionsView) {
+        .sheet(isPresented: $showWrongQuestionsView, onDismiss: {
+            loadDashboardData()
+        }) {
             NavigationView {
                 WrongQuestionsView()
                     .environmentObject(localizationManager)
@@ -566,37 +844,29 @@ struct ContentView: View {
             SettingsView()
                 .environmentObject(localizationManager)
         }
+        .onChange(of: selectedDifficulty) { _ in
+            wrongQuestionStats = WrongQuestionManager().getWrongQuestionStats(for: nil)
+        }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
             refreshTrigger = UUID()
         }
     }
-    private func startGame() {
-        guard !isStartingGame else {
-            print("🚫 Start game blocked - already starting")
-            return
-        }
 
-        print("🎮 Starting game with difficulty: \(selectedDifficulty), time: \(timeInMinutes) minutes")
+    private func startGame() {
+        guard !isStartingGame else { return }
+
         isStartingGame = true
 
-        // 简化的同步方法 - 直接创建 GameViewModel
-        print("🔧 Creating GameViewModel...")
         let viewModel = GameViewModel(difficultyLevel: selectedDifficulty, timeInMinutes: timeInMinutes)
 
-        // 验证 ViewModel 创建成功
         guard viewModel.gameState.questions.count > 0 else {
-            print("❌ Failed to generate questions")
             isStartingGame = false
             return
         }
 
-        print("✅ GameViewModel created successfully with \(viewModel.gameState.questions.count) questions")
         gameViewModel = viewModel
-
-        // 直接触发导航
         showGameView = true
 
-        // 重置加载状态
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             isStartingGame = false
         }

@@ -16,7 +16,7 @@ extension View {
     /// ```swift
     /// Text("Hello")
     ///     .if(isPremium) { view in
-    ///         view.foregroundColor(.gold)
+    ///         view.foregroundStyle(.gold)
     ///     }
     /// ```
     @ViewBuilder
@@ -42,8 +42,8 @@ extension View {
     /// ```swift
     /// Text("Status")
     ///     .ifElse(isActive,
-    ///         trueTransform: { $0.foregroundColor(.green) },
-    ///         falseTransform: { $0.foregroundColor(.gray) }
+    ///         trueTransform: { $0.foregroundStyle(.green) },
+    ///         falseTransform: { $0.foregroundStyle(.gray) }
     ///     )
     /// ```
     @ViewBuilder
@@ -73,7 +73,7 @@ extension View {
     /// Text("Title")
     ///     .ifLet(errorMessage) { view, message in
     ///         view.overlay(
-    ///             Text(message).foregroundColor(.red),
+    ///             Text(message).foregroundStyle(.red),
     ///             alignment: .bottom
     ///         )
     ///     }
@@ -103,7 +103,7 @@ enum ViewBuilders {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(color.opacity(0.2))
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .cornerRadius(8)
     }
 
@@ -122,7 +122,7 @@ enum ViewBuilders {
             Text(text)
                 .font(.adaptiveBody())
         }
-        .foregroundColor(color)
+        .foregroundStyle(color)
     }
 
     /// Creates a card-style container with rounded corners and shadow.
@@ -166,10 +166,10 @@ enum ViewBuilders {
         VStack(spacing: 16) {
             Image(systemName: systemName)
                 .font(.system(size: 60))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             Text(message)
                 .font(.adaptiveBody())
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
         .padding()

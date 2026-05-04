@@ -103,7 +103,7 @@ struct WrongQuestionsView: View {
                             .font(.system(size: 16, weight: .semibold))
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.accent)
+                    .foregroundStyle(Color.accent)
                 }
             }
         }
@@ -116,10 +116,10 @@ struct WrongQuestionsView: View {
             VStack(spacing: 4) {
                 Text("\(wrongQuestions.count)")
                     .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.error)
+                    .foregroundStyle(Color.error)
                 Text("wrong_questions.total".localized)
                     .font(.caption)
-                    .foregroundColor(.adaptiveSecondaryText)
+                    .foregroundStyle(Color.adaptiveSecondaryText)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
@@ -137,10 +137,10 @@ struct WrongQuestionsView: View {
                 let masteredCount = wrongQuestions.filter { $0.timesShown >= 3 && $0.timesWrong == 0 }.count
                 Text("\(masteredCount)")
                     .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.success)
+                    .foregroundStyle(Color.success)
                 Text("wrong_questions.mastered".localized)
                     .font(.caption)
-                    .foregroundColor(.adaptiveSecondaryText)
+                    .foregroundStyle(Color.adaptiveSecondaryText)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
@@ -196,7 +196,7 @@ struct WrongQuestionsView: View {
                 Text(level?.localizedName ?? "wrong_questions.all_levels".localized)
                     .font(.system(size: 14, weight: .semibold))
             }
-            .foregroundColor(isSelected ? .white : .adaptiveText)
+            .foregroundStyle(isSelected ? .white : .adaptiveText)
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
             .background(
@@ -212,7 +212,7 @@ struct WrongQuestionsView: View {
             .shadow(color: isSelected ? Color.adaptiveShadow : Color.clear, radius: 4, x: 0, y: 2)
             .scaleEffect(isSelected ? 1.05 : 1.0)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
     }
 
     // MARK: - Empty State View
@@ -232,17 +232,17 @@ struct WrongQuestionsView: View {
 
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 50))
-                    .foregroundColor(.success)
+                    .foregroundStyle(Color.success)
             }
 
             Text("wrong_questions.empty".localized)
                 .font(.adaptiveTitle2())
                 .fontWeight(.semibold)
-                .foregroundColor(.adaptiveText)
+                .foregroundStyle(Color.adaptiveText)
 
             Text("wrong_questions.empty_subtitle".localized)
                 .font(.adaptiveBody())
-                .foregroundColor(.adaptiveSecondaryText)
+                .foregroundStyle(Color.adaptiveSecondaryText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -280,7 +280,7 @@ struct WrongQuestionsView: View {
                         Text(question.level.localizedName)
                             .font(.system(size: 11, weight: .semibold))
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(gradientForLevel(question.level))
@@ -298,14 +298,14 @@ struct WrongQuestionsView: View {
                 // Question text
                 Text(question.questionText)
                     .font(.system(size: 22, weight: .bold, design: .rounded))
-                    .foregroundColor(.adaptiveText)
+                    .foregroundStyle(Color.adaptiveText)
 
                 // Answer row with proper formatting for fractions
                 HStack {
                     // Label
                     Text("wrong_questions.answer_label".localized)
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.success)
+                        .foregroundStyle(Color.success)
 
                     // Display fraction in vertical format if applicable
                     if let answerType = question.answerType,
@@ -315,7 +315,7 @@ struct WrongQuestionsView: View {
                     } else {
                         Text(question.answerDisplayString)
                             .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.success)
+                            .foregroundStyle(Color.success)
                     }
 
                     Spacer()
@@ -336,13 +336,13 @@ struct WrongQuestionsView: View {
                             Text(expandedQuestionIds.contains(question.id) ? "button.hide_solution".localized : "button.show_solution".localized)
                                 .font(.system(size: 13, weight: .medium))
                         }
-                        .foregroundColor(.warning)
+                        .foregroundStyle(Color.warning)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                         .background(Color.warning.opacity(0.15))
                         .clipShape(Capsule())
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                 }
             }
             .padding(16)
@@ -375,7 +375,7 @@ struct WrongQuestionsView: View {
             Text("\(value)")
                 .font(.system(size: 12, weight: .semibold))
         }
-        .foregroundColor(color)
+        .foregroundStyle(color)
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(color.opacity(0.1))
@@ -390,10 +390,10 @@ struct WrongQuestionsView: View {
             // Solution header
             HStack {
                 Image(systemName: "sparkles")
-                    .foregroundColor(.warning)
+                    .foregroundStyle(Color.warning)
                 Text("solution.content".localized)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.adaptiveSecondaryText)
+                    .foregroundStyle(Color.adaptiveSecondaryText)
                 Spacer()
             }
             .padding(.horizontal, 16)
@@ -404,7 +404,7 @@ struct WrongQuestionsView: View {
                 Text(question.currentLanguageSolutionSteps)
                     .font(.system(size: 14))
                     .lineSpacing(4)
-                    .foregroundColor(.adaptiveText)
+                    .foregroundStyle(Color.adaptiveText)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(12)
             }
@@ -434,7 +434,7 @@ struct WrongQuestionsView: View {
                         Text("wrong_questions.delete_all".localized)
                             .font(.system(size: 14, weight: .semibold))
                     }
-                    .foregroundColor(wrongQuestions.isEmpty ? .gray : .white)
+                    .foregroundStyle(wrongQuestions.isEmpty ? .gray : .white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
                     .background(
@@ -464,7 +464,7 @@ struct WrongQuestionsView: View {
                         Text("wrong_questions.delete_mastered".localized)
                             .font(.system(size: 14, weight: .semibold))
                     }
-                    .foregroundColor(wrongQuestions.isEmpty ? .gray : .white)
+                    .foregroundStyle(wrongQuestions.isEmpty ? .gray : .white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
                     .background(

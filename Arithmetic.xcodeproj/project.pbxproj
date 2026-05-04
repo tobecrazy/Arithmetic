@@ -78,6 +78,7 @@
 		8ATEST0002000000000000004 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000014 /* CoreDataTests.swift */; };
 		8ATEST0002000000000000005 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0002000000000000015 /* ExtensionsTests.swift */; };
 		A22710E351EEA8BA1AF967F6 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F03D9EF1AE4DD966D7ED07A /* FractionTests.swift */; };
+		8ATEST0003000000000000001 /* ContentViewEnhancementsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ATEST0003000000000000011 /* ContentViewEnhancementsTests.swift */; };
 		BF602549576F53FDCEAFED95 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89296E9925C990D4296D46F /* Fraction.swift */; };
 /* End PBXBuildFile section */
 
@@ -159,6 +160,7 @@
 		8ATEST0002000000000000013 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		8ATEST0002000000000000014 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		8ATEST0002000000000000015 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
+		8ATEST0003000000000000011 /* ContentViewEnhancementsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewEnhancementsTests.swift; sourceTree = "<group>"; };
 		B89296E9925C990D4296D46F /* Fraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Fraction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -349,6 +351,7 @@
 				8ATEST0002000000000000014 /* CoreDataTests.swift */,
 				8ATEST0002000000000000015 /* ExtensionsTests.swift */,
 				1F03D9EF1AE4DD966D7ED07A /* FractionTests.swift */,
+				8ATEST0003000000000000011 /* ContentViewEnhancementsTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -562,6 +565,7 @@
 				8ATEST0002000000000000004 /* CoreDataTests.swift in Sources */,
 				8ATEST0002000000000000005 /* ExtensionsTests.swift in Sources */,
 				A22710E351EEA8BA1AF967F6 /* FractionTests.swift in Sources */,
+				8ATEST0003000000000000001 /* ContentViewEnhancementsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,10 +21,10 @@ struct LanguageSelectorView: View {
                                     .fill(localizationManager.currentLanguage == language ? 
                                           Color.blue : Color.gray.opacity(0.2))
                             )
-                            .foregroundColor(localizationManager.currentLanguage == language ? 
+                            .foregroundStyle(localizationManager.currentLanguage == language ? 
                                             Color.white : Color.primary)
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                     .padding(.trailing, 10)
                 }
             }

@@ -116,7 +116,7 @@ struct StreakCelebrationView: View {
                 ForEach(0..<3) { index in
                     Image(systemName: "flame.fill")
                         .font(.system(size: 60))
-                        .foregroundColor(
+                        .foregroundStyle(
                             [.orange, .red, .yellow].randomElement() ?? .orange
                         )
                         .opacity(isAnimating ? Double(3 - index) / 3.0 : 0)
@@ -132,17 +132,17 @@ struct StreakCelebrationView: View {
                 Text("\(streakCount)")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
             }
             .frame(width: 80, height: 80)
 
             Text("streak.title".localized)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             Text("streak.\(min(streakCount, 10))".localized)
                 .font(.headline)
-                .foregroundColor(.orange)
+                .foregroundStyle(.orange)
         }
         .padding()
         .background(

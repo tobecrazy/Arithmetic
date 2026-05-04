@@ -636,3 +636,18 @@
 
 
 "welcome.level7.desc" = "分数四则运算（加减乘除）";
+
+/* Resume Game Banner */
+"resume.title" = "游戏进行中";
+"resume.continue" = "继续游戏";
+"resume.questions" = "题";
+
+/* Quick Stats */
+"stats.total_wrong" = "错题";
+"stats.this_level" = "本等级";
+"stats.questions_count" = "题目数";
+"stats.questions_to_review" = "题待复习";
+"stats.questions_short" = "题";
+
+/* Time Picker */
+"settings.minutes_short" = "分钟";

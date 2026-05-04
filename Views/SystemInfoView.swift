@@ -136,7 +136,7 @@ struct SystemInfoView: View {
                             .font(.system(size: 14, weight: .semibold))
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.cyan)
+                    .foregroundStyle(.cyan)
                 }
             }
         }

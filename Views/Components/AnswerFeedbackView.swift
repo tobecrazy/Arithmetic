@@ -29,11 +29,11 @@ struct AnswerFeedbackView: View {
             HStack(spacing: 8) {
                 Image(systemName: "xmark.circle.fill")
                     .font(.title)
-                    .foregroundColor(.red)
+                    .foregroundStyle(.red)
                     .scaleEffect(isShaking ? 1.2 : 1.0)
                     .animation(.spring(response: 0.3, dampingFraction: 0.4).repeatCount(3), value: isShaking)
                 Text("game.wrong".localized)
-                    .foregroundColor(.red)
+                    .foregroundStyle(.red)
                     .font(.adaptiveHeadline())
             }
             .offset(x: isShaking ? -5 : 5)
@@ -42,7 +42,7 @@ struct AnswerFeedbackView: View {
             // Correct answer display with proper formatting for fractions
             HStack(spacing: 8) {
                 Text("game.correct_answer_label".localized)
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                     .font(.adaptiveBody())
                     .lineLimit(1)
 
@@ -52,7 +52,7 @@ struct AnswerFeedbackView: View {
                     FractionView(fraction: fractionAnswer, baseFontSize: 20)
                 } else {
                     Text(String(question.correctAnswer))
-                        .foregroundColor(.blue)
+                        .foregroundStyle(.blue)
                         .font(.adaptiveBody())
                 }
             }
@@ -80,7 +80,7 @@ struct AnswerFeedbackView: View {
                 .padding()
                 .frame(width: 220)
                 .background(Color.blue)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .cornerRadius(.adaptiveCornerRadius)
                 .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
             }
@@ -99,10 +99,10 @@ struct AnswerFeedbackView: View {
         HStack(spacing: 8) {
             Image(systemName: "checkmark.circle.fill")
                 .font(.title)
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
                 .scaleEffect(buttonScale)
             Text("game.correct".localized)
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
                 .font(.adaptiveHeadline())
         }
         .padding()

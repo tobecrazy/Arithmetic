@@ -27,11 +27,11 @@ struct QuestionWithFractionView: View {
                         .font(.system(size: baseFontSize, weight: .bold))
                 }
             }
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
             .scaleEffect(isCorrect ? 1.1 : 1.0)
             .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isCorrect)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .padding(.vertical, 12)
         .padding(.horizontal, 8)
     }

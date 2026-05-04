@@ -643,3 +643,18 @@
 
 
 "welcome.level7.desc" = "Fraction Arithmetic (+, -, ×, ÷)";
+
+/* Resume Game Banner */
+"resume.title" = "Game In Progress";
+"resume.continue" = "Continue";
+"resume.questions" = "questions";
+
+/* Quick Stats */
+"stats.total_wrong" = "Wrong";
+"stats.this_level" = "This Level";
+"stats.questions_count" = "Questions";
+"stats.questions_to_review" = "questions to review";
+"stats.questions_short" = "Q";
+
+/* Time Picker */
+"settings.minutes_short" = "min";
