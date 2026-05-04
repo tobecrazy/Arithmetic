@@ -42,7 +42,7 @@ struct GameControlButtonsView: View {
                 Image(systemName: "pause.circle")
                 Text("button.pause".localized)
             }
-            .foregroundColor(isPauseDisabled ? .gray : .orange)
+            .foregroundStyle(isPauseDisabled ? .gray : .orange)
         }
         .disabled(isPauseDisabled)
         .padding(.horizontal)
@@ -65,7 +65,7 @@ struct GameControlButtonsView: View {
                 Image(systemName: "square.and.arrow.down")
                 Text("button.save".localized)
             }
-            .foregroundColor(.blue)
+            .foregroundStyle(.blue)
         }
         .padding(.horizontal)
     }
@@ -76,7 +76,7 @@ struct GameControlButtonsView: View {
             showingExitAlert = true
         }) {
             Text("button.exit".localized)
-                .foregroundColor(.red)
+                .foregroundStyle(.red)
         }
         .padding()
         .alert(isPresented: $showingExitAlert) {
@@ -95,7 +95,7 @@ struct GameControlButtonsView: View {
     private var finishButton: some View {
         Button(action: onFinish) {
             Text("button.finish".localized)
-                .foregroundColor(.blue)
+                .foregroundStyle(.blue)
         }
         .padding()
     }

@@ -29,11 +29,11 @@ struct AnswerFeedbackView: View {
             HStack(spacing: 8) {
                 Image(systemName: "xmark.circle.fill")
                     .font(.title)
-                    .foregroundColor(.red)
+                    .foregroundStyle(.red)
                     .scaleEffect(isShaking ? 1.2 : 1.0)
                     .animation(.spring(response: 0.3, dampingFraction: 0.4).repeatCount(3), value: isShaking)
                 Text("game.wrong".localized)
-                    .foregroundColor(.red)
+                    .foregroundStyle(.red)
                     .font(.adaptiveHeadline())
             }
             .offset(x: isShaking ? -5 : 5)
@@ -41,7 +41,7 @@ struct AnswerFeedbackView: View {
 
             // Correct answer display
             Text("game.correct_answer".localizedFormat(String(question.correctAnswer)))
-                .foregroundColor(.blue)
+                .foregroundStyle(.blue)
                 .font(.adaptiveBody())
                 .padding(.vertical, 5)
 
@@ -67,7 +67,7 @@ struct AnswerFeedbackView: View {
                 .padding()
                 .frame(width: 220)
                 .background(Color.blue)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .cornerRadius(.adaptiveCornerRadius)
                 .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
             }
@@ -86,10 +86,10 @@ struct AnswerFeedbackView: View {
         HStack(spacing: 8) {
             Image(systemName: "checkmark.circle.fill")
                 .font(.title)
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
                 .scaleEffect(buttonScale)
             Text("game.correct".localized)
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
                 .font(.adaptiveHeadline())
         }
         .padding()

@@ -42,7 +42,7 @@ struct AboutMeView: View {
                                     
                                     Text("Loading...")
                                         .font(.caption)
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.white)
                                 }
                             }
                             .transition(.opacity)
@@ -67,13 +67,13 @@ struct AboutMeView: View {
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
                         .padding(.horizontal, 20)
-                        .foregroundColor(.primary.opacity(0.8))
+                        .foregroundStyle(.primary.opacity(0.8))
                     
                     // GitHub Link
                     if let githubURL = URL(string: "https://github.com/tobecrazy/Arithmetic") {
                         Link("about.github_link".localized, destination: githubURL)
                             .font(.adaptiveBody())
-                            .foregroundColor(.blue)
+                            .foregroundStyle(.blue)
                             .padding(.top, 10)
                     }
                 }
@@ -95,7 +95,7 @@ struct AboutMeView: View {
                         Image(systemName: "chevron.left")
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                 }
             }
         }

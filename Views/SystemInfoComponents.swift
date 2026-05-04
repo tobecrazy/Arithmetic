@@ -35,14 +35,14 @@ struct GlowingIcon: View {
             // Outer glow
             Image(systemName: systemName)
                 .font(.system(size: size))
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .blur(radius: isGlowing ? 8 : 4)
                 .opacity(isGlowing ? 0.8 : 0.4)
 
             // Inner icon
             Image(systemName: systemName)
                 .font(.system(size: size))
-                .foregroundColor(color)
+                .foregroundStyle(color)
         }
         .frame(width: size + 16, height: size + 16)
         .onAppear {
@@ -139,7 +139,7 @@ struct AnimatedValueText: View {
         Text(value)
             .font(.adaptiveBody())
             .fontWeight(.semibold)
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .opacity(opacity)
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
@@ -167,7 +167,7 @@ struct SystemInfoRow: View {
                     Text(title)
                         .font(.adaptiveBody())
                         .fontWeight(.medium)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
 
                     Spacer()
                 }
@@ -194,7 +194,7 @@ struct SystemInfoRow: View {
                         Text(value)
                             .font(.system(.body, design: .monospaced))
                             .fontWeight(.semibold)
-                            .foregroundColor(accentColor.opacity(0.9))
+                            .foregroundStyle(accentColor.opacity(0.9))
                             .multilineTextAlignment(.trailing)
                             .lineLimit(2)
                             .minimumScaleFactor(0.8)
@@ -242,11 +242,11 @@ struct SystemInfoProgressRow: View {
                         Text(title)
                             .font(.adaptiveBody())
                             .fontWeight(.semibold)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text("system.info.realtime_monitoring".localized)
                             .font(.adaptiveCaption())
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
 
                     Spacer()
@@ -256,12 +256,12 @@ struct SystemInfoProgressRow: View {
                         Text(String(format: "%.1f", animatedValue))
                             .font(.system(.title2, design: .monospaced))
                             .fontWeight(.bold)
-                            .foregroundColor(color)
+                            .foregroundStyle(color)
 
                         Text(unit)
                             .font(.system(.caption, design: .monospaced))
                             .fontWeight(.medium)
-                            .foregroundColor(color.opacity(0.7))
+                            .foregroundStyle(color.opacity(0.7))
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
@@ -324,19 +324,19 @@ struct SystemInfoProgressRow: View {
                     HStack {
                         Text("0%")
                             .font(.system(.caption2, design: .monospaced))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
 
                         Spacer()
 
                         Text("50%")
                             .font(.system(.caption2, design: .monospaced))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
 
                         Spacer()
 
                         Text("100%")
                             .font(.system(.caption2, design: .monospaced))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -372,7 +372,7 @@ struct DetailInfoItemRow: View {
 
                     Text(label)
                         .font(.adaptiveCaption())
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
 
@@ -382,7 +382,7 @@ struct DetailInfoItemRow: View {
                 Text(value)
                     .font(.system(.caption, design: .monospaced))
                     .fontWeight(.semibold)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .background(
@@ -434,7 +434,7 @@ struct DetailInfoSection: View {
                     Text(title)
                         .font(.adaptiveBody())
                         .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
 
                     Spacer()
 
@@ -444,10 +444,10 @@ struct DetailInfoSection: View {
                             Text(String(format: "%.1f", animatedProgress))
                                 .font(.system(.caption, design: .monospaced))
                                 .fontWeight(.bold)
-                                .foregroundColor(color)
+                                .foregroundStyle(color)
                             Text("%")
                                 .font(.system(.caption2, design: .monospaced))
-                                .foregroundColor(color.opacity(0.7))
+                                .foregroundStyle(color.opacity(0.7))
                         }
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
@@ -569,11 +569,11 @@ struct RealtimeClockDisplay: View {
                         Text("system.info.current_time".localized)
                             .font(.adaptiveBody())
                             .fontWeight(.semibold)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text("system.info.realtime".localized)
                             .font(.adaptiveCaption())
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
 
                     Spacer()
@@ -588,7 +588,7 @@ struct RealtimeClockDisplay: View {
                         Text("system.info.live".localized)
                             .font(.system(.caption2, design: .monospaced))
                             .fontWeight(.bold)
-                            .foregroundColor(.green)
+                            .foregroundStyle(.green)
                     }
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
@@ -620,12 +620,12 @@ struct RealtimeClockDisplay: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("system.info.date".localized)
                             .font(.adaptiveCaption())
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
 
                         Text(date)
                             .font(.system(.callout, design: .monospaced))
                             .fontWeight(.medium)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
@@ -644,12 +644,12 @@ struct RealtimeClockDisplay: View {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("system.info.time".localized)
                             .font(.adaptiveCaption())
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
 
                         Text(time)
                             .font(.system(.title2, design: .monospaced))
                             .fontWeight(.bold)
-                            .foregroundColor(color)
+                            .foregroundStyle(color)
                             .shadow(color: color.opacity(0.4), radius: 6, x: 0, y: 0)
                     }
                     .padding(.horizontal, 12)
@@ -689,7 +689,7 @@ struct TechSectionHeader: View {
                 Text(title)
                     .font(.adaptiveTitle())
                     .fontWeight(.bold)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
 
                 Rectangle()
                     .fill(
@@ -704,7 +704,7 @@ struct TechSectionHeader: View {
 
             Text(subtitle)
                 .font(.adaptiveBody())
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)

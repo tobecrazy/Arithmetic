@@ -249,7 +249,7 @@ struct SectionHeader: View {
         Text(title)
             .font(.title2)
             .fontWeight(.bold)
-            .foregroundColor(.blue)
+            .foregroundStyle(.blue)
             .padding(.top, 20)
     }
 }
@@ -261,7 +261,7 @@ struct SubsectionHeader: View {
         Text(title)
             .font(.title3)
             .fontWeight(.semibold)
-            .foregroundColor(.orange)
+            .foregroundStyle(.orange)
             .padding(.top, 12)
     }
 }
@@ -275,12 +275,12 @@ struct FormulaGroup: View {
             Text(title)
                 .font(.headline)
                 .fontWeight(.medium)
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
 
             ForEach(formulas, id: \.self) { formula in
                 Text("• \(formula)")
                     .font(.system(.body, design: .monospaced))
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .padding(.leading, 10)
             }
         }
@@ -297,12 +297,12 @@ struct ConversionGroup: View {
             Text(title)
                 .font(.headline)
                 .fontWeight(.medium)
-                .foregroundColor(.purple)
+                .foregroundStyle(.purple)
 
             ForEach(conversions, id: \.self) { conversion in
                 Text("• \(conversion)")
                     .font(.system(.body, design: .monospaced))
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .padding(.leading, 10)
             }
         }

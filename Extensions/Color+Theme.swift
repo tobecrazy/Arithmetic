@@ -156,7 +156,7 @@ struct AdaptiveButtonStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(isEnabled ? backgroundColor : .buttonDisabled)

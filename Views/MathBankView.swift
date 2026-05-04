@@ -64,7 +64,7 @@ struct MathBankView: View {
                             Image(systemName: "chevron.left")
                             Text("button.back".localized)
                         }
-                        .foregroundColor(.blue)
+                        .foregroundStyle(.blue)
                     }
                 }
             }
@@ -133,12 +133,12 @@ struct MathBankView: View {
         VStack(spacing: 16) {
             Image(systemName: "doc.text.fill")
                 .font(.system(size: 60))
-                .foregroundColor(.orange)
+                .foregroundStyle(.orange)
 
             Text("math_bank.description".localized)
                 .font(.adaptiveBody())
                 .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .padding()
     }
@@ -160,7 +160,7 @@ struct MathBankView: View {
                         VStack(spacing: 8) {
                             Text(difficulty.localizedName)
                                 .font(.adaptiveBody())
-                                .foregroundColor(selectedDifficulty == difficulty ? .white : .primary)
+                                .foregroundStyle(selectedDifficulty == difficulty ? .white : .primary)
                                 .multilineTextAlignment(.center)
                         }
                         .padding()
@@ -190,7 +190,7 @@ struct MathBankView: View {
                     }) {
                         Text("\(count)" + "math_bank.pdf.questions_suffix".localized)
                             .font(.adaptiveBody())
-                            .foregroundColor(selectedQuestionCount == count ? .white : .primary)
+                            .foregroundStyle(selectedQuestionCount == count ? .white : .primary)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(selectedQuestionCount == count ? Color.orange : Color.gray.opacity(0.2))
@@ -218,7 +218,7 @@ struct MathBankView: View {
                         .font(.adaptiveHeadline())
                         .fontWeight(.semibold)
                 }
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(isGenerating ? Color.gray : Color.orange)
@@ -228,7 +228,7 @@ struct MathBankView: View {
 
             Text("math_bank.hint".localized)
                 .font(.adaptiveCaption())
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
     }

@@ -40,23 +40,23 @@ struct OtherOptionsView: View {
                     HStack {
                         Image(systemName: "grid.circle.fill")
                             .font(.title2)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                         
                         VStack(alignment: .leading, spacing: 4) {
                             Text("button.multiplication_table".localized)
                                 .font(.adaptiveHeadline())
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                             
                             Text("multiplication_table.instructions".localized)
                                 .font(.adaptiveBody())
-                                .foregroundColor(.white.opacity(0.8))
+                                .foregroundStyle(.white.opacity(0.8))
                                 .multilineTextAlignment(.leading)
                         }
                         
                         Spacer()
                         
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                     .padding()
                     .background(Color.green)
@@ -71,16 +71,16 @@ struct OtherOptionsView: View {
                     HStack {
                         Image(systemName: "doc.text.fill")
                             .font(.title2)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text("math_bank.button_title".localized)
                                 .font(.adaptiveHeadline())
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
 
                             Text("math_bank.button_description".localized)
                                 .font(.adaptiveBody())
-                                .foregroundColor(.white.opacity(0.8))
+                                .foregroundStyle(.white.opacity(0.8))
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         }
@@ -88,7 +88,7 @@ struct OtherOptionsView: View {
                         Spacer()
 
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                     .padding()
                     .background(Color.orange)
@@ -103,16 +103,16 @@ struct OtherOptionsView: View {
                     HStack {
                         Image(systemName: "function")
                             .font(.title2)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text("button.formula_guide".localized)
                                 .font(.adaptiveHeadline())
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
 
                             Text("formula_guide_desc".localized)
                                 .font(.adaptiveBody())
-                                .foregroundColor(.white.opacity(0.8))
+                                .foregroundStyle(.white.opacity(0.8))
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         }
@@ -120,7 +120,7 @@ struct OtherOptionsView: View {
                         Spacer()
 
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                     .padding()
                     .background(Color.blue)
@@ -139,7 +139,7 @@ struct OtherOptionsView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.gray.opacity(0.2))
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .cornerRadius(.adaptiveCornerRadius)
                 }
                 .padding(.horizontal)
@@ -176,7 +176,7 @@ struct OtherOptionsView: View {
                         Image(systemName: "chevron.left")
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                 }
             }
         }

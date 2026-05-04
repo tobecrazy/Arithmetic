@@ -19,7 +19,7 @@ struct SolutionPanelView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .background(Color.green)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .cornerRadius(.adaptiveCornerRadius)
                 .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
             }
@@ -41,11 +41,11 @@ struct SolutionPanelView: View {
                 Text("solution.content".localized)
                     .font(.caption)
                     .fontWeight(.medium)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Image(systemName: "scroll")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 10)
             .padding(.top, 8)

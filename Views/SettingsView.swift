@@ -61,38 +61,38 @@ struct SettingsView: View {
                     Button(action: { navigateToAboutMe = true }) {
                         HStack {
                             Image(systemName: "person.circle.fill")
-                                .foregroundColor(.purple)
+                                .foregroundStyle(.purple)
                             Text("button.about_me".localized)
                         }
                     }
-                    .buttonStyle(PlainButtonStyle()) // To make the button behave like a NavigationLink visualy
+                    .buttonStyle(.plain) // To make the button behave like a NavigationLink visualy
 
                     Button(action: { navigateToSystemInfo = true }) {
                         HStack {
                             Image(systemName: "info.circle")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                             Text("system.info.title".localized)
                         }
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
 
                     Button(action: { navigateToQrCodeTool = true }) {
                         HStack {
                             Image(systemName: "qrcode")
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
                             Text("qr_code.tool.title".localized)
                         }
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
 
                     Button(action: { navigateToAboutApp = true }) {
                         HStack {
                             Image(systemName: "info.circle.fill")
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                             Text("about.arithmetic.title".localized)
                         }
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                 }
             }
             .navigationTitle("settings.title".localized)
@@ -297,16 +297,16 @@ private struct HeroHeader: View {
                 Text("Arithmetic")
                     .font(.adaptiveTitle())
                     .fontWeight(.bold)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
 
                 VStack(spacing: 4) {
                     Text("Version \(appVersion)")
                         .font(.adaptiveHeadline())
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
 
                     Text("Build \(buildNumber)")
                         .font(.adaptiveCaption())
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
@@ -328,7 +328,7 @@ private struct AboutSectionHeader: View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.blue)
+                .foregroundStyle(.blue)
                 .frame(width: 28, height: 28)
                 .background(Color.blue.opacity(0.1))
                 .cornerRadius(.adaptiveCornerRadius)
@@ -336,7 +336,7 @@ private struct AboutSectionHeader: View {
             Text(title)
                 .font(.adaptiveHeadline())
                 .fontWeight(.semibold)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
 
             Spacer()
         }
@@ -355,7 +355,7 @@ private struct CopyableInfoRow: View {
             HStack(spacing: 8) {
                 Text(label)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fontWeight(.medium)
 
                 Spacer()
@@ -368,13 +368,13 @@ private struct CopyableInfoRow: View {
                             .font(.caption2)
                             .fontWeight(.medium)
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(isCopied ? Color.green : Color.blue)
                     .cornerRadius(6)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
             }
 
             Text(value)
@@ -425,11 +425,11 @@ private struct InfoCard: View {
             HStack(spacing: 8) {
                 Image(systemName: icon)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(iconColor)
+                    .foregroundStyle(iconColor)
 
                 Text(label)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fontWeight(.medium)
 
                 Spacer()
@@ -467,11 +467,11 @@ private struct DescriptionCard: View {
             HStack(spacing: 8) {
                 Image(systemName: "lightbulb.fill")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.yellow)
+                    .foregroundStyle(.yellow)
 
                 Text("Description")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fontWeight(.medium)
 
                 Spacer()
@@ -480,7 +480,7 @@ private struct DescriptionCard: View {
             Text(text)
                 .font(.adaptiveBody())
                 .lineSpacing(1.5)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
         }
         .padding(16)
         .background(Color.yellow.opacity(0.08))
@@ -507,7 +507,7 @@ private struct AccreditationLink: View {
             HStack(spacing: 12) {
                 Image(systemName: icon)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(width: 36, height: 36)
                     .background(color)
                     .cornerRadius(10)
@@ -516,18 +516,18 @@ private struct AccreditationLink: View {
                     Text(title)
                         .font(.adaptiveHeadline())
                         .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
 
                     Text("Open official website")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
 
                 Image(systemName: "arrow.up.right")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .padding(8)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
@@ -541,7 +541,7 @@ private struct AccreditationLink: View {
             )
             .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .scaleEffect(isPressed ? 0.98 : 1.0)
         .onLongPressGesture(minimumDuration: 0.1, perform: {}, onPressingChanged: { pressing in
             withAnimation(.easeInOut(duration: 0.15)) {

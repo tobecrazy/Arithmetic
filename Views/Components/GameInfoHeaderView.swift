@@ -19,7 +19,7 @@ struct GameInfoHeaderView: View {
                     .font(.footnote)
                 Text(timeRemaining)
                     .font(.adaptiveHeadline())
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                     .id(currentTime)
             }
 
@@ -49,7 +49,7 @@ struct GameInfoHeaderView: View {
 
                 Text(progressText)
                     .font(.adaptiveCaption())
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .frame(width: 100)
 
@@ -60,24 +60,24 @@ struct GameInfoHeaderView: View {
                 HStack(spacing: 4) {
                     if streakCount >= 3 {
                         Image(systemName: "flame.fill")
-                            .foregroundColor(.orange)
+                            .foregroundStyle(.orange)
                             .font(.caption)
                             .scaleEffect(buttonScale)
                             .animation(.spring(response: 0.3, dampingFraction: 0.5).repeatCount(3), value: buttonScale)
                     }
                     Text("game.score".localized)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
                 Text("\(score)")
                     .font(.adaptiveTitle2())
                     .fontWeight(.bold)
-                    .foregroundColor(.green)
+                    .foregroundStyle(.green)
                     .contentTransition(.numericText())
                 if streakCount >= 2 {
                     Text("🔥 ×\(streakCount)")
                         .font(.caption2)
-                        .foregroundColor(.orange)
+                        .foregroundStyle(.orange)
                 }
             }
         }

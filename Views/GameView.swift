@@ -91,7 +91,7 @@ struct GameView: View {
                                 .font(.footnote)
                             Text(viewModel.gameState.timeRemainingText)
                                 .font(.adaptiveHeadline())
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
                                 .id(currentTime) // Use local state to force refresh
                         }
                         
@@ -124,7 +124,7 @@ struct GameView: View {
 
                             Text(viewModel.gameState.progressText)
                                 .font(.adaptiveCaption())
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                         .frame(width: 100)
                         
@@ -136,24 +136,24 @@ struct GameView: View {
                             HStack(spacing: 4) {
                                 if viewModel.gameState.streakCount >= 3 {
                                     Image(systemName: "flame.fill")
-                                        .foregroundColor(.orange)
+                                        .foregroundStyle(.orange)
                                         .font(.caption)
                                         .scaleEffect(buttonScale)
                                         .animation(.spring(response: 0.3, dampingFraction: 0.5).repeatCount(3), value: buttonScale)
                                 }
                                 Text("game.score".localized)
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                             }
                             Text("\(viewModel.gameState.score)")
                                 .font(.adaptiveTitle2())
                                 .fontWeight(.bold)
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                                 .contentTransition(.numericText())
                             if viewModel.gameState.streakCount >= 2 {
                                 Text("🔥 ×\(viewModel.gameState.streakCount)")
                                     .font(.caption2)
-                                    .foregroundColor(.orange)
+                                    .foregroundStyle(.orange)
                             }
                         }
                     }
@@ -165,7 +165,7 @@ struct GameView: View {
                         HStack {
                             Text("game.paused".localized)
                                 .font(.adaptiveHeadline())
-                                .foregroundColor(.orange)
+                                .foregroundStyle(.orange)
                             
                             Spacer()
                             
@@ -177,7 +177,7 @@ struct GameView: View {
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 5)
                                     .background(Color.blue)
-                                    .foregroundColor(.white)
+                                    .foregroundStyle(.white)
                                     .cornerRadius(.adaptiveCornerRadius)
                             }
                         }
@@ -189,10 +189,10 @@ struct GameView: View {
                     if viewModel.showSaveProgressSuccess {
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                             Text("game.save_success".localized)
                                 .font(.adaptiveBody())
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                             Spacer()
                         }
                         .padding()
@@ -200,10 +200,10 @@ struct GameView: View {
                     } else if viewModel.showSaveProgressError {
                         HStack {
                             Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                             Text("game.save_error".localized)
                                 .font(.adaptiveBody())
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                             Spacer()
                         }
                         .padding()
@@ -235,12 +235,12 @@ struct GameView: View {
                         } else {
                             Text(currentQuestion.questionText)
                                 .font(.system(size: 40, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundStyle(.primary)
                                 .scaleEffect(viewModel.gameState.isCorrect ? 1.1 : 1.0)
                                 .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.gameState.isCorrect)
                         }
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                     .padding()
 
                     // 答案反馈
@@ -249,11 +249,11 @@ struct GameView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.title)
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                                     .scaleEffect(isShaking ? 1.2 : 1.0)
                                     .animation(.spring(response: 0.3, dampingFraction: 0.4).repeatCount(3), value: isShaking)
                                 Text("game.wrong".localized)
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                                     .font(.adaptiveHeadline())
                             }
                             .offset(x: isShaking ? -5 : 5)
@@ -263,7 +263,7 @@ struct GameView: View {
                             HStack(spacing: 8) {
                                 // Label: "The correct answer is:" (without placeholder)
                                 Text("game.correct_answer_label".localized)
-                                    .foregroundColor(.blue)
+                                    .foregroundStyle(.blue)
                                     .font(.adaptiveBody())
                                     .lineLimit(1)
 
@@ -273,7 +273,7 @@ struct GameView: View {
                                     FractionView(fraction: fractionAnswer, baseFontSize: 24)
                                 } else {
                                     Text(currentQuestion.correctAnswerText)
-                                        .foregroundColor(.blue)
+                                        .foregroundStyle(.blue)
                                         .font(.adaptiveBody())
                                 }
                             }
@@ -294,7 +294,7 @@ struct GameView: View {
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 6)
                                 .background(Color.green)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                                 .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
                             }
@@ -308,11 +308,11 @@ struct GameView: View {
                                         Text("solution.content".localized)
                                             .font(.caption)
                                             .fontWeight(.medium)
-                                            .foregroundColor(.secondary)
+                                            .foregroundStyle(.secondary)
                                         Spacer()
                                         Image(systemName: "scroll")
                                             .font(.caption)
-                                            .foregroundColor(.secondary)
+                                            .foregroundStyle(.secondary)
                                     }
                                     .padding(.horizontal, 10)
                                     .padding(.top, 8)
@@ -358,7 +358,7 @@ struct GameView: View {
                                 .padding()
                                 .frame(width: 220)
                                 .background(Color.blue)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                                 .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
                             }
@@ -374,10 +374,10 @@ struct GameView: View {
                         HStack(spacing: 8) {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.title)
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                                 .scaleEffect(buttonScale)
                             Text("game.correct".localized)
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                                 .font(.adaptiveHeadline())
                         }
                         .padding()
@@ -467,7 +467,7 @@ struct GameView: View {
                             .padding()
                             .frame(width: 200)
                             .background(isInputValid() ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .cornerRadius(.adaptiveCornerRadius)
                             .scaleEffect(buttonScale)
                             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: buttonScale)
@@ -500,7 +500,7 @@ struct GameView: View {
                                 Image(systemName: "pause.circle")
                                 Text("button.pause".localized)
                             }
-                            .foregroundColor(viewModel.gameState.pauseUsed ? .gray : .orange)
+                            .foregroundStyle(viewModel.gameState.pauseUsed ? .gray : .orange)
                         }
                         .disabled(viewModel.gameState.pauseUsed || viewModel.gameState.isPaused)
                         .padding(.horizontal)
@@ -525,7 +525,7 @@ struct GameView: View {
                                 Image(systemName: "square.and.arrow.down")
                                 Text("button.save".localized)
                             }
-                            .foregroundColor(.blue)
+                            .foregroundStyle(.blue)
                         }
                         .padding(.horizontal)
                     }
@@ -538,7 +538,7 @@ struct GameView: View {
                             showingAlert = true
                         }) {
                             Text("button.exit".localized)
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                         }
                         .padding()
                         .alert(isPresented: $showingAlert) {
@@ -558,7 +558,7 @@ struct GameView: View {
                             viewModel.endGame()
                         }) {
                             Text("button.finish".localized)
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
                         }
                         .padding()
                     }
@@ -618,7 +618,7 @@ struct GameView: View {
                                     .font(.footnote)
                                 Text(viewModel.gameState.timeRemainingText)
                                     .font(.adaptiveHeadline())
-                                    .foregroundColor(.blue)
+                                    .foregroundStyle(.blue)
                                     .id(currentTime) // Use local state to force refresh
                             }
                             
@@ -638,7 +638,7 @@ struct GameView: View {
                             HStack {
                                 Text("game.paused".localized)
                                     .font(.adaptiveHeadline())
-                                    .foregroundColor(.orange)
+                                    .foregroundStyle(.orange)
                                 
                                 Spacer()
                                 
@@ -650,7 +650,7 @@ struct GameView: View {
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 5)
                                         .background(Color.blue)
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.white)
                                         .cornerRadius(.adaptiveCornerRadius)
                                 }
                             }
@@ -662,10 +662,10 @@ struct GameView: View {
                         if viewModel.showSaveProgressSuccess {
                             HStack {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                 Text("game.save_success".localized)
                                     .font(.adaptiveBody())
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                 Spacer()
                             }
                             .padding()
@@ -673,10 +673,10 @@ struct GameView: View {
                         } else if viewModel.showSaveProgressError {
                             HStack {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                                 Text("game.save_error".localized)
                                     .font(.adaptiveBody())
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                                 Spacer()
                             }
                             .padding()
@@ -697,9 +697,9 @@ struct GameView: View {
                         }) {
                             Text(currentQuestion.questionText)
                                 .font(.system(size: 60, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundStyle(.primary)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                         .padding()
                     }
                     
@@ -716,7 +716,7 @@ struct GameView: View {
                             .font(.adaptiveHeadline())
                         Text("\(viewModel.gameState.score)")
                             .font(.system(size: 50))
-                            .foregroundColor(.green)
+                            .foregroundStyle(.green)
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -731,13 +731,13 @@ struct GameView: View {
                         if viewModel.gameState.showingCorrectAnswer {
                             VStack {
                                 Text("game.wrong".localized)
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                                     .font(.adaptiveHeadline())
 
                                 // Display correct answer with proper formatting for fractions
                                 HStack(spacing: 8) {
                                     Text("game.correct_answer_label".localized)
-                                        .foregroundColor(.blue)
+                                        .foregroundStyle(.blue)
                                         .font(.adaptiveBody())
                                         .lineLimit(1)
 
@@ -747,7 +747,7 @@ struct GameView: View {
                                         FractionView(fraction: fractionAnswer, baseFontSize: 20)
                                     } else {
                                         Text(currentQuestion.correctAnswerText)
-                                            .foregroundColor(.blue)
+                                            .foregroundStyle(.blue)
                                             .font(.adaptiveBody())
                                     }
                                 }
@@ -761,7 +761,7 @@ struct GameView: View {
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 5)
                                         .background(Color.green)
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.white)
                                         .cornerRadius(.adaptiveCornerRadius)
                                 }
                                 .padding(.top, 5)
@@ -774,11 +774,11 @@ struct GameView: View {
                                             Text("solution.content".localized)
                                                 .font(.caption)
                                                 .fontWeight(.medium)
-                                                .foregroundColor(.secondary)
+                                                .foregroundStyle(.secondary)
                                             Spacer()
                                             Image(systemName: "scroll")
                                                 .font(.caption)
-                                                .foregroundColor(.secondary)
+                                                .foregroundStyle(.secondary)
                                         }
                                         .padding(.horizontal, 10)
                                         .padding(.top, 6)
@@ -817,7 +817,7 @@ struct GameView: View {
                                         .padding()
                                         .frame(width: 200)
                                         .background(Color.blue)
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.white)
                                         .cornerRadius(.adaptiveCornerRadius)
                                 }
                                 .id(UUID()) // Force view refresh
@@ -826,7 +826,7 @@ struct GameView: View {
                             .padding()
                         } else if viewModel.gameState.isCorrect {
                             Text("game.correct".localized)
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                                 .font(.adaptiveHeadline())
                                 .padding()
                         }
@@ -903,7 +903,7 @@ struct GameView: View {
                                 .padding()
                                 .frame(width: 200)
                                 .background(userInput.isEmpty ? Color.gray : Color.blue)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .cornerRadius(.adaptiveCornerRadius)
                         }
                         .disabled(userInput.isEmpty || viewModel.gameState.showingCorrectAnswer)
@@ -926,7 +926,7 @@ struct GameView: View {
                                     Image(systemName: "pause.circle")
                                     Text("button.pause".localized)
                                 }
-                                .foregroundColor(viewModel.gameState.pauseUsed ? .gray : .orange)
+                                .foregroundStyle(viewModel.gameState.pauseUsed ? .gray : .orange)
                                 .padding()
                                 .frame(width: 120)
                                 .background(Color.gray.opacity(0.1))
@@ -954,7 +954,7 @@ struct GameView: View {
                                     Image(systemName: "square.and.arrow.down")
                                     Text("button.save".localized)
                                 }
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
                                 .padding()
                                 .frame(width: 120)
                                 .background(Color.gray.opacity(0.1))
@@ -970,7 +970,7 @@ struct GameView: View {
                                 showingAlert = true
                             }) {
                                 Text("button.exit".localized)
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                                     .padding()
                                     .frame(width: 100)
                                     .background(Color.gray.opacity(0.1))
@@ -993,7 +993,7 @@ struct GameView: View {
                                 viewModel.endGame()
                             }) {
                                 Text("button.finish".localized)
-                                    .foregroundColor(.blue)
+                                    .foregroundStyle(.blue)
                                     .padding()
                                     .frame(width: 100)
                                     .background(Color.gray.opacity(0.1))

@@ -93,23 +93,23 @@ struct MultiplicationTableView: View {
                 HStack(spacing: 2) {
                     Text("\(i)")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
-                        .foregroundColor(solidColor)
+                        .foregroundStyle(solidColor)
                     Text("×")
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.adaptiveSecondaryText)
+                        .foregroundStyle(Color.adaptiveSecondaryText)
                     Text("\(j)")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
-                        .foregroundColor(solidColor)
+                        .foregroundStyle(solidColor)
                 }
 
                 // Result with equals
                 HStack(spacing: 2) {
                     Text("=")
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(.adaptiveSecondaryText)
+                        .foregroundStyle(Color.adaptiveSecondaryText)
                     Text("\(result)")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundColor(.adaptiveText)
+                        .foregroundStyle(Color.adaptiveText)
                 }
             }
             .frame(width: cellSize.width, height: cellSize.height)
@@ -145,7 +145,7 @@ struct MultiplicationTableView: View {
             )
             .scaleEffect(isSelected ? 1.08 : 1.0)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
     }
 
     // MARK: - Triangular Table View
@@ -157,7 +157,7 @@ struct MultiplicationTableView: View {
                     // Row label
                     Text("\(row)")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
-                        .foregroundColor(.accent)
+                        .foregroundStyle(Color.accent)
                         .frame(width: 24, height: 24)
                         .background(
                             Circle()
@@ -184,7 +184,7 @@ struct MultiplicationTableView: View {
             HStack {
                 Text("multiplication_table.legend".localized)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.adaptiveSecondaryText)
+                    .foregroundStyle(Color.adaptiveSecondaryText)
 
                 Spacer()
 
@@ -195,7 +195,7 @@ struct MultiplicationTableView: View {
                 }) {
                     Image(systemName: showLegend ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
                         .font(.system(size: 20))
-                        .foregroundColor(.accent)
+                        .foregroundStyle(Color.accent)
                 }
             }
 
@@ -228,12 +228,12 @@ struct MultiplicationTableView: View {
 
                 Image(systemName: icon)
                     .font(.system(size: 14))
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
             }
 
             Text(label)
                 .font(.system(size: 10, weight: .medium))
-                .foregroundColor(.adaptiveSecondaryText)
+                .foregroundStyle(Color.adaptiveSecondaryText)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
@@ -274,16 +274,16 @@ struct MultiplicationTableView: View {
             HStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 14))
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
 
                 Text(value)
                     .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundColor(.adaptiveText)
+                    .foregroundStyle(Color.adaptiveText)
             }
 
             Text(label)
                 .font(.system(size: 10, weight: .medium))
-                .foregroundColor(.adaptiveSecondaryText)
+                .foregroundStyle(Color.adaptiveSecondaryText)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
@@ -324,10 +324,10 @@ struct MultiplicationTableView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "hand.tap.fill")
                         .font(.system(size: 12))
-                        .foregroundColor(.accent)
+                        .foregroundStyle(Color.accent)
                     Text("multiplication_table.tap_hint".localized)
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.adaptiveSecondaryText)
+                        .foregroundStyle(Color.adaptiveSecondaryText)
                 }
                 .padding(.bottom, 8)
 
@@ -355,7 +355,7 @@ struct MultiplicationTableView: View {
                             .font(.system(size: 16, weight: .semibold))
                         Text("button.back".localized)
                     }
-                    .foregroundColor(.accent)
+                    .foregroundStyle(Color.accent)
                 }
             }
         }

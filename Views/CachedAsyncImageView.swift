@@ -60,6 +60,6 @@ struct CachedAsyncImageView_Previews: PreviewProvider {
         )
         .frame(width: 300, height: 200)
         .font(.system(size: 100))
-        .foregroundColor(.gray.opacity(0.5))
+        .foregroundStyle(.gray.opacity(0.5))
     }
 }
