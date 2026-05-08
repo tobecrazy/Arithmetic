@@ -607,7 +607,7 @@
 "qr_code.tool.title" = "QR Code Tool";
 "qr_code.tool.description" = "Scan or generate QR codes";
 "qr_code.scan_camera_button" = "Scan from Camera";
-"qr_code.scan_photos_button" = "Scan from Photos";
+"qr_code.scan_photos_button" = "Pick from Files";
 "qr_code.scan_result" = "Scan Result";
 "qr_code.text_input_label" = "Enter Text";
 "qr_code.generate_button" = "Generate QR Code";
@@ -658,3 +658,7 @@
 
 /* Time Picker */
 "settings.minutes_short" = "min";
+
+"qr_code.export_error" = "Failed to save QR code image";
+
+"qr_code.long_press_save_hint" = "Long press QR code to save";

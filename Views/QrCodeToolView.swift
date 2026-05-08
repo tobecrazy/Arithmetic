@@ -7,7 +7,7 @@ import AVFoundation
 import CoreImage
 import UIKit
 import CoreImage.CIFilter
-import PhotosUI
+import UniformTypeIdentifiers
 import Arithmetic
 
 struct QrCodeToolView: View {
@@ -17,12 +17,14 @@ struct QrCodeToolView: View {
     @State private var scanResult = ""
     @State private var textInput = ""
     @State private var qrCodeImage: Image?
+    @State private var generatedQRCodeUIImage: UIImage?
     @State private var scannedQRCodeImage: Image?
     @State private var alertItem: AlertItem?
     @State private var shouldShowCamera = false
-    @State private var shouldShowPhotoPicker = false
-    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var shouldShowImageFilePicker = false
     @State private var isScanResultCopied = false
+    @State private var shouldShowQRCodeShareSheet = false
+    @State private var qrCodeExportURL: URL?
 
     // Calculate adaptive QR code size
     var qrCodeSize: CGFloat {
@@ -31,190 +33,169 @@ struct QrCodeToolView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Title
-                    VStack(spacing: 15) {
-                        Text("qr_code.tool.title".localized)
-                            .font(.adaptiveTitle())
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
+            ZStack {
+                LinearGradient(
+                    colors: [Color.blue.opacity(0.10), Color.teal.opacity(0.08), Color.white],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
 
-                        Text("qr_code.tool.description".localized)
-                            .font(.adaptiveBody())
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.secondary)
-                            .padding(.horizontal, 20)
-                    }
-                    .padding(.top, 20)
-                    
-                    // Action Buttons
-                    HStack(spacing: 15) {
-                        // Scan from Camera
-                        Button(action: {
-                            checkCameraPermission()
-                        }) {
-                            HStack {
-                                Image(systemName: "camera.fill")
-                                Text("qr_code.scan_camera_button".localized)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 44)
-                            .background(Color.accentColor.opacity(0.15))
-                            .foregroundStyle(Color.accentColor)
-                            .cornerRadius(12)
-                            .font(.headline)
-                        }
-                        .sheet(isPresented: $shouldShowCamera) {
-                            QrCodeScannerView(
-                                scanResult: $scanResult,
-                                scannedQRCodeImage: $scannedQRCodeImage
-                            )
-                        }
+                ScrollView {
+                    VStack(spacing: 18) {
+                        VStack(spacing: 10) {
+                            Image(systemName: "qrcode.viewfinder")
+                                .font(.system(size: 36, weight: .semibold))
+                                .foregroundStyle(.blue)
 
-                        // Scan from Photos
-                        Button(action: {
-                            shouldShowPhotoPicker = true
-                        }) {
-                            HStack {
-                                Image(systemName: "photo.on.rectangle")
-                                Text("qr_code.scan_photos_button".localized)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 44)
-                            .background(Color.accentColor.opacity(0.15))
-                            .foregroundStyle(Color.accentColor)
-                            .cornerRadius(12)
-                            .font(.headline)
-                        }
-                        .photosPicker(isPresented: $shouldShowPhotoPicker, selection: $selectedPhoto, matching: .images)
-                    }
-                    .padding(.horizontal, 20)
-                    
-                    // Scan Result Display
-                    if !scanResult.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
-                                    .font(.system(size: 14))
-                                Text("qr_code.scan_result".localized)
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.primary)
-                            }
+                            Text("qr_code.tool.title".localized)
+                                .font(.adaptiveTitle())
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
 
-                            CopyableInfoRow(
-                                label: "qr_code.scan_result".localized,
-                                value: scanResult,
-                                isCopied: $isScanResultCopied
-                            )
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 4)
-
-                        if let scannedImage = scannedQRCodeImage {
-                            VStack(spacing: 8) {
-                                Text("qr_code.scanned_image_label".localized)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                scannedImage
-                                    .resizable()
-                                    .frame(width: qrCodeSize - 40, height: qrCodeSize - 40)
-                                    .scaledToFit()
-                                    .cornerRadius(10)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.horizontal, 20)
-                        }
-                    }
-
-                    // Text Input for QR Generation
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("qr_code.text_input_label".localized)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.primary)
-
-                        ZStack(alignment: .topLeading) {
-                            if textInput.isEmpty {
-                                Text("qr_code.placeholder_text".localized)
-                                    .foregroundStyle(.gray)
-                                    .padding(12)
-                            }
-
-                            TextEditor(text: $textInput)
-                                .frame(height: 100)
-                                .padding(8)
-                                .background(Color.gray.opacity(0.08))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1.5)
-                                )
-                                .font(.body)
-                        }
-                        .padding(.horizontal, 20)
-                    }
-
-                    // Generate QR Code Button
-                    Button(action: {
-                        generateQRCode(from: textInput)
-                    }) {
-                        HStack(spacing: 12) {
-                            Image(systemName: "qrcode")
-                                .font(.system(size: 18, weight: .semibold))
-                            Text("qr_code.generate_button".localized)
-                                .font(.headline)
-                            Spacer()
-                            Image(systemName: "arrow.right")
-                                .font(.system(size: 14, weight: .semibold))
-                                .opacity(0.6)
+                            Text("qr_code.tool.description".localized)
+                                .font(.adaptiveBody())
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.secondary)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .padding(.horizontal, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(textInput.isEmpty ? Color.gray.opacity(0.1) : Color.green.opacity(0.1))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(textInput.isEmpty ? Color.gray.opacity(0.2) : Color.green.opacity(0.3), lineWidth: 1)
-                                )
-                        )
-                        .foregroundStyle(textInput.isEmpty ? .gray : .green)
-                    }
-                    .padding(.horizontal, 20)
-                    .disabled(textInput.isEmpty)
+                        .padding(20)
+                        .background(cardBackground)
 
-                    // Generated QR Code Display
-                    if let qrCodeImage = qrCodeImage {
-                        VStack(alignment: .center, spacing: 12) {
-                            HStack {
-                                Spacer()
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
-                                    .font(.system(size: 14))
-                                Text("qr_code.generated_qr".localized)
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.primary)
-                                Spacer()
+                        VStack(spacing: 12) {
+                            actionButton(
+                                icon: "camera.fill",
+                                title: "qr_code.scan_camera_button".localized,
+                                tint: .blue
+                            ) {
+                                checkCameraPermission()
                             }
 
-                            qrCodeImage
-                                .resizable()
-                                .frame(width: qrCodeSize, height: qrCodeSize)
-                                .scaledToFit()
-                                .cornerRadius(10)
-                                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
-                                .padding(.horizontal, 20)
+                            actionButton(
+                                icon: "folder.fill",
+                                title: "qr_code.scan_photos_button".localized,
+                                tint: .teal
+                            ) {
+                                shouldShowImageFilePicker = true
+                            }
                         }
-                        .padding(.vertical, 4)
+                        .padding(16)
+                        .background(cardBackground)
+
+                        if !scanResult.isEmpty {
+                            VStack(alignment: .leading, spacing: 12) {
+                                sectionHeader(
+                                    title: "qr_code.scan_result".localized,
+                                    icon: "checkmark.seal.fill",
+                                    color: .green
+                                )
+
+                                CopyableInfoRow(
+                                    label: "qr_code.scan_result".localized,
+                                    value: scanResult,
+                                    isCopied: $isScanResultCopied
+                                )
+
+                                if let scannedImage = scannedQRCodeImage {
+                                    VStack(spacing: 8) {
+                                        Text("qr_code.scanned_image_label".localized)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                        scannedImage
+                                            .resizable()
+                                            .frame(width: qrCodeSize - 40, height: qrCodeSize - 40)
+                                            .scaledToFit()
+                                            .cornerRadius(14)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                }
+                            }
+                            .padding(16)
+                            .background(cardBackground)
+                        }
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            sectionHeader(
+                                title: "qr_code.text_input_label".localized,
+                                icon: "text.alignleft",
+                                color: .indigo
+                            )
+
+                            ZStack(alignment: .topLeading) {
+                                if textInput.isEmpty {
+                                    Text("qr_code.placeholder_text".localized)
+                                        .foregroundStyle(.gray)
+                                        .padding(14)
+                                }
+
+                                TextEditor(text: $textInput)
+                                    .frame(height: 110)
+                                    .padding(8)
+                                    .background(Color.gray.opacity(0.08))
+                                    .cornerRadius(12)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                                    )
+                                    .font(.body)
+                            }
+
+                            Button(action: {
+                                generateQRCode(from: textInput)
+                            }) {
+                                HStack(spacing: 10) {
+                                    Image(systemName: "qrcode")
+                                        .font(.system(size: 18, weight: .semibold))
+                                    Text("qr_code.generate_button".localized)
+                                        .font(.headline)
+                                    Spacer()
+                                    Image(systemName: "arrow.right.circle.fill")
+                                        .font(.system(size: 18, weight: .semibold))
+                                }
+                                .padding(.vertical, 14)
+                                .padding(.horizontal, 16)
+                                .foregroundStyle(.white)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(textInput.isEmpty ? Color.gray.opacity(0.4) : Color.green)
+                                )
+                            }
+                            .disabled(textInput.isEmpty)
+                        }
+                        .padding(16)
+                        .background(cardBackground)
+
+                        if let qrCodeImage = qrCodeImage {
+                            VStack(spacing: 12) {
+                                sectionHeader(
+                                    title: "qr_code.generated_qr".localized,
+                                    icon: "checkmark.seal.fill",
+                                    color: .green
+                                )
+
+                                qrCodeImage
+                                    .resizable()
+                                    .frame(width: qrCodeSize, height: qrCodeSize)
+                                    .scaledToFit()
+                                    .padding(12)
+                                    .background(Color.white)
+                                    .cornerRadius(16)
+                                    .shadow(color: Color.black.opacity(0.12), radius: 12, x: 0, y: 6)
+                                    .onLongPressGesture {
+                                        prepareQRCodeForSharing()
+                                    }
+
+                                Text("qr_code.long_press_save_hint".localized)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding(16)
+                            .background(cardBackground)
+                        }
                     }
-                    
-                    Spacer(minLength: 50)
+                    .padding(16)
+                    .padding(.bottom, 36)
                 }
-                .padding()
             }
         }
         .navigationTitle("qr_code.tool.title".localized)
@@ -240,13 +221,91 @@ struct QrCodeToolView: View {
                 dismissButton: .default(Text("button.ok".localized))
             )
         }
-        .onChange(of: selectedPhoto) {
-            Task {
-                if let data = try? await selectedPhoto?.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
-                    processQRCode(from: uiImage)
+        .fileImporter(
+            isPresented: $shouldShowImageFilePicker,
+            allowedContentTypes: [.image],
+            allowsMultipleSelection: false
+        ) { result in
+            switch result {
+            case .success(let urls):
+                guard let imageURL = urls.first else { return }
+                do {
+                    let imageData = try Data(contentsOf: imageURL)
+                    if let uiImage = UIImage(data: imageData) {
+                        processQRCode(from: uiImage)
+                    } else {
+                        alertItem = AlertItem(
+                            title: "qr_code.error_title".localized,
+                            message: "qr_code.no_qr_code_found".localized
+                        )
+                    }
+                } catch {
+                    alertItem = AlertItem(
+                        title: "qr_code.error_title".localized,
+                        message: "qr_code.no_qr_code_found".localized
+                    )
                 }
+            case .failure:
+                break
             }
+        }
+        .sheet(isPresented: $shouldShowQRCodeShareSheet) {
+            if let qrCodeExportURL {
+                ShareSheet(items: [qrCodeExportURL])
+            }
+        }
+        .sheet(isPresented: $shouldShowCamera) {
+            QrCodeScannerView(
+                scanResult: $scanResult,
+                scannedQRCodeImage: $scannedQRCodeImage
+            )
+        }
+    }
+
+    private var cardBackground: some View {
+        RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .fill(Color(.systemBackground).opacity(0.88))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .stroke(Color.black.opacity(0.05), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 4)
+    }
+
+    private func actionButton(icon: String, title: String, tint: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .frame(width: 26)
+                Text(title)
+                    .font(.headline)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .padding(.horizontal, 14)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(tint.opacity(0.13))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(tint.opacity(0.25), lineWidth: 1)
+                    )
+            )
+            .foregroundStyle(tint)
+        }
+    }
+
+    private func sectionHeader(title: String, icon: String, color: Color) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .foregroundStyle(color)
+                .font(.system(size: 14, weight: .semibold))
+            Text(title)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundStyle(.primary)
+            Spacer()
         }
     }
 
@@ -271,6 +330,7 @@ struct QrCodeToolView: View {
         guard !string.isEmpty else {
             // Clear the QR code if the input is empty
             qrCodeImage = nil
+            generatedQRCodeUIImage = nil
             return
         }
 
@@ -294,7 +354,9 @@ struct QrCodeToolView: View {
 
         // Convert the CIImage to a CGImage and then to a an Image
         if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
-            qrCodeImage = Image(uiImage: UIImage(cgImage: cgImage))
+            let uiImage = UIImage(cgImage: cgImage)
+            generatedQRCodeUIImage = uiImage
+            qrCodeImage = Image(uiImage: uiImage)
         } else {
             showQRCodeGenerationError()
         }
@@ -350,6 +412,33 @@ struct QrCodeToolView: View {
             alertItem = AlertItem(
                 title: "qr_code.error_title".localized,
                 message: "qr_code.permission_error_message".localized
+            )
+        }
+    }
+
+    private func prepareQRCodeForSharing() {
+        guard let imageData = generatedQRCodeUIImage?.pngData() else {
+            alertItem = AlertItem(
+                title: "qr_code.error_title".localized,
+                message: "qr_code.export_error".localized
+            )
+            return
+        }
+
+        let fileName = "qrcode-\(Int(Date().timeIntervalSince1970)).png"
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+        do {
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+            try imageData.write(to: fileURL)
+            qrCodeExportURL = fileURL
+            shouldShowQRCodeShareSheet = true
+        } catch {
+            alertItem = AlertItem(
+                title: "qr_code.error_title".localized,
+                message: "qr_code.export_error".localized
             )
         }
     }
