@@ -463,4 +463,61 @@ class ArithmeticUITests: XCTestCase {
             }
         }
     }
+
+    // MARK: - Added Feature Coverage
+
+    func testMainScreenFeatureEntryButtonsExist() {
+        XCTAssertTrue(app.buttons["startGameButton"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["wrongQuestionsButton"].exists)
+        XCTAssertTrue(app.buttons["otherOptionsButton"].exists)
+        XCTAssertTrue(app.buttons["settingsButton"].exists)
+    }
+
+    func testOpenSettingsAndQrToolsFlow() {
+        let settingsButton = app.buttons["settingsButton"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 5))
+        settingsButton.tap()
+
+        let openQrToolsButton = app.buttons["openQrToolsButton"]
+        XCTAssertTrue(openQrToolsButton.waitForExistence(timeout: 5))
+        openQrToolsButton.tap()
+
+        XCTAssertTrue(app.buttons["qrScanCameraButton"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["qrScanPhotosButton"].exists)
+        XCTAssertTrue(app.buttons["qrGenerateButton"].exists)
+        XCTAssertTrue(app.textViews["qrTextInputEditor"].exists)
+    }
+
+    func testQrGenerateButtonEnablesAfterInput() {
+        let settingsButton = app.buttons["settingsButton"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 5))
+        settingsButton.tap()
+
+        let openQrToolsButton = app.buttons["openQrToolsButton"]
+        XCTAssertTrue(openQrToolsButton.waitForExistence(timeout: 5))
+        openQrToolsButton.tap()
+
+        let editor = app.textViews["qrTextInputEditor"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        editor.tap()
+        editor.typeText("https://example.com")
+
+        let generateButton = app.buttons["qrGenerateButton"]
+        XCTAssertTrue(generateButton.exists)
+        XCTAssertTrue(generateButton.isEnabled)
+        generateButton.tap()
+    }
+
+    func testOpenAboutArithmeticPage() {
+        let settingsButton = app.buttons["settingsButton"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 5))
+        settingsButton.tap()
+
+        let openAboutArithmeticButton = app.buttons["openAboutArithmeticButton"]
+        XCTAssertTrue(openAboutArithmeticButton.waitForExistence(timeout: 5))
+        openAboutArithmeticButton.tap()
+
+        let doneButton = app.buttons["Done"]
+        XCTAssertTrue(doneButton.waitForExistence(timeout: 5))
+    }
 }

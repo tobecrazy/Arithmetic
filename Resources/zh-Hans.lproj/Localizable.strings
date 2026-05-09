@@ -600,7 +600,7 @@
 "qr_code.tool.title" = "二维码工具";
 "qr_code.tool.description" = "扫描或生成二维码";
 "qr_code.scan_camera_button" = "相机扫描";
-"qr_code.scan_photos_button" = "相册扫码";
+"qr_code.scan_photos_button" = "从文件选取";
 "qr_code.scan_result" = "扫描结果";
 "qr_code.text_input_label" = "输入文本";
 "qr_code.generate_button" = "生成二维码";
@@ -651,3 +651,7 @@
 
 /* Time Picker */
 "settings.minutes_short" = "分钟";
+
+"qr_code.export_error" = "保存二维码图片失败";
+
+"qr_code.long_press_save_hint" = "长按二维码可保存";
