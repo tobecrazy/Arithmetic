@@ -163,114 +163,108 @@ struct AboutAppView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea()
+        ZStack {
+            Color(UIColor.systemGroupedBackground).ignoresSafeArea()
 
-                ScrollView {
-                    VStack(spacing: 28) {
-                        // Hero Section
-                        HeroHeader(
-                            appVersion: appVersion,
-                            buildNumber: buildNumber,
-                            isAnimating: animateHero
-                        )
-                        .padding(.top, 20)
+            ScrollView {
+                VStack(spacing: 28) {
+                    HeroHeader(
+                        appVersion: appVersion,
+                        buildNumber: buildNumber,
+                        isAnimating: animateHero
+                    )
+                    .padding(.top, 20)
 
-                        VStack(spacing: 20) {
-                            // Git Details Section
-                            VStack(alignment: .leading, spacing: 16) {
-                                AboutSectionHeader(
-                                    title: "about.app.section.git_details".localized,
-                                    icon: "square.and.pencil"
-                                )
+                    VStack(spacing: 20) {
+                        VStack(alignment: .leading, spacing: 16) {
+                            AboutSectionHeader(
+                                title: "about.app.section.git_details".localized,
+                                icon: "square.and.pencil"
+                            )
 
-                                CopyableInfoRow(
-                                    label: "about.app.label.hash".localized,
-                                    value: gitCommitHash,
-                                    isCopied: $copiedHashState
-                                )
-                                .opacity(animateCards ? 1 : 0)
-                                .offset(y: animateCards ? 0 : 10)
+                            CopyableInfoRow(
+                                label: "about.app.label.hash".localized,
+                                value: gitCommitHash,
+                                isCopied: $copiedHashState
+                            )
+                            .opacity(animateCards ? 1 : 0)
+                            .offset(y: animateCards ? 0 : 10)
 
-                                InfoCard(
-                                    label: "about.app.label.message".localized,
-                                    value: gitCommitMessage,
-                                    icon: "quote.bubble",
-                                    iconColor: .blue
-                                )
-                                .opacity(animateCards ? 1 : 0)
-                                .offset(y: animateCards ? 0 : 10)
-                            }
-                            .padding(.horizontal, 16)
-
-                            // About App Description Section
-                            VStack(alignment: .leading, spacing: 16) {
-                                AboutSectionHeader(
-                                    title: "about.app.section.about_app".localized,
-                                    icon: "info.circle.fill"
-                                )
-
-                                DescriptionCard(
-                                    text: "about.app.description".localized
-                                )
-                                .opacity(animateCards ? 1 : 0)
-                                .offset(y: animateCards ? 0 : 10)
-                            }
-                            .padding(.horizontal, 16)
-
-                            // Acknowledgements Section
-                            VStack(alignment: .leading, spacing: 16) {
-                                AboutSectionHeader(
-                                    title: "about.app.section.acknowledgements".localized,
-                                    icon: "heart.fill"
-                                )
-
-                                VStack(spacing: 12) {
-                                    AccreditationLink(
-                                        title: "Firebase",
-                                        icon: "flame.fill",
-                                        color: .orange,
-                                        url: URL(string: "https://firebase.google.com")!
-                                    )
-                                    .opacity(animateCards ? 1 : 0)
-                                    .offset(y: animateCards ? 0 : 10)
-
-                                    AccreditationLink(
-                                        title: "SwiftUI",
-                                        icon: "swift",
-                                        color: .blue,
-                                        url: URL(string: "https://developer.apple.com/xcode/swiftui/")!
-                                    )
-                                    .opacity(animateCards ? 1 : 0)
-                                    .offset(y: animateCards ? 0 : 10)
-                                }
-                            }
-                            .padding(.horizontal, 16)
-
-                            Spacer(minLength: 40)
+                            InfoCard(
+                                label: "about.app.label.message".localized,
+                                value: gitCommitMessage,
+                                icon: "quote.bubble",
+                                iconColor: .blue
+                            )
+                            .opacity(animateCards ? 1 : 0)
+                            .offset(y: animateCards ? 0 : 10)
                         }
-                        .padding(.vertical, 20)
+                        .padding(.horizontal, 16)
+
+                        VStack(alignment: .leading, spacing: 16) {
+                            AboutSectionHeader(
+                                title: "about.app.section.about_app".localized,
+                                icon: "info.circle.fill"
+                            )
+
+                            DescriptionCard(
+                                text: "about.app.description".localized
+                            )
+                            .opacity(animateCards ? 1 : 0)
+                            .offset(y: animateCards ? 0 : 10)
+                        }
+                        .padding(.horizontal, 16)
+
+                        VStack(alignment: .leading, spacing: 16) {
+                            AboutSectionHeader(
+                                title: "about.app.section.acknowledgements".localized,
+                                icon: "heart.fill"
+                            )
+
+                            VStack(spacing: 12) {
+                                AccreditationLink(
+                                    title: "Firebase",
+                                    icon: "flame.fill",
+                                    color: .orange,
+                                    url: URL(string: "https://firebase.google.com")!
+                                )
+                                .opacity(animateCards ? 1 : 0)
+                                .offset(y: animateCards ? 0 : 10)
+
+                                AccreditationLink(
+                                    title: "SwiftUI",
+                                    icon: "swift",
+                                    color: .blue,
+                                    url: URL(string: "https://developer.apple.com/xcode/swiftui/")!
+                                )
+                                .opacity(animateCards ? 1 : 0)
+                                .offset(y: animateCards ? 0 : 10)
+                            }
+                        }
+                        .padding(.horizontal, 16)
+
+                        Spacer(minLength: 40)
                     }
+                    .padding(.vertical, 20)
                 }
             }
-            .navigationTitle("about.arithmetic.title".localized)
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        presentationMode.wrappedValue.dismiss()
-                    }
+        }
+        .navigationTitle("about.arithmetic.title".localized)
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Done") {
+                    presentationMode.wrappedValue.dismiss()
                 }
             }
-            .onAppear {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                    animateHero = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    withAnimation(.easeInOut(duration: 0.6)) {
-                        animateCards = true
-                    }
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                animateHero = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.easeInOut(duration: 0.6)) {
+                    animateCards = true
                 }
             }
         }
@@ -310,12 +304,20 @@ private struct HeroHeader: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(Color.gray.opacity(0.08))
-                .cornerRadius(.adaptiveCornerRadius)
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: .adaptiveCornerRadius, style: .continuous))
             }
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5, style: .continuous)
+                .fill(.regularMaterial)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5, style: .continuous)
+                .stroke(Color(UIColor.separator).opacity(0.2), lineWidth: 1)
+        )
     }
 }
 
@@ -328,9 +330,9 @@ private struct AboutSectionHeader: View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.accentColor)
                 .frame(width: 28, height: 28)
-                .background(Color.blue.opacity(0.1))
+                .background(Color.accentColor.opacity(0.12))
                 .cornerRadius(.adaptiveCornerRadius)
 
             Text(title)
@@ -371,7 +373,7 @@ private struct CopyableInfoRow: View {
                     .foregroundStyle(.white)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
-                    .background(isCopied ? Color.green : Color.blue)
+                    .background(isCopied ? Color.green : Color.accentColor)
                     .cornerRadius(6)
                 }
                 .buttonStyle(.plain)
@@ -383,19 +385,19 @@ private struct CopyableInfoRow: View {
                 .truncationMode(.middle)
                 .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.gray.opacity(0.08))
+                .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(.adaptiveCornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        .stroke(Color(UIColor.separator).opacity(0.25), lineWidth: 1)
                 )
         }
         .padding(14)
-        .background(Color(.systemBackground))
+        .background(.regularMaterial)
         .cornerRadius(.adaptiveCornerRadius * 1.5)
         .overlay(
             RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                .stroke(Color.gray.opacity(0.15), lineWidth: 1)
+                .stroke(Color(UIColor.separator).opacity(0.2), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
     }
@@ -440,7 +442,7 @@ private struct InfoCard: View {
                 .lineSpacing(1.2)
                 .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(.systemBackground))
+                .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(.adaptiveCornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
@@ -448,11 +450,11 @@ private struct InfoCard: View {
                 )
         }
         .padding(14)
-        .background(Color(.systemBackground))
+        .background(.regularMaterial)
         .cornerRadius(.adaptiveCornerRadius * 1.5)
         .overlay(
             RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                .stroke(Color.gray.opacity(0.15), lineWidth: 1)
+                .stroke(Color(UIColor.separator).opacity(0.2), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
     }
@@ -483,7 +485,7 @@ private struct DescriptionCard: View {
                 .foregroundStyle(.primary)
         }
         .padding(16)
-        .background(Color.yellow.opacity(0.08))
+        .background(.regularMaterial)
         .cornerRadius(.adaptiveCornerRadius * 1.5)
         .overlay(
             RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
@@ -507,9 +509,9 @@ private struct AccreditationLink: View {
             HStack(spacing: 12) {
                 Image(systemName: icon)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(color)
                     .frame(width: 36, height: 36)
-                    .background(color)
+                    .background(color.opacity(0.12))
                     .cornerRadius(10)
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -529,15 +531,15 @@ private struct AccreditationLink: View {
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(.secondary)
                     .padding(8)
-                    .background(Color.gray.opacity(0.1))
+                    .background(Color(UIColor.tertiarySystemFill))
                     .cornerRadius(8)
             }
             .padding(14)
-            .background(Color(.systemBackground))
+            .background(.regularMaterial)
             .cornerRadius(.adaptiveCornerRadius * 1.5)
             .overlay(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                    .stroke(Color.gray.opacity(0.15), lineWidth: 1)
+                    .stroke(Color(UIColor.separator).opacity(0.2), lineWidth: 1)
             )
             .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
         }

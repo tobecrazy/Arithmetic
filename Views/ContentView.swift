@@ -3,9 +3,9 @@ import CoreData
 
 // MARK: - Enhanced Color Extensions
 extension Color {
-    static let primaryBlue = Color(red: 0.2, green: 0.6, blue: 1.0)
-    static let secondaryOrange = Color(red: 1.0, green: 0.6, blue: 0.2)
-    static let accentGreen = Color(red: 0.2, green: 0.8, blue: 0.4)
+    static let primaryBlue = Color.accentColor
+    static let secondaryOrange = Color.orange
+    static let accentGreen = Color.green
     static let backgroundSecondary = Color(UIColor.systemGray5)
     static let cardShadow = Color.black.opacity(0.05)
     static let textPrimary = Color.primary
@@ -75,12 +75,6 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
-    static let purpleGradient = LinearGradient(
-        colors: [Color(red: 0.5, green: 0.2, blue: 0.8), Color(red: 0.4, green: 0.1, blue: 0.7)],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-
     var body: some View {
         Group {
             if showWelcome {
@@ -96,7 +90,7 @@ struct ContentView: View {
     }
 
     var mainContentView: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 if DeviceUtils.isIPad && DeviceUtils.isLandscape(with: (horizontalSizeClass, verticalSizeClass)) {
                     enhancedIPadLandscapeLayout
@@ -109,7 +103,6 @@ struct ContentView: View {
                     .ignoresSafeArea()
             )
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             isStartingGame = false
             gameViewModel = nil
@@ -172,7 +165,7 @@ struct ContentView: View {
             .padding(.adaptivePadding)
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                    .fill(Color(UIColor.systemBackground))
+                    .fill(.regularMaterial)
                     .shadow(color: Color.cardShadow, radius: 8, x: 0, y: 4)
             )
     }
@@ -243,7 +236,7 @@ struct ContentView: View {
             .padding(.adaptivePadding)
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                    .fill(Color(UIColor.systemBackground))
+                    .fill(.regularMaterial)
                     .shadow(color: Color.cardShadow, radius: 8, x: 0, y: 4)
             )
             .overlay(
@@ -354,7 +347,7 @@ struct ContentView: View {
                     .foregroundStyle(isSelected ? Color.white : Color.primaryBlue)
                     .frame(width: 28, height: 28)
                     .background(
-                        Circle().fill(isSelected ? Color.primaryBlue : Color.primaryBlue.opacity(0.1))
+                        Circle().fill(isSelected ? Color.primaryBlue : Color(UIColor.tertiarySystemFill))
                     )
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -382,10 +375,8 @@ struct ContentView: View {
 
                 Spacer()
 
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(Color.primaryBlue)
-                }
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(isSelected ? Color.primaryBlue : Color.secondary)
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 12)
@@ -399,6 +390,7 @@ struct ContentView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     // MARK: - Time Chips Picker
@@ -444,7 +436,7 @@ struct ContentView: View {
                             .frame(maxWidth: .infinity)
                             .background(
                                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                                    .fill(isCustomTime ? Color.primaryBlue : Color.backgroundSecondary)
+                                    .fill(isCustomTime ? Color.primaryBlue : Color(UIColor.tertiarySystemFill))
                             )
                     }
                     .buttonStyle(.plain)
@@ -484,7 +476,7 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: .adaptiveCornerRadius)
-                        .fill(isSelected ? Color.primaryBlue : Color.backgroundSecondary)
+                        .fill(isSelected ? Color.primaryBlue : Color(UIColor.tertiarySystemFill))
                 )
         }
         .buttonStyle(.plain)
@@ -496,44 +488,41 @@ struct ContentView: View {
         title: String,
         subtitle: String,
         iconName: String,
-        gradient: LinearGradient,
+        tint: Color,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
             HStack(spacing: 16) {
                 Image(systemName: iconName)
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                    .frame(width: 44, height: 44)
-                    .background(
-                        Circle()
-                            .fill(Color.white.opacity(0.2))
-                    )
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(tint)
+                    .frame(width: 36, height: 36)
+                    .background(Circle().fill(tint.opacity(0.12)))
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.adaptiveHeadline())
                         .fontWeight(.semibold)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                         .multilineTextAlignment(.leading)
 
                     Text(subtitle)
                         .font(.adaptiveCaption())
-                        .foregroundStyle(.white.opacity(0.8))
+                        .foregroundStyle(.secondary)
                         .multilineTextAlignment(.leading)
                 }
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .font(.body)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
             }
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: .adaptiveCornerRadius * 1.5)
-                    .fill(gradient)
+                    .fill(.regularMaterial)
                     .shadow(color: Color.cardShadow, radius: 8, x: 0, y: 4)
             )
         }
@@ -609,7 +598,7 @@ struct ContentView: View {
                         title: isStartingGame ? "button.starting".localized : "button.start".localized,
                         subtitle: isStartingGame ? "game.loading".localized : "\(selectedDifficulty.localizedName) • \(timeInMinutes) \("settings.minutes".localized)",
                         iconName: isStartingGame ? "hourglass" : "play.fill",
-                        gradient: .primaryGradient
+                        tint: .blue
                     ) {
                         startGame()
                     }
@@ -623,7 +612,7 @@ struct ContentView: View {
                         title: "button.wrong_questions".localized,
                         subtitle: wrongQuestionsSubtitle,
                         iconName: "exclamationmark.triangle.fill",
-                        gradient: .orangeGradient
+                        tint: .orange
                     ) {
                         showWrongQuestionsView = true
                     }
@@ -635,7 +624,7 @@ struct ContentView: View {
                         title: "button.other_options".localized,
                         subtitle: "explore.more.features".localized,
                         iconName: "ellipsis.circle.fill",
-                        gradient: .greenGradient
+                        tint: .mint
                     ) {
                         showOtherOptionsView = true
                     }
@@ -647,7 +636,7 @@ struct ContentView: View {
                         title: "button.settings".localized,
                         subtitle: "settings.title".localized,
                         iconName: "gear",
-                        gradient: ContentView.purpleGradient
+                        tint: .indigo
                     ) {
                         showSettingsView = true
                     }
@@ -760,7 +749,7 @@ struct ContentView: View {
                         title: isStartingGame ? "button.starting".localized : "button.start".localized,
                         subtitle: isStartingGame ? "game.loading".localized : "\(selectedDifficulty.localizedName) • \(timeInMinutes) \("settings.minutes".localized)",
                         iconName: isStartingGame ? "hourglass" : "play.fill",
-                        gradient: .primaryGradient
+                        tint: .blue
                     ) {
                         startGame()
                     }
@@ -774,7 +763,7 @@ struct ContentView: View {
                         title: "button.wrong_questions".localized,
                         subtitle: wrongQuestionsSubtitle,
                         iconName: "exclamationmark.triangle.fill",
-                        gradient: .orangeGradient
+                        tint: .orange
                     ) {
                         showWrongQuestionsView = true
                     }
@@ -786,7 +775,7 @@ struct ContentView: View {
                         title: "button.other_options".localized,
                         subtitle: "explore.more.features".localized,
                         iconName: "ellipsis.circle.fill",
-                        gradient: .greenGradient
+                        tint: .mint
                     ) {
                         showOtherOptionsView = true
                     }
@@ -798,7 +787,7 @@ struct ContentView: View {
                         title: "button.settings".localized,
                         subtitle: "settings.title".localized,
                         iconName: "gear",
-                        gradient: ContentView.purpleGradient
+                        tint: .indigo
                     ) {
                         showSettingsView = true
                     }

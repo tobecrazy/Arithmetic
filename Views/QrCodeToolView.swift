@@ -32,21 +32,18 @@ struct QrCodeToolView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
-                LinearGradient(
-                    colors: [Color.blue.opacity(0.10), Color.teal.opacity(0.08), Color.white],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
+                Color(UIColor.systemGroupedBackground).ignoresSafeArea()
 
                 ScrollView {
                     VStack(spacing: 18) {
                         VStack(spacing: 10) {
                             Image(systemName: "qrcode.viewfinder")
                                 .font(.system(size: 36, weight: .semibold))
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(Color.accentColor)
+                                .frame(width: 64, height: 64)
+                                .background(Color.accentColor.opacity(0.12), in: Circle())
 
                             Text("qr_code.tool.title".localized)
                                 .font(.adaptiveTitle())
@@ -124,18 +121,18 @@ struct QrCodeToolView: View {
                             ZStack(alignment: .topLeading) {
                                 if textInput.isEmpty {
                                     Text("qr_code.placeholder_text".localized)
-                                        .foregroundStyle(.gray)
+                                        .foregroundStyle(.secondary)
                                         .padding(14)
                                 }
 
                                 TextEditor(text: $textInput)
                                     .frame(height: 110)
                                     .padding(8)
-                                    .background(Color.gray.opacity(0.08))
+                                    .background(Color(UIColor.secondarySystemBackground))
                                     .cornerRadius(12)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                                            .stroke(Color(UIColor.separator).opacity(0.25), lineWidth: 1)
                                     )
                                     .font(.body)
                             }
@@ -154,12 +151,9 @@ struct QrCodeToolView: View {
                                 }
                                 .padding(.vertical, 14)
                                 .padding(.horizontal, 16)
-                                .foregroundStyle(.white)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(textInput.isEmpty ? Color.gray.opacity(0.4) : Color.green)
-                                )
                             }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.green)
                             .disabled(textInput.isEmpty)
                         }
                         .padding(16)
@@ -178,12 +172,20 @@ struct QrCodeToolView: View {
                                     .frame(width: qrCodeSize, height: qrCodeSize)
                                     .scaledToFit()
                                     .padding(12)
-                                    .background(Color.white)
+                                    .background(Color(UIColor.systemBackground))
                                     .cornerRadius(16)
                                     .shadow(color: Color.black.opacity(0.12), radius: 12, x: 0, y: 6)
                                     .onLongPressGesture {
                                         prepareQRCodeForSharing()
                                     }
+
+                                Button {
+                                    prepareQRCodeForSharing()
+                                } label: {
+                                    Label("copy_button".localized, systemImage: "square.and.arrow.up")
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .buttonStyle(.bordered)
 
                                 Text("qr_code.long_press_save_hint".localized)
                                     .font(.caption)
@@ -210,7 +212,7 @@ struct QrCodeToolView: View {
                         Image(systemName: "chevron.left")
                         Text("button.back".localized)
                     }
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(Color.accentColor)
                 }
             }
         }
@@ -264,10 +266,10 @@ struct QrCodeToolView: View {
 
     private var cardBackground: some View {
         RoundedRectangle(cornerRadius: 18, style: .continuous)
-            .fill(Color(.systemBackground).opacity(0.88))
+            .fill(.regularMaterial)
             .overlay(
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .stroke(Color.black.opacity(0.05), lineWidth: 1)
+                    .stroke(Color(UIColor.separator).opacity(0.2), lineWidth: 1)
             )
             .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 4)
     }
@@ -286,10 +288,10 @@ struct QrCodeToolView: View {
             .padding(.horizontal, 14)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(tint.opacity(0.13))
+                    .fill(tint.opacity(0.12))
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(tint.opacity(0.25), lineWidth: 1)
+                            .stroke(tint.opacity(0.2), lineWidth: 1)
                     )
             )
             .foregroundStyle(tint)
