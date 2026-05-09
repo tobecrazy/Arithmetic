@@ -616,6 +616,7 @@ struct ContentView: View {
                     ) {
                         showWrongQuestionsView = true
                     }
+                    .accessibilityIdentifier("wrongQuestionsButton")
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
                     .animation(.easeInOut(duration: 0.6).delay(0.8), value: isAnimating)
@@ -628,6 +629,7 @@ struct ContentView: View {
                     ) {
                         showOtherOptionsView = true
                     }
+                    .accessibilityIdentifier("otherOptionsButton")
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
                     .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
@@ -640,6 +642,7 @@ struct ContentView: View {
                     ) {
                         showSettingsView = true
                     }
+                    .accessibilityIdentifier("settingsButton")
                     .opacity(isAnimating ? 1 : 0)
                     .offset(x: isAnimating ? 0 : 50)
                     .animation(.easeInOut(duration: 0.6).delay(1.0), value: isAnimating)
@@ -767,6 +770,7 @@ struct ContentView: View {
                     ) {
                         showWrongQuestionsView = true
                     }
+                    .accessibilityIdentifier("wrongQuestionsButton")
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
                     .animation(.easeInOut(duration: 0.6).delay(0.9), value: isAnimating)
@@ -779,6 +783,7 @@ struct ContentView: View {
                     ) {
                         showOtherOptionsView = true
                     }
+                    .accessibilityIdentifier("otherOptionsButton")
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
                     .animation(.easeInOut(duration: 0.6).delay(1.0), value: isAnimating)
@@ -791,6 +796,7 @@ struct ContentView: View {
                     ) {
                         showSettingsView = true
                     }
+                    .accessibilityIdentifier("settingsButton")
                     .opacity(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 30)
                     .animation(.easeInOut(duration: 0.6).delay(1.1), value: isAnimating)

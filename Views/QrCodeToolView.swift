@@ -67,6 +67,7 @@ struct QrCodeToolView: View {
                             ) {
                                 checkCameraPermission()
                             }
+                            .accessibilityIdentifier("qrScanCameraButton")
 
                             actionButton(
                                 icon: "folder.fill",
@@ -75,6 +76,7 @@ struct QrCodeToolView: View {
                             ) {
                                 shouldShowImageFilePicker = true
                             }
+                            .accessibilityIdentifier("qrScanPhotosButton")
                         }
                         .padding(16)
                         .background(cardBackground)
@@ -135,6 +137,7 @@ struct QrCodeToolView: View {
                                             .stroke(Color(UIColor.separator).opacity(0.25), lineWidth: 1)
                                     )
                                     .font(.body)
+                                    .accessibilityIdentifier("qrTextInputEditor")
                             }
 
                             Button(action: {
@@ -155,6 +158,7 @@ struct QrCodeToolView: View {
                             .buttonStyle(.borderedProminent)
                             .tint(.green)
                             .disabled(textInput.isEmpty)
+                            .accessibilityIdentifier("qrGenerateButton")
                         }
                         .padding(16)
                         .background(cardBackground)
@@ -186,6 +190,7 @@ struct QrCodeToolView: View {
                                         .frame(maxWidth: .infinity)
                                 }
                                 .buttonStyle(.bordered)
+                                .accessibilityIdentifier("qrShareButton")
 
                                 Text("qr_code.long_press_save_hint".localized)
                                     .font(.caption)

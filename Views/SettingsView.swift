@@ -84,6 +84,7 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("openQrToolsButton")
 
                     Button(action: { navigateToAboutApp = true }) {
                         HStack {
@@ -93,6 +94,7 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("openAboutArithmeticButton")
                 }
             }
             .navigationTitle("settings.title".localized)
